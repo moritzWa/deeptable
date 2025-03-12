@@ -12,6 +12,7 @@ import LoginPage from './components/LoginPage';
 import { Navbar } from './components/navbar';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import RelatedDevelopersScraper from './components/RelatedDevelopersScraper';
+import ResearchPromptPage from './components/ResearchPromptPage';
 import SettingsPage from './components/SettingsPage';
 import { trpc } from './utils/trpc';
 
@@ -35,6 +36,7 @@ function AppContent() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/sdxl" element={<LandingPage landingPageKeyword="sdxl" />} />
             <Route path="/stable-diffusion-xl" element={<LandingPage landingPageKeyword="stable-diffusion-xl" />} />
+            <Route path="/new" element={<ResearchPromptPage />} />
             <Route 
               path="/related-developers-scraper" 
               element={

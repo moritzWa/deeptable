@@ -66,6 +66,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
               </span>
             </Button>
           </div>
+          <div className="mt-4">
+            <Link to="/new">
+              <Button variant="outline" className="text-[#4169E1] border-[#4169E1]">
+                Try Our New Research Table Generator
+              </Button>
+            </Link>
+          </div>
         </form>
       </div>
 
