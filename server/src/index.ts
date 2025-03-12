@@ -22,11 +22,13 @@ export const publicProcedure = t.procedure;
 // Import routers after exporting t
 import { authRouter } from './routers/auth';
 import { paymentsRouter } from './routers/payments';
+import { researchRouter } from './routers/research';
 
 // Create app router
 export const appRouter = router({
   auth: authRouter,
   payments: paymentsRouter,
+  research: researchRouter,
 });
 
 export type AppRouter = typeof appRouter;
