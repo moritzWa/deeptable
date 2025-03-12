@@ -2,7 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from 'react';
+import { trpc } from "@/utils/trpc";
+import React, { KeyboardEvent, useState } from 'react';
+
+// Define the expected response types to match the server
+interface SuccessResponse {
+  success: true;
+  columns: string[];
+}
+
+interface ErrorResponse {
+  success: false;
+  error: string;
+}
+
+type GenerateColumnsResponse = SuccessResponse | ErrorResponse;
 
 const ResearchPromptPage: React.FC = () => {
   const [prompt, setPrompt] = useState('');
@@ -10,8 +24,32 @@ const ResearchPromptPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Use the tRPC mutation
+  const generateColumnsMutation = trpc.research.generateColumns.useMutation({
+    onSuccess: (data: GenerateColumnsResponse) => {
+      if (data.success && 'columns' in data) {
+        setColumns(data.columns);
+      } else {
+        setError('error' in data ? data.error : 'Failed to generate columns');
+      }
+      setIsLoading(false);
+    },
+    onError: (error) => {
+      setError(error.message || 'Failed to generate columns. Please try again.');
+      setIsLoading(false);
+    }
+  });
+
   const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(e.target.value);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    // Submit form when Enter is pressed without Shift key
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e as unknown as React.FormEvent);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,64 +63,13 @@ const ResearchPromptPage: React.FC = () => {
     setIsLoading(true);
     setError('');
     
-    try {
-      // In a real implementation, this would call an API endpoint
-      // For now, we'll simulate an API call with a timeout
-      setTimeout(() => {
-        // Example response for "best scooter for SF"
-        if (prompt.toLowerCase().includes('scooter') && prompt.toLowerCase().includes('sf')) {
-          setColumns([
-            "Scooter Model", 
-            "Motor Power", 
-            "Max Speed", 
-            "Range", 
-            "Hill Climbing Ability", 
-            "Key Features", 
-            "Image"
-          ]);
-        } else {
-          // Generic columns for other queries
-          setColumns([
-            "Product Name",
-            "Price",
-            "Rating",
-            "Key Features",
-            "Pros",
-            "Cons",
-            "Image"
-          ]);
-        }
-        setIsLoading(false);
-      }, 1500);
-      
-      // In a real implementation, you would call an LLM API like this:
-      /*
-      const response = await fetch('/api/generate-columns', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: "based on this search query generate a set of columns the user would care about as part of a research report table: " + prompt,
-          example: {
-            query: "good scooter for SF",
-            columns: "Scooter Model, Motor Power, Max Speed, Range, Hill Climbing Ability, Key Features, image"
-          }
-        }),
-      });
+    // Call the tRPC mutation
+    generateColumnsMutation.mutate({ prompt: prompt.trim() });
+  };
 
-      if (!response.ok) {
-        throw new Error('Failed to generate columns');
-      }
-
-      const data = await response.json();
-      setColumns(data.columns);
-      setIsLoading(false);
-      */
-    } catch (err) {
-      setError('Failed to generate columns. Please try again.');
-      setIsLoading(false);
-    }
+  const handleCreateTable = () => {
+    // Future implementation for creating the research table
+    console.log('Creating research table with columns:', columns);
   };
 
   return (
@@ -102,12 +89,14 @@ const ResearchPromptPage: React.FC = () => {
               placeholder="Example: best scooter for SF"
               value={prompt}
               onChange={handlePromptChange}
+              onKeyDown={handleKeyDown}
               className="min-h-[120px]"
             />
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <Button 
               type="submit" 
-              className="w-full bg-[#4169E1] hover:bg-[#3a5ecc]"
+              variant={columns.length > 0 ? "outline" : "default"}
+              className="w-full"
               disabled={isLoading}
             >
               {isLoading ? 'Generating Columns...' : 'Generate Table Columns'}
@@ -138,7 +127,11 @@ const ResearchPromptPage: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <Button className="w-full mt-4">
+              <Button 
+                variant="default"
+                className="w-full mt-4"
+                onClick={handleCreateTable}
+              >
                 Create Research Table
               </Button>
             </div>
