@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/utils/trpc";
-import React, { KeyboardEvent, useState } from 'react';
+import React, { KeyboardEvent, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 // Define the expected response types to match the server
 interface SuccessResponse {
@@ -19,10 +20,12 @@ interface ErrorResponse {
 type GenerateColumnsResponse = SuccessResponse | ErrorResponse;
 
 const ResearchPromptPage: React.FC = () => {
+  const location = useLocation();
   const [prompt, setPrompt] = useState('');
   const [columns, setColumns] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isFromUrl, setIsFromUrl] = useState(false);
 
   // Use the tRPC mutation
   const generateColumnsMutation = trpc.research.generateColumns.useMutation({
@@ -40,8 +43,37 @@ const ResearchPromptPage: React.FC = () => {
     }
   });
 
+  // Parse query parameter and set prompt
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const queryParam = queryParams.get('q');
+    
+    if (queryParam) {
+      setPrompt(queryParam);
+      setIsFromUrl(true); // Mark that this prompt came from URL
+    }
+  }, [location.search]);
+
+  // Auto-submit only when prompt comes from URL
+  useEffect(() => {
+    // Only auto-submit if the prompt came from the URL and is not empty
+    if (prompt.trim() && isFromUrl && !isLoading) {
+      const timer = setTimeout(() => {
+        generateColumnsMutation.mutate({ prompt: prompt.trim() });
+        setIsLoading(true);
+        setIsFromUrl(false); // Reset the flag after submission
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [prompt, isFromUrl, isLoading, generateColumnsMutation]);
+
   const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(e.target.value);
+    // If user manually changes the prompt, it's no longer from URL
+    if (isFromUrl) {
+      setIsFromUrl(false);
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {

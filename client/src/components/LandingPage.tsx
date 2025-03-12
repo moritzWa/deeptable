@@ -19,14 +19,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (prompt.trim()) {
-      // Store the prompt in local storage
-      localStorage.setItem('imagePrompt', prompt.trim());
-      // Store the keyword if available
-      if (landingPageKeyword) {
-        localStorage.setItem('imageModel', landingPageKeyword);
-      }
-      // Navigate to login page
-      navigate('/login');
+      // Navigate to research page with the query parameter
+      navigate(`/new?q=${encodeURIComponent(prompt.trim())}`);
     }
   };
 
@@ -47,31 +41,25 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
         </p>
 
         {/* Input form */}
-        <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto flex flex-col items-center space-y-4 mt-8">
+        <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto flex flex-col items-center mt-8">
           <div className="w-full relative flex items-center">
             <Input
               type="text"
-              placeholder="What would you like to research?"
-              className="w-full h-14 pr-24 text-lg"
+              placeholder="What would you like to research? (e.g., best scooter for SF)"
+              className="w-full h-14 pr-36 text-lg"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
             />
             <Button 
               type="submit" 
               className="absolute right-2 bg-[#4169E1] hover:bg-[#3a5ecc] text-white px-6"
+              disabled={!prompt.trim()}
             >
               <span className="flex items-center">
-                Research
+                Generate Table
                 <ArrowRight className="h-5 w-5 ml-2" />
               </span>
             </Button>
-          </div>
-          <div className="mt-4">
-            <Link to="/new">
-              <Button variant="outline" className="text-[#4169E1] border-[#4169E1]">
-                Try Our New Research Table Generator
-              </Button>
-            </Link>
           </div>
         </form>
       </div>
