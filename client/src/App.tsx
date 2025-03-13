@@ -12,6 +12,7 @@ import LoginPage from './components/LoginPage';
 import { Navbar } from './components/navbar';
 import ResearchPromptPage from './components/ResearchPromptPage';
 import SettingsPage from './components/SettingsPage';
+import TablePage from './components/TablePage';
 import { trpc } from './utils/trpc';
 
 export const defaultPage = "/home";
@@ -28,20 +29,54 @@ function AppContent() {
         <meta name="twitter:description" content="Generate tables of valuable data." />
       </Helmet>
       <div className="min-h-screen bg-background text-foreground">
-        <Navbar />
-        <div className="container mx-auto px-4 py-8 pt-24">
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/sdxl" element={<LandingPage landingPageKeyword="sdxl" />} />
-            <Route path="/stable-diffusion-xl" element={<LandingPage landingPageKeyword="stable-diffusion-xl" />} />
-            <Route path="/new" element={<ResearchPromptPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogPostPage />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Navbar />
+              <LandingPage />
+            </>
+          } />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/sdxl" element={
+            <>
+              <Navbar />
+              <LandingPage landingPageKeyword="sdxl" />
+            </>
+          } />
+          <Route path="/stable-diffusion-xl" element={
+            <>
+              <Navbar />
+              <LandingPage landingPageKeyword="stable-diffusion-xl" />
+            </>
+          } />
+          <Route path="/new" element={<ResearchPromptPage />} />
+          <Route path="/tables/:id" element={<TablePage />} />
+          <Route path="/login" element={
+            <>
+              <Navbar />
+              <div className="container mx-auto px-4 py-8 pt-24">
+                <LoginPage />
+              </div>
+            </>
+          } />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/blog" element={
+            <>
+              <Navbar />
+              <div className="container mx-auto px-4 py-8 pt-24">
+                <BlogPage />
+              </div>
+            </>
+          } />
+          <Route path="/blog/:slug" element={
+            <>
+              <Navbar />
+              <div className="container mx-auto px-4 py-8 pt-24">
+                <BlogPostPage />
+              </div>
+            </>
+          } />
+        </Routes>
       </div>
     </>
   );
