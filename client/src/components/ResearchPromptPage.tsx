@@ -4,11 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/utils/trpc";
 import React, { KeyboardEvent, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // Define the expected response types to match the server
 interface SuccessResponse {
   success: true;
+  name: string;
+  description: string;
   columns: string[];
 }
 
@@ -20,26 +22,42 @@ interface ErrorResponse {
 type GenerateColumnsResponse = SuccessResponse | ErrorResponse;
 
 const ResearchPromptPage: React.FC = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [prompt, setPrompt] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [columns, setColumns] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isFromUrl, setIsFromUrl] = useState(false);
+  const token = localStorage.getItem("token");
 
-  // Use the tRPC mutation
+  // Use the tRPC mutations
   const generateColumnsMutation = trpc.research.generateColumns.useMutation({
-    onSuccess: (data: GenerateColumnsResponse) => {
-      if (data.success && 'columns' in data) {
+    onSuccess: (data) => {
+      if (data.success) {
+        setName(data.name);
+        setDescription(data.description);
         setColumns(data.columns);
       } else {
-        setError('error' in data ? data.error : 'Failed to generate columns');
+        setError(data.error);
       }
       setIsLoading(false);
     },
     onError: (error) => {
-      setError(error.message || 'Failed to generate columns. Please try again.');
+      setError(error.message || 'Failed to generate table structure. Please try again.');
       setIsLoading(false);
+    }
+  });
+
+  const createTableMutation = trpc.tables.createTable.useMutation({
+    onSuccess: (newTable) => {
+      // Navigate to the new table's page
+      navigate(`/tables/${newTable.id}`);
+    },
+    onError: (error) => {
+      setError(error.message || 'Failed to create table. Please try again.');
     }
   });
 
@@ -50,18 +68,17 @@ const ResearchPromptPage: React.FC = () => {
     
     if (queryParam) {
       setPrompt(queryParam);
-      setIsFromUrl(true); // Mark that this prompt came from URL
+      setIsFromUrl(true);
     }
   }, [location.search]);
 
   // Auto-submit only when prompt comes from URL
   useEffect(() => {
-    // Only auto-submit if the prompt came from the URL and is not empty
     if (prompt.trim() && isFromUrl && !isLoading) {
       const timer = setTimeout(() => {
         generateColumnsMutation.mutate({ prompt: prompt.trim() });
         setIsLoading(true);
-        setIsFromUrl(false); // Reset the flag after submission
+        setIsFromUrl(false);
       }, 1000);
       
       return () => clearTimeout(timer);
@@ -70,14 +87,12 @@ const ResearchPromptPage: React.FC = () => {
 
   const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPrompt(e.target.value);
-    // If user manually changes the prompt, it's no longer from URL
     if (isFromUrl) {
       setIsFromUrl(false);
     }
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
-    // Submit form when Enter is pressed without Shift key
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e as unknown as React.FormEvent);
@@ -95,13 +110,25 @@ const ResearchPromptPage: React.FC = () => {
     setIsLoading(true);
     setError('');
     
-    // Call the tRPC mutation
     generateColumnsMutation.mutate({ prompt: prompt.trim() });
   };
 
-  const handleCreateTable = () => {
-    // Future implementation for creating the research table
-    console.log('Creating research table with columns:', columns);
+  const handleCreateTable = async () => {
+    if (!token) {
+      setError('Please log in to create a table');
+      return;
+    }
+
+    try {
+      await createTableMutation.mutateAsync({
+        token,
+        name,
+        description,
+        columns
+      });
+    } catch (error) {
+      console.error("Failed to create table:", error);
+    }
   };
 
   return (
@@ -112,7 +139,7 @@ const ResearchPromptPage: React.FC = () => {
         <CardHeader>
           <CardTitle>Enter Your Research Query</CardTitle>
           <CardDescription>
-            Describe what you want to research, and we'll generate relevant columns for your data table.
+            Describe what you want to research, and we'll generate a table structure to organize your data.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -131,7 +158,7 @@ const ResearchPromptPage: React.FC = () => {
               className="w-full"
               disabled={isLoading}
             >
-              {isLoading ? 'Generating Columns...' : 'Generate Table Columns'}
+              {isLoading ? 'Generating Structure...' : 'Generate Table Structure'}
             </Button>
           </form>
         </CardContent>
@@ -140,18 +167,37 @@ const ResearchPromptPage: React.FC = () => {
       {columns.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Generated Table Columns</CardTitle>
+            <CardTitle>Generated Table Structure</CardTitle>
             <CardDescription>
-              These columns have been generated based on your research query. You can edit them below.
+              Review and edit the generated table structure below.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <Input
-                value={columns.join(', ')}
-                onChange={(e) => setColumns(e.target.value.split(',').map(col => col.trim()))}
-                className="w-full"
-              />
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Table Name</label>
+                <Input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Description</label>
+                <Textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Columns</label>
+                <Input
+                  value={columns.join(', ')}
+                  onChange={(e) => setColumns(e.target.value.split(',').map(col => col.trim()))}
+                  className="w-full"
+                />
+              </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {columns.map((column, index) => (
                   <div key={index} className="bg-muted p-2 rounded text-sm">
