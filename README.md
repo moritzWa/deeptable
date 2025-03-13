@@ -22,6 +22,22 @@ A powerful data analysis and visualization SaaS platform with authentication, pa
 - Stripe account
 - Google OAuth credentials
 
+### MongoDB Setup
+
+1. Install MongoDB:
+   - **macOS**: `brew install mongodb-community`
+   - **Windows**: Download and install from [MongoDB website](https://www.mongodb.com/try/download/community)
+   - **Linux**: Follow distribution-specific instructions from [MongoDB docs](https://www.mongodb.com/docs/manual/administration/install-on-linux/)
+
+2. Start MongoDB:
+   - **macOS/Linux**: `mongod --dbpath=/path/to/data/directory`
+   - **Windows**: `mongod --dbpath=C:\path\to\data\directory`
+   - Or use the MongoDB service if installed
+
+3. Verify MongoDB is running:
+   - Connect to MongoDB shell: `mongosh`
+   - You should see a connection to localhost:27017
+
 ### Installation
 
 1. Clone the repository
