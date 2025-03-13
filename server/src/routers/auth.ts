@@ -1,9 +1,9 @@
+import { User } from '@shared/types';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { publicProcedure, router } from '../index';
 import { User as UserModel } from '../models/user';
-import { User } from '@shared/types';
 
 const googleClient = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
