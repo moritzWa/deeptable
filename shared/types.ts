@@ -1,5 +1,3 @@
-export type TargetMode = "stargazers" | "forks" | "watchers" | "contributors";
-
 // Column type definition
 export type ColumnType = 'string' | 'number' | 'boolean' | 'date' | 'array' | 'object';
 

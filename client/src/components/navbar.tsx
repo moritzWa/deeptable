@@ -45,18 +45,6 @@ export function Navbar() {
       >
         Research Table
       </Link>
-      {/* <Link 
-        to="/related-developers-scraper" 
-        className={`hover:text-primary transition-colors ${location.pathname === '/related-developers-scraper' ? 'text-primary font-medium' : ''}`}
-      >
-        Related Developers
-      </Link>
-      <Link 
-        to="/contributors-scraper" 
-        className={`hover:text-primary transition-colors ${location.pathname === '/contributors-scraper' ? 'text-primary font-medium' : ''}`}
-      >
-        Repository Contributors
-      </Link> */}
       <Link 
         to="/blog" 
         className={`hover:text-primary transition-colors ${location.pathname === '/blog' || location.pathname.startsWith('/blog/') ? 'text-primary font-medium' : ''}`}
