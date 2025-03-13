@@ -1,9 +1,15 @@
-import { Plus, Settings } from "lucide-react";
+import { Moon, Plus, Settings, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Table } from "../../../server/src/types";
 import { trpc } from "../utils/trpc";
 import { Button } from "./ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
 import {
   Sidebar,
   SidebarContent,
@@ -24,6 +30,35 @@ export function AppSidebar() {
   const { id: currentTableId } = useParams<{ id?: string }>();
   const [tables, setTables] = useState<Table[]>([]);
   const token = localStorage.getItem("token");
+  const [theme, setTheme] = useState<"light" | "dark" | "system">(() => {
+    const stored = localStorage.getItem("theme") as "light" | "dark" | "system" | null;
+    return stored || "system";
+  });
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    
+    root.classList.remove("light", "dark");
+    const effectiveTheme = theme === "system" ? systemTheme : theme;
+    root.classList.add(effectiveTheme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  // Add system theme change listener
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = () => {
+      if (theme === "system") {
+        const root = window.document.documentElement;
+        root.classList.remove("light", "dark");
+        root.classList.add(mediaQuery.matches ? "dark" : "light");
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, [theme]);
 
   const { data: tablesData } = trpc.tables.getTables.useQuery(
     { token: token || "" },
@@ -81,15 +116,40 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              onClick={() => navigate('/settings')}
-              isActive={location.pathname === '/settings'}
-            >
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          <div className="flex items-center justify-between px-2 py-2">
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                onClick={() => navigate('/settings')}
+                isActive={location.pathname === '/settings'}
+              >
+                <Settings className="mr-2 h-4 w-4" />
+                Settings
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  {theme === "light" && <Sun className="h-4 w-4" />}
+                  {theme === "dark" && <Moon className="h-4 w-4" />}
+                  {theme === "system" && <Sun className="h-4 w-4" />}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setTheme("light")}>
+                  <Sun className="mr-2 h-4 w-4" />
+                  <span>Light</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("dark")}>
+                  <Moon className="mr-2 h-4 w-4" />
+                  <span>Dark</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTheme("system")}>
+                  <span>System</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
