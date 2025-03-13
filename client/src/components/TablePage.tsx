@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/utils/trpc";
+import { Table } from "@shared/types";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Table } from "../../../server/src/types";
 import { AppLayout } from "./AppLayout";
 
 const TablePage = () => {

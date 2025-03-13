@@ -11,8 +11,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import type { FormPreferences } from "@/types";
 import { Octokit } from "@octokit/core";
+import type { FormPreferences } from "@shared/types";
 import { saveAs } from "file-saver";
 import React, { useEffect, useState } from "react";
 import { getContributorsForRepo, type Contributor } from "../scraping-logic/contributorsScraper";

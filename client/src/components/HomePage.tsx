@@ -1,6 +1,6 @@
+import { Table } from "@shared/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Table } from "../../../server/src/types";
 import { trpc } from "../utils/trpc";
 import { AppLayout } from "./AppLayout";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";

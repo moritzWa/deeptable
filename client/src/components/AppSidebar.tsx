@@ -1,7 +1,7 @@
+import { Table } from "@shared/types";
 import { Moon, Plus, Settings, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { Table } from "../../../server/src/types";
 import { trpc } from "../utils/trpc";
 import { Button } from "./ui/button";
 import {

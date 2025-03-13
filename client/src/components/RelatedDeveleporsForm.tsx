@@ -1,29 +1,29 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Octokit } from "@octokit/core";
+import { FormPreferences, LanguageKeys } from "@shared/types";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormData } from "../scraping-logic/relatedDevelopersScraper";
-import { FormPreferences, LanguageKeys } from "../types";
 import { trpc } from "../utils/trpc";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "./ui/form";
 import { Input } from "./ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "./ui/select";
 
 interface ScraperFormProps {
