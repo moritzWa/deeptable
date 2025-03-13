@@ -37,18 +37,6 @@ function AppContent() {
             </>
           } />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/sdxl" element={
-            <>
-              <Navbar />
-              <LandingPage landingPageKeyword="sdxl" />
-            </>
-          } />
-          <Route path="/stable-diffusion-xl" element={
-            <>
-              <Navbar />
-              <LandingPage landingPageKeyword="stable-diffusion-xl" />
-            </>
-          } />
           <Route path="/new" element={<ResearchPromptPage />} />
           <Route path="/tables/:id" element={<TablePage />} />
           <Route path="/login" element={
