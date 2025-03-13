@@ -46,14 +46,15 @@ app.use((req, res, next) => {
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://githire.io'
+    'https://githire.io',
+    'https://deeptable.onrender.com'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'stripe-signature']
 }));
 
-// Use JSON parser for all non-webhook routes
+// Use JSON parser for all non-webhook routes 
 app.use((req, res, next) => {
   if (req.originalUrl === '/api/webhooks/stripe') {
     next();
