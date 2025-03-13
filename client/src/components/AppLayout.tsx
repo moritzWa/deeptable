@@ -10,7 +10,7 @@ interface AppLayoutProps {
 export function AppLayout({ children }: AppLayoutProps) {
   return (
     <SidebarProvider>
-      <div className="flex h-screen">
+      <div className="flex h-screen w-full">
         <AppSidebar />
         <SidebarInset>
           <header className="flex sticky top-0 z-10 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">

@@ -134,7 +134,7 @@ const TablePage = () => {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {table.columns.map((column, index) => (
                     <div key={index} className="bg-muted p-2 rounded text-sm">
-                      {column}
+                      {column.name}
                     </div>
                   ))}
                 </div>

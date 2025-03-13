@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Column } from "@/types";
 import { trpc } from "@/utils/trpc";
 import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -12,7 +13,7 @@ interface SuccessResponse {
   success: true;
   name: string;
   description: string;
-  columns: string[];
+  columns: Column[];
 }
 
 interface ErrorResponse {
@@ -28,7 +29,7 @@ const ResearchPromptPage: React.FC = () => {
   const [prompt, setPrompt] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [columns, setColumns] = useState<string[]>([]);
+  const [columns, setColumns] = useState<Column[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isFromUrl, setIsFromUrl] = useState(false);
@@ -194,26 +195,29 @@ const ResearchPromptPage: React.FC = () => {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Columns</label>
-                  <Input
-                    value={columns.join(', ')}
-                    onChange={(e) => setColumns(e.target.value.split(',').map(col => col.trim()))}
-                    className="w-full"
-                  />
+                  <div className="grid grid-cols-1 gap-2">
+                    {columns.map((column, index) => (
+                      <div key={index} className="bg-muted p-3 rounded flex flex-col">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="font-medium">{column.name}</span>
+                          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
+                            {column.type}
+                          </span>
+                        </div>
+                        {column.description && (
+                          <span className="text-sm text-muted-foreground">{column.description}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <Button 
+                    variant="default"
+                    className="w-full mt-4"
+                    onClick={handleCreateTable}
+                  >
+                    Create Research Table
+                  </Button>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {columns.map((column, index) => (
-                    <div key={index} className="bg-muted p-2 rounded text-sm">
-                      {column}
-                    </div>
-                  ))}
-                </div>
-                <Button 
-                  variant="default"
-                  className="w-full mt-4"
-                  onClick={handleCreateTable}
-                >
-                  Create Research Table
-                </Button>
               </div>
             </CardContent>
           </Card>
