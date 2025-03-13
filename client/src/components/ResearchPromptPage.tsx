@@ -175,3 +175,4 @@ const ResearchPromptPage: React.FC = () => {
 };
 
 export default ResearchPromptPage; 
+

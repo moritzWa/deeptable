@@ -1,8 +1,9 @@
-import { ArrowRight, Eye, GitFork, Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Cursor, useTypewriter } from 'react-simple-typewriter';
+import ExampleCardsSection from './ExampleCardsSection';
 import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Input } from './ui/input';
 
 interface LandingPageProps {
@@ -12,9 +13,13 @@ interface LandingPageProps {
 const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
   const [prompt, setPrompt] = useState('');
   const navigate = useNavigate();
-  
-  // Use the keyword if provided, otherwise use default text
-  const keywordText = landingPageKeyword ? landingPageKeyword.toUpperCase() : 'AI';
+
+  const [text] = useTypewriter({
+    words: ['products', 'travel locations', 'leads', 'companies', 'prospects', 'VCs'],
+    loop: true,
+    delaySpeed: 3000,
+    deleteSpeed: 300,
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,8 +35,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
       {/* hero section */}
       <div className="w-full text-center py-16 md:py-24 space-y-6">
         <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          <span>Generate and fill a Table with </span>
-          <span className="text-[#4169E1]">{keywordText}</span>
+          <span>The AI agent for {text}<Cursor cursorStyle="|" /><br></br> research tool that outputs <span className="text-[#4169E1]">tables</span></span>
         </h1>
         
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
@@ -65,7 +69,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
       </div>
 
       {/* Use cases section */}
-      <Card className="mb-12">
+      {/* <Card className="mb-12">
         <div className="flex flex-col md:flex-row items-center justify-between p-6 gap-8">
           <div className="space-y-6">
             <h3 className="text-2xl font-semibold">Make Better Decisions with Comprehensive Research</h3>
@@ -91,9 +95,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
             </div>
           </div>
         </div>
-      </Card>
+      </Card> */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-0 md:px-0">
+      {/* Example Cards Section */}
+      <ExampleCardsSection />
+
+      {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-0 md:px-0">
         <Card>
           <CardHeader>
             <CardTitle>Smart Research Assistant</CardTitle>
@@ -125,11 +132,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
             </Link>
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     
     {/* footer section */}
     <div className="flex flex-row items-center justify-center mt-12 mb-8">
-      <p className="text-muted-foreground">© 2025 Research AI Inc.</p>
+      <p className="text-muted-foreground">© 2025 Deep Table Research Inc.</p>
     </div>
     </div>
   );

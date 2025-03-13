@@ -51,7 +51,7 @@ export const researchRouter = router({
             { role: "user", content: EXAMPLE_PROMPT },
             { role: "user", content: userPrompt }
           ],
-          temperature: 0.7,
+          temperature: 0.2,
           max_tokens: 150,
         });
 
