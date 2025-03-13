@@ -1,8 +1,17 @@
+import { Table } from '@shared/types';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { publicProcedure, router } from '../index';
 import { ITable, Table as TableModel } from '../models/table';
-import { Table } from '../types';
+
+// Define a Zod schema for column validation
+const columnSchema = z.object({
+  name: z.string(),
+  type: z.enum(['string', 'number', 'boolean', 'date', 'array', 'object']),
+  required: z.boolean().optional(),
+  defaultValue: z.any().optional(),
+  description: z.string().optional()
+});
 
 export const tablesRouter = router({
   // Get all tables for the current user
@@ -17,7 +26,13 @@ export const tablesRouter = router({
           id: table._id.toString(),
           name: table.name,
           description: table.description || null,
-          columns: table.columns,
+          columns: table.columns.map(col => ({
+            name: col.name,
+            type: col.type,
+            required: col.required || false,
+            defaultValue: col.defaultValue,
+            description: col.description
+          })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId
@@ -34,16 +49,19 @@ export const tablesRouter = router({
       token: z.string(),
       name: z.string(),
       description: z.string().optional(),
-      columns: z.array(z.string()).optional()
+      columns: z.array(columnSchema).optional()
     }))
     .mutation(async ({ input }): Promise<Table> => {
       try {
         const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
         
+        // Convert string columns to proper column objects if needed
+        const columns = input.columns || [];
+        
         const table = await TableModel.create({
           name: input.name,
           description: input.description,
-          columns: input.columns || [],
+          columns: columns,
           userId: decoded.userId
         }) as ITable;
 
@@ -51,7 +69,13 @@ export const tablesRouter = router({
           id: table._id.toString(),
           name: table.name,
           description: table.description || null,
-          columns: table.columns,
+          columns: table.columns.map(col => ({
+            name: col.name,
+            type: col.type,
+            required: col.required || false,
+            defaultValue: col.defaultValue,
+            description: col.description
+          })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId
@@ -69,7 +93,7 @@ export const tablesRouter = router({
       id: z.string(),
       name: z.string().optional(),
       description: z.string().optional(),
-      columns: z.array(z.string()).optional()
+      columns: z.array(columnSchema).optional()
     }))
     .mutation(async ({ input }): Promise<Table> => {
       try {
@@ -93,7 +117,13 @@ export const tablesRouter = router({
           id: table._id.toString(),
           name: table.name,
           description: table.description || null,
-          columns: table.columns,
+          columns: table.columns.map(col => ({
+            name: col.name,
+            type: col.type,
+            required: col.required || false,
+            defaultValue: col.defaultValue,
+            description: col.description
+          })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId
