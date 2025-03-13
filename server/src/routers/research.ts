@@ -8,21 +8,34 @@ const openai = new OpenAI({
 });
 
 // Define the system prompt for column generation
-const SYSTEM_PROMPT = `You are an AI assistant that helps generate relevant columns for research tables.
-Your task is to analyze a search query and generate a set of columns that would be useful for a research report table.
-The columns should be relevant to the query and help users make informed decisions.
-Return only the column names as a comma-separated list without any additional text or explanation.`;
+const SYSTEM_PROMPT = `You are an AI assistant that helps generate research table structures.
+Your task is to analyze a search query and generate:
+1. A clear, concise table name
+2. A brief description of what the table will contain
+3. A set of columns that would be useful for the research table
+
+Return the response in the following JSON format:
+{
+  "name": "Table name here",
+  "description": "Brief description here",
+  "columns": ["Column1", "Column2", "Column3", ...]
+}`;
 
 // Example for the model to understand the expected output format
 const EXAMPLE_PROMPT = `
 Example:
 Query: "good scooter for SF"
-Output: Scooter Model, Motor Power, Max Speed, Range, Hill Climbing Ability, Key Features, Image
-`;
+Output: {
+  "name": "SF Scooter Comparison",
+  "description": "Comprehensive comparison of electric scooters suitable for San Francisco's urban environment",
+  "columns": ["Scooter Model", "Motor Power", "Max Speed", "Range", "Hill Climbing Ability", "Key Features", "Image"]
+}`;
 
 // Define response types
 interface SuccessResponse {
   success: true;
+  name: string;
+  description: string;
   columns: string[];
 }
 
@@ -38,14 +51,14 @@ export const researchRouter = router({
     .input(z.object({ 
       prompt: z.string().min(1).max(500),
     }))
-    .mutation(async ({ input }): Promise<GenerateColumnsResponse> => {
+    .mutation(async ({ input }) => {
       try {
         // Construct the prompt for the OpenAI API
-        const userPrompt = `Based on this search query: "${input.prompt}", generate a set of columns the user would care about as part of a research report table.`;
+        const userPrompt = `Based on this search query: "${input.prompt}", generate a table structure that would help organize research data about this topic.`;
         
         // Call the OpenAI API
         const response = await openai.chat.completions.create({
-          model: "gpt-3.5-turbo", // You can use "gpt-4" for better results if available
+          model: "gpt-4o",
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
             { role: "user", content: EXAMPLE_PROMPT },
@@ -55,21 +68,31 @@ export const researchRouter = router({
           max_tokens: 150,
         });
 
-        // Extract the generated columns from the response
-        const columnsText = response.choices[0]?.message?.content?.trim() || "";
+        // Extract the generated response from the API
+        const responseText = response.choices[0]?.message?.content?.trim() || "";
         
-        // Split the comma-separated list into an array
-        const columns = columnsText.split(',').map((col: string) => col.trim());
-        
-        return {
-          success: true,
-          columns: columns,
-        };
+        try {
+          // Parse the JSON response
+          const parsedResponse = JSON.parse(responseText);
+          
+          return {
+            success: true as const,
+            name: parsedResponse.name,
+            description: parsedResponse.description,
+            columns: parsedResponse.columns,
+          };
+        } catch (parseError) {
+          console.error('Error parsing OpenAI response:', parseError);
+          return {
+            success: false as const,
+            error: 'Failed to parse the generated response. Please try again.',
+          };
+        }
       } catch (error) {
-        console.error('Error generating columns:', error);
+        console.error('Error generating table structure:', error);
         return {
-          success: false,
-          error: 'Failed to generate columns. Please try again.',
+          success: false as const,
+          error: 'Failed to generate table structure. Please try again.',
         };
       }
     }),

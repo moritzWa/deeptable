@@ -23,12 +23,14 @@ export const publicProcedure = t.procedure;
 import { authRouter } from './routers/auth';
 import { paymentsRouter } from './routers/payments';
 import { researchRouter } from './routers/research';
+import { tablesRouter } from './routers/tables';
 
 // Create app router
 export const appRouter = router({
   auth: authRouter,
   payments: paymentsRouter,
   research: researchRouter,
+  tables: tablesRouter,
 });
 
 export type AppRouter = typeof appRouter;
@@ -120,7 +122,7 @@ app.use(
 );
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/github-scraper';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/deep-table';
 
 mongoose.connect(MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))

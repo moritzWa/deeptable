@@ -1,5 +1,15 @@
 export type TargetMode = "stargazers" | "forks" | "watchers" | "contributors";
 
+export interface Table {
+  id: string;
+  name: string;
+  description?: string | null;
+  columns: string[];
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+}
+
 export interface FormPreferences {
   apiKey?: string;
   repositoryUrl?: string;
