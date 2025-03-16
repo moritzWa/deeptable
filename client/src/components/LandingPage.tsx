@@ -17,8 +17,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
   const [text] = useTypewriter({
     words: ['products', 'travel locations', 'leads', 'companies', 'prospects', 'VCs'],
     loop: true,
-    delaySpeed: 3000,
-    deleteSpeed: 300,
+    delaySpeed: 500,
+    deleteSpeed: 100,
   });
 
   const handleSubmit = (e: React.FormEvent) => {

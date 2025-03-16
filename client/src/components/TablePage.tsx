@@ -2,9 +2,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { trpc } from "@/utils/trpc";
 import { Table } from "@shared/types";
-import { useEffect, useState } from "react";
+import { ColDef } from 'ag-grid-community';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { AgGridReact } from 'ag-grid-react';
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
+
+// Define the Row interface
+interface Row {
+  id: string;
+  tableId: string;
+  data: Record<string, any>;
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+}
 
 const TablePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,6 +26,8 @@ const TablePage = () => {
   const [table, setTable] = useState<Table | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [rowData, setRowData] = useState<any[]>([]);
+  const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   
   const token = localStorage.getItem("token");
   
@@ -35,6 +51,17 @@ const TablePage = () => {
     }
   );
 
+  // Fetch rows data
+  const { data: rowsData, isLoading: rowsLoading } = trpc.rows.getRows.useQuery(
+    { token: token || "", tableId: id || "" },
+    { 
+      enabled: !!token && !!id,
+      onError: (err) => {
+        console.error("Failed to load rows:", err);
+      }
+    }
+  );
+
   // This effect will run whenever the id parameter changes
   useEffect(() => {
     setLoading(true);
@@ -53,11 +80,52 @@ const TablePage = () => {
     }
   }, [id, tablesData, token, refetch]);
 
+  // Set up AG Grid column definitions based on table columns
+  useEffect(() => {
+    if (table && table.columns) {
+      const agGridColumns: ColDef[] = table.columns.map(column => ({
+        headerName: column.name,
+        field: `data.${column.name}`,
+        sortable: true,
+        filter: true,
+        resizable: true
+      }));
+      
+      // Add ID column
+      agGridColumns.unshift({
+        headerName: 'ID',
+        field: 'id',
+        sortable: true,
+        filter: true,
+        width: 100,
+        resizable: true
+      });
+      
+      setColumnDefs(agGridColumns);
+    }
+  }, [table]);
+
+  // Process row data for AG Grid
+  useEffect(() => {
+    if (rowsData && rowsData.rows) {
+      setRowData(rowsData.rows);
+    }
+  }, [rowsData]);
+
   useEffect(() => {
     if (!token) {
       navigate("/login");
     }
   }, [token, navigate]);
+
+  // AG Grid default column definition
+  const defaultColDef = useMemo(() => ({
+    flex: 1,
+    minWidth: 100,
+    resizable: true,
+    sortable: true,
+    filter: true,
+  }), []);
 
   if (loading) {
     return (
@@ -115,9 +183,12 @@ const TablePage = () => {
 
   return (
     <AppLayout>
-      <div className="max-w-4xl">
+      <div className="max-w-6xl">
         <div className="mb-6">
           <h1 className="text-3xl font-bold">{table.name}</h1>
+          {table.description && (
+            <p className="mt-2 text-gray-600">{table.description}</p>
+          )}
         </div>
         
         <Card className="mb-8">
@@ -148,6 +219,28 @@ const TablePage = () => {
                   Last updated: {new Date(table.updatedAt).toLocaleString()}
                 </p>
               </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Table Data</CardTitle>
+            <CardDescription>
+              {rowsLoading ? "Loading data..." : `${rowData.length} rows found`}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="ag-theme-alpine w-full" style={{ height: '500px' }}>
+              <AgGridReact
+                rowData={rowData}
+                columnDefs={columnDefs}
+                defaultColDef={defaultColDef}
+                pagination={true}
+                paginationPageSize={10}
+                animateRows={true}
+                rowSelection="multiple"
+              />
             </div>
           </CardContent>
         </Card>

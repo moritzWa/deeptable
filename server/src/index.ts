@@ -23,6 +23,7 @@ export const publicProcedure = t.procedure;
 import { authRouter } from './routers/auth';
 import { paymentsRouter } from './routers/payments';
 import { researchRouter } from './routers/research';
+import { rowsRouter } from './routers/rows';
 import { tablesRouter } from './routers/tables';
 
 // Create app router
@@ -31,6 +32,7 @@ export const appRouter = router({
   payments: paymentsRouter,
   research: researchRouter,
   tables: tablesRouter,
+  rows: rowsRouter,
 });
 
 export type AppRouter = typeof appRouter;
