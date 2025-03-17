@@ -31,7 +31,7 @@ function AppContent() {
         <meta name="twitter:title" content="Deep Table" />
         <meta name="twitter:description" content="Generate tables of valuable data." />
       </Helmet>
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="min-h-screen bg-background text-foreground w-full">
         <Routes>
           <Route path="/" element={
             <>
