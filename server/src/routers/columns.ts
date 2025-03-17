@@ -159,4 +159,30 @@ export const columnsRouter = router({
         };
       }
     }),
+
+    doResearch: publicProcedure // todo private
+    .input(z.object({
+      question: z.string().min(1).max(500),
+    }))
+    .mutation(async ({ input }): Promise<any> => {
+
+      const SYSTEM_PROMPT = `You are a helpful assistant that can search the web for information.`;
+
+      // https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-search-preview",
+        web_search_options: {},
+        messages: [
+          {
+            "role": "system",
+            "content": SYSTEM_PROMPT
+          },
+          {
+            "role": "user",
+            "content": input.question
+          }
+        ],
+      });
+      return completion;
+    }),
 }); 
