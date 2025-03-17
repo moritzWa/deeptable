@@ -61,12 +61,7 @@ const WaitlistFormPage: React.FC = () => {
         token
       });
       
-      setIsSubmitted(true);
-      
-      // After a successful submission, redirect to home page after 2 seconds
-      setTimeout(() => {
-        navigate('/home');
-      }, 2000);
+      setIsSubmitted(true);      
     } catch (error: any) {
       console.error('Error submitting form:', error);
     } finally {

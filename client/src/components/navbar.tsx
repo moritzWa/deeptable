@@ -43,12 +43,6 @@ export function Navbar() {
   const NavLinks = () => (
     <>
       <Link 
-        to="/new" 
-        className={`hover:text-primary transition-colors ${location.pathname === '/new' ? 'text-primary font-medium' : ''}`}
-      >
-        Research Table
-      </Link>
-      <Link 
         to="/blog" 
         className={`hover:text-primary transition-colors ${location.pathname === '/blog' || location.pathname.startsWith('/blog/') ? 'text-primary font-medium' : ''}`}
       >

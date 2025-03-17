@@ -135,7 +135,7 @@ const ResearchPromptPage: React.FC = () => {
 
   return (
     <AppLayout>
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto p-6">
         <h1 className="text-3xl font-bold mb-6">Research Table Generator</h1>
         
         <Card className="mb-8">
