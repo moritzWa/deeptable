@@ -38,6 +38,27 @@ A powerful data analysis and visualization SaaS platform with authentication, pa
    - Connect to MongoDB shell: `mongosh`
    - You should see a connection to localhost:27017
 
+### Database Seeding
+
+The project includes scripts to seed your database with sample data:
+
+1. **Seed Tables**: Creates table structures in the database
+   ```bash
+   npm run seed:table --workspace=server
+   ```
+
+2. **Seed Rows**: Populates tables with sample data (run after seeding tables)
+   ```bash
+   npm run seed:rows --workspace=server
+   ```
+
+3. **Delete Data**: Removes all data except user accounts
+   ```bash
+   npm run db:delete --workspace=server
+   ```
+
+Note: The seeding scripts use the email specified in the script to associate data with a user. Make sure to update the email in the scripts (`server/src/scripts/seeder.ts` and `server/src/scripts/rowSeeder.ts`) to match an existing user in your database.
+
 ### Installation
 
 1. Clone the repository
