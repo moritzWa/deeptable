@@ -69,8 +69,8 @@ export const authRouter = router({
     .input(z.object({
       firstName: z.string(),
       lastName: z.string(),
-      jobTitle: z.string(),
-      companyName: z.string(),
+      jobTitle: z.string().optional(),
+      companyName: z.string().optional(),
       workEmail: z.string().email(),
       useCase: z.string().optional(),
       token: z.string()
@@ -95,10 +95,10 @@ export const authRouter = router({
         user.waitlistData = {
           firstName: input.firstName,
           lastName: input.lastName,
-          jobTitle: input.jobTitle,
-          companyName: input.companyName,
+          jobTitle: input.jobTitle || '',
+          companyName: input.companyName || '',
           workEmail: input.workEmail,
-          useCase: input.useCase,
+          useCase: input.useCase || '',
           submittedAt: new Date()
         };
         

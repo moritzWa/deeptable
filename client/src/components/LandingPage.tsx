@@ -32,8 +32,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
 
       {/* hero section */}
       <div className="w-full text-center py-16 md:py-24 space-y-6">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          <span>The AI agent for {text}<Cursor cursorStyle="|" /><br></br> research tool that outputs <span className="text-[#4169E1]">tables</span></span>
+        <h1 className="text-4xl md:text-6xl font-bold my-6">
+          <span>The AI agent for<span className="md:hidden"><br /></span> {text}<Cursor cursorStyle="|" /><br></br> research tool that outputs <span className="text-[#4169E1]">tables</span></span>
         </h1>
         
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">

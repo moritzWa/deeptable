@@ -1,6 +1,7 @@
 import { Menu, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Button } from './ui/button';
 import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "./ui/menubar";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 
@@ -37,6 +38,8 @@ export function Navbar() {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, [theme]);
 
+  const navigate = useNavigate();
+
   const NavLinks = () => (
     <>
       <Link 
@@ -68,6 +71,11 @@ export function Navbar() {
           </a>
         </>
       )}
+      <Button
+        onClick={() => navigate('/waitlist-form')}
+      >
+        Try it free
+      </Button>
     </>
   );
 

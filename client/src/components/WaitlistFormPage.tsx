@@ -122,24 +122,22 @@ const WaitlistFormPage: React.FC = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="jobTitle">Job Title</Label>
+              <Label htmlFor="jobTitle">Job Title (Optional)</Label>
               <Input
                 id="jobTitle"
                 name="jobTitle"
                 placeholder="Product Manager"
-                required
                 value={formData.jobTitle}
                 onChange={handleChange}
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="companyName">Company Name</Label>
+              <Label htmlFor="companyName">Company Name (Optional)</Label>
               <Input
                 id="companyName"
                 name="companyName"
                 placeholder="Acme Inc."
-                required
                 value={formData.companyName}
                 onChange={handleChange}
               />
