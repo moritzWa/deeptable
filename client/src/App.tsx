@@ -1,3 +1,4 @@
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
@@ -98,7 +99,9 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
             <Router>
+              <SidebarProvider>
               <AppContent />
+              </SidebarProvider>
             </Router>
           </HelmetProvider>
         </QueryClientProvider>

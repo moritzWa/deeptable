@@ -1,14 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useSidebar } from "@/components/ui/sidebar";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/utils/trpc";
 import { Table } from "@shared/types";
 import { ColDef } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { AgGridReact } from 'ag-grid-react';
+import { Info } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
+import { SidebarTrigger } from './ui/sidebar';
 
 // Define the Row interface
 interface Row {
@@ -23,6 +27,7 @@ interface Row {
 const TablePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const sidebar = useSidebar();
   const [table, setTable] = useState<Table | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -90,16 +95,6 @@ const TablePage = () => {
         filter: true,
         resizable: true
       }));
-      
-      // Add ID column
-      agGridColumns.unshift({
-        headerName: 'ID',
-        field: 'id',
-        sortable: true,
-        filter: true,
-        width: 100,
-        resizable: true
-      });
       
       setColumnDefs(agGridColumns);
     }
@@ -183,54 +178,27 @@ const TablePage = () => {
 
   return (
     <AppLayout>
-      <div className="max-w-6xl">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">{table.name}</h1>
-          {table.description && (
-            <p className="mt-2 text-gray-600">{table.description}</p>
+      <div className="w-full">
+        <div className="mb-6 p-2">
+          {!sidebar.open && (
+            <SidebarTrigger className="h-8 w-8" />
           )}
+          <div className="font-semibold flex items-center gap-2">
+            {table.name}
+            {table.description && !sidebar.open && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="h-4 w-4 text-gray-500" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{table.description}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
         </div>
-        
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Table Information</CardTitle>
-            <CardDescription>
-              {table.description || "No description provided"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-medium mb-2">Columns</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {table.columns.map((column, index) => (
-                    <div key={index} className="bg-muted p-2 rounded text-sm">
-                      {column.name}
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="pt-4 border-t">
-                <p className="text-sm text-muted-foreground">
-                  Created: {new Date(table.createdAt).toLocaleString()}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Last updated: {new Date(table.updatedAt).toLocaleString()}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle>Table Data</CardTitle>
-            <CardDescription>
-              {rowsLoading ? "Loading data..." : `${rowData.length} rows found`}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
             <div className="ag-theme-alpine w-full" style={{ height: '500px' }}>
               <AgGridReact
                 rowData={rowData}
@@ -242,8 +210,6 @@ const TablePage = () => {
                 rowSelection="multiple"
               />
             </div>
-          </CardContent>
-        </Card>
       </div>
     </AppLayout>
   );
