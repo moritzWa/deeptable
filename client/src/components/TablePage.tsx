@@ -7,6 +7,7 @@ import { CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, Col
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 // Import our custom AG Grid theme
+import { CustomColumnHeader } from "@/components/ui/CustomColumnHeader";
 import '@/styles/ag-grid-theme.css';
 import { AgGridReact } from 'ag-grid-react';
 import { Info } from "lucide-react";
@@ -72,11 +73,6 @@ const TablePage = () => {
       onSuccess: (data) => {
         const foundTable = data.find(t => t.id === id);
         if (foundTable) {
-          console.log('Table data loaded with columns:', foundTable.columns.map(col => ({
-            name: col.name,
-            columnState: col.columnState
-          })));
-          
           setTable(foundTable);
         } else {
           setError("Table not found");
@@ -223,7 +219,8 @@ const TablePage = () => {
     resizable: true,
     sortable: true,
     filter: true,
-    editable: true // Enable editing by default for all columns
+    editable: true, // Enable editing by default for all columns
+    headerComponent: CustomColumnHeader
   }), []);
 
   // Handle cell value changes
@@ -466,8 +463,7 @@ const TablePage = () => {
                 rowData={rowData}
                 columnDefs={columnDefs}
                 defaultColDef={defaultColDef}
-                pagination={true}
-                paginationPageSize={10}
+                pagination={false}
                 animateRows={true}
                 rowSelection="multiple"
                 onCellValueChanged={onCellValueChanged}
