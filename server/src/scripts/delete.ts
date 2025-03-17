@@ -21,6 +21,8 @@ const connectDB = async () => {
 // Delete all collections except users
 const deleteCollections = async () => {
   try {
+    console.log('Starting database cleanup...');
+    
     // Delete all rows
     const rowResult = await Row.deleteMany({});
     console.log(`Deleted ${rowResult.deletedCount} rows`);
@@ -46,11 +48,5 @@ const deleteCollections = async () => {
 
 // Run the delete script
 connectDB().then(() => {
-  // Confirm with console before proceeding
-  console.log('WARNING: This will delete all data except users!');
-  console.log('Press Ctrl+C to cancel or wait 5 seconds to continue...');
-  
-  setTimeout(() => {
-    deleteCollections();
-  }, 5000);
+  deleteCollections();
 }); 
