@@ -179,7 +179,7 @@ const TablePage = () => {
   return (
     <AppLayout>
       <div className="w-full">
-        <div className="mb-6 p-2">
+        <div className="mb-3 p-2 flex items-center justify-start gap-2">
           {!sidebar.open && (
             <SidebarTrigger className="h-8 w-8" />
           )}
