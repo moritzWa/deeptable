@@ -14,6 +14,7 @@ import { Navbar } from './components/navbar';
 import ResearchPromptPage from './components/ResearchPromptPage';
 import SettingsPage from './components/SettingsPage';
 import TablePage from './components/TablePage';
+import { ThemeProvider } from './components/theme-provider';
 import WaitlistFormPage from './components/WaitlistFormPage';
 import { trpc } from './utils/trpc';
 
@@ -98,11 +99,13 @@ function App() {
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <HelmetProvider>
-            <Router>
-              <SidebarProvider>
-              <AppContent />
-              </SidebarProvider>
-            </Router>
+            <ThemeProvider defaultTheme="system" storageKey="deeptable-theme">
+              <Router>
+                <SidebarProvider>
+                <AppContent />
+                </SidebarProvider>
+              </Router>
+            </ThemeProvider>
           </HelmetProvider>
         </QueryClientProvider>
       </trpc.Provider>
