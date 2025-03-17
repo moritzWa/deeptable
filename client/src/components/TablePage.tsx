@@ -1,3 +1,4 @@
+import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -7,6 +8,8 @@ import { Table } from "@shared/types";
 import { ColDef } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+// Import our custom AG Grid theme
+import '@/styles/ag-grid-theme.css';
 import { AgGridReact } from 'ag-grid-react';
 import { Info } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -28,6 +31,7 @@ const TablePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const sidebar = useSidebar();
+  const { theme } = useTheme();
   const [table, setTable] = useState<Table | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -199,7 +203,10 @@ const TablePage = () => {
             )}
           </div>
         </div>
-            <div className="ag-theme-alpine w-full" style={{ height: '500px' }}>
+            <div 
+              className="ag-theme-alpine" 
+              style={{ height: '500px', width: '100%' }}
+            >
               <AgGridReact
                 rowData={rowData}
                 columnDefs={columnDefs}

@@ -1,0 +1,106 @@
+/* AG Grid Custom Theme Overrides */
+
+/* Base Theme Customizations that work for both light and dark */
+.ag-theme-alpine {
+  --ag-background-color: hsl(var(--background));
+  --ag-foreground-color: hsl(var(--foreground));
+  --ag-border-color: hsl(var(--border));
+  --ag-header-background-color: hsl(var(--muted));
+  --ag-odd-row-background-color: hsl(var(--background));
+  --ag-header-foreground-color: hsl(var(--foreground));
+  --ag-row-hover-color: hsl(var(--accent));
+  --ag-selected-row-background-color: hsl(var(--accent));
+  --ag-font-family: inherit;
+  --ag-font-size: 14px;
+  --ag-secondary-border-color: hsl(var(--border));
+  --ag-row-border-color: hsl(var(--border));
+  --ag-input-border-color: hsl(var(--input));
+  --ag-input-focus-border-color: hsl(var(--ring));
+  --ag-disabled-foreground-color: hsl(var(--muted-foreground));
+  --ag-range-selection-border-color: hsl(var(--primary));
+  --ag-range-selection-background-color: hsla(var(--primary), 0.2);
+}
+
+/* Additional dark mode customizations */
+.dark .ag-theme-alpine {
+  /* Override with dark mode specific values */
+  --ag-alpine-active-color: hsl(var(--primary));
+  --ag-selected-row-background-color: hsla(var(--primary), 0.2);
+  
+  /* Additional styles for better dark mode appearance */
+  --ag-header-column-separator-color: hsl(var(--border));
+  --ag-header-column-resize-handle-color: hsl(var(--border));
+}
+
+/* Header cells in dark mode */
+.dark .ag-theme-alpine .ag-header-cell {
+  border-right: 1px solid hsl(var(--border));
+}
+
+/* Cell borders in dark mode */
+.dark .ag-theme-alpine .ag-ltr .ag-cell {
+  border-right: 1px solid hsl(var(--border));
+}
+
+/* Row borders in dark mode */
+.dark .ag-theme-alpine .ag-row {
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+/* Pagination controls in dark mode */
+.dark .ag-theme-alpine .ag-paging-panel {
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+  border-top: 1px solid hsl(var(--border));
+}
+
+.dark .ag-theme-alpine .ag-paging-button {
+  color: hsl(var(--foreground));
+}
+
+.dark .ag-theme-alpine .ag-paging-button:hover {
+  color: hsl(var(--primary));
+}
+
+.dark .ag-theme-alpine .ag-paging-button.ag-disabled {
+  color: hsl(var(--muted-foreground));
+}
+
+/* Filter panel in dark mode */
+.dark .ag-theme-alpine .ag-filter-toolpanel-header,
+.dark .ag-theme-alpine .ag-filter-toolpanel-search,
+.dark .ag-theme-alpine .ag-status-bar,
+.dark .ag-theme-alpine .ag-header-row {
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--background));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+/* Menu items in dark mode */
+.dark .ag-theme-alpine .ag-menu {
+  background-color: hsl(var(--background));
+  border: 1px solid hsl(var(--border));
+}
+
+.dark .ag-theme-alpine .ag-menu-option {
+  color: hsl(var(--foreground));
+}
+
+.dark .ag-theme-alpine .ag-menu-option:hover {
+  background-color: hsl(var(--accent));
+}
+
+/* Cell selection in dark mode */
+.dark .ag-theme-alpine .ag-cell-focus {
+  border: 1px solid hsl(var(--ring)) !important;
+}
+
+/* Row hover in dark mode */
+.dark .ag-theme-alpine .ag-row-hover {
+  background-color: hsl(var(--accent)) !important;
+}
+
+/* Selected row in dark mode */
+.dark .ag-theme-alpine .ag-row-selected {
+  background-color: hsla(var(--primary), 0.2) !important;
+} 
