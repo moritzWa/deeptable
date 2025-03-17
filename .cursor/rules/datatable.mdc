@@ -1,9 +1,7 @@
 ---
-description:
-globs:
+description: Frontend/Client/Web Development
+globs: *.tsx
 ---
+- We use Tailwind CSS and Shadcn components. You can find them in client/src/components/ui/. Before adding a new component first check if it already exist. If not you can install it using this pattern `npx shadcn@latest add {componentName}`. Do not generate components from scratch that exist as part of the Shadcn library! 
 
-# Your rule content
 
-- You can @ files here
-- You can use markdown but dont have to
