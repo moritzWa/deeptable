@@ -36,7 +36,7 @@ const ResearchPromptPage: React.FC = () => {
   const token = localStorage.getItem("token");
 
   // Use the tRPC mutations
-  const generateColumnsMutation = trpc.research.generateColumns.useMutation({
+  const generateColumnsMutation = trpc.columns.generateColumns.useMutation({
     onSuccess: (data) => {
       if (data.success) {
         setName(data.name);

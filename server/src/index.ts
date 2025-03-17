@@ -21,8 +21,8 @@ export const publicProcedure = t.procedure;
 
 // Import routers after exporting t
 import { authRouter } from './routers/auth';
+import { columnsRouter } from './routers/columns';
 import { paymentsRouter } from './routers/payments';
-import { researchRouter } from './routers/research';
 import { rowsRouter } from './routers/rows';
 import { tablesRouter } from './routers/tables';
 
@@ -30,7 +30,7 @@ import { tablesRouter } from './routers/tables';
 export const appRouter = router({
   auth: authRouter,
   payments: paymentsRouter,
-  research: researchRouter,
+  columns: columnsRouter,
   tables: tablesRouter,
   rows: rowsRouter,
 });

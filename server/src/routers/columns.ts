@@ -98,7 +98,7 @@ interface ErrorResponse {
 
 type GenerateColumnsResponse = SuccessResponse | ErrorResponse;
 
-export const researchRouter = router({
+export const columnsRouter = router({
   generateColumns: publicProcedure
     .input(z.object({ 
       prompt: z.string().min(1).max(500),
