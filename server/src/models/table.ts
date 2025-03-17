@@ -3,6 +3,22 @@ import mongoose, { Document } from 'mongoose';
 // Define column types
 export type ColumnType = 'string' | 'number' | 'boolean' | 'date' | 'array' | 'object';
 
+// Column state interface
+export interface IColumnState {
+  colId?: string;
+  width?: number;
+  hide?: boolean;
+  pinned?: 'left' | 'right' | null;
+  sort?: 'asc' | 'desc' | null;
+  sortIndex?: number;
+  aggFunc?: string | null;
+  rowGroup?: boolean;
+  rowGroupIndex?: number;
+  pivot?: boolean;
+  pivotIndex?: number;
+  flex?: number;
+}
+
 // Column definition interface
 export interface IColumn {
   name: string;
@@ -10,6 +26,7 @@ export interface IColumn {
   required?: boolean;
   defaultValue?: any;
   description?: string;
+  columnState?: IColumnState;
 }
 
 export interface ITable extends Document {
@@ -21,6 +38,22 @@ export interface ITable extends Document {
   updatedAt: Date;
   _id: mongoose.Types.ObjectId;
 }
+
+// Column state schema
+const columnStateSchema = new mongoose.Schema({
+  colId: { type: String, required: false },
+  width: { type: Number, required: false },
+  hide: { type: Boolean, required: false },
+  pinned: { type: String, required: false },
+  sort: { type: String, required: false },
+  sortIndex: { type: Number, required: false },
+  aggFunc: { type: String, required: false },
+  rowGroup: { type: Boolean, required: false },
+  rowGroupIndex: { type: Number, required: false },
+  pivot: { type: Boolean, required: false },
+  pivotIndex: { type: Number, required: false },
+  flex: { type: Number, required: false }
+}, { _id: false });
 
 // Column schema for better type support
 const columnSchema = new mongoose.Schema({
@@ -46,6 +79,10 @@ const columnSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  columnState: {
+    type: columnStateSchema,
+    required: false,
+  }
 });
 
 const tableSchema = new mongoose.Schema({

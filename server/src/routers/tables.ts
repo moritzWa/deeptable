@@ -4,13 +4,30 @@ import { z } from 'zod';
 import { publicProcedure, router } from '../index';
 import { ITable, Table as TableModel } from '../models/table';
 
+// Define a Zod schema for column state validation
+const columnStateSchema = z.object({
+  colId: z.string().optional(),
+  width: z.number().optional(),
+  hide: z.boolean().optional(),
+  pinned: z.union([z.literal('left'), z.literal('right'), z.null()]).optional(),
+  sort: z.union([z.literal('asc'), z.literal('desc'), z.null()]).optional(),
+  sortIndex: z.number().optional(),
+  aggFunc: z.union([z.string(), z.null()]).optional(),
+  rowGroup: z.boolean().optional(),
+  rowGroupIndex: z.number().optional(),
+  pivot: z.boolean().optional(),
+  pivotIndex: z.number().optional(),
+  flex: z.number().optional()
+});
+
 // Define a Zod schema for column validation
 const columnSchema = z.object({
   name: z.string(),
   type: z.enum(['string', 'number', 'boolean', 'date', 'array', 'object']),
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
-  description: z.string().optional()
+  description: z.string().optional(),
+  columnState: columnStateSchema.optional()
 });
 
 export const tablesRouter = router({
@@ -31,7 +48,8 @@ export const tablesRouter = router({
             type: col.type,
             required: col.required || false,
             defaultValue: col.defaultValue,
-            description: col.description
+            description: col.description,
+            columnState: col.columnState
           })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
@@ -74,7 +92,8 @@ export const tablesRouter = router({
             type: col.type,
             required: col.required || false,
             defaultValue: col.defaultValue,
-            description: col.description
+            description: col.description,
+            columnState: col.columnState
           })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
@@ -122,7 +141,8 @@ export const tablesRouter = router({
             type: col.type,
             required: col.required || false,
             defaultValue: col.defaultValue,
-            description: col.description
+            description: col.description,
+            columnState: col.columnState
           })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
@@ -131,6 +151,52 @@ export const tablesRouter = router({
       } catch (error) {
         console.error('Update table error:', error);
         throw new Error('Failed to update table');
+      }
+    }),
+
+  // Update column state
+  updateColumnState: publicProcedure
+    .input(z.object({
+      token: z.string(),
+      tableId: z.string(),
+      columnStates: z.array(z.object({
+        name: z.string(),
+        columnState: columnStateSchema
+      }))
+    }))
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        
+        // Get the table
+        const table = await TableModel.findOne({ _id: input.tableId, userId: decoded.userId }) as ITable | null;
+        
+        if (!table) {
+          throw new Error('Table not found');
+        }
+        
+        // Update column states
+        const updatedColumns = table.columns.map(col => {
+          const stateUpdate = input.columnStates.find(cs => cs.name === col.name);
+          if (stateUpdate) {
+            return {
+              ...col,
+              columnState: stateUpdate.columnState
+            };
+          }
+          return col;
+        });
+        
+        // Save the updated table
+        await TableModel.updateOne(
+          { _id: input.tableId, userId: decoded.userId },
+          { columns: updatedColumns }
+        );
+        
+        return { success: true };
+      } catch (error) {
+        console.error('Update column state error:', error);
+        throw new Error('Failed to update column state');
       }
     }),
 

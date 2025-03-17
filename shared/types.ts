@@ -1,6 +1,22 @@
 // Column type definition
 export type ColumnType = 'string' | 'number' | 'boolean' | 'date' | 'array' | 'object';
 
+// Column state interface for AG Grid state persistence
+export interface ColumnState {
+  colId?: string;
+  width?: number;
+  hide?: boolean;
+  pinned?: 'left' | 'right' | null;
+  sort?: 'asc' | 'desc' | null;
+  sortIndex?: number;
+  aggFunc?: string | null;
+  rowGroup?: boolean;
+  rowGroupIndex?: number;
+  pivot?: boolean;
+  pivotIndex?: number;
+  flex?: number;
+}
+
 // Column interface for client-side use
 export interface Column {
   name: string;
@@ -8,6 +24,7 @@ export interface Column {
   required?: boolean;
   defaultValue?: any;
   description?: string;
+  columnState?: ColumnState;
 }
 
 // Table interface
