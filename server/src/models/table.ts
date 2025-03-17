@@ -10,13 +10,13 @@ export interface IColumnState {
   hide?: boolean;
   pinned?: 'left' | 'right' | null;
   sort?: 'asc' | 'desc' | null;
-  sortIndex?: number;
+  sortIndex?: number | null;
   aggFunc?: string | null;
   rowGroup?: boolean;
   rowGroupIndex?: number;
   pivot?: boolean;
   pivotIndex?: number;
-  flex?: number;
+  flex?: number | null;
 }
 
 // Column definition interface
@@ -53,7 +53,7 @@ const columnStateSchema = new mongoose.Schema({
   pivot: { type: Boolean, required: false },
   pivotIndex: { type: Number, required: false },
   flex: { type: Number, required: false }
-}, { _id: false });
+}, { _id: false, strict: false });
 
 // Column schema for better type support
 const columnSchema = new mongoose.Schema({

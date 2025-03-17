@@ -8,13 +8,13 @@ export interface ColumnState {
   hide?: boolean;
   pinned?: 'left' | 'right' | null;
   sort?: 'asc' | 'desc' | null;
-  sortIndex?: number;
+  sortIndex?: number | null;
   aggFunc?: string | null;
   rowGroup?: boolean;
   rowGroupIndex?: number;
   pivot?: boolean;
   pivotIndex?: number;
-  flex?: number;
+  flex?: number | null;
 }
 
 // Column interface for client-side use
