@@ -160,6 +160,31 @@ export const columnsRouter = router({
       }
     }),
 
+    generateRows: publicProcedure // todo private
+    .input(z.object({
+      prompt: z.string(),
+      columns: z.array(z.string()), // todo maybe add column type
+    }))
+    .output(z.array(z.string()))
+    .mutation(async ({ input}) => {
+      const _ = input;
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      return ["row 1", "row 2", "row 3"]
+    }),
+
+    fillCell: publicProcedure // todo private
+    .input(z.object({
+      // todo maybe add prompt
+      row: z.string(),
+      column: z.string(), 
+    }))
+    .output(z.string())
+    .mutation(async ({ input}) => {
+      const _ = input;
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      return "cell 1"
+    }),
+
     doResearch: publicProcedure // todo private
     .input(z.object({
       question: z.string().min(1).max(500),
