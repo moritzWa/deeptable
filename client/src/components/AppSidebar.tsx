@@ -79,7 +79,7 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center justify-between px-2 py-4">
+        <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold"><Link to="/home">Deep Table</Link></h2>
           <div>
           <Button
