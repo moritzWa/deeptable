@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSidebar } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/utils/trpc";
@@ -14,17 +12,8 @@ import { Info } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
+import { TablePageError } from './TablePageError';
 import { SidebarTrigger } from './ui/sidebar';
-
-// Define the Row interface
-interface Row {
-  id: string;
-  tableId: string;
-  data: Record<string, any>;
-  createdAt: string;
-  updatedAt: string;
-  userId: string;
-}
 
 const TablePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -171,47 +160,12 @@ const TablePage = () => {
 
   if (error) {
     return (
-      <AppLayout>
-        <div className="max-w-4xl">
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="text-red-500">Error</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{error}</p>
-              <Button 
-                onClick={() => navigate("/home")} 
-                className="mt-4"
-              >
-                Return to Home
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </AppLayout>
+     <TablePageError error={error} />
     );
-  }
-
+  } 
   if (!table) {
     return (
-      <AppLayout>
-        <div className="max-w-4xl">
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Table Not Found</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>The requested table could not be found.</p>
-              <Button 
-                onClick={() => navigate("/home")} 
-                className="mt-4"
-              >
-                Return to Home
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-      </AppLayout>
+     <TablePageError error="Table not found" />
     );
   }
 
