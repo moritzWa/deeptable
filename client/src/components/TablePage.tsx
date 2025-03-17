@@ -1,11 +1,10 @@
-import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSidebar } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/utils/trpc";
 import { Table } from "@shared/types";
-import { ColDef } from 'ag-grid-community';
+import { CellValueChangedEvent, ColDef } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 // Import our custom AG Grid theme
@@ -31,7 +30,6 @@ const TablePage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const sidebar = useSidebar();
-  const { theme } = useTheme();
   const [table, setTable] = useState<Table | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -39,6 +37,7 @@ const TablePage = () => {
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   
   const token = localStorage.getItem("token");
+  const utils = trpc.useContext();
   
   const { data: tablesData, refetch } = trpc.tables.getTables.useQuery(
     { token: token || "" },
@@ -71,6 +70,20 @@ const TablePage = () => {
     }
   );
 
+  // Update row mutation
+  const updateRowMutation = trpc.rows.updateRow.useMutation({
+    onSuccess: () => {
+      // Refetch rows after successful update
+      if (token && id) {
+        utils.rows.getRows.invalidate({ token, tableId: id });
+      }
+    },
+    onError: (error) => {
+      console.error("Failed to update row:", error);
+      // You could add a toast notification here
+    }
+  });
+
   // This effect will run whenever the id parameter changes
   useEffect(() => {
     setLoading(true);
@@ -97,7 +110,8 @@ const TablePage = () => {
         field: `data.${column.name}`,
         sortable: true,
         filter: true,
-        resizable: true
+        resizable: true,
+        editable: true // Enable editing for all columns
       }));
       
       setColumnDefs(agGridColumns);
@@ -124,7 +138,28 @@ const TablePage = () => {
     resizable: true,
     sortable: true,
     filter: true,
+    editable: true // Enable editing by default for all columns
   }), []);
+
+  // Handle cell value changes
+  const onCellValueChanged = (event: CellValueChangedEvent) => {
+    const { data, colDef } = event;
+    if (!data.id || !colDef.field) return;
+    
+    // Extract the field name from the path (e.g., 'data.name' -> 'name')
+    const fieldName = colDef.field.replace('data.', '');
+    
+    // Create updated data object
+    const updatedData = { ...data.data };
+    updatedData[fieldName] = event.newValue;
+    
+    // Call the update mutation
+    updateRowMutation.mutate({
+      token: token || "",
+      id: data.id,
+      data: updatedData
+    });
+  };
 
   if (loading) {
     return (
@@ -215,6 +250,8 @@ const TablePage = () => {
                 paginationPageSize={10}
                 animateRows={true}
                 rowSelection="multiple"
+                onCellValueChanged={onCellValueChanged}
+                stopEditingWhenCellsLoseFocus={true}
               />
             </div>
       </div>
