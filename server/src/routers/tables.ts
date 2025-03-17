@@ -11,13 +11,13 @@ const columnStateSchema = z.object({
   hide: z.boolean().optional(),
   pinned: z.union([z.literal('left'), z.literal('right'), z.null()]).optional(),
   sort: z.union([z.literal('asc'), z.literal('desc'), z.null()]).optional(),
-  sortIndex: z.number().optional(),
+  sortIndex: z.union([z.number(), z.null(), z.undefined()]).optional(),
   aggFunc: z.union([z.string(), z.null()]).optional(),
   rowGroup: z.boolean().optional(),
   rowGroupIndex: z.number().optional(),
   pivot: z.boolean().optional(),
   pivotIndex: z.number().optional(),
-  flex: z.number().optional()
+  flex: z.union([z.number(), z.null(), z.undefined()]).optional()
 });
 
 // Define a Zod schema for column validation
@@ -175,23 +175,33 @@ export const tablesRouter = router({
           throw new Error('Table not found');
         }
         
-        // Update column states
-        const updatedColumns = table.columns.map(col => {
-          const stateUpdate = input.columnStates.find(cs => cs.name === col.name);
-          if (stateUpdate) {
-            return {
-              ...col,
-              columnState: stateUpdate.columnState
-            };
+        // Direct MongoDB update approach using MongoDB's update operators
+        // This bypasses issues with Mongoose document conversion
+        const updateOperations = input.columnStates.map(cs => ({
+          updateOne: {
+            filter: { 
+              _id: input.tableId, 
+              userId: decoded.userId,
+              "columns.name": cs.name
+            },
+            update: { 
+              $set: { 
+                "columns.$.columnState": cs.columnState 
+              } 
+            }
           }
-          return col;
+        }));
+
+        // Execute bulk update
+        const bulkResult = await TableModel.bulkWrite(updateOperations);
+        
+        console.log('MongoDB bulkWrite result summary:', {
+          matchedCount: bulkResult.matchedCount,
+          modifiedCount: bulkResult.modifiedCount
         });
         
-        // Save the updated table
-        await TableModel.updateOne(
-          { _id: input.tableId, userId: decoded.userId },
-          { columns: updatedColumns }
-        );
+        // Verify the update was successful by fetching the table again
+        const updatedTable = await TableModel.findOne({ _id: input.tableId, userId: decoded.userId });
         
         return { success: true };
       } catch (error) {
