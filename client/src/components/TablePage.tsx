@@ -1,3 +1,4 @@
+import { smartCellRenderer } from "@/components/ui/CustomCellRenderers";
 import { useSidebar } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/utils/trpc";
@@ -94,14 +95,19 @@ const TablePage = () => {
   // Set up AG Grid column definitions based on table columns
   useEffect(() => {
     if (table && table.columns) {
-      const agGridColumns: ColDef[] = table.columns.map(column => ({
-        headerName: column.name,
-        field: `data.${column.name}`,
-        sortable: true,
-        filter: true,
-        resizable: true,
-        editable: true // Enable editing for all columns
-      }));
+      const agGridColumns: ColDef[] = table.columns.map(column => {
+        const colDef: ColDef = {
+          headerName: column.name,
+          field: `data.${column.name}`,
+          sortable: true,
+          filter: true,
+          resizable: true,
+          editable: true, // Enable editing for all columns
+          cellRenderer: smartCellRenderer // Use our smart renderer for all cells
+        };
+        
+        return colDef;
+      });
       
       setColumnDefs(agGridColumns);
     }
