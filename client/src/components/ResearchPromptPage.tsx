@@ -37,7 +37,7 @@ const ResearchPromptPage: React.FC = () => {
 
   // Use the tRPC mutations
   const generateColumnsMutation = trpc.columns.generateColumns.useMutation({
-    onSuccess: (data) => {
+    onSuccess: (data: GenerateColumnsResponse) => {
       if (data.success) {
         setName(data.name);
         setDescription(data.description);
@@ -47,7 +47,7 @@ const ResearchPromptPage: React.FC = () => {
       }
       setIsLoading(false);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setError(error.message || 'Failed to generate table structure. Please try again.');
       setIsLoading(false);
     }
@@ -58,7 +58,7 @@ const ResearchPromptPage: React.FC = () => {
       // Navigate to the new table's page
       navigate(`/tables/${newTable.id}`);
     },
-    onError: (error) => {
+    onError: (error: any) => {
       setError(error.message || 'Failed to create table. Please try again.');
     }
   });
