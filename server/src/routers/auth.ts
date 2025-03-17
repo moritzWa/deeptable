@@ -65,6 +65,53 @@ export const authRouter = router({
       }
     }),
 
+  submitWaitlistForm: publicProcedure
+    .input(z.object({
+      firstName: z.string(),
+      lastName: z.string(),
+      jobTitle: z.string(),
+      companyName: z.string(),
+      workEmail: z.string().email(),
+      useCase: z.string().optional(),
+      token: z.string()
+    }))
+    .mutation(async ({ input }) => {
+      try {
+        // Get the user ID from the JWT token
+        const token = input.token;
+        
+        if (!token) {
+          throw new Error('Authentication required');
+        }
+        
+        const decoded = jwt.verify(token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        const user = await UserModel.findById(decoded.userId);
+        
+        if (!user) {
+          throw new Error('User not found');
+        }
+        
+        // Update the user with waitlist data
+        user.waitlistData = {
+          firstName: input.firstName,
+          lastName: input.lastName,
+          jobTitle: input.jobTitle,
+          companyName: input.companyName,
+          workEmail: input.workEmail,
+          useCase: input.useCase,
+          submittedAt: new Date()
+        };
+        
+        user.isWaitlisted = true;
+        await user.save();
+        
+        return { success: true };
+      } catch (error) {
+        console.error('Waitlist form submission error:', error);
+        throw new Error('Failed to submit waitlist form');
+      }
+    }),
+
   getUser: publicProcedure
     .input(z.object({ token: z.string() }))
     .query(async ({ input }) => {

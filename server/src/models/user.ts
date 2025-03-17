@@ -25,6 +25,17 @@ const userSchema = new mongoose.Schema({
   hasSubscription: { type: Boolean, default: false },
   stripeCustomerId: { type: String },
   exportActionUsageCount: { type: Number, default: 0 },
+  // Waitlist form data
+  waitlistData: {
+    firstName: { type: String },
+    lastName: { type: String },
+    jobTitle: { type: String },
+    companyName: { type: String },
+    workEmail: { type: String },
+    useCase: { type: String },
+    submittedAt: { type: Date }
+  },
+  isWaitlisted: { type: Boolean, default: false }
 });
 
 export const User = mongoose.model('User', userSchema); 

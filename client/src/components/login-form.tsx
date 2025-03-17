@@ -1,4 +1,4 @@
-import { defaultPage } from '@/App';
+import { defaultPage, LINK_TO_WAITLIST } from '@/App';
 import {
   Card,
   CardContent,
@@ -36,8 +36,12 @@ export function LoginForm({
       // You can also store user data or redirect
       console.log('Logged in user:', response.user);
       
-      // Refresh the page or redirect
+      // Check if we should redirect to waitlist or home page
+      if (LINK_TO_WAITLIST) {
+        window.location.href = '/waitlist-form';
+      } else {
       window.location.href = defaultPage;
+      }
     } catch (error) {
       console.error('Login failed:', error);
     }

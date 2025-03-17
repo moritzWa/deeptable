@@ -13,9 +13,11 @@ import { Navbar } from './components/navbar';
 import ResearchPromptPage from './components/ResearchPromptPage';
 import SettingsPage from './components/SettingsPage';
 import TablePage from './components/TablePage';
+import WaitlistFormPage from './components/WaitlistFormPage';
 import { trpc } from './utils/trpc';
 
 export const defaultPage = "/home";
+export const LINK_TO_WAITLIST = true; // Toggle this to control the flow after login
 
 function AppContent() {
   return (
@@ -44,6 +46,14 @@ function AppContent() {
               <Navbar />
               <div className="container mx-auto px-4 py-8 pt-24">
                 <LoginPage />
+              </div>
+            </>
+          } />
+          <Route path="/waitlist-form" element={
+            <>
+              <Navbar />
+              <div className="container mx-auto px-4 py-8 pt-24">
+                <WaitlistFormPage />
               </div>
             </>
           } />

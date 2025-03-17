@@ -1,10 +1,8 @@
-import { ArrowRight } from "lucide-react";
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cursor, useTypewriter } from 'react-simple-typewriter';
 import ExampleCardsSection from './ExampleCardsSection';
 import { Button } from './ui/button';
-import { Input } from './ui/input';
 
 interface LandingPageProps {
   landingPageKeyword?: string;
@@ -44,8 +42,18 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
           comprehensive, unbiased insights.
         </p>
 
-        {/* Input form */}
-        <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto flex flex-col items-center mt-8">
+        {/* Try it free now button */}
+        <div className="flex justify-center mt-8">
+          <Button 
+            className="bg-[#4169E1] hover:bg-[#3a5ecc] text-white px-8 py-6 text-lg"
+            onClick={() => navigate('/login')}
+          >
+            Try it free now
+          </Button>
+        </div>
+
+        {/* Input form - dont delete this */}
+        {/* <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto flex flex-col items-center mt-8">
           <div className="w-full relative flex items-center">
             <Input
               type="text"
@@ -65,7 +73,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
               </span>
             </Button>
           </div>
-        </form>
+        </form> */}
       </div>
 
       {/* Use cases section */}
