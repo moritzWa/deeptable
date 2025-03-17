@@ -212,14 +212,26 @@ const TablePage = () => {
     }
   }, [token, navigate]);
 
+  // Create context object for AG Grid
+  const gridContext = useMemo(() => ({
+    tableId: id,
+    updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => {
+      if (!token) return;
+      updateColumnStateMutation.mutate({
+        token,
+        tableId: id || "",
+        columnStates
+      });
+    }
+  }), [id, token, updateColumnStateMutation]);
+
   // AG Grid default column definition
   const defaultColDef = useMemo(() => ({
-    // Don't set default flex here to avoid conflicts with width
     minWidth: 100,
     resizable: true,
     sortable: true,
     filter: true,
-    editable: true, // Enable editing by default for all columns
+    editable: true,
     headerComponent: CustomColumnHeader
   }), []);
 
@@ -474,6 +486,7 @@ const TablePage = () => {
                 onColumnVisible={onColumnVisible}
                 onColumnPinned={onColumnPinned}
                 onSortChanged={onSortChanged}
+                context={gridContext}
               />
             </div>
       </div>
