@@ -29,9 +29,10 @@
   
   /* Row Hover */
   --ag-row-hover-color: hsl(var(--accent) / 0.1);
+}
 
-  /* Remove border radius */
-  --ag-border-radius: 0;
+.ag-root-wrapper {
+  border-radius: 0;
 }
 
 /* Dark mode specific overrides */
