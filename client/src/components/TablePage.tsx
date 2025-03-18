@@ -3,19 +3,26 @@ import { useSidebar } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/utils/trpc";
 import { ColumnState, Table } from "@shared/types";
-import { CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, SortChangedEvent } from 'ag-grid-community';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-// Import our custom AG Grid theme
-import { CustomColumnHeader } from "@/components/ui/CustomColumnHeader";
-import '@/styles/ag-grid-theme.css';
+import { AllCommunityModule, CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+
+// Import base styles first
+import 'ag-grid-community/styles/ag-grid.css';
+// Then theme styles
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+// Finally our custom overrides
+import '@/styles/ag-grid-theme.css';
+
+import { CustomColumnHeader } from "@/components/ui/CustomColumnHeader";
 import { Info } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
 import { TablePageError } from './TablePageError';
 import { SidebarTrigger } from './ui/sidebar';
+
+// Register required modules
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
@@ -141,10 +148,21 @@ const TablePage = () => {
     }
   }, [id, tablesData, token, refetch]);
 
+  // Process row data for AG Grid
+  useEffect(() => {
+    if (rowsData && rowsData.rows) {
+      console.log('Setting row data:', rowsData.rows);
+      setRowData([
+        { data: { test: 'Test Row' } }, // Add a test row
+        ...rowsData.rows
+      ]);
+    }
+  }, [rowsData]);
+
   // Set up AG Grid column definitions based on table columns
   useEffect(() => {
     if (table && table.columns) {
-      // Only log the Restaurant Name column state      
+      console.log('Setting up column definitions for table:', table);
       
       const agGridColumns: ColDef[] = table.columns.map(column => {
         // Create state with nulls converted to undefined
@@ -198,13 +216,6 @@ const TablePage = () => {
       setColumnDefs(agGridColumns);
     }
   }, [table]);
-
-  // Process row data for AG Grid
-  useEffect(() => {
-    if (rowsData && rowsData.rows) {
-      setRowData(rowsData.rows);
-    }
-  }, [rowsData]);
 
   useEffect(() => {
     if (!token) {
@@ -479,8 +490,11 @@ const TablePage = () => {
           </div>
         </div>
             <div 
-              className="ag-theme-alpine" 
-              style={{ height: '500px', width: '100%' }}
+              className="ag-theme-alpine"
+              style={{ 
+                height: '500px',
+                width: '100%',
+              }}
             >
               <AgGridReact
                 ref={gridRef}

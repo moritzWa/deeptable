@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react";
+  import { Menu } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ThemeToggle } from "./theme-toggle";
 import { Button } from './ui/button';
@@ -7,7 +7,6 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 export function Navbar() {
   const location = useLocation();
   const isAuthenticated = !!localStorage.getItem('token');
-  const navigate = useNavigate();
 
   const NavLinks = () => (
     <>

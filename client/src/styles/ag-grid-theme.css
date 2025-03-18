@@ -1,24 +1,84 @@
 /* AG Grid Custom Theme Overrides */
 
-/* Base Theme Customizations that work for both light and dark */
+/* Base theme customization */
 .ag-theme-alpine {
-  --ag-background-color: hsl(var(--background));
+  /* Essential theme variables */
   --ag-foreground-color: hsl(var(--foreground));
-  --ag-border-color: hsl(var(--border));
-  --ag-header-background-color: hsl(var(--muted));
-  --ag-odd-row-background-color: hsl(var(--background));
+  --ag-background-color: hsl(var(--background));
   --ag-header-foreground-color: hsl(var(--foreground));
-  --ag-row-hover-color: hsl(var(--accent));
-  --ag-selected-row-background-color: hsl(var(--accent));
-  --ag-font-family: inherit;
+  --ag-header-background-color: hsl(var(--muted));
+  --ag-odd-row-background-color: hsl(var(--muted) / 0.1);
+  --ag-header-column-separator-display: block;
+  --ag-header-column-separator-height: 100%;
+  --ag-header-column-separator-width: 1px;
+  --ag-header-column-separator-color: hsl(var(--border));
+  
+  /* Border colors */
+  --ag-border-color: hsl(var(--border));
+  --ag-cell-horizontal-border: hsl(var(--border));
+  
+  /* Sizing */
+  --ag-header-height: 48px;
+  --ag-row-height: 48px;
+  --ag-cell-horizontal-padding: 1rem;
+  --ag-grid-size: 6px;
+  
+  /* Font */
   --ag-font-size: 14px;
-  --ag-secondary-border-color: hsl(var(--border));
-  --ag-row-border-color: hsl(var(--border));
-  --ag-input-border-color: hsl(var(--input));
-  --ag-input-focus-border-color: hsl(var(--ring));
-  --ag-disabled-foreground-color: hsl(var(--muted-foreground));
-  --ag-range-selection-border-color: hsl(var(--primary));
-  --ag-range-selection-background-color: hsla(var(--primary), 0.2);
+  --ag-font-family: inherit;
+  
+  /* Row Hover */
+  --ag-row-hover-color: hsl(var(--accent) / 0.1);
+}
+
+/* Dark mode specific overrides */
+.dark .ag-theme-alpine {
+  --ag-foreground-color: hsl(var(--foreground));
+  --ag-background-color: hsl(var(--background));
+  --ag-header-foreground-color: hsl(var(--foreground));
+  --ag-header-background-color: hsl(var(--muted));
+  --ag-odd-row-background-color: hsl(var(--muted) / 0.1);
+  --ag-border-color: hsl(var(--border));
+  --ag-row-hover-color: hsl(var(--accent) / 0.1);
+}
+
+/* Direct style overrides for specific elements */
+.ag-theme-alpine .ag-header {
+  border-bottom: 1px solid var(--ag-border-color);
+}
+
+.ag-theme-alpine .ag-header-cell {
+  border-right: 1px solid var(--ag-border-color);
+}
+
+.ag-theme-alpine .ag-cell {
+  border-right: 1px solid var(--ag-border-color);
+  border-bottom: 1px solid var(--ag-border-color);
+}
+
+.ag-theme-alpine .ag-row {
+  border-bottom: 1px solid var(--ag-border-color);
+}
+
+/* Remove alpine specific borders we don't want */
+.ag-theme-alpine {
+  --ag-borders: none;
+  --ag-row-border-style: solid;
+  --ag-row-border-width: 1px;
+  --ag-cell-horizontal-border: solid var(--ag-border-color);
+}
+
+/* Additional custom styles for specific elements */
+.ag-theme-alpine .ag-header-cell {
+  font-weight: 600;
+}
+
+.ag-theme-alpine .ag-row-hover {
+  background-color: var(--ag-row-hover-color) !important;
+}
+
+.ag-theme-alpine .ag-cell {
+  line-height: 2;
 }
 
 /* Additional dark mode customizations */
