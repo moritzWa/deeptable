@@ -1,5 +1,5 @@
 import { ColumnState } from '@shared/types';
-import { IHeaderParams } from 'ag-grid-community';
+import { Column, IHeaderParams } from 'ag-grid-community';
 import { useEffect, useRef, useState } from 'react';
 import {
   ContextMenu,
@@ -16,6 +16,8 @@ interface CustomHeaderParams extends IHeaderParams {
     tableId: string;
     updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => void;
   };
+  enableSorting: boolean;
+  column: Column;
 }
 
 export const CustomColumnHeader = (props: CustomHeaderParams) => {
