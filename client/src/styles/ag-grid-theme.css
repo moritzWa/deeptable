@@ -29,6 +29,9 @@
   
   /* Row Hover */
   --ag-row-hover-color: hsl(var(--accent) / 0.1);
+
+  /* Remove border radius */
+  --ag-border-radius: 0;
 }
 
 /* Dark mode specific overrides */
@@ -54,6 +57,9 @@
 .ag-theme-alpine .ag-cell {
   border-right: 1px solid var(--ag-border-color);
   border-bottom: 1px solid var(--ag-border-color);
+  display: flex;
+  align-items: center;
+  line-height: normal;
 }
 
 .ag-theme-alpine .ag-row {

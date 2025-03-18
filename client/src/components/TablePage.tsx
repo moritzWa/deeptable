@@ -7,11 +7,13 @@ import { AllCommunityModule, CellValueChangedEvent, ColDef, ColumnMovedEvent, Co
 import { AgGridReact } from 'ag-grid-react';
 
 // Import base styles first
-import 'ag-grid-community/styles/ag-grid.css';
+// import 'ag-grid-community/styles/ag-grid.css';
 // Then theme styles
-import 'ag-grid-community/styles/ag-theme-alpine.css';
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
+// trying this ag grid theme
+// import { themeBalham } from 'ag-grid-community';
+
 
 import { CustomColumnHeader } from "@/components/ui/CustomColumnHeader";
 import { Info } from "lucide-react";
