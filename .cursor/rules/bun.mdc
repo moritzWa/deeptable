@@ -1,5 +1,5 @@
 ---
-description: 
+description: when installing packages or running the project (bun dev)
 globs: 
 alwaysApply: false
 ---
