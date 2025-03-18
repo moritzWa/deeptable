@@ -1,9 +1,9 @@
 import { Table } from '@shared/types';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
 import { Row } from '../models/row';
 import { ITable, Table as TableModel } from '../models/table';
+import { publicProcedure, router } from '../trpc';
 
 // Define a Zod schema for column state validation
 const columnStateSchema = z.object({
@@ -18,7 +18,8 @@ const columnStateSchema = z.object({
   rowGroupIndex: z.number().optional(),
   pivot: z.boolean().optional(),
   pivotIndex: z.number().optional(),
-  flex: z.union([z.number(), z.null(), z.undefined()]).optional()
+  flex: z.union([z.number(), z.null(), z.undefined()]).optional(),
+  orderIndex: z.number().optional()
 });
 
 // Define a Zod schema for column validation

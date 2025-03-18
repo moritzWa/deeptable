@@ -17,6 +17,7 @@ export interface IColumnState {
   pivot?: boolean;
   pivotIndex?: number;
   flex?: number | null;
+  orderIndex?: number;
 }
 
 // Column definition interface
@@ -52,7 +53,8 @@ const columnStateSchema = new mongoose.Schema({
   rowGroupIndex: { type: Number, required: false },
   pivot: { type: Boolean, required: false },
   pivotIndex: { type: Number, required: false },
-  flex: { type: Number, required: false }
+  flex: { type: Number, required: false },
+  orderIndex: { type: Number, required: false }
 }, { _id: false, strict: false });
 
 // Column schema for better type support
