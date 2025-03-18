@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { z } from 'zod';
-import { publicProcedure, router } from '../index';
+import { publicProcedure, router } from '../trpc';
 import { IRow, Row as RowModel } from '../models/row';
 import { Table as TableModel } from '../models/table';
 

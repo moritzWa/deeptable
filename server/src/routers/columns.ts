@@ -1,7 +1,7 @@
 import { Column, ColumnType } from '@shared/types';
 import OpenAI from 'openai';
 import { z } from 'zod';
-import { publicProcedure, router } from '../index';
+import { publicProcedure, router } from '../trpc';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
