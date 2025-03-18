@@ -1,15 +1,14 @@
 import { ColumnState } from '@shared/types';
 import { IHeaderParams } from 'ag-grid-community';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from './dropdown-menu';
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuGroup,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuTrigger
+} from './context-menu';
 import { Input } from './input';
 
 interface CustomHeaderParams extends IHeaderParams {
@@ -21,6 +20,7 @@ interface CustomHeaderParams extends IHeaderParams {
 
 export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const [columnName, setColumnName] = useState(props.displayName);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Update local state when displayName changes (after refetch)
   useEffect(() => {
@@ -78,18 +78,49 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     });
   };
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      // Use setTimeout to ensure the input is mounted before focusing
+      setTimeout(() => {
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }, 0);
+    }
+  };
+
+  // Handle sort click
+  const onSortRequested = (event: React.MouseEvent) => {
+    if (!props.column || !props.enableSorting) return;
+    
+    const multiSort = event.shiftKey;
+    props.progressSort(multiSort);
+  };
+
+  // Get sort state for displaying the sort icon
+  const sortState = props.column?.getSort();
+  const isSortable = props.enableSorting;
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="w-full h-full flex items-center px-2 cursor-pointer hover:bg-accent/50">
-          {columnName}
+    <ContextMenu onOpenChange={handleOpenChange}>
+      <ContextMenuTrigger asChild>
+        <div 
+          className="w-full h-full flex items-center px-2 select-none cursor-pointer" 
+          onClick={onSortRequested}
+        >
+          <div className="flex items-center gap-1">
+            {columnName}
+            {isSortable && sortState && (
+              <span className="text-xs">
+                {sortState === 'asc' ? '↑' : '↓'}
+              </span>
+            )}
+          </div>
         </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-64">
-        <DropdownMenuLabel>Column Settings</DropdownMenuLabel>
-        <DropdownMenuSeparator />
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-64">
         <div className="px-2 py-1.5">
           <Input
+            ref={inputRef}
             value={columnName}
             onChange={handleNameChange}
             onBlur={handleNameBlur}
@@ -97,27 +128,27 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
             placeholder="Column name"
           />
         </div>
-        <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => handlePin('left')}>
+        <ContextMenuGroup>
+          <ContextMenuItem onClick={() => handlePin('left')}>
             Pin Left
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePin('right')}>
+          </ContextMenuItem>
+          <ContextMenuItem onClick={() => handlePin('right')}>
             Pin Right
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePin(null)}>
+          </ContextMenuItem>
+          <ContextMenuItem onClick={() => handlePin(null)}>
             Reset Pin
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem onClick={handleHideColumn}>
+          </ContextMenuItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <ContextMenuItem onClick={handleHideColumn}>
             Hide Column
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleShowAllColumns}>
+          </ContextMenuItem>
+          <ContextMenuItem onClick={handleShowAllColumns}>
             Show All Columns
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          </ContextMenuItem>
+        </ContextMenuGroup>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 }; 
