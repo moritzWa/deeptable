@@ -2,7 +2,7 @@ import { User } from '@shared/types';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-import { publicProcedure, router } from '../index';
+import { publicProcedure, router } from '../trpc';
 import { User as UserModel } from '../models/user';
 
 const googleClient = new OAuth2Client(
