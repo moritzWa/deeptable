@@ -39,7 +39,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
           Intelligent web research assistant that helps you make informed decisions. 
           From travel planning to product research, we analyze the web to give you 
-          comprehensive, unbiased insights.
+          comprehensive, table-based insights.
         </p>
 
         {/* Try it free now button */}
