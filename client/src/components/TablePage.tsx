@@ -275,7 +275,7 @@ const TablePage = () => {
     if (table?.columns && table.columns.some(col => col.columnState)) {
       // Wait for the grid to be fully initialized before attempting to apply column state
       setTimeout(() => {
-        if (!gridRef.current?.columnApi) return;
+        if (!gridRef.current?.api) return;
 
         console.log("Applying saved column state");
         
@@ -306,10 +306,10 @@ const TablePage = () => {
           });
         
         // Only log the Restaurant Name column state      
-        if (savedColumnStates.length > 0 && gridRef.current?.columnApi) {
+        if (savedColumnStates.length > 0 && gridRef.current?.api) {
           try {
             // Apply the saved column state directly to AG Grid
-            gridRef.current.columnApi.applyColumnState({
+            gridRef.current.api.applyColumnState({
               state: savedColumnStates,
               applyOrder: true
             });
@@ -328,10 +328,10 @@ const TablePage = () => {
 
   // Function to get and process column state changes
   const processColumnStateChange = useCallback(() => {
-    if (!gridRef.current?.api || !gridRef.current?.columnApi || !table?.id || !token) return;
+    if (!gridRef.current?.api || !table?.id || !token) return;
     
-    // Use columnApi to get column state
-    const columnState = gridRef.current.columnApi.getColumnState() as AgGridColumnState[];
+    // Use api to get column state
+    const columnState = gridRef.current.api.getColumnState() as AgGridColumnState[];
     
     // Get the current columns for comparison
     const currentColumns = table.columns;
