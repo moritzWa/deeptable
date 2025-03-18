@@ -1,4 +1,3 @@
-import { initTRPC } from '@trpc/server';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -6,6 +5,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Stripe from 'stripe';
 import { User as UserModel } from './models/user';
+import { router, publicProcedure } from './trpc';
+
+// Export tRPC utilities
+export { router, publicProcedure };
 
 // Load environment variables
 dotenv.config();
@@ -14,12 +17,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2024-12-18.acacia',
 });
 
-// Initialize tRPC
-const t = initTRPC.create();
-export const router = t.router;
-export const publicProcedure = t.procedure;
-
-// Import routers after exporting t
+// Import routers
 import { authRouter } from './routers/auth';
 import { columnsRouter } from './routers/columns';
 import { paymentsRouter } from './routers/payments';

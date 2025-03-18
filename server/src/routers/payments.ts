@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import Stripe from 'stripe';
 import { z } from 'zod';
-import { publicProcedure, router } from '../index';
+import { publicProcedure, router } from '../trpc';
 import { User as UserModel } from '../models/user';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
