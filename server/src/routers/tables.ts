@@ -2,6 +2,7 @@ import { Table } from '@shared/types';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { publicProcedure, router } from '../index';
+import { Row } from '../models/row';
 import { ITable, Table as TableModel } from '../models/table';
 
 // Define a Zod schema for column state validation
@@ -174,34 +175,79 @@ export const tablesRouter = router({
         if (!table) {
           throw new Error('Table not found');
         }
-        
-        // Direct MongoDB update approach using MongoDB's update operators
-        // This bypasses issues with Mongoose document conversion
-        const updateOperations = input.columnStates.map(cs => ({
-          updateOne: {
-            filter: { 
-              _id: input.tableId, 
-              userId: decoded.userId,
-              "columns.name": cs.name
-            },
-            update: { 
-              $set: { 
-                "columns.$.columnState": cs.columnState 
-              } 
-            }
-          }
-        }));
 
-        // Execute bulk update
-        const bulkResult = await TableModel.bulkWrite(updateOperations);
-        
-        console.log('MongoDB bulkWrite result summary:', {
-          matchedCount: bulkResult.matchedCount,
-          modifiedCount: bulkResult.modifiedCount
-        });
-        
-        // Verify the update was successful by fetching the table again
-        const updatedTable = await TableModel.findOne({ _id: input.tableId, userId: decoded.userId });
+        // Process each column state update
+        for (const cs of input.columnStates) {
+          const column = table.columns.find(col => col.name === cs.name);
+          if (!column) continue;
+
+          // Check if the column name is being changed
+          const isNameChange = cs.columnState.colId && cs.columnState.colId !== cs.name;
+          
+          if (isNameChange) {
+            // Update the column name in the table
+            await TableModel.updateOne(
+              { 
+                _id: input.tableId, 
+                userId: decoded.userId,
+                "columns.name": cs.name
+              },
+              { 
+                $set: { 
+                  "columns.$.name": cs.columnState.colId,
+                  "columns.$.columnState": cs.columnState
+                }
+              }
+            );
+
+            // Update all rows to rename the field in the data object
+            await Row.updateMany(
+              { tableId: input.tableId },
+              [
+                {
+                  $set: {
+                    data: {
+                      $mergeObjects: [
+                        "$$REMOVE",
+                        {
+                          $arrayToObject: {
+                            $map: {
+                              input: { $objectToArray: "$data" },
+                              in: {
+                                k: {
+                                  $cond: [
+                                    { $eq: ["$$this.k", cs.name] },
+                                    cs.columnState.colId,
+                                    "$$this.k"
+                                  ]
+                                },
+                                v: "$$this.v"
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            );
+          } else {
+            // Just update the column state without changing the name
+            await TableModel.updateOne(
+              { 
+                _id: input.tableId, 
+                userId: decoded.userId,
+                "columns.name": cs.name
+              },
+              { 
+                $set: { 
+                  "columns.$.columnState": cs.columnState
+                }
+              }
+            );
+          }
+        }
         
         return { success: true };
       } catch (error) {
