@@ -1,7 +1,7 @@
 import { Table } from '@shared/types';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-import { publicProcedure, router } from '../index';
+import { publicProcedure, router } from '../trpc';
 import { Row } from '../models/row';
 import { ITable, Table as TableModel } from '../models/table';
 
