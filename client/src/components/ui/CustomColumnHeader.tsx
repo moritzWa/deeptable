@@ -59,23 +59,21 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   };
 
   const handlePin = (direction: 'left' | 'right' | null) => {
-    if (!props.column || !props.columnApi) return;
-    props.columnApi.setColumnPinned(props.column.getColId(), direction);
+    if (!props.column || !props.api) return;
+    props.api.setColumnsPinned([props.column], direction);
   };
 
   const handleHideColumn = () => {
-    if (!props.column || !props.columnApi) return;
-    props.columnApi.setColumnVisible(props.column.getColId(), false);
+    if (!props.column || !props.api) return;
+    props.api.setColumnsVisible([props.column], false);
   };
 
   const handleShowAllColumns = () => {
-    if (!props.columnApi) return;
-    const allColumns = props.columnApi.getAllColumns();
+    if (!props.api) return;
+    const allColumns = props.api.getColumns();
     if (!allColumns) return;
     
-    allColumns.forEach(col => {
-      props.columnApi?.setColumnVisible(col.getColId(), true);
-    });
+    props.api.setColumnsVisible(allColumns, true);
   };
 
   const handleOpenChange = (open: boolean) => {

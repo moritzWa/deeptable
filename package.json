@@ -15,8 +15,5 @@
   "devDependencies": {
     "@types/uuid": "^10.0.0",
     "concurrently": "^9.1.2"
-  },
-  "dependencies": {
-    "ag-grid-enterprise": "^33.1.1"
   }
 }
