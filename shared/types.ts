@@ -15,6 +15,7 @@ export interface ColumnState {
   pivot?: boolean;
   pivotIndex?: number;
   flex?: number | null;
+  orderIndex?: number;
 }
 
 // Column interface for client-side use

@@ -6,21 +6,14 @@ import { ColumnState, Table } from "@shared/types";
 import { AllCommunityModule, CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 
-// Import base styles first
-// import 'ag-grid-community/styles/ag-grid.css';
-// Then theme styles
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
-// trying this ag grid theme
-// import { themeBalham } from 'ag-grid-community';
-
-
-import { CustomColumnHeader } from "@/components/ui/CustomColumnHeader";
-import { Info } from "lucide-react";
+import { Info } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
 import { TablePageError } from './TablePageError';
+import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { SidebarTrigger } from './ui/sidebar';
 
 // Register required modules
@@ -154,10 +147,7 @@ const TablePage = () => {
   useEffect(() => {
     if (rowsData && rowsData.rows) {
       console.log('Setting row data:', rowsData.rows);
-      setRowData([
-        { data: { test: 'Test Row' } }, // Add a test row
-        ...rowsData.rows
-      ]);
+      setRowData(rowsData.rows);
     }
   }, [rowsData]);
 
@@ -174,9 +164,7 @@ const TablePage = () => {
           // Add width if defined (takes precedence over flex)
           if (column.columnState.width !== undefined && column.columnState.width !== null) {
             columnStateProps.width = column.columnState.width;
-            // When width is set, don't set flex to avoid conflicts
           } else if (column.columnState.flex !== undefined && column.columnState.flex !== null) {
-            // Only use flex if width is not defined
             columnStateProps.flex = column.columnState.flex;
           }
           
@@ -204,11 +192,9 @@ const TablePage = () => {
           sortable: true,
           filter: true,
           resizable: true,
-          editable: true, // Enable editing for all columns
-          cellRenderer: smartCellRenderer, // Use our smart renderer for all cells
-          // Add any column state from saved state
+          editable: true,
+          cellRenderer: smartCellRenderer,
           ...columnStateProps,
-          // Store the original column name for mapping back to our data model
           colId: column.name
         };
         
@@ -346,17 +332,8 @@ const TablePage = () => {
     // Use api to get column state
     const columnState = gridRef.current.api.getColumnState() as AgGridColumnState[];
     
-    // Get the current columns for comparison
-    const currentColumns = table.columns;
-    
     // Map the column state to our data structure
     const columnStates = columnState.map((state: AgGridColumnState) => {
-      // Find the original column to map the colId
-      const columnName = state.colId;
-      const currentColumn = currentColumns.find(col => col.name === columnName);
-      
-      // Manage width and flex properly to avoid conflicts
-      // If width is set, don't include flex
       const newColumnState: ColumnState = {
         colId: state.colId,
         hide: state.hide,
@@ -368,37 +345,15 @@ const TablePage = () => {
       // Prioritize width over flex
       if (state.width !== undefined && state.width !== null) {
         newColumnState.width = state.width;
-        // Don't set flex when width is present
-        // Don't assign flex at all rather than setting to null
       } else if (state.flex !== undefined && state.flex !== null) {
         newColumnState.flex = state.flex;
-        // Don't set width when flex is present
-        // Don't assign width at all rather than setting to null
-      }
-      
-      // Only log for Restaurant Name column
-      if (columnName === 'Restaurant Name' && currentColumn) {
-        console.log(`Restaurant Name column state changes:`, {
-          before: currentColumn.columnState,
-          after: newColumnState,
-          width: {
-            before: currentColumn.columnState?.width,
-            after: newColumnState.width
-          }
-        });
       }
       
       return {
-        name: columnName,
+        name: state.colId,
         columnState: newColumnState
       };
     });
-    
-    // Only log the Restaurant Name column state being sent
-    const restaurantNameToSend = columnStates.find(s => s.name === 'Restaurant Name');
-    if (restaurantNameToSend) {
-      console.log("Sending Restaurant Name column state to server:", restaurantNameToSend);
-    }
     
     updateColumnStateMutation.mutate({
       token,
@@ -406,7 +361,7 @@ const TablePage = () => {
       columnStates
     });
     
-  }, [table?.id, table?.columns, token, updateColumnStateMutation]);
+  }, [table?.id, token, updateColumnStateMutation]);
   
   // Create a debounced version of the state change processor
   const debouncedProcessColumnStateChange = useMemo(

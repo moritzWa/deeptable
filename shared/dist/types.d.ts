@@ -1,10 +1,26 @@
 export type ColumnType = 'string' | 'number' | 'boolean' | 'date' | 'array' | 'object';
+export interface ColumnState {
+    colId?: string;
+    width?: number;
+    hide?: boolean;
+    pinned?: 'left' | 'right' | null;
+    sort?: 'asc' | 'desc' | null;
+    sortIndex?: number | null;
+    aggFunc?: string | null;
+    rowGroup?: boolean;
+    rowGroupIndex?: number;
+    pivot?: boolean;
+    pivotIndex?: number;
+    flex?: number | null;
+    orderIndex?: number;
+}
 export interface Column {
     name: string;
     type: ColumnType;
     required?: boolean;
     defaultValue?: any;
     description?: string;
+    columnState?: ColumnState;
 }
 export interface Table {
     id: string;
