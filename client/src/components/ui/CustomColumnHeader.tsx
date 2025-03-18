@@ -1,6 +1,6 @@
 import { ColumnState } from '@shared/types';
 import { IHeaderParams } from 'ag-grid-community';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -21,6 +21,11 @@ interface CustomHeaderParams extends IHeaderParams {
 
 export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const [columnName, setColumnName] = useState(props.displayName);
+
+  // Update local state when displayName changes (after refetch)
+  useEffect(() => {
+    setColumnName(props.displayName);
+  }, [props.displayName]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColumnName(e.target.value);

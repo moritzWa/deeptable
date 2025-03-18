@@ -217,13 +217,25 @@ const TablePage = () => {
     tableId: id,
     updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => {
       if (!token) return;
+      
+      // Check if any column names are being changed
+      const hasNameChanges = columnStates.some(cs => cs.columnState.colId && cs.columnState.colId !== cs.name);
+      
       updateColumnStateMutation.mutate({
         token,
         tableId: id || "",
         columnStates
+      }, {
+        onSuccess: () => {
+          if (hasNameChanges) {
+            // Refetch both table and row data when column names change
+            refetch();
+            utils.rows.getRows.invalidate({ token, tableId: id });
+          }
+        }
       });
     }
-  }), [id, token, updateColumnStateMutation]);
+  }), [id, token, updateColumnStateMutation, refetch, utils.rows.getRows]);
 
   // AG Grid default column definition
   const defaultColDef = useMemo(() => ({
