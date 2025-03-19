@@ -4,3 +4,4 @@ globs:
 alwaysApply: false
 ---
 Remember to use bun instead of npm
+Remebmer to install frontend packages in "/client" and backend packages in "/server"
