@@ -33,7 +33,7 @@ const seedDatabase = async () => {
       { name: 'Address', type: 'string', required: true },
       { name: 'Average Price (in USD)', type: 'number', required: false },
       { name: 'Ratings', type: 'number', required: false },
-      { name: 'Review Count', type: 'number', required: false },
+      { name: 'Google Maps Review Count', type: 'number', required: false },
       { name: 'Special Features', type: 'string', required: false },
       { name: 'Website', type: 'string', required: false }
     ];
