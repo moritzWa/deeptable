@@ -1,20 +1,26 @@
+import { Button } from "@/components/ui/button";
 import { smartCellRenderer } from "@/components/ui/CustomCellRenderers";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useSidebar } from "@/components/ui/sidebar";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/utils/trpc";
 import { ColumnState, Table } from "@shared/types";
 import { AllCommunityModule, CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import { Plus } from "lucide-react";
 
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
-import { Info } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppLayout } from "./AppLayout";
 import { TablePageError } from './TablePageError';
 import { CustomColumnHeader } from './ui/CustomColumnHeader';
-import { SidebarTrigger } from './ui/sidebar';
+import { TablePageHeader } from './ui/TablePageHeader';
 
 // Register required modules
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -51,6 +57,45 @@ interface AgGridColumnState {
 function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
+
+const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string, onSuccess: () => void }) => {
+  const token = localStorage.getItem("token");
+  const createRowsMutation = trpc.rows.createRows.useMutation({
+    onSuccess: () => {
+      onSuccess();
+    }
+  });
+
+  const handleAddRows = (count: number) => {
+    if (!token) return;
+    createRowsMutation.mutate({ token, tableId, count });
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="flex items-center gap-1">
+          <Plus className="h-4 w-4" />
+          Add Rows
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem onClick={() => handleAddRows(10)}>
+          Add 10 rows
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddRows(25)}>
+          Add 25 rows
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddRows(50)}>
+          Add 50 rows
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddRows(100)}>
+          Add 100 rows
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 const TablePage = () => {
   const { id } = useParams<{ id: string }>();
@@ -486,53 +531,40 @@ const TablePage = () => {
 
   return (
     <AppLayout>
-      <div className="w-full">
-        <div className="p-3 flex items-center justify-start gap-2">
-          {!sidebar.open && (
-            <SidebarTrigger className="h-8 w-8" />
-          )}
-          <div className="font-semibold flex items-center gap-2">
-            {table.name}
-            {table.description && !sidebar.open && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="h-4 w-4 text-gray-500" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{table.description}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+      <div className="h-full w-full flex flex-col">
+        <TablePageHeader
+          tableName={table.name}
+          tableDescription={table.description}
+          tableId={table.id}
+          isSidebarOpen={sidebar.open}
+          onRowsAdded={() => {
+            if (token && id) {
+              utils.rows.getRows.invalidate({ token, tableId: id });
+            }
+          }}
+        />
+        <div className="flex-1 min-h-0">
+          <div className="ag-theme-alpine h-full w-full">
+            <AgGridReact
+              ref={gridRef}
+              rowData={rowData}
+              columnDefs={columnDefs}
+              defaultColDef={defaultColDef}
+              pagination={false}
+              animateRows={true}
+              rowSelection="multiple"
+              onCellValueChanged={onCellValueChanged}
+              stopEditingWhenCellsLoseFocus={true}
+              onGridReady={onGridReady}
+              onColumnResized={onColumnResized}
+              onColumnMoved={onColumnMoved}
+              onColumnVisible={onColumnVisible}
+              onColumnPinned={onColumnPinned}
+              onSortChanged={onSortChanged}
+              context={gridContext}
+            />
           </div>
         </div>
-            <div 
-              className="ag-theme-alpine"
-              style={{ 
-                height: '500px',
-                width: '100%',
-              }}
-            >
-              <AgGridReact
-                ref={gridRef}
-                rowData={rowData}
-                columnDefs={columnDefs}
-                defaultColDef={defaultColDef}
-                pagination={false}
-                animateRows={true}
-                rowSelection="multiple"
-                onCellValueChanged={onCellValueChanged}
-                stopEditingWhenCellsLoseFocus={true}
-                onGridReady={onGridReady}
-                onColumnResized={onColumnResized}
-                onColumnMoved={onColumnMoved}
-                onColumnVisible={onColumnVisible}
-                onColumnPinned={onColumnPinned}
-                onSortChanged={onSortChanged}
-                context={gridContext}
-              />
-            </div>
       </div>
     </AppLayout>
   );

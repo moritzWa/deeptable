@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
 import { IRow, Row as RowModel } from '../models/row';
 import { Table as TableModel } from '../models/table';
+import { publicProcedure, router } from '../trpc';
 
 // Define the Row type for client-side use
 export interface Row {
@@ -119,6 +119,51 @@ export const rowsRouter = router({
       } catch (error) {
         console.error('Create row error:', error);
         throw new Error('Failed to create row');
+      }
+    }),
+
+  // Create multiple rows at once
+  createRows: publicProcedure
+    .input(z.object({
+      token: z.string(),
+      tableId: z.string(),
+      count: z.number().min(1).max(100) // Limit to 100 rows at once
+    }))
+    .mutation(async ({ input }): Promise<{ count: number }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        
+        // Verify table exists and belongs to user
+        const table = await TableModel.findOne({ 
+          _id: input.tableId, 
+          userId: decoded.userId 
+        });
+        
+        if (!table) {
+          throw new Error('Table not found');
+        }
+
+        // Create empty data object based on table columns
+        const emptyData: Record<string, any> = {};
+        table.columns.forEach(column => {
+          const columnName = typeof column === 'string' ? column : column.name;
+          emptyData[columnName] = null;
+        });
+
+        // Create array of row objects
+        const rows = Array(input.count).fill(null).map(() => ({
+          tableId: new mongoose.Types.ObjectId(input.tableId),
+          data: emptyData,
+          userId: decoded.userId
+        }));
+
+        // Insert all rows at once
+        await RowModel.insertMany(rows);
+
+        return { count: input.count };
+      } catch (error) {
+        console.error('Create rows error:', error);
+        throw new Error('Failed to create rows');
       }
     }),
 

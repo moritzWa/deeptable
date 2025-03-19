@@ -81,16 +81,16 @@ export function AppSidebar() {
       <SidebarHeader>
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold"><Link to="/home">Deep Table</Link></h2>
-          <div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleCreateTable}
-            className="h-8 w-8"
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-          <SidebarTrigger className="h-8 w-8" />
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleCreateTable}
+              className="h-8 w-8"
+            >
+              <Plus className="h-4 w-4" />
+            </Button>
+            <SidebarTrigger className="h-8 w-8" />
           </div>
         </div>
       </SidebarHeader>
