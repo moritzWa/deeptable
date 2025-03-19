@@ -9,7 +9,8 @@
     "start": "bun run ./dist/index.js",
     "seed:table": "bun run src/scripts/seeder.ts",
     "seed:rows": "bun run src/scripts/rowSeeder.ts",
-    "db:delete": "bun run src/scripts/delete.ts"
+    "db:delete": "bun run src/scripts/delete.ts",
+    "db:reset": "bun run db:delete && bun run seed:table && bun run seed:rows"
   },
   "keywords": [],
   "author": "",

@@ -17,10 +17,11 @@ A powerful data analysis and visualization SaaS platform with authentication, pa
 
 ### Prerequisites
 
-- Node.js (v16+)
+- Bun (latest version)
 - MongoDB
 - Stripe account
 - Google OAuth credentials
+- Doppler CLI
 
 ### MongoDB Setup
 
@@ -42,19 +43,26 @@ A powerful data analysis and visualization SaaS platform with authentication, pa
 
 The project includes scripts to seed your database with sample data:
 
+1. **Reset Everything**: Delete all data and reseed from scratch
+   ```bash
+   doppler run -- bun run --cwd server db:reset
+   ```
+
+Or run individual commands:
+
 1. **Seed Tables**: Creates table structures in the database
    ```bash
-   npm run seed:table --workspace=server
+   doppler run -- bun run --cwd server seed:table
    ```
 
 2. **Seed Rows**: Populates tables with sample data (run after seeding tables)
    ```bash
-   npm run seed:rows --workspace=server
+   doppler run -- bun run --cwd server seed:rows
    ```
 
 3. **Delete Data**: Removes all data except user accounts
    ```bash
-   npm run db:delete --workspace=server
+   doppler run -- bun run --cwd server db:delete
    ```
 
 Note: The seeding scripts use the email specified in the script to associate data with a user. Make sure to update the email in the scripts (`server/src/scripts/seeder.ts` and `server/src/scripts/rowSeeder.ts`) to match an existing user in your database.
@@ -69,21 +77,26 @@ cd deeptable
 
 2. Install dependencies
 ```bash
-npm install
+bun install
 ```
 
-3. Set up environment variables
+3. Set up environment variables with Doppler
+   - Install Doppler CLI if you haven't already
+   - Configure your Doppler project
+   - No need to manually manage .env files as Doppler will handle this
+
+4. Start the development servers
+
+For the frontend (in the client directory):
 ```bash
-# Copy example env files
-cp server/.env.example server/.env
-touch client/.env
+cd client
+doppler run -- bun dev --elide-lines=5000
 ```
 
-4. Update environment variables in both `client/.env` and `server/.env`
-
-5. Start the development server
+For the backend (in the server directory):
 ```bash
-npm run dev
+cd server
+doppler run -- bun dev --elide-lines=5000
 ```
 
 ## Customization

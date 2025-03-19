@@ -4,6 +4,7 @@ import { trpc } from "@/utils/trpc";
 import { ColumnState, Table } from "@shared/types";
 import { AllCommunityModule, CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
+import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
@@ -138,6 +139,7 @@ const TablePage = () => {
     }
   });
 
+  // USE EFFECTS
   // This effect will run whenever the id parameter changes
   useEffect(() => {
     setLoading(true);
@@ -218,34 +220,8 @@ const TablePage = () => {
       });
 
       const agGridColumns: ColDef[] = sortedColumns.map(column => {
-        const columnStateProps: any = {};
-        
-        if (column.columnState) {
-          if (column.columnState.width !== undefined && column.columnState.width !== null) {
-            columnStateProps.width = column.columnState.width;
-          }
-          
-          if (column.columnState.hide !== undefined && column.columnState.hide !== null) {
-            columnStateProps.hide = column.columnState.hide;
-          }
-          
-          if (column.columnState.pinned !== null) {
-            columnStateProps.pinned = column.columnState.pinned;
-          }
-          
-          if (column.columnState.sort !== null) {
-            columnStateProps.sort = column.columnState.sort;
-          }
-          
-          if (column.columnState.sortIndex !== null) {
-            columnStateProps.sortIndex = column.columnState.sortIndex;
-          }
-          
-          // Keep flex value for width flexibility
-          if (column.columnState.flex !== null && column.columnState.flex !== undefined) {
-            columnStateProps.flex = column.columnState.flex;
-          }
-        }
+        // Convert our column state to AG Grid properties
+        const columnStateProps = convertColumnStateToAgGridProps(column.columnState);
       
         const colDef: ColDef = {
           headerName: column.name,
@@ -420,14 +396,6 @@ const TablePage = () => {
 
   // Handler for column resized event
   const onColumnResized = useCallback((event: ColumnResizedEvent) => {
-    // Only log for Restaurant Name column
-    if (event.column && event.column.getColId() === 'Restaurant Name') {
-      console.log("Restaurant Name column resized:", {
-        width: event.column.getActualWidth(),
-        finished: event.finished
-      });
-    }
-    
     if (event.finished) {
       debouncedProcessColumnStateChange();
     }
