@@ -1,17 +1,9 @@
-import { Button } from "@/components/ui/button";
 import { smartCellRenderer } from "@/components/ui/CustomCellRenderers";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { useSidebar } from "@/components/ui/sidebar";
 import { trpc } from "@/utils/trpc";
 import { ColumnState, Table } from "@shared/types";
 import { AllCommunityModule, CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { Plus } from "lucide-react";
 
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
@@ -57,45 +49,6 @@ interface AgGridColumnState {
 function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
-
-const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string, onSuccess: () => void }) => {
-  const token = localStorage.getItem("token");
-  const createRowsMutation = trpc.rows.createRows.useMutation({
-    onSuccess: () => {
-      onSuccess();
-    }
-  });
-
-  const handleAddRows = (count: number) => {
-    if (!token) return;
-    createRowsMutation.mutate({ token, tableId, count });
-  };
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
-          <Plus className="h-4 w-4" />
-          Add Rows
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => handleAddRows(10)}>
-          Add 10 rows
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(25)}>
-          Add 25 rows
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(50)}>
-          Add 50 rows
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(100)}>
-          Add 100 rows
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
 
 const TablePage = () => {
   const { id } = useParams<{ id: string }>();
