@@ -1,20 +1,22 @@
 import { Button } from "@/components/ui/button";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/utils/trpc";
-import { Info, Plus } from "lucide-react";
+import { CellRange } from 'ag-grid-community';
+import { Info, Plus, Sparkle } from "lucide-react";
 
-interface TablePageHeaderProps {
+export interface TablePageHeaderProps {
   tableName: string;
-  tableDescription?: string | null;
+  tableDescription: string | null | undefined;
   tableId: string;
   isSidebarOpen: boolean;
+  selectedRanges: CellRange[];
   onRowsAdded: () => void;
 }
 
@@ -32,8 +34,9 @@ const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string, onSuccess: (
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu>        
       <DropdownMenuTrigger asChild>
+       
         <Button variant="outline" size="sm" className="flex items-center gap-1">
           <Plus className="h-4 w-4" />
           Add Rows
@@ -62,6 +65,7 @@ export const TablePageHeader = ({
   tableDescription,
   tableId,
   isSidebarOpen,
+  selectedRanges,
   onRowsAdded
 }: TablePageHeaderProps) => {
   return (
@@ -87,10 +91,36 @@ export const TablePageHeader = ({
             )}
           </div>
         </div>
-        <AddRowsDropdown 
-          tableId={tableId} 
-          onSuccess={onRowsAdded}
-        />
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" className="flex items-center gap-1"
+            onClick={() => {
+              if (selectedRanges.length === 0) {
+                console.log('No cells selected for enrichment');
+                return;
+              }
+
+              // Log enrichment information for each range
+              selectedRanges.forEach((range, index) => {
+                console.log(`Range ${index + 1}:`, {
+                  tableId,
+                  range: {
+                    startRow: range.startRow,
+                    endRow: range.endRow,
+                    columns: range.columns.map(col => col.getColId()),
+                    startColumn: range.startColumn.getColId()
+                  }
+                });
+              });
+            }}
+          >
+            <Sparkle className="h-4 w-4" />
+            Enrich Cells
+          </Button>
+          <AddRowsDropdown 
+            tableId={tableId} 
+            onSuccess={onRowsAdded}
+          />  
+        </div>
       </div>
     </div>
   );

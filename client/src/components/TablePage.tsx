@@ -2,7 +2,7 @@ import { smartCellRenderer } from "@/components/ui/CustomCellRenderers";
 import { useSidebar } from "@/components/ui/sidebar";
 import { trpc } from "@/utils/trpc";
 import { ColumnState, Table } from "@shared/types";
-import { CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
+import { CellRange, CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
 import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from './TablePageHelpers';
@@ -61,6 +61,7 @@ const TablePage = () => {
   const [error, setError] = useState("");
   const [rowData, setRowData] = useState<any[]>([]);
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
+  const [selectedRanges, setSelectedRanges] = useState<CellRange[]>([]);
   
   // Reference to the AG Grid API
   const gridRef = useRef<AgGridReact>(null);
@@ -336,7 +337,7 @@ const TablePage = () => {
   // Handle cell range selection changed
   const onRangeSelectionChanged = useCallback((event: any) => {
     const ranges = gridRef.current?.api.getCellRanges();
-    console.log('Selected ranges:', ranges);
+    setSelectedRanges(ranges || []);
   }, []);
 
   // Handle cell value changes
@@ -468,6 +469,7 @@ const TablePage = () => {
           tableDescription={table.description}
           tableId={table.id}
           isSidebarOpen={sidebar.open}
+          selectedRanges={selectedRanges}
           onRowsAdded={() => {
             if (token && id) {
               utils.rows.getRows.invalidate({ token, tableId: id });
