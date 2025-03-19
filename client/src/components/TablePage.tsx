@@ -2,7 +2,8 @@ import { smartCellRenderer } from "@/components/ui/CustomCellRenderers";
 import { useSidebar } from "@/components/ui/sidebar";
 import { trpc } from "@/utils/trpc";
 import { ColumnState, Table } from "@shared/types";
-import { AllCommunityModule, CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
+import { CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
+import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
@@ -16,7 +17,7 @@ import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { TablePageHeader } from './ui/TablePageHeader';
 
 // Register required modules
-ModuleRegistry.registerModules([AllCommunityModule]);
+ModuleRegistry.registerModules([AllEnterpriseModule]);
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
@@ -161,7 +162,7 @@ const TablePage = () => {
   // Process row data for AG Grid
   useEffect(() => {
     if (rowsData && rowsData.rows) {
-      console.log('Setting row data:', rowsData.rows);
+      // console.log('Setting row data:', rowsData.rows);
       setRowData(rowsData.rows);
     }
   }, [rowsData]);
@@ -324,6 +325,20 @@ const TablePage = () => {
     suppressSizeToFit: true
   }), []);
 
+  // Cell selection configuration
+  const cellSelection = useMemo(() => ({
+    enableRangeSelection: true,
+    enableRangeHandle: true,
+    enableFillHandle: true,
+    enableHeaderHighlight: true
+  }), []);
+
+  // Handle cell range selection changed
+  const onRangeSelectionChanged = useCallback((event: any) => {
+    const ranges = gridRef.current?.api.getCellRanges();
+    console.log('Selected ranges:', ranges);
+  }, []);
+
   // Handle cell value changes
   const onCellValueChanged = (event: CellValueChangedEvent) => {
     const { data, colDef } = event;
@@ -478,6 +493,8 @@ const TablePage = () => {
               onColumnPinned={onColumnPinned}
               onSortChanged={onSortChanged}
               context={gridContext}
+              cellSelection={cellSelection}
+              onRangeSelectionChanged={onRangeSelectionChanged}
             />
           </div>
         </div>
