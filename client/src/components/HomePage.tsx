@@ -23,7 +23,7 @@ export default function HomePage() {
 
   return (
     <AppLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 m-4">
         <div>
           <h1 className="text-2xl font-bold">Welcome to Deep Table</h1>
           <p className="mt-2 text-gray-600">
