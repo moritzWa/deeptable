@@ -4,5 +4,3 @@ globs: *.tsx
 alwaysApply: false
 ---
 - We use Tailwind CSS and Shadcn components. You can find them in client/src/components/ui/. Before adding a new component first check if it already exist. If not you can install it using this pattern `npx shadcn@latest add {componentName}`. Do not generate components from scratch that exist as part of the Shadcn library! 
-- Write simple and clean code. When considering a change prefer the simple code modification/implementation. Keep. It. Simple.
-

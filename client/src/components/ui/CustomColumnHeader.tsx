@@ -1,6 +1,7 @@
 import { ColumnState } from '@shared/types';
 import { Column, IHeaderParams } from 'ag-grid-community';
 import { useEffect, useRef, useState } from 'react';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from './alert-dialog';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -16,6 +17,7 @@ interface CustomHeaderParams extends IHeaderParams {
     tableId: string;
     updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => void;
     addColumn?: (position: 'left' | 'right', relativeTo: string) => void;
+    deleteColumn?: (columnName: string) => void;
   };
   enableSorting: boolean;
   column: Column;
@@ -106,6 +108,11 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     props.context.addColumn(position, props.column.getColId());
   };
 
+  const handleDeleteColumn = () => {
+    if (!props.context.deleteColumn) return;
+    props.context.deleteColumn(props.column.getColId());
+  };
+
   return (
     <ContextMenu onOpenChange={handleOpenChange}>
       <ContextMenuTrigger asChild>
@@ -162,6 +169,36 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
           <ContextMenuItem onClick={handleShowAllColumns}>
             Show All Columns
           </ContextMenuItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <ContextMenuItem
+                className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
+                onSelect={(e) => e.preventDefault()}
+              >
+                Delete Column
+              </ContextMenuItem>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete Column</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete the column "{columnName}"? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+                  onClick={handleDeleteColumn}
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </ContextMenuGroup>
       </ContextMenuContent>
     </ContextMenu>

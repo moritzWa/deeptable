@@ -355,5 +355,61 @@ export const tablesRouter = router({
         console.error('Add column error:', error);
         throw new Error('Failed to add column');
       }
+    }),
+
+  // Delete a column
+  deleteColumn: publicProcedure
+    .input(z.object({
+      token: z.string(),
+      tableId: z.string(),
+      columnName: z.string()
+    }))
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        
+        // Get the table
+        const table = await TableModel.findOne({ _id: input.tableId, userId: decoded.userId }) as ITable | null;
+        
+        if (!table) {
+          throw new Error('Table not found');
+        }
+
+        // Find the index of the column to delete
+        const columnIndex = table.columns.findIndex(col => col.name === input.columnName);
+        if (columnIndex === -1) {
+          throw new Error('Column not found');
+        }
+
+        // Get the column's current sortIndex
+        const deletedColumnSortIndex = table.columns[columnIndex].columnState?.sortIndex ?? columnIndex;
+
+        // Remove the column
+        table.columns.splice(columnIndex, 1);
+
+        // Update sortIndexes for remaining columns
+        table.columns.forEach((col, index) => {
+          if (!col.columnState) {
+            col.columnState = {};
+          }
+          
+          // For columns that were after the deleted column, decrement their sortIndex
+          if (col.columnState.sortIndex && col.columnState.sortIndex > deletedColumnSortIndex) {
+            col.columnState.sortIndex -= 1;
+          }
+          // For columns that were before, keep their current sortIndex or use array index
+          else {
+            col.columnState.sortIndex = col.columnState.sortIndex ?? index;
+          }
+        });
+
+        // Save the updated table
+        await table.save();
+
+        return { success: true };
+      } catch (error) {
+        console.error('Delete column error:', error);
+        throw new Error('Failed to delete column');
+      }
     })
 }); 

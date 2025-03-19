@@ -1,0 +1,6 @@
+---
+description: *.ts,*.tsx
+globs: 
+alwaysApply: false
+---
+- Write simple and clean code. When considering a change prefer the simple code modification/implementation. Keep. It. Simple.
