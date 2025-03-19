@@ -168,6 +168,8 @@ export const tablesRouter = router({
     }))
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
+        console.log("First two columns in update request:", input.columnStates.slice(0, 2));
+        
         const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
         
         // Get the table
@@ -177,31 +179,15 @@ export const tablesRouter = router({
           throw new Error('Table not found');
         }
 
-        // Process each column state update
-        for (const cs of input.columnStates) {
-          const column = table.columns.find(col => col.name === cs.name);
-          if (!column) continue;
+        console.log("First two columns before update:", table.columns.slice(0, 2).map(col => ({
+          name: col.name,
+          columnState: col.columnState
+        })));
 
-          // Check if the column name is being changed
-          const isNameChange = cs.columnState.colId && cs.columnState.colId !== cs.name;
-          
-          if (isNameChange) {
-            // Update the column name in the table
-            await TableModel.updateOne(
-              { 
-                _id: input.tableId, 
-                userId: decoded.userId,
-                "columns.name": cs.name
-              },
-              { 
-                $set: { 
-                  "columns.$.name": cs.columnState.colId,
-                  "columns.$.columnState": cs.columnState
-                }
-              }
-            );
-
-            // Update all rows to rename the field in the data object
+        // First, handle any column name changes in the row data
+        const nameChanges = input.columnStates.filter(cs => cs.columnState.colId && cs.columnState.colId !== cs.name);
+        if (nameChanges.length > 0) {
+          for (const change of nameChanges) {
             await Row.updateMany(
               { tableId: input.tableId },
               [
@@ -217,8 +203,8 @@ export const tablesRouter = router({
                               in: {
                                 k: {
                                   $cond: [
-                                    { $eq: ["$$this.k", cs.name] },
-                                    cs.columnState.colId,
+                                    { $eq: ["$$this.k", change.name] },
+                                    change.columnState.colId,
                                     "$$this.k"
                                   ]
                                 },
@@ -233,21 +219,58 @@ export const tablesRouter = router({
                 }
               ]
             );
-          } else {
-            // Just update the column state without changing the name
-            await TableModel.updateOne(
-              { 
-                _id: input.tableId, 
-                userId: decoded.userId,
-                "columns.name": cs.name
-              },
-              { 
-                $set: { 
-                  "columns.$.columnState": cs.columnState
+          }
+        }
+
+        // Build update operations for all columns at once
+        const bulkOps = input.columnStates.map(cs => {
+          const isNameChange = cs.columnState.colId && cs.columnState.colId !== cs.name;
+          
+          if (isNameChange) {
+            return {
+              updateOne: {
+                filter: { 
+                  _id: input.tableId,
+                  userId: decoded.userId,
+                  "columns.name": cs.name
+                },
+                update: { 
+                  $set: { 
+                    "columns.$.name": cs.columnState.colId,
+                    "columns.$.columnState": cs.columnState
+                  }
                 }
               }
-            );
+            };
+          } else {
+            return {
+              updateOne: {
+                filter: { 
+                  _id: input.tableId,
+                  userId: decoded.userId,
+                  "columns.name": cs.name
+                },
+                update: { 
+                  $set: { 
+                    "columns.$.columnState": cs.columnState
+                  }
+                }
+              }
+            };
           }
+        });
+
+        // Execute all updates in a single operation
+        const result = await TableModel.bulkWrite(bulkOps);
+        console.log("Bulk update result:", result);
+
+        // Get the updated table to verify changes
+        const updatedTable = await TableModel.findOne({ _id: input.tableId }) as ITable | null;
+        if (updatedTable) {
+          console.log("First two columns after update:", updatedTable.columns.slice(0, 2).map(col => ({
+            name: col.name,
+            columnState: col.columnState
+          })));
         }
         
         return { success: true };
