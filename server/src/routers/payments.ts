@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken';
 import Stripe from 'stripe';
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
 import { User as UserModel } from '../models/user';
+import { publicProcedure, router } from '../trpc';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2024-12-18.acacia',
+  apiVersion: '2025-02-24.acacia',
 });
 
 const PRICE_ID = process.env.STRIPE_PRICE_ID || '';
