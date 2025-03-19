@@ -186,7 +186,7 @@ const TablePage = () => {
         sort: state.sort,
         sortIndex: index,
         width: state.width,
-        flex: index
+        flex: state.flex
       }
     }));
     
@@ -231,6 +231,7 @@ const TablePage = () => {
           resizable: true,
           editable: true,
           cellRenderer: smartCellRenderer,
+          suppressSizeToFit: true,
           ...columnStateProps,
           colId: column.name
         };
@@ -319,7 +320,8 @@ const TablePage = () => {
     sortable: true,
     filter: true,
     editable: true,
-    headerComponent: CustomColumnHeader
+    headerComponent: CustomColumnHeader,
+    suppressSizeToFit: true
   }), []);
 
   // Handle cell value changes
