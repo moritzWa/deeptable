@@ -2,6 +2,7 @@ import { Column, ColumnType } from '@shared/types';
 import OpenAI from 'openai';
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
+import { fillCell } from 'src/utils';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -174,40 +175,13 @@ export const columnsRouter = router({
 
     fillCell: publicProcedure // todo private
     .input(z.object({
-      // todo maybe add prompt
+      query: z.string(),
       row: z.string(),
       column: z.string(), 
+      outputType: z.string(),
     }))
     .output(z.string())
     .mutation(async ({ input}) => {
-      const _ = input;
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      return "cell 1"
-    }),
-
-    doResearch: publicProcedure // todo private
-    .input(z.object({
-      question: z.string().min(1).max(500),
-    }))
-    .mutation(async ({ input }): Promise<any> => {
-
-      const SYSTEM_PROMPT = `You are a helpful assistant that can search the web for information.`;
-
-      // https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4o-search-preview",
-        web_search_options: {},
-        messages: [
-          {
-            "role": "system",
-            "content": SYSTEM_PROMPT
-          },
-          {
-            "role": "user",
-            "content": input.question
-          }
-        ],
-      });
-      return completion;
+      return fillCell(input.query, input.row, input.column, input.outputType);
     }),
 }); 
