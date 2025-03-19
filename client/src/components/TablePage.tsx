@@ -66,6 +66,7 @@ const TablePage = () => {
   const token = localStorage.getItem("token");
   const utils = trpc.useContext();
   
+  // FETCH DATA
   const { data: tablesData, refetch } = trpc.tables.getTables.useQuery(
     { token: token || "" },
     { 
@@ -85,8 +86,6 @@ const TablePage = () => {
       }
     }
   );
-
-  // Fetch rows data
   const { data: rowsData } = trpc.rows.getRows.useQuery(
     { token: token || "", tableId: id || "" },
     { 
@@ -97,7 +96,7 @@ const TablePage = () => {
     }
   );
 
-  // Update row mutation
+  // UPDATE MUTATION
   const updateRowMutation = trpc.rows.updateRow.useMutation({
     onSuccess: () => {
       // Refetch rows after successful update
@@ -110,8 +109,6 @@ const TablePage = () => {
       // You could add a toast notification here
     }
   });
-
-  // Mutation for updating column state
   const updateColumnStateMutation = trpc.tables.updateColumnState.useMutation({
     onSuccess: () => {
       console.log("Column state updated successfully");
@@ -122,8 +119,6 @@ const TablePage = () => {
       console.error("Failed to update column state:", error);
     }
   });
-
-  // Add mutation for adding columns
   const addColumnMutation = trpc.tables.addColumn.useMutation({
     onSuccess: () => {
       // Refetch table data after successful column addition
@@ -133,8 +128,6 @@ const TablePage = () => {
       console.error("Failed to add column:", error.message);
     }
   });
-
-  // Add mutation for deleting columns
   const deleteColumnMutation = trpc.tables.deleteColumn.useMutation({
     onSuccess: () => {
       // Refetch table data after successful column deletion
