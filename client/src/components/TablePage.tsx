@@ -151,24 +151,71 @@ const TablePage = () => {
     }
   }, [rowsData]);
 
+  // Add flags to track state
+  const isApplyingState = useRef(false);
+  const hasAppliedInitialState = useRef(false);
+  
+  const debugLog = (message: string, data?: any) => {
+    console.log(message, data || '');
+  };
+
+  const processColumnStateChange = useCallback(() => {
+    if (!gridRef.current?.api || !table?.id || !token) return;
+    
+    // Use api to get column state
+    const columnState = gridRef.current.api.getColumnState() as AgGridColumnState[];
+    
+    // Map the column state to our data structure
+    const columnStates = columnState.map((state: AgGridColumnState, index: number) => ({
+      name: state.colId,
+      columnState: {
+        colId: state.colId,
+        hide: state.hide,
+        pinned: state.pinned,
+        sort: state.sort,
+        sortIndex: index,
+        width: state.width,
+        flex: index
+      }
+    }));
+    
+    updateColumnStateMutation.mutate({
+      token,
+      tableId: table.id,
+      columnStates
+    });
+    
+  }, [table?.id, token, updateColumnStateMutation]);
+
+  // Create a debounced version of the state change processor
+  const debouncedProcessColumnStateChange = useMemo(
+    () => debounce(processColumnStateChange, 300),
+    [processColumnStateChange]
+  );
+
   // Set up AG Grid column definitions based on table columns
   useEffect(() => {
     if (table && table.columns) {
-      console.log('Setting up column definitions for table:', table);
+      // Don't set up columns until we've applied the initial state
+      if (!hasAppliedInitialState.current) {
+        return;
+      }
       
-      const agGridColumns: ColDef[] = table.columns.map(column => {
-        // Create state with nulls converted to undefined
+      // Sort columns by their sortIndex value
+      const sortedColumns = [...table.columns].sort((a, b) => {
+        const orderA = a.columnState?.sortIndex ?? Number.MAX_SAFE_INTEGER;
+        const orderB = b.columnState?.sortIndex ?? Number.MAX_SAFE_INTEGER;
+        return orderA - orderB;
+      });
+
+      const agGridColumns: ColDef[] = sortedColumns.map(column => {
         const columnStateProps: any = {};
         
         if (column.columnState) {
-          // Add width if defined (takes precedence over flex)
           if (column.columnState.width !== undefined && column.columnState.width !== null) {
             columnStateProps.width = column.columnState.width;
-          } else if (column.columnState.flex !== undefined && column.columnState.flex !== null) {
-            columnStateProps.flex = column.columnState.flex;
           }
           
-          // Add other properties
           if (column.columnState.hide !== undefined && column.columnState.hide !== null) {
             columnStateProps.hide = column.columnState.hide;
           }
@@ -183,6 +230,11 @@ const TablePage = () => {
           
           if (column.columnState.sortIndex !== null) {
             columnStateProps.sortIndex = column.columnState.sortIndex;
+          }
+          
+          // Keep flex value for width flexibility
+          if (column.columnState.flex !== null && column.columnState.flex !== undefined) {
+            columnStateProps.flex = column.columnState.flex;
           }
         }
       
@@ -203,7 +255,7 @@ const TablePage = () => {
       
       setColumnDefs(agGridColumns);
     }
-  }, [table]);
+  }, [table, hasAppliedInitialState.current]);
 
   useEffect(() => {
     if (!token) {
@@ -266,108 +318,57 @@ const TablePage = () => {
     });
   };
 
-  // Handler for grid ready event to store the grid API reference
+  // Handler for grid ready event
   const onGridReady = useCallback((params: GridReadyEvent) => {
-    console.log("Grid is ready");
-    
     // If we have column state stored in the table, apply it after grid initialization
     if (table?.columns && table.columns.some(col => col.columnState)) {
       // Wait for the grid to be fully initialized before attempting to apply column state
       setTimeout(() => {
         if (!gridRef.current?.api) return;
-
-        console.log("Applying saved column state");
+        
+        isApplyingState.current = true;
         
         // Collect all column states from the table
         const savedColumnStates = table.columns
           .filter(col => col.columnState)
           .map(col => {
             const colState = col.columnState!;
-            
-            // Only include either width or flex to avoid conflicts
-            const stateToApply: any = {
+            return {
               colId: col.name,
               hide: nullToUndefined(colState.hide),
               pinned: colState.pinned === null ? undefined : colState.pinned,
               sort: colState.sort === null ? undefined : colState.sort,
-              sortIndex: nullToUndefined(colState.sortIndex)
+              sortIndex: nullToUndefined(colState.sortIndex),
+              width: colState.width !== null ? colState.width : undefined,
+              flex: colState.width === null ? colState.flex : undefined
             };
-            
-            // Prioritize width over flex
-            if (colState.width !== undefined && colState.width !== null) {
-              stateToApply.width = colState.width;
-              // Don't include flex when width is present
-            } else if (colState.flex !== undefined && colState.flex !== null) {
-              stateToApply.flex = colState.flex;
-            }
-            
-            return stateToApply;
           });
         
-        // Only log the Restaurant Name column state      
-        if (savedColumnStates.length > 0 && gridRef.current?.api) {
-          try {
-            // Apply the saved column state directly to AG Grid
-            gridRef.current.api.applyColumnState({
-              state: savedColumnStates,
-              applyOrder: true
-            });
-            
-            // Force the grid to refresh after applying column state
-            gridRef.current.api.refreshHeader();
-            
-            // Log the current state of the Restaurant Name column
-          } catch (error) { 
-            console.error("Error applying column state:", error);
-          }
+        try {
+          // Apply the saved column state directly to AG Grid
+          gridRef.current.api.applyColumnState({
+            state: savedColumnStates,
+            applyOrder: true
+          });
+          
+          gridRef.current.api.refreshHeader();
+        } catch (error) { 
+          console.error("Error applying column state:", error);
         }
+
+        // Reset the flags after a short delay to ensure all events have processed
+        setTimeout(() => {
+          isApplyingState.current = false;
+          hasAppliedInitialState.current = true;
+          // Force a re-render to set up columns with the correct order
+          setColumnDefs([]);
+        }, 100);
       }, 200);
+    } else {
+      // If no saved state, mark as ready for column setup
+      hasAppliedInitialState.current = true;
     }
   }, [table?.columns]);
-
-  // Function to get and process column state changes
-  const processColumnStateChange = useCallback(() => {
-    if (!gridRef.current?.api || !table?.id || !token) return;
-    
-    // Use api to get column state
-    const columnState = gridRef.current.api.getColumnState() as AgGridColumnState[];
-    
-    // Map the column state to our data structure
-    const columnStates = columnState.map((state: AgGridColumnState) => {
-      const newColumnState: ColumnState = {
-        colId: state.colId,
-        hide: state.hide,
-        pinned: state.pinned,
-        sort: state.sort,
-        sortIndex: state.sortIndex
-      };
-      
-      // Prioritize width over flex
-      if (state.width !== undefined && state.width !== null) {
-        newColumnState.width = state.width;
-      } else if (state.flex !== undefined && state.flex !== null) {
-        newColumnState.flex = state.flex;
-      }
-      
-      return {
-        name: state.colId,
-        columnState: newColumnState
-      };
-    });
-    
-    updateColumnStateMutation.mutate({
-      token,
-      tableId: table.id,
-      columnStates
-    });
-    
-  }, [table?.id, token, updateColumnStateMutation]);
-  
-  // Create a debounced version of the state change processor
-  const debouncedProcessColumnStateChange = useMemo(
-    () => debounce(processColumnStateChange, 300),
-    [processColumnStateChange]
-  );
 
   // Handler for column resized event
   const onColumnResized = useCallback((event: ColumnResizedEvent) => {
@@ -386,7 +387,10 @@ const TablePage = () => {
 
   // Handler for column moved event
   const onColumnMoved = useCallback((event: ColumnMovedEvent) => {
-    debouncedProcessColumnStateChange();
+    // Only process if the move is finished and we're not applying initial state
+    if (event.finished && !isApplyingState.current) {
+      debouncedProcessColumnStateChange();
+    }
   }, [debouncedProcessColumnStateChange]);
 
   // Handler for column visibility change
