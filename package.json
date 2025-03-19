@@ -15,9 +15,5 @@
   "devDependencies": {
     "@types/uuid": "^10.0.0",
     "concurrently": "^9.1.2"
-  },
-  "dependencies": {
-    "@ag-grid-community/client-side-row-model": "^32.3.4",
-    "@ag-grid-community/core": "^32.3.4"
   }
 }

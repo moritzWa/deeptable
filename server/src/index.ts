@@ -5,10 +5,10 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Stripe from 'stripe';
 import { User as UserModel } from './models/user';
-import { router, publicProcedure } from './trpc';
+import { publicProcedure, router } from './trpc';
 
 // Export tRPC utilities
-export { router, publicProcedure };
+export { publicProcedure, router };
 
 // Load environment variables
 dotenv.config();
