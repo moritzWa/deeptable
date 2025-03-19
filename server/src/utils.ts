@@ -1,5 +1,26 @@
 import OpenAI from 'openai';
 
+// Type definitions for API responses
+interface PerplexityResponse {
+    choices: Array<{
+        message: {
+            content: string;
+        };
+    }>;
+}
+
+interface GooglePart {
+    text: string;
+}
+
+interface GoogleResponse {
+    candidates: Array<{
+        content: {
+            parts: GooglePart[];
+        };
+    }>;
+}
+
 async function askOpenAI(question: string): Promise<string> {
     // Initialize OpenAI client
     const openai = new OpenAI({
@@ -54,7 +75,11 @@ async function askPerplexity(question: string): Promise<string> {
                 }
             ]
         })
-    }).then(res => res.json());
+    }).then(res => res.json()) as PerplexityResponse;
+
+    if (!completion.choices?.[0]?.message?.content) {
+        throw new Error("Invalid response from Perplexity API");
+    }
     return completion.choices[0].message.content;
 }
 
@@ -83,9 +108,14 @@ async function askGoogle(question: string): Promise<string> {
                 }
             ]
         })
-    }).then(res => res.json());
+    }).then(res => res.json()) as GoogleResponse;
+
+    if (!completion.candidates?.[0]?.content?.parts) {
+        throw new Error("Invalid response from Google API");
+    }
+
     console.log('completion', completion);
-    return completion.candidates[0].content.parts.map(part => part.text).join('\n');
+    return completion.candidates[0].content.parts.map((part: GooglePart) => part.text).join('\n');
 }
 
 async function getFinalAnswer(query: string, row: string, col: string, outputType: string, searchResponses: Array<{ response: string, provider: string }>) {

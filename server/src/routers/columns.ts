@@ -1,8 +1,11 @@
 import { Column, ColumnType } from '@shared/types';
+import mongoose from 'mongoose';
 import OpenAI from 'openai';
 import { z } from 'zod';
+import { Row } from '../models/row';
+import { Table } from '../models/table';
 import { publicProcedure, router } from '../trpc';
-import { fillCell } from 'src/utils';
+import { fillCell } from '../utils';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -173,15 +176,66 @@ export const columnsRouter = router({
       return ["row 1", "row 2", "row 3"]
     }),
 
-    fillCell: publicProcedure // todo private
+    fillCell: publicProcedure
     .input(z.object({
-      query: z.string(),
-      row: z.string(),
-      column: z.string(), 
-      outputType: z.string(),
-    }))
+      tableId: z.string(),
+      rowIndex: z.number(), // AG Grid's row index
+      columnName: z.string(), 
+      context: z.string().optional(), // Optional additional context for the AI
+    }).strict())
     .output(z.string())
-    .mutation(async ({ input}) => {
-      return fillCell(input.query, input.row, input.column, input.outputType);
+    .mutation(async ({ input }) => {
+      try {
+        const tableObjectId = new mongoose.Types.ObjectId(input.tableId);
+
+        // First find the row using tableId and rowIndex
+        const row = await Row.findOne({ 
+          tableId: tableObjectId,
+        }).skip(input.rowIndex).limit(1);
+
+        if (!row) {
+          console.error('Row not found:', { tableId: input.tableId, rowIndex: input.rowIndex });
+          return 'Error: Row not found';
+        }
+
+        // Get table and column data
+        const table = await Table.findById(tableObjectId);
+        if (!table) {
+          console.error('Table not found:', input.tableId);
+          return 'Error: Table not found';
+        }
+
+        const column = table.columns.find(col => col.name === input.columnName);
+        if (!column) {
+          console.error('Column not found in table:', input.columnName);
+          return 'Error: Column not found in table';
+        }
+
+        // Call fillCell with all the context
+        const result = await fillCell(
+          input.context || table.description || table.name, // Use provided context or fall back to table info
+          JSON.stringify(row.data), // Pass the entire row data as context
+          column.name,
+          column.type
+        );
+
+        // Log the result
+        console.log('FillCell Result:', {
+          tableId: input.tableId,
+          rowIndex: input.rowIndex,
+          rowData: row.data,
+          column: column.name,
+          columnType: column.type,
+          result: result
+        });
+
+        return result;
+      } catch (error) {
+        console.error('Error in fillCell:', error);
+        if (error instanceof Error && error.message.includes('ObjectId')) {
+          return 'Error: Invalid table ID format';
+        }
+        return 'Error processing request';
+      }
     }),
 }); 

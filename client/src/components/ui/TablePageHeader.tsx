@@ -68,6 +68,16 @@ export const TablePageHeader = ({
   selectedRanges,
   onRowsAdded
 }: TablePageHeaderProps) => {
+  const token = localStorage.getItem("token");
+  const fillCellMutation = trpc.columns.fillCell.useMutation({
+    onSuccess: (result) => {
+      console.log('Fill cell result:', result);
+    },
+    onError: (error) => {
+      console.error('Fill cell error:', error);
+    }
+  });
+
   return (
     <div className="sticky top-0 z-10 bg-background border-b">
       <div className="p-2 pl-3 flex items-center justify-between gap-2">
@@ -94,22 +104,27 @@ export const TablePageHeader = ({
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="flex items-center gap-1"
             onClick={() => {
+              if (!token) return;
               if (selectedRanges.length === 0) {
                 console.log('No cells selected for enrichment');
                 return;
               }
 
-              // Log enrichment information for each range
-              selectedRanges.forEach((range, index) => {
-                console.log(`Range ${index + 1}:`, {
-                  tableId,
-                  range: {
-                    startRow: range.startRow,
-                    endRow: range.endRow,
-                    columns: range.columns.map(col => col.getColId()),
-                    startColumn: range.startColumn.getColId()
-                  }
-                });
+              // For now, just handle the first range and first cell
+              const range = selectedRanges[0];
+              const column = range.startColumn.getColId();
+              const rowIndex = range.startRow?.rowIndex;
+
+              if (rowIndex === undefined) {
+                console.log('No valid row selected');
+                return;
+              }
+
+              fillCellMutation.mutate({
+                tableId,
+                rowIndex,
+                columnName: column,
+                context: tableDescription || tableName, // Optional context
               });
             }}
           >
