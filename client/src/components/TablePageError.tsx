@@ -1,8 +1,7 @@
-import { error } from 'console';
 import { Button, Card, CardHeader, CardTitle } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 import { AppLayout } from "./AppLayout";
 import { CardContent } from './ui/card';
-import { useNavigate } from 'react-router-dom';
 
 export const TablePageError = ({ error }: { error: string }) => {
   const navigate = useNavigate();

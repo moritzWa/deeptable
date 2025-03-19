@@ -1,5 +1,5 @@
-  import { Menu } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "./theme-toggle";
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";

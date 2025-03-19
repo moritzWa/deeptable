@@ -7,10 +7,12 @@ export const isUrl = (str: string | undefined | null): boolean => {
   if (!str) return false;
   
   // Skip numeric values, including those with commas/periods
-  if (/^[\d,\.]+$/.test(str)) return false;
+  // eslint-disable-next-line no-useless-escape
+  if (/^[\d,.]+$/.test(str)) return false;
   
   // More strict URL pattern requiring at least a domain part with a dot
-  const urlPattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
+  // eslint-disable-next-line no-useless-escape
+  const urlPattern = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/;
   return urlPattern.test(str);
 };
 
