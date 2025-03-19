@@ -89,7 +89,7 @@ const TablePage = () => {
   );
 
   // Fetch rows data
-  const { data: rowsData, isLoading: rowsLoading } = trpc.rows.getRows.useQuery(
+  const { data: rowsData } = trpc.rows.getRows.useQuery(
     { token: token || "", tableId: id || "" },
     { 
       enabled: !!token && !!id,
@@ -177,10 +177,6 @@ const TablePage = () => {
   const isApplyingState = useRef(false);
   const hasAppliedInitialState = useRef(false);
   
-  const debugLog = (message: string, data?: any) => {
-    console.log(message, data || '');
-  };
-
   const processColumnStateChange = useCallback(() => {
     if (!gridRef.current?.api || !table?.id || !token) return;
     
@@ -277,6 +273,8 @@ const TablePage = () => {
       
       setColumnDefs(agGridColumns);
     }
+  // ATTENTION: DO NOT remove hasAppliedInitialState.current (it causes the data to not load)
+  // eslint-disable-next-line
   }, [table, hasAppliedInitialState.current]);
 
   useEffect(() => {
@@ -312,14 +310,21 @@ const TablePage = () => {
       if (!token || !id) return;
       
       // Generate a unique name for the new column
-      const existingColumns = table?.columns || [];
-      let newColumnName = 'New Column';
-      let counter = 1;
-      
-      while (existingColumns.some(col => col.name === newColumnName)) {
-        newColumnName = `New Column ${counter}`;
-        counter++;
-      }
+      const generateUniqueColumnName = (existingColumns: Table['columns']) => {
+        let counter = 0;
+        let candidateName = 'New Column';
+        
+        const isNameTaken = (name: string) => existingColumns.some(col => col.name === name);
+        
+        while (isNameTaken(candidateName)) {
+          counter++;
+          candidateName = `New Column ${counter}`;
+        }
+        
+        return candidateName;
+      };
+
+      const newColumnName = generateUniqueColumnName(table?.columns || []);
       
       addColumnMutation.mutate({
         token,
