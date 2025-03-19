@@ -1,10 +1,6 @@
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { Row } from '../models/row';
 import { Table } from '../models/table';
-
-// Load environment variables
-dotenv.config();
 
 // Connect to MongoDB
 const connectDB = async () => {
