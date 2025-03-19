@@ -136,6 +136,17 @@ const TablePage = () => {
     }
   });
 
+  // Add mutation for deleting columns
+  const deleteColumnMutation = trpc.tables.deleteColumn.useMutation({
+    onSuccess: () => {
+      // Refetch table data after successful column deletion
+      refetch();
+    },
+    onError: (error) => {
+      console.error("Failed to delete column:", error.message);
+    }
+  });
+
   // This effect will run whenever the id parameter changes
   useEffect(() => {
     setLoading(true);
@@ -317,8 +328,17 @@ const TablePage = () => {
         position,
         relativeTo
       });
+    },
+    deleteColumn: (columnName: string) => {
+      if (!token || !id) return;
+      
+      deleteColumnMutation.mutate({
+        token,
+        tableId: id,
+        columnName
+      });
     }
-  }), [id, token, updateColumnStateMutation, refetch, utils.rows.getRows, table?.columns, addColumnMutation]);
+  }), [id, token, updateColumnStateMutation, refetch, utils.rows.getRows, table?.columns, addColumnMutation, deleteColumnMutation]);
 
   // AG Grid default column definition
   const defaultColDef = useMemo(() => ({
@@ -462,7 +482,7 @@ const TablePage = () => {
   return (
     <AppLayout>
       <div className="w-full">
-        <div className="mb-3 p-2 flex items-center justify-start gap-2">
+        <div className="p-3 flex items-center justify-start gap-2">
           {!sidebar.open && (
             <SidebarTrigger className="h-8 w-8" />
           )}
