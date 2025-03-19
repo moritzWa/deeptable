@@ -7,4 +7,7 @@ module.exports = {
       '@shared': path.resolve(__dirname, '../shared'),
     },
   },
+  devServer: {
+    port: 3000,
+  },
 }; 
