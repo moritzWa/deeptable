@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cursor, useTypewriter } from 'react-simple-typewriter';
 import ExampleCardsSection from './ExampleCardsSection';
@@ -9,7 +9,7 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
-  const [prompt, setPrompt] = useState('');
+  // const [prompt, setPrompt] = useState('');
   const navigate = useNavigate();
 
   const [text] = useTypewriter({
@@ -19,13 +19,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
     deleteSpeed: 100,
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (prompt.trim()) {
-      // Navigate to research page with the query parameter
-      navigate(`/new?q=${encodeURIComponent(prompt.trim())}`);
-    }
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (prompt.trim()) {
+  //     // Navigate to research page with the query parameter
+  //     navigate(`/new?q=${encodeURIComponent(prompt.trim())}`);
+  //   }
+  // };
 
   return (
     <div className="max-w-5xl mx-auto px-4">
