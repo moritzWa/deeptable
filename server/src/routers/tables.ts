@@ -284,5 +284,76 @@ export const tablesRouter = router({
         console.error('Delete table error:', error);
         throw new Error('Failed to delete table');
       }
+    }),
+
+  // Add a new column
+  addColumn: publicProcedure
+    .input(z.object({
+      token: z.string(),
+      tableId: z.string(),
+      columnName: z.string(),
+      position: z.enum(['left', 'right']),
+      relativeTo: z.string()
+    }))
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        
+        // Get the table
+        const table = await TableModel.findOne({ _id: input.tableId, userId: decoded.userId }) as ITable | null;
+        
+        if (!table) {
+          throw new Error('Table not found');
+        }
+
+        // Find the index of the reference column
+        const refColumnIndex = table.columns.findIndex(col => col.name === input.relativeTo);
+        if (refColumnIndex === -1) {
+          throw new Error('Reference column not found');
+        }
+
+        // Get the reference column's sortIndex
+        const refColumn = table.columns[refColumnIndex];
+        const refSortIndex = refColumn.columnState?.sortIndex ?? refColumnIndex;
+
+        // Create the new column with the appropriate sortIndex
+        const newColumn = {
+          name: input.columnName,
+          type: 'string' as const,
+          required: false,
+          columnState: {
+            sortIndex: input.position === 'left' ? refSortIndex : refSortIndex + 1
+          }
+        };
+
+        // Insert the column at the correct position
+        const insertIndex = input.position === 'left' ? refColumnIndex : refColumnIndex + 1;
+        table.columns.splice(insertIndex, 0, newColumn);
+
+        // Update sortIndexes for all columns after the insertion point
+        table.columns.forEach((col, index) => {
+          if (!col.columnState) {
+            col.columnState = {};
+          }
+          
+          // For columns after the insertion point, increment their sortIndex
+          if (index !== insertIndex && 
+              (input.position === 'left' ? index >= refColumnIndex : index > refColumnIndex)) {
+            col.columnState.sortIndex = (col.columnState.sortIndex ?? index) + 1;
+          }
+          // For columns before the insertion point, keep their current sortIndex or use their array index
+          else if (index !== insertIndex) {
+            col.columnState.sortIndex = col.columnState.sortIndex ?? index;
+          }
+        });
+
+        // Save the updated table
+        await table.save();
+
+        return { success: true };
+      } catch (error) {
+        console.error('Add column error:', error);
+        throw new Error('Failed to add column');
+      }
     })
 }); 

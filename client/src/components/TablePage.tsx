@@ -125,6 +125,17 @@ const TablePage = () => {
     }
   });
 
+  // Add mutation for adding columns
+  const addColumnMutation = trpc.tables.addColumn.useMutation({
+    onSuccess: () => {
+      // Refetch table data after successful column addition
+      refetch();
+    },
+    onError: (error) => {
+      console.error("Failed to add column:", error.message);
+    }
+  });
+
   // This effect will run whenever the id parameter changes
   useEffect(() => {
     setLoading(true);
@@ -285,8 +296,29 @@ const TablePage = () => {
           }
         }
       });
+    },
+    addColumn: (position: 'left' | 'right', relativeTo: string) => {
+      if (!token || !id) return;
+      
+      // Generate a unique name for the new column
+      const existingColumns = table?.columns || [];
+      let newColumnName = 'New Column';
+      let counter = 1;
+      
+      while (existingColumns.some(col => col.name === newColumnName)) {
+        newColumnName = `New Column ${counter}`;
+        counter++;
+      }
+      
+      addColumnMutation.mutate({
+        token,
+        tableId: id,
+        columnName: newColumnName,
+        position,
+        relativeTo
+      });
     }
-  }), [id, token, updateColumnStateMutation, refetch, utils.rows.getRows]);
+  }), [id, token, updateColumnStateMutation, refetch, utils.rows.getRows, table?.columns, addColumnMutation]);
 
   // AG Grid default column definition
   const defaultColDef = useMemo(() => ({

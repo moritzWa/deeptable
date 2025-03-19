@@ -15,6 +15,7 @@ interface CustomHeaderParams extends IHeaderParams {
   context: {
     tableId: string;
     updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => void;
+    addColumn?: (position: 'left' | 'right', relativeTo: string) => void;
   };
   enableSorting: boolean;
   column: Column;
@@ -100,6 +101,11 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const sortState = props.column?.getSort();
   const isSortable = props.enableSorting;
 
+  const handleInsertColumn = (position: 'left' | 'right') => {
+    if (!props.context.addColumn) return;
+    props.context.addColumn(position, props.column.getColId());
+  };
+
   return (
     <ContextMenu onOpenChange={handleOpenChange}>
       <ContextMenuTrigger asChild>
@@ -137,6 +143,15 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
           </ContextMenuItem>
           <ContextMenuItem onClick={() => handlePin(null)}>
             Reset Pin
+          </ContextMenuItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <ContextMenuItem onClick={() => handleInsertColumn('left')}>
+            Insert Column Left
+          </ContextMenuItem>
+          <ContextMenuItem onClick={() => handleInsertColumn('right')}>
+            Insert Column Right
           </ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
