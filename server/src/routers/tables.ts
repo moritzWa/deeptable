@@ -168,8 +168,6 @@ export const tablesRouter = router({
     }))
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        console.log("First two columns in update request:", input.columnStates.slice(0, 2));
-        
         const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
         
         // Get the table
@@ -178,11 +176,6 @@ export const tablesRouter = router({
         if (!table) {
           throw new Error('Table not found');
         }
-
-        console.log("First two columns before update:", table.columns.slice(0, 2).map(col => ({
-          name: col.name,
-          columnState: col.columnState
-        })));
 
         // First, handle any column name changes in the row data
         const nameChanges = input.columnStates.filter(cs => cs.columnState.colId && cs.columnState.colId !== cs.name);
@@ -261,17 +254,7 @@ export const tablesRouter = router({
         });
 
         // Execute all updates in a single operation
-        const result = await TableModel.bulkWrite(bulkOps);
-        console.log("Bulk update result:", result);
-
-        // Get the updated table to verify changes
-        const updatedTable = await TableModel.findOne({ _id: input.tableId }) as ITable | null;
-        if (updatedTable) {
-          console.log("First two columns after update:", updatedTable.columns.slice(0, 2).map(col => ({
-            name: col.name,
-            columnState: col.columnState
-          })));
-        }
+        await TableModel.bulkWrite(bulkOps);
         
         return { success: true };
       } catch (error) {
