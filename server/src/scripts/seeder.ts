@@ -1,10 +1,6 @@
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { IColumn, Table } from '../models/table';
 import { User } from '../models/user';
-
-// Load environment variables
-dotenv.config();
 
 // Connect to MongoDB
 const connectDB = async () => {
