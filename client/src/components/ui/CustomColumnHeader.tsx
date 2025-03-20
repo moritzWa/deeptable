@@ -1,5 +1,14 @@
 import { ColumnState } from '@shared/types';
 import { Column, IHeaderParams } from 'ag-grid-community';
+import {
+  ArrowLeftToLine,
+  ArrowRightToLine,
+  Eye,
+  EyeOff,
+  PinIcon,
+  PinOff,
+  Trash2,
+} from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import {
   ContextMenu,
@@ -130,7 +139,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent className="w-64">
-        <div className="px-2 py-1.5">
+        <div className="pb-2">
           <Input
             ref={inputRef}
             value={columnName}
@@ -141,30 +150,54 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
           />
         </div>
         <ContextMenuGroup>
-          <ContextMenuItem onClick={() => handlePin('left')}>Pin Left</ContextMenuItem>
-          <ContextMenuItem onClick={() => handlePin('right')}>Pin Right</ContextMenuItem>
-          <ContextMenuItem onClick={() => handlePin(null)}>Reset Pin</ContextMenuItem>
+          <ContextMenuItem onClick={() => handlePin('left')} className="flex items-center gap-2">
+            <PinIcon className="h-4 w-4" />
+            Pin Left
+          </ContextMenuItem>
+          <ContextMenuItem onClick={() => handlePin('right')} className="flex items-center gap-2">
+            <PinIcon className="h-4 w-4" />
+            Pin Right
+          </ContextMenuItem>
+          <ContextMenuItem onClick={() => handlePin(null)} className="flex items-center gap-2">
+            <PinOff className="h-4 w-4" />
+            Reset Pin
+          </ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
         <ContextMenuGroup>
-          <ContextMenuItem onClick={() => handleInsertColumn('left')}>
+          <ContextMenuItem
+            onClick={() => handleInsertColumn('left')}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeftToLine className="h-4 w-4" />
             Insert Column Left
           </ContextMenuItem>
-          <ContextMenuItem onClick={() => handleInsertColumn('right')}>
+          <ContextMenuItem
+            onClick={() => handleInsertColumn('right')}
+            className="flex items-center gap-2"
+          >
+            <ArrowRightToLine className="h-4 w-4" />
             Insert Column Right
           </ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
         <ContextMenuGroup>
-          <ContextMenuItem onClick={handleHideColumn}>Hide Column</ContextMenuItem>
-          <ContextMenuItem onClick={handleShowAllColumns}>Show All Columns</ContextMenuItem>
+          <ContextMenuItem onClick={handleHideColumn} className="flex items-center gap-2">
+            <EyeOff className="h-4 w-4" />
+            Hide Column
+          </ContextMenuItem>
+          <ContextMenuItem onClick={handleShowAllColumns} className="flex items-center gap-2">
+            <Eye className="h-4 w-4" />
+            Show All Columns
+          </ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
         <ContextMenuGroup>
           <ContextMenuItem
-            className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
+            className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400 flex items-center gap-2"
             onClick={handleDeleteColumn}
           >
+            <Trash2 className="h-4 w-4" />
             Delete Column
           </ContextMenuItem>
         </ContextMenuGroup>
