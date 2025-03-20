@@ -24,9 +24,11 @@ export const paymentsRouter = router({
     .input(z.object({ token: z.string() }))
     .mutation(async ({ input }): Promise<CheckoutSessionResponse> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
         const user = await UserModel.findById(decoded.userId);
-        
+
         if (!user) {
           throw new Error('User not found');
         }
@@ -72,9 +74,11 @@ export const paymentsRouter = router({
     .input(z.object({ token: z.string() }))
     .mutation(async ({ input }): Promise<PortalSessionResponse> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
         const user = await UserModel.findById(decoded.userId);
-        
+
         if (!user || !user.stripeCustomerId) {
           throw new Error('User not found or no Stripe customer ID');
         }
@@ -92,10 +96,12 @@ export const paymentsRouter = router({
     }),
 
   handleWebhook: publicProcedure
-    .input(z.object({ 
-      signature: z.string(),
-      rawBody: z.string(),
-    }))
+    .input(
+      z.object({
+        signature: z.string(),
+        rawBody: z.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
         const event = stripe.webhooks.constructEvent(
@@ -107,7 +113,7 @@ export const paymentsRouter = router({
         if (event.type === 'checkout.session.completed') {
           const session = event.data.object as Stripe.Checkout.Session;
           const customerId = session.customer as string;
-          
+
           const user = await UserModel.findOne({ stripeCustomerId: customerId });
           if (user) {
             user.hasSubscription = true;
@@ -118,7 +124,7 @@ export const paymentsRouter = router({
         if (event.type === 'customer.subscription.deleted') {
           const subscription = event.data.object as Stripe.Subscription;
           const customerId = subscription.customer as string;
-          
+
           const user = await UserModel.findOne({ stripeCustomerId: customerId });
           if (user) {
             user.hasSubscription = false;
@@ -132,4 +138,4 @@ export const paymentsRouter = router({
         throw new Error('Webhook handler failed');
       }
     }),
-}); 
+});

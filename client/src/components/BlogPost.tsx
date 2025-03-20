@@ -38,4 +38,4 @@ export const BlogPost: React.FC<BlogPostProps> = ({
       </div>
     </>
   );
-}; 
+};

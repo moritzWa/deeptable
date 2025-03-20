@@ -7,8 +7,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useNavigate } from "react-router-dom";
+} from '@/components/ui/alert-dialog';
+import { useNavigate } from 'react-router-dom';
 
 interface UpgradeDialogProps {
   isOpen: boolean;
@@ -46,7 +46,7 @@ export function UpgradeDialog({
           <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
-              navigate("/settings");
+              navigate('/settings');
               onClose();
             }}
           >
@@ -56,4 +56,4 @@ export function UpgradeDialog({
       </AlertDialogContent>
     </AlertDialog>
   );
-} 
+}

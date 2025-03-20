@@ -5,11 +5,13 @@ import { ColDef } from 'ag-grid-community';
  * Converts our application's column state format to AG Grid's column definition properties.
  * This handles all the necessary type conversions and null checks for AG Grid compatibility.
  */
-export const convertColumnStateToAgGridProps = (columnState: ColumnState | undefined): Partial<ColDef> => {
+export const convertColumnStateToAgGridProps = (
+  columnState: ColumnState | undefined
+): Partial<ColDef> => {
   if (!columnState) return {};
 
   const props: Partial<ColDef> = {};
-  
+
   // Map of column state properties to their conditions
   const propertyMappings = {
     width: columnState.width,
@@ -17,7 +19,7 @@ export const convertColumnStateToAgGridProps = (columnState: ColumnState | undef
     pinned: columnState.pinned !== null ? columnState.pinned : undefined,
     sort: columnState.sort !== null ? columnState.sort : undefined,
     sortIndex: columnState.sortIndex,
-    flex: columnState.flex
+    flex: columnState.flex,
   };
 
   // Only add properties that have valid values
@@ -28,4 +30,4 @@ export const convertColumnStateToAgGridProps = (columnState: ColumnState | undef
   });
 
   return props;
-}; 
+};

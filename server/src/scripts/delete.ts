@@ -18,21 +18,20 @@ const connectDB = async () => {
 const deleteCollections = async () => {
   try {
     console.log('Starting database cleanup...');
-    
+
     // Delete all rows
     const rowResult = await Row.deleteMany({});
     console.log(`Deleted ${rowResult.deletedCount} rows`);
-    
+
     // Delete all tables
     const tableResult = await Table.deleteMany({});
     console.log(`Deleted ${tableResult.deletedCount} tables`);
-    
+
     // Add other collections to delete here
-    
+
     // Delete each remaining collection
-    
+
     console.log('Database cleanup completed successfully!');
-    
   } catch (error: any) {
     console.error(`Error deleting collections: ${error.message}`);
   } finally {
@@ -45,4 +44,4 @@ const deleteCollections = async () => {
 // Run the delete script
 connectDB().then(() => {
   deleteCollections();
-}); 
+});

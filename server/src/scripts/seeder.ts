@@ -26,7 +26,7 @@ const seedDatabase = async () => {
     }
 
     const userId = user._id.toString();
-    
+
     // Create restaurant table
     const restaurantColumns: IColumn[] = [
       { name: 'Restaurant Name', type: 'string', required: true },
@@ -35,21 +35,20 @@ const seedDatabase = async () => {
       { name: 'Ratings', type: 'number', required: false },
       { name: 'Google Maps Review Count', type: 'number', required: false },
       { name: 'Special Features', type: 'string', required: false },
-      { name: 'Website', type: 'string', required: false }
+      { name: 'Website', type: 'string', required: false },
     ];
-    
+
     const restaurantTable = await Table.create({
       name: 'SF German Restaurants',
       description: 'A collection of German restaurants in San Francisco',
       columns: restaurantColumns,
-      userId
+      userId,
     });
-    
+
     console.log(`Created table: ${restaurantTable.name} with ID: ${restaurantTable._id}`);
-    
+
     console.log('Database seeded successfully!');
     console.log('To add rows to this table, run the rowSeeder.ts script');
-    
   } catch (error: any) {
     console.error(`Error seeding database: ${error.message}`);
   } finally {
@@ -62,4 +61,4 @@ const seedDatabase = async () => {
 // Run the seeder
 connectDB().then(() => {
   seedDatabase();
-}); 
+});

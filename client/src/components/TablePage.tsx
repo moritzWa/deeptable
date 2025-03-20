@@ -1,17 +1,28 @@
-import { smartCellRenderer } from "@/components/ui/CustomCellRenderers";
-import { useSidebar } from "@/components/ui/sidebar";
-import { trpc } from "@/utils/trpc";
-import { ColumnState, Table } from "@shared/types";
-import { CellRange, CellValueChangedEvent, ColDef, ColumnMovedEvent, ColumnPinnedEvent, ColumnResizedEvent, ColumnVisibleEvent, GridReadyEvent, ModuleRegistry, SortChangedEvent } from 'ag-grid-community';
+import { smartCellRenderer } from '@/components/ui/CustomCellRenderers';
+import { useSidebar } from '@/components/ui/sidebar';
+import { trpc } from '@/utils/trpc';
+import { ColumnState, Table } from '@shared/types';
+import {
+  CellRange,
+  CellValueChangedEvent,
+  ColDef,
+  ColumnMovedEvent,
+  ColumnPinnedEvent,
+  ColumnResizedEvent,
+  ColumnVisibleEvent,
+  GridReadyEvent,
+  ModuleRegistry,
+  SortChangedEvent,
+} from 'ag-grid-community';
 import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { AppLayout } from "./AppLayout";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AppLayout } from './AppLayout';
 import { TablePageError } from './TablePageError';
 import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { TablePageHeader } from './ui/TablePageHeader';
@@ -22,10 +33,10 @@ ModuleRegistry.registerModules([AllEnterpriseModule]);
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
   let timeoutId: ReturnType<typeof setTimeout>;
-  
-  return function(...args: any[]) {
+
+  return function (...args: any[]) {
     clearTimeout(timeoutId);
-    
+
     timeoutId = setTimeout(() => {
       func(...args);
     }, delay);
@@ -58,44 +69,44 @@ const TablePage = () => {
   const sidebar = useSidebar();
   const [table, setTable] = useState<Table | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [rowData, setRowData] = useState<any[]>([]);
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   const [selectedRanges, setSelectedRanges] = useState<CellRange[]>([]);
-  
+
   // Reference to the AG Grid API
   const gridRef = useRef<AgGridReact>(null);
-  
-  const token = localStorage.getItem("token");
+
+  const token = localStorage.getItem('token');
   const utils = trpc.useContext();
-  
+
   // FETCH DATA
   const { data: tablesData, refetch } = trpc.tables.getTables.useQuery(
-    { token: token || "" },
-    { 
+    { token: token || '' },
+    {
       enabled: !!token,
       onSuccess: (data) => {
-        const foundTable = data.find(t => t.id === id);
+        const foundTable = data.find((t) => t.id === id);
         if (foundTable) {
           setTable(foundTable);
         } else {
-          setError("Table not found");
+          setError('Table not found');
         }
         setLoading(false);
       },
       onError: (err) => {
-        setError(err.message || "Failed to load table");
+        setError(err.message || 'Failed to load table');
         setLoading(false);
-      }
+      },
     }
   );
   const { data: rowsData } = trpc.rows.getRows.useQuery(
-    { token: token || "", tableId: id || "" },
-    { 
+    { token: token || '', tableId: id || '' },
+    {
       enabled: !!token && !!id,
       onError: (err) => {
-        console.error("Failed to load rows:", err);
-      }
+        console.error('Failed to load rows:', err);
+      },
     }
   );
 
@@ -108,19 +119,19 @@ const TablePage = () => {
       }
     },
     onError: (error) => {
-      console.error("Failed to update row:", error);
+      console.error('Failed to update row:', error);
       // You could add a toast notification here
-    }
+    },
   });
   const updateColumnStateMutation = trpc.tables.updateColumnState.useMutation({
     onSuccess: () => {
-      console.log("Column state updated successfully");
+      console.log('Column state updated successfully');
       // Force refetch to get updated column state
       refetch();
     },
     onError: (error) => {
-      console.error("Failed to update column state:", error);
-    }
+      console.error('Failed to update column state:', error);
+    },
   });
   const addColumnMutation = trpc.tables.addColumn.useMutation({
     onSuccess: () => {
@@ -128,8 +139,8 @@ const TablePage = () => {
       refetch();
     },
     onError: (error) => {
-      console.error("Failed to add column:", error.message);
-    }
+      console.error('Failed to add column:', error.message);
+    },
   });
   const deleteColumnMutation = trpc.tables.deleteColumn.useMutation({
     onSuccess: () => {
@@ -137,22 +148,22 @@ const TablePage = () => {
       refetch();
     },
     onError: (error) => {
-      console.error("Failed to delete column:", error.message);
-    }
+      console.error('Failed to delete column:', error.message);
+    },
   });
 
   // USE EFFECTS
   // This effect will run whenever the id parameter changes
   useEffect(() => {
     setLoading(true);
-    setError("");
-    
+    setError('');
+
     if (tablesData) {
-      const foundTable = tablesData.find(t => t.id === id);
+      const foundTable = tablesData.find((t) => t.id === id);
       if (foundTable) {
         setTable(foundTable);
       } else {
-        setError("Table not found");
+        setError('Table not found');
       }
       setLoading(false);
     } else if (token) {
@@ -171,13 +182,13 @@ const TablePage = () => {
   // Add flags to track state
   const isApplyingState = useRef(false);
   const hasAppliedInitialState = useRef(false);
-  
+
   const processColumnStateChange = useCallback(() => {
     if (!gridRef.current?.api || !table?.id || !token) return;
-    
+
     // Use api to get column state
     const columnState = gridRef.current.api.getColumnState() as AgGridColumnState[];
-    
+
     // Map the column state to our data structure
     const columnStates = columnState.map((state: AgGridColumnState, index: number) => ({
       name: state.colId,
@@ -188,16 +199,15 @@ const TablePage = () => {
         sort: state.sort,
         sortIndex: index,
         width: state.width,
-        flex: state.flex
-      }
+        flex: state.flex,
+      },
     }));
-    
+
     updateColumnStateMutation.mutate({
       token,
       tableId: table.id,
-      columnStates
+      columnStates,
     });
-    
   }, [table?.id, token, updateColumnStateMutation]);
 
   // Create a debounced version of the state change processor
@@ -213,7 +223,7 @@ const TablePage = () => {
       if (!hasAppliedInitialState.current) {
         return;
       }
-      
+
       // Sort columns by their sortIndex value
       const sortedColumns = [...table.columns].sort((a, b) => {
         const orderA = a.columnState?.sortIndex ?? Number.MAX_SAFE_INTEGER;
@@ -221,10 +231,10 @@ const TablePage = () => {
         return orderA - orderB;
       });
 
-      const agGridColumns: ColDef[] = sortedColumns.map(column => {
+      const agGridColumns: ColDef[] = sortedColumns.map((column) => {
         // Convert our column state to AG Grid properties
         const columnStateProps = convertColumnStateToAgGridProps(column.columnState);
-      
+
         const colDef: ColDef = {
           headerName: column.name,
           field: `data.${column.name}`,
@@ -237,106 +247,129 @@ const TablePage = () => {
           suppressHeaderMenuButton: true,
           suppressHeaderContextMenu: true,
           ...columnStateProps,
-          colId: column.name
+          colId: column.name,
         };
-        
+
         return colDef;
       });
-      
+
       setColumnDefs(agGridColumns);
     }
-  // ATTENTION: DO NOT remove hasAppliedInitialState.current (it causes the data to not load)
-  // eslint-disable-next-line
+    // ATTENTION: DO NOT remove hasAppliedInitialState.current (it causes the data to not load)
+    // eslint-disable-next-line
   }, [table, hasAppliedInitialState.current]);
 
   useEffect(() => {
     if (!token) {
-      navigate("/login");
+      navigate('/login');
     }
   }, [token, navigate]);
 
   // Create context object for AG Grid
-  const gridContext = useMemo(() => ({
-    tableId: id,
-    updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => {
-      if (!token) return;
-      
-      // Check if any column names are being changed
-      const hasNameChanges = columnStates.some(cs => cs.columnState.colId && cs.columnState.colId !== cs.name);
-      
-      updateColumnStateMutation.mutate({
-        token,
-        tableId: id || "",
-        columnStates
-      }, {
-        onSuccess: () => {
-          if (hasNameChanges) {
-            // Refetch both table and row data when column names change
-            refetch();
-            utils.rows.getRows.invalidate({ token, tableId: id });
-          }
-        }
-      });
-    },
-    addColumn: (position: 'left' | 'right', relativeTo: string) => {
-      if (!token || !id) return;
-      
-      // Generate a unique name for the new column
-      const generateUniqueColumnName = (existingColumns: Table['columns']) => {
-        let counter = 0;
-        let candidateName = 'New Column';
-        
-        const isNameTaken = (name: string) => existingColumns.some(col => col.name === name);
-        
-        while (isNameTaken(candidateName)) {
-          counter++;
-          candidateName = `New Column ${counter}`;
-        }
-        
-        return candidateName;
-      };
+  const gridContext = useMemo(
+    () => ({
+      tableId: id,
+      updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => {
+        if (!token) return;
 
-      const newColumnName = generateUniqueColumnName(table?.columns || []);
-      
-      addColumnMutation.mutate({
-        token,
-        tableId: id,
-        columnName: newColumnName,
-        position,
-        relativeTo
-      });
-    },
-    deleteColumn: (columnName: string) => {
-      if (!token || !id) return;
-      
-      deleteColumnMutation.mutate({
-        token,
-        tableId: id,
-        columnName
-      });
-    }
-  }), [id, token, updateColumnStateMutation, refetch, utils.rows.getRows, table?.columns, addColumnMutation, deleteColumnMutation]);
+        // Check if any column names are being changed
+        const hasNameChanges = columnStates.some(
+          (cs) => cs.columnState.colId && cs.columnState.colId !== cs.name
+        );
+
+        updateColumnStateMutation.mutate(
+          {
+            token,
+            tableId: id || '',
+            columnStates,
+          },
+          {
+            onSuccess: () => {
+              if (hasNameChanges) {
+                // Refetch both table and row data when column names change
+                refetch();
+                utils.rows.getRows.invalidate({ token, tableId: id });
+              }
+            },
+          }
+        );
+      },
+      addColumn: (position: 'left' | 'right', relativeTo: string) => {
+        if (!token || !id) return;
+
+        // Generate a unique name for the new column
+        const generateUniqueColumnName = (existingColumns: Table['columns']) => {
+          let counter = 0;
+          let candidateName = 'New Column';
+
+          const isNameTaken = (name: string) => existingColumns.some((col) => col.name === name);
+
+          while (isNameTaken(candidateName)) {
+            counter++;
+            candidateName = `New Column ${counter}`;
+          }
+
+          return candidateName;
+        };
+
+        const newColumnName = generateUniqueColumnName(table?.columns || []);
+
+        addColumnMutation.mutate({
+          token,
+          tableId: id,
+          columnName: newColumnName,
+          position,
+          relativeTo,
+        });
+      },
+      deleteColumn: (columnName: string) => {
+        if (!token || !id) return;
+
+        deleteColumnMutation.mutate({
+          token,
+          tableId: id,
+          columnName,
+        });
+      },
+    }),
+    [
+      id,
+      token,
+      updateColumnStateMutation,
+      refetch,
+      utils.rows.getRows,
+      table?.columns,
+      addColumnMutation,
+      deleteColumnMutation,
+    ]
+  );
 
   // AG Grid default column definition
-  const defaultColDef = useMemo(() => ({
-    minWidth: 100,
-    resizable: true,
-    sortable: true,
-    filter: true,
-    editable: true,
-    headerComponent: CustomColumnHeader,
-    suppressHeaderMenuButton: true,
-    suppressHeaderContextMenu: true,
-    suppressSizeToFit: true
-  }), []);
+  const defaultColDef = useMemo(
+    () => ({
+      minWidth: 100,
+      resizable: true,
+      sortable: true,
+      filter: true,
+      editable: true,
+      headerComponent: CustomColumnHeader,
+      suppressHeaderMenuButton: true,
+      suppressHeaderContextMenu: true,
+      suppressSizeToFit: true,
+    }),
+    []
+  );
 
   // Cell selection configuration
-  const cellSelection = useMemo(() => ({
-    enableRangeSelection: true,
-    enableRangeHandle: true,
-    enableFillHandle: true,
-    enableHeaderHighlight: true
-  }), []);
+  const cellSelection = useMemo(
+    () => ({
+      enableRangeSelection: true,
+      enableRangeHandle: true,
+      enableFillHandle: true,
+      enableHeaderHighlight: true,
+    }),
+    []
+  );
 
   // Handle cell range selection changed
   const onRangeSelectionChanged = useCallback((event: any) => {
@@ -348,103 +381,121 @@ const TablePage = () => {
   const onCellValueChanged = (event: CellValueChangedEvent) => {
     const { data, colDef } = event;
     if (!data.id || !colDef.field) return;
-    
+
     // Extract the field name from the path (e.g., 'data.name' -> 'name')
     const fieldName = colDef.field.replace('data.', '');
-    
+
     // Create updated data object
     const updatedData = { ...data.data };
     updatedData[fieldName] = event.newValue;
-    
+
     // Call the update mutation
     updateRowMutation.mutate({
-      token: token || "",
+      token: token || '',
       id: data.id,
-      data: updatedData
+      data: updatedData,
     });
   };
 
   // Handler for grid ready event
-  const onGridReady = useCallback((params: GridReadyEvent) => {
-    // If we have column state stored in the table, apply it after grid initialization
-    if (table?.columns && table.columns.some(col => col.columnState)) {
-      // Wait for the grid to be fully initialized before attempting to apply column state
-      setTimeout(() => {
-        if (!gridRef.current?.api) return;
-        
-        isApplyingState.current = true;
-        
-        // Collect all column states from the table
-        const savedColumnStates = table.columns
-          .filter(col => col.columnState)
-          .map(col => {
-            const colState = col.columnState!;
-            return {
-              colId: col.name,
-              hide: nullToUndefined(colState.hide),
-              pinned: colState.pinned === null ? undefined : colState.pinned,
-              sort: colState.sort === null ? undefined : colState.sort,
-              sortIndex: nullToUndefined(colState.sortIndex),
-              width: colState.width !== null ? colState.width : undefined,
-              flex: colState.width === null ? colState.flex : undefined
-            };
-          });
-        
-        try {
-          // Apply the saved column state directly to AG Grid
-          gridRef.current.api.applyColumnState({
-            state: savedColumnStates,
-            applyOrder: true
-          });
-          
-          gridRef.current.api.refreshHeader();
-        } catch (error) { 
-          console.error("Error applying column state:", error);
-        }
-
-        // Reset the flags after a short delay to ensure all events have processed
+  const onGridReady = useCallback(
+    (params: GridReadyEvent) => {
+      // If we have column state stored in the table, apply it after grid initialization
+      if (table?.columns && table.columns.some((col) => col.columnState)) {
+        // Wait for the grid to be fully initialized before attempting to apply column state
         setTimeout(() => {
-          isApplyingState.current = false;
-          hasAppliedInitialState.current = true;
-          // Force a re-render to set up columns with the correct order
-          setColumnDefs([]);
-        }, 100);
-      }, 200);
-    } else {
-      // If no saved state, mark as ready for column setup
-      hasAppliedInitialState.current = true;
-    }
-  }, [table?.columns]);
+          if (!gridRef.current?.api) return;
+
+          isApplyingState.current = true;
+
+          // Collect all column states from the table
+          const savedColumnStates = table.columns
+            .filter((col) => col.columnState)
+            .map((col) => {
+              const colState = col.columnState!;
+              return {
+                colId: col.name,
+                hide: nullToUndefined(colState.hide),
+                pinned: colState.pinned === null ? undefined : colState.pinned,
+                sort: colState.sort === null ? undefined : colState.sort,
+                sortIndex: nullToUndefined(colState.sortIndex),
+                width: colState.width !== null ? colState.width : undefined,
+                flex: colState.width === null ? colState.flex : undefined,
+              };
+            });
+
+          try {
+            // Apply the saved column state directly to AG Grid
+            gridRef.current.api.applyColumnState({
+              state: savedColumnStates,
+              applyOrder: true,
+            });
+
+            gridRef.current.api.refreshHeader();
+          } catch (error) {
+            console.error('Error applying column state:', error);
+          }
+
+          // Reset the flags after a short delay to ensure all events have processed
+          setTimeout(() => {
+            isApplyingState.current = false;
+            hasAppliedInitialState.current = true;
+            // Force a re-render to set up columns with the correct order
+            setColumnDefs([]);
+          }, 100);
+        }, 200);
+      } else {
+        // If no saved state, mark as ready for column setup
+        hasAppliedInitialState.current = true;
+      }
+    },
+    [table?.columns]
+  );
 
   // Handler for column resized event
-  const onColumnResized = useCallback((event: ColumnResizedEvent) => {
-    if (event.finished) {
-      debouncedProcessColumnStateChange();
-    }
-  }, [debouncedProcessColumnStateChange]);
+  const onColumnResized = useCallback(
+    (event: ColumnResizedEvent) => {
+      if (event.finished) {
+        debouncedProcessColumnStateChange();
+      }
+    },
+    [debouncedProcessColumnStateChange]
+  );
 
   // Handler for column moved event
-  const onColumnMoved = useCallback((event: ColumnMovedEvent) => {
-    // Only process if the move is finished and we're not applying initial state
-    if (event.finished && !isApplyingState.current) {
-      debouncedProcessColumnStateChange();
-    }
-  }, [debouncedProcessColumnStateChange]);
+  const onColumnMoved = useCallback(
+    (event: ColumnMovedEvent) => {
+      // Only process if the move is finished and we're not applying initial state
+      if (event.finished && !isApplyingState.current) {
+        debouncedProcessColumnStateChange();
+      }
+    },
+    [debouncedProcessColumnStateChange]
+  );
 
   // Handler for column visibility change
-  const onColumnVisible = useCallback((event: ColumnVisibleEvent) => {
-    debouncedProcessColumnStateChange();
-  }, [debouncedProcessColumnStateChange]);
+  const onColumnVisible = useCallback(
+    (event: ColumnVisibleEvent) => {
+      debouncedProcessColumnStateChange();
+    },
+    [debouncedProcessColumnStateChange]
+  );
 
   // Handler for column pinned state change
-  const onColumnPinned = useCallback((event: ColumnPinnedEvent) => {
-    debouncedProcessColumnStateChange();
-  }, [debouncedProcessColumnStateChange]);
+  const onColumnPinned = useCallback(
+    (event: ColumnPinnedEvent) => {
+      debouncedProcessColumnStateChange();
+    },
+    [debouncedProcessColumnStateChange]
+  );
 
   // Handler for sort changed event
-  const onSortChanged = useCallback((event: SortChangedEvent) => {
-    debouncedProcessColumnStateChange();
-  }, [debouncedProcessColumnStateChange]);
+  const onSortChanged = useCallback(
+    (event: SortChangedEvent) => {
+      debouncedProcessColumnStateChange();
+    },
+    [debouncedProcessColumnStateChange]
+  );
 
   if (loading) {
     return (
@@ -455,14 +506,10 @@ const TablePage = () => {
   }
 
   if (error) {
-    return (
-     <TablePageError error={error} />
-    );
-  } 
+    return <TablePageError error={error} />;
+  }
   if (!table) {
-    return (
-     <TablePageError error="Table not found" />
-    );
+    return <TablePageError error="Table not found" />;
   }
 
   return (
@@ -510,4 +557,4 @@ const TablePage = () => {
   );
 };
 
-export default TablePage; 
+export default TablePage;

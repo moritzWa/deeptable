@@ -41,21 +41,24 @@ export interface ITable extends Document {
 }
 
 // Column state schema
-const columnStateSchema = new mongoose.Schema({
-  colId: { type: String, required: false },
-  width: { type: Number, required: false },
-  hide: { type: Boolean, required: false },
-  pinned: { type: String, required: false },
-  sort: { type: String, required: false },
-  sortIndex: { type: Number, required: false },
-  aggFunc: { type: String, required: false },
-  rowGroup: { type: Boolean, required: false },
-  rowGroupIndex: { type: Number, required: false },
-  pivot: { type: Boolean, required: false },
-  pivotIndex: { type: Number, required: false },
-  flex: { type: Number, required: false },
-  orderIndex: { type: Number, required: false }
-}, { _id: false, strict: false });
+const columnStateSchema = new mongoose.Schema(
+  {
+    colId: { type: String, required: false },
+    width: { type: Number, required: false },
+    hide: { type: Boolean, required: false },
+    pinned: { type: String, required: false },
+    sort: { type: String, required: false },
+    sortIndex: { type: Number, required: false },
+    aggFunc: { type: String, required: false },
+    rowGroup: { type: Boolean, required: false },
+    rowGroupIndex: { type: Number, required: false },
+    pivot: { type: Boolean, required: false },
+    pivotIndex: { type: Number, required: false },
+    flex: { type: Number, required: false },
+    orderIndex: { type: Number, required: false },
+  },
+  { _id: false, strict: false }
+);
 
 // Column schema for better type support
 const columnSchema = new mongoose.Schema({
@@ -84,29 +87,32 @@ const columnSchema = new mongoose.Schema({
   columnState: {
     type: columnStateSchema,
     required: false,
-  }
+  },
 });
 
-const tableSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
+const tableSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: false,
+    },
+    columns: {
+      type: [columnSchema],
+      required: true,
+      default: [],
+    },
+    userId: {
+      type: String,
+      required: true,
+    },
   },
-  description: {
-    type: String,
-    required: false,
-  },
-  columns: {
-    type: [columnSchema],
-    required: true,
-    default: [],
-  },
-  userId: {
-    type: String,
-    required: true,
+  {
+    timestamps: true,
   }
-}, {
-  timestamps: true
-});
+);
 
-export const Table = mongoose.model<ITable>('Table', tableSchema); 
+export const Table = mongoose.model<ITable>('Table', tableSchema);

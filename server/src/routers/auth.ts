@@ -30,10 +30,10 @@ export const authRouter = router({
 
         const payload = ticket.getPayload();
         if (!payload) throw new Error('No payload');
-        
+
         // Find or create user
         let user = await UserModel.findOne({ googleId: payload.sub });
-        
+
         if (!user) {
           user = await UserModel.create({
             email: payload.email,
@@ -44,11 +44,9 @@ export const authRouter = router({
         }
 
         // Generate JWT
-        const token = jwt.sign(
-          { userId: user._id },
-          process.env.AUTH_SECRET || 'fallback-secret',
-          { expiresIn: '7d' }
-        );
+        const token = jwt.sign({ userId: user._id }, process.env.AUTH_SECRET || 'fallback-secret', {
+          expiresIn: '7d',
+        });
 
         return {
           token,
@@ -66,31 +64,35 @@ export const authRouter = router({
     }),
 
   submitWaitlistForm: publicProcedure
-    .input(z.object({
-      firstName: z.string(),
-      lastName: z.string(),
-      jobTitle: z.string().optional(),
-      companyName: z.string().optional(),
-      workEmail: z.string().email(),
-      useCase: z.string().optional(),
-      token: z.string()
-    }))
+    .input(
+      z.object({
+        firstName: z.string(),
+        lastName: z.string(),
+        jobTitle: z.string().optional(),
+        companyName: z.string().optional(),
+        workEmail: z.string().email(),
+        useCase: z.string().optional(),
+        token: z.string(),
+      })
+    )
     .mutation(async ({ input }) => {
       try {
         // Get the user ID from the JWT token
         const token = input.token;
-        
+
         if (!token) {
           throw new Error('Authentication required');
         }
-        
-        const decoded = jwt.verify(token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+
+        const decoded = jwt.verify(token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
         const user = await UserModel.findById(decoded.userId);
-        
+
         if (!user) {
           throw new Error('User not found');
         }
-        
+
         // Update the user with waitlist data
         user.waitlistData = {
           firstName: input.firstName,
@@ -99,12 +101,12 @@ export const authRouter = router({
           companyName: input.companyName || '',
           workEmail: input.workEmail,
           useCase: input.useCase || '',
-          submittedAt: new Date()
+          submittedAt: new Date(),
         };
-        
+
         user.isWaitlisted = true;
         await user.save();
-        
+
         return { success: true };
       } catch (error) {
         console.error('Waitlist form submission error:', error);
@@ -112,37 +114,39 @@ export const authRouter = router({
       }
     }),
 
-  getUser: publicProcedure
-    .input(z.object({ token: z.string() }))
-    .query(async ({ input }) => {
-      try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
-        const user = await UserModel.findById(decoded.userId);
-        
-        if (!user) {
-          throw new Error('User not found');
-        }
+  getUser: publicProcedure.input(z.object({ token: z.string() })).query(async ({ input }) => {
+    try {
+      const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+        userId: string;
+      };
+      const user = await UserModel.findById(decoded.userId);
 
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          name: user.name,
-          picture: user.picture,
-          hasSubscription: user.hasSubscription,
-        } satisfies User;
-      } catch (error) {
-        console.error('Get user error:', error);
-        throw new Error('Failed to get user information');
+      if (!user) {
+        throw new Error('User not found');
       }
-    }),
+
+      return {
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+        hasSubscription: user.hasSubscription,
+      } satisfies User;
+    } catch (error) {
+      console.error('Get user error:', error);
+      throw new Error('Failed to get user information');
+    }
+  }),
 
   checkAndIncrementExportUsage: publicProcedure
     .input(z.object({ token: z.string() }))
     .mutation(async ({ input }): Promise<ExportUsageResponse> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
         const user = await UserModel.findById(decoded.userId);
-        
+
         if (!user) {
           throw new Error('User not found');
         }
@@ -151,15 +155,15 @@ export const authRouter = router({
         if (user.hasSubscription) {
           return { canExport: true };
         }
-                
+
         // For free users, check usage limit
         const FREE_EXPORT_LIMIT = 4;
         if (user.exportActionUsageCount >= FREE_EXPORT_LIMIT) {
-          return { 
+          return {
             canExport: false,
             message: "You've reached the free export limit. Upgrade to Pro for unlimited exports.",
             currentUsage: user.exportActionUsageCount,
-            limit: FREE_EXPORT_LIMIT
+            limit: FREE_EXPORT_LIMIT,
           };
         }
 
@@ -167,14 +171,14 @@ export const authRouter = router({
         user.exportActionUsageCount += 1;
         await user.save();
 
-        return { 
+        return {
           canExport: true,
           currentUsage: user.exportActionUsageCount,
-          limit: FREE_EXPORT_LIMIT
+          limit: FREE_EXPORT_LIMIT,
         };
       } catch (error) {
         console.error('Check export usage error:', error);
         throw new Error('Failed to check export usage');
       }
-    })
-}); 
+    }),
+});

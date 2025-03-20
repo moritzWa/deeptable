@@ -33,9 +33,9 @@ const userSchema = new mongoose.Schema({
     companyName: { type: String },
     workEmail: { type: String },
     useCase: { type: String },
-    submittedAt: { type: Date }
+    submittedAt: { type: Date },
   },
-  isWaitlisted: { type: Boolean, default: false }
+  isWaitlisted: { type: Boolean, default: false },
 });
 
-export const User = mongoose.model('User', userSchema); 
+export const User = mongoose.model('User', userSchema);

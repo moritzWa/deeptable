@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { trpc } from "@/utils/trpc";
+} from '@/components/ui/dropdown-menu';
+import { SidebarTrigger } from '@/components/ui/sidebar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { trpc } from '@/utils/trpc';
 import { CellRange, GridApi } from 'ag-grid-community';
-import { Info, Plus, Sparkle } from "lucide-react";
+import { Info, Plus, Sparkle } from 'lucide-react';
 
 export interface TablePageHeaderProps {
   tableName: string;
@@ -21,12 +21,12 @@ export interface TablePageHeaderProps {
   gridApi: GridApi | undefined;
 }
 
-const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string, onSuccess: () => void }) => {
-  const token = localStorage.getItem("token");
+const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: () => void }) => {
+  const token = localStorage.getItem('token');
   const createRowsMutation = trpc.rows.createRows.useMutation({
     onSuccess: () => {
       onSuccess();
-    }
+    },
   });
 
   const handleAddRows = (count: number) => {
@@ -35,27 +35,18 @@ const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string, onSuccess: (
   };
 
   return (
-    <DropdownMenu>        
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-       
         <Button variant="outline" size="sm" className="flex items-center gap-1">
           <Plus className="h-4 w-4" />
           Add Rows
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => handleAddRows(10)}>
-          Add 10 rows
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(25)}>
-          Add 25 rows
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(50)}>
-          Add 50 rows
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(100)}>
-          Add 100 rows
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddRows(10)}>Add 10 rows</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddRows(25)}>Add 25 rows</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddRows(50)}>Add 50 rows</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddRows(100)}>Add 100 rows</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -68,26 +59,24 @@ export const TablePageHeader = ({
   isSidebarOpen,
   selectedRanges,
   onRowsAdded,
-  gridApi
+  gridApi,
 }: TablePageHeaderProps) => {
-  const token = localStorage.getItem("token");
-  
+  const token = localStorage.getItem('token');
+
   const fillCellMutation = trpc.columns.fillCell.useMutation({
     onSuccess: (result) => {
       console.log('Fill cell result:', result);
     },
     onError: (error) => {
       console.error('Fill cell error:', error);
-    }
+    },
   });
 
   return (
     <div className="sticky top-0 z-10 bg-background border-b">
       <div className="p-2 pl-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          {!isSidebarOpen && (
-            <SidebarTrigger className="h-8 w-8" />
-          )}
+          {!isSidebarOpen && <SidebarTrigger className="h-8 w-8" />}
           <div className="font-semibold flex items-center gap-2">
             {tableName}
             {tableDescription && !isSidebarOpen && (
@@ -105,7 +94,10 @@ export const TablePageHeader = ({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="flex items-center gap-1"
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-1"
             onClick={() => {
               if (!token || !gridApi) return;
               if (selectedRanges.length === 0) {
@@ -114,24 +106,24 @@ export const TablePageHeader = ({
               }
 
               // Extract only the necessary range information
-              const rangeInfo = selectedRanges.map(range => ({
+              const rangeInfo = selectedRanges.map((range) => ({
                 startRow: range.startRow?.rowIndex,
                 endRow: range.endRow?.rowIndex,
                 startColumn: range.startColumn,
-                columns: range.columns
+                columns: range.columns,
               }));
-            
+
               console.log('Selected ranges:', rangeInfo);
               console.log('selectedRanges', selectedRanges[0]);
 
               // Get the row nodes from the range
               const startRowIndex = rangeInfo[0].startRow || 0;
               const endRowIndex = rangeInfo[0].endRow || 0;
-              
+
               // Get the row data using the grid API
               const startRowNode = gridApi.getDisplayedRowAtIndex(startRowIndex);
               const endRowNode = gridApi.getDisplayedRowAtIndex(endRowIndex);
-              
+
               if (!startRowNode || !endRowNode) {
                 console.error('Could not get row nodes from selection');
                 return;
@@ -143,25 +135,22 @@ export const TablePageHeader = ({
 
               console.log('Row IDs:', { startRowId, endRowId });
 
-              const columnNames = rangeInfo[0].columns.map(col => col.getColDef().headerName);
+              const columnNames = rangeInfo[0].columns.map((col) => col.getColDef().headerName);
 
               fillCellMutation.mutate({
                 tableId,
-                columnNames: columnNames.filter(name => name !== undefined) as string[],
+                columnNames: columnNames.filter((name) => name !== undefined) as string[],
                 startRow: startRowIndex,
-                endRow: endRowIndex
+                endRow: endRowIndex,
               });
             }}
           >
             <Sparkle className="h-4 w-4" />
             Enrich Cells
           </Button>
-          <AddRowsDropdown 
-            tableId={tableId} 
-            onSuccess={onRowsAdded}
-          />  
+          <AddRowsDropdown tableId={tableId} onSuccess={onRowsAdded} />
         </div>
       </div>
     </div>
   );
-}; 
+};

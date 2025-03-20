@@ -103,33 +103,35 @@ type GenerateColumnsResponse = SuccessResponse | ErrorResponse;
 
 export const columnsRouter = router({
   generateColumns: publicProcedure
-    .input(z.object({ 
-      prompt: z.string().min(1).max(500),
-    }))
+    .input(
+      z.object({
+        prompt: z.string().min(1).max(500),
+      })
+    )
     .mutation(async ({ input }): Promise<GenerateColumnsResponse> => {
       try {
         // Construct the prompt for the OpenAI API
         const userPrompt = `Based on this search query: "${input.prompt}", generate a table structure that would help organize research data about this topic.`;
-        
+
         // Call the OpenAI API
         const response = await openai.chat.completions.create({
-          model: "gpt-4o",
+          model: 'gpt-4o',
           messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            { role: "user", content: EXAMPLE_PROMPT },
-            { role: "user", content: userPrompt }
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: EXAMPLE_PROMPT },
+            { role: 'user', content: userPrompt },
           ],
           temperature: 0.2,
           max_tokens: 500, // Increased to accommodate more detailed column definitions
         });
 
         // Extract the generated response from the API
-        const responseText = response.choices[0]?.message?.content?.trim() || "";
-        
+        const responseText = response.choices[0]?.message?.content?.trim() || '';
+
         try {
           // Parse the JSON response
           const parsedResponse = JSON.parse(responseText);
-          
+
           // Validate the column structure
           const columns = parsedResponse.columns.map((col: any) => {
             // Ensure each column has the required properties
@@ -137,10 +139,10 @@ export const columnsRouter = router({
               name: col.name || 'Unnamed Column',
               type: (col.type as ColumnType) || 'string',
               description: col.description || '',
-              required: col.required || false
+              required: col.required || false,
             };
           });
-          
+
           return {
             success: true as const,
             name: parsedResponse.name,
@@ -163,25 +165,31 @@ export const columnsRouter = router({
       }
     }),
 
-    generateRows: publicProcedure // todo private
-    .input(z.object({
-      prompt: z.string(),
-      columns: z.array(z.string()), // todo maybe add column type
-    }))
+  generateRows: publicProcedure // todo private
+    .input(
+      z.object({
+        prompt: z.string(),
+        columns: z.array(z.string()), // todo maybe add column type
+      })
+    )
     .output(z.array(z.string()))
-    .mutation(async ({ input}) => {
+    .mutation(async ({ input }) => {
       const _ = input;
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      return ["row 1", "row 2", "row 3"]
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      return ['row 1', 'row 2', 'row 3'];
     }),
 
-    fillCell: publicProcedure
-    .input(z.object({
-      tableId: z.string(),
-      columnNames: z.array(z.string()),
-      startRow: z.number(),
-      endRow: z.number()
-    }).strict())
+  fillCell: publicProcedure
+    .input(
+      z
+        .object({
+          tableId: z.string(),
+          columnNames: z.array(z.string()),
+          startRow: z.number(),
+          endRow: z.number(),
+        })
+        .strict()
+    )
     .output(z.string())
     .mutation(async ({ input }) => {
       try {
@@ -204,22 +212,22 @@ export const columnsRouter = router({
         const rows = await Row.find({
           tableId: tableObjectId,
         })
-        .sort({ createdAt: -1 })
-        .skip(input.startRow)
-        .limit(input.endRow - input.startRow + 1);
+          .sort({ createdAt: -1 })
+          .skip(input.startRow)
+          .limit(input.endRow - input.startRow + 1);
 
         if (!rows || rows.length === 0) {
           throw new Error('No rows found in the selected range');
         }
-        
+
         // log row data
         console.log('rows', rows);
 
         // get and log column
-        const column = table.columns.find(col => input.columnNames.includes(col.name));
+        const column = table.columns.find((col) => input.columnNames.includes(col.name));
         console.log('column', column);
 
-        return "test";
+        return 'test';
       } catch (error) {
         console.error('Error in fillCell:', error);
         if (error instanceof Error && error.message.includes('ObjectId')) {
@@ -228,4 +236,4 @@ export const columnsRouter = router({
         return 'Error processing request';
       }
     }),
-}); 
+});

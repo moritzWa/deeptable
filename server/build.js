@@ -34,45 +34,39 @@ if (fs.existsSync(serverSrcIndexPath)) {
   if (!fs.existsSync(path.dirname(distIndexPath))) {
     fs.mkdirSync(path.dirname(distIndexPath), { recursive: true });
   }
-  
+
   // Copy the file
   fs.copyFileSync(serverSrcIndexPath, distIndexPath);
-  
+
   // Copy routers
   if (fs.existsSync(path.join(serverSrcDir, 'routers'))) {
     fs.mkdirSync(path.join(distDir, 'routers'), { recursive: true });
     const routerFiles = fs.readdirSync(path.join(serverSrcDir, 'routers'));
-    routerFiles.forEach(file => {
+    routerFiles.forEach((file) => {
       fs.copyFileSync(
         path.join(serverSrcDir, 'routers', file),
         path.join(distDir, 'routers', file)
       );
     });
   }
-  
+
   // Copy models
   if (fs.existsSync(path.join(serverSrcDir, 'models'))) {
     fs.mkdirSync(path.join(distDir, 'models'), { recursive: true });
     const modelFiles = fs.readdirSync(path.join(serverSrcDir, 'models'));
-    modelFiles.forEach(file => {
-      fs.copyFileSync(
-        path.join(serverSrcDir, 'models', file),
-        path.join(distDir, 'models', file)
-      );
+    modelFiles.forEach((file) => {
+      fs.copyFileSync(path.join(serverSrcDir, 'models', file), path.join(distDir, 'models', file));
     });
   }
-  
+
   // Copy lib if it exists
   if (fs.existsSync(path.join(serverSrcDir, 'lib'))) {
     fs.mkdirSync(path.join(distDir, 'lib'), { recursive: true });
     const libFiles = fs.readdirSync(path.join(serverSrcDir, 'lib'));
-    libFiles.forEach(file => {
-      fs.copyFileSync(
-        path.join(serverSrcDir, 'lib', file),
-        path.join(distDir, 'lib', file)
-      );
+    libFiles.forEach((file) => {
+      fs.copyFileSync(path.join(serverSrcDir, 'lib', file), path.join(distDir, 'lib', file));
     });
   }
 }
 
-console.log('Build completed successfully!'); 
+console.log('Build completed successfully!');

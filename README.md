@@ -26,11 +26,13 @@ A powerful data analysis and visualization SaaS platform with authentication, pa
 ### MongoDB Setup
 
 1. Install MongoDB:
+
    - **macOS**: `brew install mongodb-community`
    - **Windows**: Download and install from [MongoDB website](https://www.mongodb.com/try/download/community)
    - **Linux**: Follow distribution-specific instructions from [MongoDB docs](https://www.mongodb.com/docs/manual/administration/install-on-linux/)
 
 2. Start MongoDB:
+
    - **macOS/Linux**: `mongod --dbpath=/path/to/data/directory`
    - **Windows**: `mongod --dbpath=C:\path\to\data\directory`
    - Or use the MongoDB service if installed
@@ -51,11 +53,13 @@ The project includes scripts to seed your database with sample data:
 Or run individual commands:
 
 1. **Seed Tables**: Creates table structures in the database
+
    ```bash
    doppler run -- bun run --cwd server seed:table
    ```
 
 2. **Seed Rows**: Populates tables with sample data (run after seeding tables)
+
    ```bash
    doppler run -- bun run --cwd server seed:rows
    ```
@@ -70,17 +74,20 @@ Note: The seeding scripts use the email specified in the script to associate dat
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/moritzWa/deeptable.git
 cd deeptable
 ```
 
 2. Install dependencies
+
 ```bash
 bun install
 ```
 
 3. Set up environment variables with Doppler
+
    - Install Doppler CLI if you haven't already
    - Configure your Doppler project
    - No need to manually manage .env files as Doppler will handle this
@@ -88,12 +95,14 @@ bun install
 4. Start the development servers
 
 For the frontend (in the client directory):
+
 ```bash
 cd client
 doppler run -- bun dev --elide-lines=5000
 ```
 
 For the backend (in the server directory):
+
 ```bash
 cd server
 doppler run -- bun dev --elide-lines=5000
@@ -122,4 +131,4 @@ MIT
 
 ## Support
 
-For questions or support, please open an issue in the repository. 
+For questions or support, please open an issue in the repository.

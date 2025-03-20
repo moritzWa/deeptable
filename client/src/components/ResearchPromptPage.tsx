@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { trpc } from "@/utils/trpc";
-import { Column } from "@shared/types";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { trpc } from '@/utils/trpc';
+import { Column } from '@shared/types';
 import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AppLayout } from "./AppLayout";
+import { AppLayout } from './AppLayout';
 
 // Define the expected response types to match the server
 interface SuccessResponse {
@@ -33,7 +33,7 @@ const ResearchPromptPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isFromUrl, setIsFromUrl] = useState(false);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem('token');
 
   // Use the tRPC mutations
   const generateColumnsMutation = trpc.columns.generateColumns.useMutation({
@@ -50,7 +50,7 @@ const ResearchPromptPage: React.FC = () => {
     onError: (error: any) => {
       setError(error.message || 'Failed to generate table structure. Please try again.');
       setIsLoading(false);
-    }
+    },
   });
 
   const createTableMutation = trpc.tables.createTable.useMutation({
@@ -60,14 +60,14 @@ const ResearchPromptPage: React.FC = () => {
     },
     onError: (error: any) => {
       setError(error.message || 'Failed to create table. Please try again.');
-    }
+    },
   });
 
   // Parse query parameter and set prompt
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const queryParam = queryParams.get('q');
-    
+
     if (queryParam) {
       setPrompt(queryParam);
       setIsFromUrl(true);
@@ -82,7 +82,7 @@ const ResearchPromptPage: React.FC = () => {
         setIsLoading(true);
         setIsFromUrl(false);
       }, 1000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [prompt, isFromUrl, isLoading, generateColumnsMutation]);
@@ -103,7 +103,7 @@ const ResearchPromptPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!prompt.trim()) {
       setError('Please enter a research query');
       return;
@@ -111,7 +111,7 @@ const ResearchPromptPage: React.FC = () => {
 
     setIsLoading(true);
     setError('');
-    
+
     generateColumnsMutation.mutate({ prompt: prompt.trim() });
   };
 
@@ -126,10 +126,10 @@ const ResearchPromptPage: React.FC = () => {
         token,
         name,
         description,
-        columns
+        columns,
       });
     } catch (error) {
-      console.error("Failed to create table:", error);
+      console.error('Failed to create table:', error);
     }
   };
 
@@ -137,12 +137,13 @@ const ResearchPromptPage: React.FC = () => {
     <AppLayout>
       <div className="max-w-4xl mx-auto p-6">
         <h1 className="text-3xl font-bold mb-6">Research Table Generator</h1>
-        
+
         <Card className="mb-8">
           <CardHeader>
             <CardTitle>Enter Your Research Query</CardTitle>
             <CardDescription>
-              Describe what you want to research, and we'll generate a table structure to organize your data.
+              Describe what you want to research, and we'll generate a table structure to organize
+              your data.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -155,9 +156,9 @@ const ResearchPromptPage: React.FC = () => {
                 className="min-h-[120px]"
               />
               {error && <p className="text-red-500 text-sm">{error}</p>}
-              <Button 
-                type="submit" 
-                variant={columns.length > 0 ? "outline" : "default"}
+              <Button
+                type="submit"
+                variant={columns.length > 0 ? 'outline' : 'default'}
                 className="w-full"
                 disabled={isLoading}
               >
@@ -205,16 +206,14 @@ const ResearchPromptPage: React.FC = () => {
                           </span>
                         </div>
                         {column.description && (
-                          <span className="text-sm text-muted-foreground">{column.description}</span>
+                          <span className="text-sm text-muted-foreground">
+                            {column.description}
+                          </span>
                         )}
                       </div>
                     ))}
                   </div>
-                  <Button 
-                    variant="default"
-                    className="w-full mt-4"
-                    onClick={handleCreateTable}
-                  >
+                  <Button variant="default" className="w-full mt-4" onClick={handleCreateTable}>
                     Create Research Table
                   </Button>
                 </div>
@@ -227,5 +226,4 @@ const ResearchPromptPage: React.FC = () => {
   );
 };
 
-export default ResearchPromptPage; 
-
+export default ResearchPromptPage;

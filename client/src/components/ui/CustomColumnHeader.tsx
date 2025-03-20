@@ -7,7 +7,7 @@ import {
   ContextMenuGroup,
   ContextMenuItem,
   ContextMenuSeparator,
-  ContextMenuTrigger
+  ContextMenuTrigger,
 } from './context-menu';
 import { Input } from './input';
 
@@ -56,9 +56,9 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         name: props.column.getColId(),
         columnState: {
           ...currentState,
-          colId: columnName // Update the column name
-        }
-      }
+          colId: columnName, // Update the column name
+        },
+      },
     ]);
   };
 
@@ -76,7 +76,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     if (!props.api) return;
     const allColumns = props.api.getColumns();
     if (!allColumns) return;
-    
+
     props.api.setColumnsVisible(allColumns, true);
   };
 
@@ -93,7 +93,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   // Handle sort click
   const onSortRequested = (event: React.MouseEvent) => {
     if (!props.column || !props.enableSorting) return;
-    
+
     const multiSort = event.shiftKey;
     props.progressSort(multiSort);
   };
@@ -117,16 +117,14 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   return (
     <ContextMenu onOpenChange={handleOpenChange}>
       <ContextMenuTrigger asChild>
-        <div 
-          className="w-full h-full flex items-center px-2 select-none cursor-pointer" 
+        <div
+          className="w-full h-full flex items-center px-2 select-none cursor-pointer"
           onClick={onSortRequested}
         >
           <div className="flex items-center gap-1">
             {columnName}
             {isSortable && sortState && (
-              <span className="text-xs">
-                {sortState === 'asc' ? '↑' : '↓'}
-              </span>
+              <span className="text-xs">{sortState === 'asc' ? '↑' : '↓'}</span>
             )}
           </div>
         </div>
@@ -143,15 +141,9 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
           />
         </div>
         <ContextMenuGroup>
-          <ContextMenuItem onClick={() => handlePin('left')}>
-            Pin Left
-          </ContextMenuItem>
-          <ContextMenuItem onClick={() => handlePin('right')}>
-            Pin Right
-          </ContextMenuItem>
-          <ContextMenuItem onClick={() => handlePin(null)}>
-            Reset Pin
-          </ContextMenuItem>
+          <ContextMenuItem onClick={() => handlePin('left')}>Pin Left</ContextMenuItem>
+          <ContextMenuItem onClick={() => handlePin('right')}>Pin Right</ContextMenuItem>
+          <ContextMenuItem onClick={() => handlePin(null)}>Reset Pin</ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
         <ContextMenuGroup>
@@ -164,12 +156,8 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         </ContextMenuGroup>
         <ContextMenuSeparator />
         <ContextMenuGroup>
-          <ContextMenuItem onClick={handleHideColumn}>
-            Hide Column
-          </ContextMenuItem>
-          <ContextMenuItem onClick={handleShowAllColumns}>
-            Show All Columns
-          </ContextMenuItem>
+          <ContextMenuItem onClick={handleHideColumn}>Hide Column</ContextMenuItem>
+          <ContextMenuItem onClick={handleShowAllColumns}>Show All Columns</ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
         <ContextMenuGroup>
@@ -183,4 +171,4 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
       </ContextMenuContent>
     </ContextMenu>
   );
-}; 
+};
