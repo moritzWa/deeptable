@@ -81,6 +81,7 @@ export const TablePageHeader = ({
     },
   });
 
+  // unused but keep for reference
   const handleEnrichCellsInBatchOld = () => {
     if (!token || !gridApi) return;
     if (selectedRanges.length === 0) {
@@ -133,7 +134,9 @@ export const TablePageHeader = ({
       .map((col) => col.getColDef().headerName)
       .filter((name): name is string => name !== undefined);
 
-    // Process each row in the range
+    const cellPromises: Promise<unknown>[] = [];
+
+    // Collect all promises
     for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
       const rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
       if (!rowNode) continue;
@@ -142,18 +145,24 @@ export const TablePageHeader = ({
 
       // Process each selected column for this row
       for (const columnName of selectedColumns) {
-        try {
-          await fillSingleCellMutation.mutateAsync({
+        const promise = fillSingleCellMutation
+          .mutateAsync({
             tableId,
             columnName,
             rowId,
+          })
+          .catch((error) => {
+            console.error(`Error processing cell at row ${rowIndex}, column ${columnName}:`, error);
+            // Return null or some other value to indicate failure
+            return null;
           });
-        } catch (error) {
-          console.error(`Error processing cell at row ${rowIndex}, column ${columnName}:`, error);
-          // Continue with next cell even if one fails
-        }
+
+        cellPromises.push(promise);
       }
     }
+
+    // Execute all promises in parallel
+    await Promise.all(cellPromises);
   };
 
   return (
