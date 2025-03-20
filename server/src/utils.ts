@@ -118,14 +118,14 @@ async function askGoogle(question: string): Promise<string> {
     throw new Error('Invalid response from Google API');
   }
 
-  console.log('completion', completion);
+  // console.log('completion', completion);
   return completion.candidates[0].content.parts.map((part: GooglePart) => part.text).join('\n');
 }
 
 async function getFinalAnswer(
-  query: string,
-  row: string,
-  col: string,
+  tableName: string,
+  columnName: string,
+  columnDescription: string,
   outputType: string,
   searchResponses: Array<{ response: string; provider: string }>
 ) {
@@ -134,7 +134,7 @@ async function getFinalAnswer(
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-  const SYSTEM_PROMPT = `You are in a data pipeline whose goal is to fill out a spreadsheet for a user's query. You will be given their query, a row, a column, an output type, and multiple search responses from different providers.
+  const SYSTEM_PROMPT = `You are in a data pipeline whose goal is to fill out a spreadsheet for a user's query. You will be given their query, a column, an output type, and multiple search responses from different providers.
 
 Extract the right information from the search responses and return it in the correct format. Consider the quality and credibility of the information sources, the consistency across responses, and the reasoning provided. When sources disagree, make a judgment based on credibility and recency of information.
 
@@ -143,7 +143,7 @@ Respond ONLY in the output format specified with no other text.`;
   // Serialize the responses as JSON
   const searchResponsesJson = JSON.stringify(searchResponses, null, 2);
 
-  const question = `Query: ${query}\nRow: ${row}\nColumn: ${col}\nOutput type: ${outputType}\n\nSearch Responses:\n${searchResponsesJson}`;
+  const question = `Table: ${tableName}\nColumn: ${columnName}\nColumn Description: ${columnDescription}\nOutput type: ${outputType}\n \nSearch Responses:\n${searchResponsesJson}`;
 
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini-2024-07-18',
@@ -165,8 +165,15 @@ Respond ONLY in the output format specified with no other text.`;
   return message.trim();
 }
 
-export async function fillCell(query: string, row: string, col: string, outputType: string) {
-  const question = `The user is making a spreadsheet for "${query}". Help them fill in this cell. Row: ${row}, Column: ${col}, Output type: ${outputType}`;
+export async function fillCell(
+  tableName: string,
+  tableDescription: string | null | undefined,
+  columnName: string,
+  columnDescription: string | null | undefined,
+  outputType: string,
+  rows: Array<{ data: Record<string, any> }>
+) {
+  const question = `The user is making a spreadsheet with the following table: ${tableName}. The table has the following description: ${tableDescription}. The column they are filling out is: ${columnName}. The column has the following description: ${columnDescription} and the type is ${outputType}. The existing rows are: ${rows.map((row) => JSON.stringify(row.data)).join(', ')}. Help them fill in this cell.`;
 
   const providers = [
     {
@@ -195,6 +202,12 @@ export async function fillCell(query: string, row: string, col: string, outputTy
   const searchResponses = await Promise.all(searchPromises);
   console.log('Search results collected from all providers');
 
-  const extracted = await getFinalAnswer(query, row, col, outputType, searchResponses);
+  const extracted = await getFinalAnswer(
+    tableName,
+    columnName,
+    columnDescription || '',
+    'string',
+    searchResponses
+  );
   return extracted;
 }
