@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { Row } from '../models/row';
 import { Table } from '../models/table';
 import { publicProcedure, router } from '../trpc';
+import { fillCell } from '../utils';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -226,6 +227,29 @@ export const columnsRouter = router({
         // get and log column
         const column = table.columns.find((col) => input.columnNames.includes(col.name));
         console.log('column', column);
+
+        if (!column) {
+          throw new Error('Column not found');
+        }
+
+        const llmResults = await fillCell(
+          tableName,
+          tableDescription,
+          column.name,
+          column.description,
+          column.type,
+          rows.map((row) => ({ data: row.data }))
+        );
+        console.log('llmResults', llmResults);
+
+        // TODO: make this work for multiple columns/rows
+
+        // update cell
+        await Row.findByIdAndUpdate(rows[0]._id, {
+          $set: {
+            [`data.${column.name}`]: llmResults,
+          },
+        });
 
         return 'test';
       } catch (error) {
