@@ -186,8 +186,8 @@ export const columnsRouter = router({
         .object({
           tableId: z.string(),
           columnNames: z.array(z.string()),
-          startRow: z.number(),
-          endRow: z.number(),
+          startRowId: z.string(),
+          endRowId: z.string(),
         })
         .strict()
     )
@@ -209,16 +209,19 @@ export const columnsRouter = router({
         const tableDescription = table.description;
         console.log('tableDescription', tableDescription);
 
-        // Find rows in the range
+        // Find rows by IDs
+        const rowIds = [input.startRowId];
+        if (input.endRowId !== input.startRowId) {
+          rowIds.push(input.endRowId);
+        }
+
         const rows = await Row.find({
+          _id: { $in: rowIds.map((id) => new mongoose.Types.ObjectId(id)) },
           tableId: tableObjectId,
-        })
-          .sort({ createdAt: -1 })
-          .skip(input.startRow)
-          .limit(input.endRow - input.startRow + 1);
+        });
 
         if (!rows || rows.length === 0) {
-          throw new Error('No rows found in the selected range');
+          throw new Error('No rows found with the provided IDs');
         }
 
         // log row data

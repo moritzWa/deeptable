@@ -140,8 +140,8 @@ export const TablePageHeader = ({
               fillCellMutation.mutate({
                 tableId,
                 columnNames: columnNames.filter((name) => name !== undefined) as string[],
-                startRow: startRowIndex,
-                endRow: endRowIndex,
+                startRowId,
+                endRowId,
               });
             }}
           >
