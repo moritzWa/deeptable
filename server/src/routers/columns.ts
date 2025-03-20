@@ -212,24 +212,25 @@ export const columnsRouter = router({
         }
 
         // Call fillCell with all the context
-        const result = await fillCell(
-          input.context || table.description || table.name, // Use provided context or fall back to table info
-          JSON.stringify(row.data), // Pass the entire row data as context
-          column.name,
-          column.type
-        );
+        // const result = await fillCell(
+        //   input.context || table.description || table.name, // Use provided context or fall back to table info
+        //   JSON.stringify(row.data), // Pass the entire row data as context
+        //   column.name,
+        //   column.type
+        // );
 
-        // Log the result
-        console.log('FillCell Result:', {
-          tableId: input.tableId,
-          rowIndex: input.rowIndex,
-          rowData: row.data,
-          column: column.name,
-          columnType: column.type,
-          result: result
-        });
+        // // Log the result
+        // console.log('FillCell Result:', {
+        //   tableId: input.tableId,
+        //   rowIndex: input.rowIndex,
+        //   rowData: row.data,
+        //   column: column.name,
+        //   columnType: column.type,
+        //   result: result
+        // });
 
-        return result;
+        // return result;
+        return "test";
       } catch (error) {
         console.error('Error in fillCell:', error);
         if (error instanceof Error && error.message.includes('ObjectId')) {
