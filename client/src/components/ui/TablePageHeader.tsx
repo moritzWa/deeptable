@@ -63,7 +63,7 @@ export const TablePageHeader = ({
 }: TablePageHeaderProps) => {
   const token = localStorage.getItem('token');
 
-  const fillCellMutation = trpc.columns.fillCell.useMutation({
+  const fillCellMutation = trpc.columns.fillCellBatched.useMutation({
     onSuccess: (result) => {
       console.log('Fill cell result:', result);
     },
@@ -72,7 +72,16 @@ export const TablePageHeader = ({
     },
   });
 
-  const handleEnrichCells = () => {
+  const fillSingleCellMutation = trpc.columns.fillSingleCell.useMutation({
+    onSuccess: (result) => {
+      console.log('Single cell fill result:', result);
+    },
+    onError: (error) => {
+      console.error('Single cell fill error:', error);
+    },
+  });
+
+  const handleEnrichCellsInBatchOld = () => {
     if (!token || !gridApi) return;
     if (selectedRanges.length === 0) {
       console.log('No cells selected for enrichment');
@@ -108,6 +117,43 @@ export const TablePageHeader = ({
       startRowId,
       endRowId,
     });
+  };
+
+  const handleEnrichCells = async () => {
+    if (!token || !gridApi) return;
+    if (selectedRanges.length === 0) {
+      console.log('No cells selected for enrichment');
+      return;
+    }
+
+    const range = selectedRanges[0];
+    const startRowIndex = range.startRow?.rowIndex || 0;
+    const endRowIndex = range.endRow?.rowIndex || 0;
+    const selectedColumns = range.columns
+      .map((col) => col.getColDef().headerName)
+      .filter((name): name is string => name !== undefined);
+
+    // Process each row in the range
+    for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
+      const rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
+      if (!rowNode) continue;
+
+      const rowId = rowNode.data.id;
+
+      // Process each selected column for this row
+      for (const columnName of selectedColumns) {
+        try {
+          await fillSingleCellMutation.mutateAsync({
+            tableId,
+            columnName,
+            rowId,
+          });
+        } catch (error) {
+          console.error(`Error processing cell at row ${rowIndex}, column ${columnName}:`, error);
+          // Continue with next cell even if one fails
+        }
+      }
+    }
   };
 
   return (
