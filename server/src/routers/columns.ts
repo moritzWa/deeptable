@@ -201,12 +201,10 @@ export const columnsRouter = router({
           throw new Error('Table not found');
         }
 
-        // get table name
+        // get table name and description
         const tableName = table.name;
-        console.log('tableName', tableName);
-
-        // get table description
         const tableDescription = table.description;
+        console.log('tableName', tableName);
         console.log('tableDescription', tableDescription);
 
         // Find rows by IDs
@@ -227,34 +225,42 @@ export const columnsRouter = router({
         // log row data
         console.log('rows', rows);
 
-        // get and log column
-        const column = table.columns.find((col) => input.columnNames.includes(col.name));
-        console.log('column', column);
+        // Process each row
+        for (const row of rows) {
+          // Start with the existing row data
+          const updatedData = { ...row.data };
 
-        if (!column) {
-          throw new Error('Column not found');
+          // Process each selected column for this row
+          for (const columnName of input.columnNames) {
+            const column = table.columns.find((col) => col.name === columnName);
+            if (!column) {
+              console.warn(`Column ${columnName} not found, skipping`);
+              continue;
+            }
+
+            console.log(`Processing cell: Row ${row._id}, Column ${column.name}`);
+
+            const llmResults = await fillCell(
+              tableName,
+              tableDescription,
+              column.name,
+              column.description,
+              column.type,
+              [{ data: row.data }] // Pass only the current row's data
+            );
+            console.log(`llmResults for Row ${row._id}, Column ${column.name}:`, llmResults);
+
+            // Update the cell value in our data object
+            updatedData[column.name] = llmResults;
+          }
+
+          // Update the entire row data object at once
+          await Row.findByIdAndUpdate(row._id, {
+            $set: { data: updatedData },
+          });
         }
 
-        const llmResults = await fillCell(
-          tableName,
-          tableDescription,
-          column.name,
-          column.description,
-          column.type,
-          rows.map((row) => ({ data: row.data }))
-        );
-        console.log('llmResults', llmResults);
-
-        // TODO: make this work for multiple columns/rows
-
-        // update cell
-        await Row.findByIdAndUpdate(rows[0]._id, {
-          $set: {
-            [`data.${column.name}`]: llmResults,
-          },
-        });
-
-        return 'test';
+        return 'All cells updated successfully';
       } catch (error) {
         console.error('Error in fillCell:', error);
         if (error instanceof Error && error.message.includes('ObjectId')) {
