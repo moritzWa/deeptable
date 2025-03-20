@@ -69,6 +69,7 @@ export const TablePageHeader = ({
   onRowsAdded
 }: TablePageHeaderProps) => {
   const token = localStorage.getItem("token");
+  
   const fillCellMutation = trpc.columns.fillCell.useMutation({
     onSuccess: (result) => {
       console.log('Fill cell result:', result);
@@ -110,7 +111,14 @@ export const TablePageHeader = ({
                 return;
               }
 
-              // For now, just handle the first range and first cell
+              // Extract only the necessary range information
+              const rangeInfo = selectedRanges.map(range => ({
+                startRow: range.startRow?.rowIndex,
+                endRow: range.endRow?.rowIndex,
+                startColumn: range.startColumn
+              }));
+              console.log('Selected ranges:', rangeInfo);
+
               const range = selectedRanges[0];
               const column = range.startColumn.getColId();
               const rowIndex = range.startRow?.rowIndex;
