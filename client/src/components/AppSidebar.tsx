@@ -87,7 +87,7 @@ export function AppSidebar() {
           </h2>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" onClick={handleCreateTable} className="h-8 w-8">
-              <Plus className="h-4 w-4" />
+              <Plus />
             </Button>
             <SidebarTrigger className="h-8 w-8" />
           </div>
@@ -125,7 +125,7 @@ export function AppSidebar() {
                 onClick={() => navigate('/settings')}
                 isActive={location.pathname === '/settings'}
               >
-                <Settings className="mr-2 h-4 w-4" />
+                <Settings className="mr-2" />
                 Settings
               </SidebarMenuButton>
             </SidebarMenuItem>

@@ -160,10 +160,9 @@ export const TablePageHeader = ({
 
         // Try both with and without the 'data.' prefix
         try {
-          // Remove the return statement and try both paths
-          rowNode.setDataValue(`data.${columnName}`, 'Enriching...');
+          rowNode.setDataValue(columnName, 'Enriching...');
           console.log(
-            `Attempted to set loading state with data. prefix for row ${rowIndex}, column ${columnName}`
+            `Attempted to set loading state without data. prefix for row ${rowIndex}, column ${columnName}`
           );
 
           // Log the value right after setting to see if it took effect
