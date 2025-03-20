@@ -9,4 +9,4 @@ export const trpc = createTRPCProxyClient<AppRouter>({
       url: `${serverUrl}/trpc`,
     }),
   ],
-}); 
+});

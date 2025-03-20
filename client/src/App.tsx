@@ -1,5 +1,5 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import React from 'react';
@@ -18,8 +18,8 @@ import { ThemeProvider } from './components/theme-provider';
 import WaitlistFormPage from './components/WaitlistFormPage';
 import { trpc } from './utils/trpc';
 
-export const defaultPage = "/home";
-export const LINK_TO_WAITLIST = process.env.REACT_APP_LINK_TO_WAITLIST === "true"; // Toggle this to control the flow after login
+export const defaultPage = '/home';
+export const LINK_TO_WAITLIST = process.env.REACT_APP_LINK_TO_WAITLIST === 'true'; // Toggle this to control the flow after login
 
 function AppContent() {
   return (
@@ -34,48 +34,63 @@ function AppContent() {
       </Helmet>
       <div className="min-h-screen bg-background text-foreground w-full">
         <Routes>
-          <Route path="/" element={
-            <>
-              <Navbar />
-              <LandingPage />
-            </>
-          } />
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar />
+                <LandingPage />
+              </>
+            }
+          />
           <Route path="/home" element={<HomePage />} />
           <Route path="/new" element={<ResearchPromptPage />} />
           <Route path="/tables/:id" element={<TablePage />} />
-          <Route path="/login" element={
-            <>
-              <Navbar />
-              <div className="container mx-auto px-4 py-8 pt-24">
-                <LoginPage />
-              </div>
-            </>
-          } />
-          <Route path="/waitlist-form" element={
-            <>
-              <Navbar />
-              <div className="container mx-auto px-4 py-8 pt-24">
-                <WaitlistFormPage />
-              </div>
-            </>
-          } />
+          <Route
+            path="/login"
+            element={
+              <>
+                <Navbar />
+                <div className="container mx-auto px-4 py-8 pt-24">
+                  <LoginPage />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/waitlist-form"
+            element={
+              <>
+                <Navbar />
+                <div className="container mx-auto px-4 py-8 pt-24">
+                  <WaitlistFormPage />
+                </div>
+              </>
+            }
+          />
           <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/blog" element={
-            <>
-              <Navbar />
-              <div className="container mx-auto px-4 py-8 pt-24">
-                <BlogPage />
-              </div>
-            </>
-          } />
-          <Route path="/blog/:slug" element={
-            <>
-              <Navbar />
-              <div className="container mx-auto px-4 py-8 pt-24">
-                <BlogPostPage />
-              </div>
-            </>
-          } />
+          <Route
+            path="/blog"
+            element={
+              <>
+                <Navbar />
+                <div className="container mx-auto px-4 py-8 pt-24">
+                  <BlogPage />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/blog/:slug"
+            element={
+              <>
+                <Navbar />
+                <div className="container mx-auto px-4 py-8 pt-24">
+                  <BlogPostPage />
+                </div>
+              </>
+            }
+          />
         </Routes>
       </div>
     </>
@@ -102,7 +117,7 @@ function App() {
             <ThemeProvider defaultTheme="system" storageKey="deeptable-theme">
               <Router>
                 <SidebarProvider>
-                <AppContent />
+                  <AppContent />
                 </SidebarProvider>
               </Router>
             </ThemeProvider>

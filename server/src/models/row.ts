@@ -9,29 +9,32 @@ export interface IRow extends Document {
   _id: mongoose.Types.ObjectId;
 }
 
-const rowSchema = new mongoose.Schema({
-  tableId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Table',
-    required: true,
-    index: true, // Index for faster queries by tableId
+const rowSchema = new mongoose.Schema(
+  {
+    tableId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Table',
+      required: true,
+      index: true, // Index for faster queries by tableId
+    },
+    data: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
+      default: {},
+    },
+    userId: {
+      type: String,
+      required: true,
+      index: true, // Index for faster queries by userId
+    },
   },
-  data: {
-    type: mongoose.Schema.Types.Mixed,
-    required: true,
-    default: {},
-  },
-  userId: {
-    type: String,
-    required: true,
-    index: true, // Index for faster queries by userId
+  {
+    timestamps: true,
+    strict: false, // Allow for flexible schema
   }
-}, {
-  timestamps: true,
-  strict: false, // Allow for flexible schema
-});
+);
 
 // Create compound index for faster queries
 rowSchema.index({ tableId: 1, userId: 1 });
 
-export const Row = mongoose.model<IRow>('Row', rowSchema); 
+export const Row = mongoose.model<IRow>('Row', rowSchema);

@@ -14,13 +14,13 @@ const WaitlistFormPage: React.FC = () => {
     jobTitle: '',
     companyName: '',
     workEmail: '',
-    useCase: ''
+    useCase: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
-  
+
   // Use the mutation hook
   const submitWaitlistForm = trpc.auth.submitWaitlistForm.useMutation();
 
@@ -37,31 +37,31 @@ const WaitlistFormPage: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!token) {
       console.error('No authentication token found');
       navigate('/login');
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
       // Submit the waitlist form data to the server with the token
       await submitWaitlistForm.mutateAsync({
         ...formData,
-        token
+        token,
       });
-      
-      setIsSubmitted(true);      
+
+      setIsSubmitted(true);
     } catch (error: any) {
       console.error('Error submitting form:', error);
     } finally {
@@ -85,7 +85,8 @@ const WaitlistFormPage: React.FC = () => {
         <CardHeader>
           <CardTitle className="text-xl">Join Our Waitlist</CardTitle>
           <CardDescription>
-            We're excited to have you join our exclusive beta program. Please fill out this short form to secure your spot.
+            We're excited to have you join our exclusive beta program. Please fill out this short
+            form to secure your spot.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -102,7 +103,7 @@ const WaitlistFormPage: React.FC = () => {
                   onChange={handleChange}
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="lastName">Last Name</Label>
                 <Input
@@ -115,7 +116,7 @@ const WaitlistFormPage: React.FC = () => {
                 />
               </div>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="jobTitle">Job Title (Optional)</Label>
               <Input
@@ -126,7 +127,7 @@ const WaitlistFormPage: React.FC = () => {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="companyName">Company Name (Optional)</Label>
               <Input
@@ -137,7 +138,7 @@ const WaitlistFormPage: React.FC = () => {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="workEmail">Work Email</Label>
               <Input
@@ -150,7 +151,7 @@ const WaitlistFormPage: React.FC = () => {
                 onChange={handleChange}
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="useCase">How do you plan to use Deep Table?</Label>
               <Textarea
@@ -162,9 +163,9 @@ const WaitlistFormPage: React.FC = () => {
                 onChange={handleChange}
               />
             </div>
-            
-            <Button 
-              type="submit" 
+
+            <Button
+              type="submit"
               className="w-full bg-[#4169E1] hover:bg-[#3a5ecc]"
               disabled={isSubmitting}
             >
@@ -177,4 +178,4 @@ const WaitlistFormPage: React.FC = () => {
   );
 };
 
-export default WaitlistFormPage; 
+export default WaitlistFormPage;

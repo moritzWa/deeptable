@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { trpc } from '../utils/trpc';
-import { AppLayout } from "./AppLayout";
+import { AppLayout } from './AppLayout';
 import { Button } from './ui/button';
 
 interface UserInfo {
@@ -49,7 +49,11 @@ const SettingsPage: React.FC = () => {
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { isLoading: userLoading, data: userData, error: queryError } = trpc.auth.getUser.useQuery(
+  const {
+    isLoading: userLoading,
+    data: userData,
+    error: queryError,
+  } = trpc.auth.getUser.useQuery(
     { token: localStorage.getItem('token') || '' },
     {
       enabled: !!localStorage.getItem('token'),
@@ -126,10 +130,10 @@ const SettingsPage: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-4">
               {user.picture && (
-                <img 
-                  src={user.picture} 
-                  alt="Profile" 
-                  className="w-16 h-16 rounded-full" 
+                <img
+                  src={user.picture}
+                  alt="Profile"
+                  className="w-16 h-16 rounded-full"
                   referrerPolicy="no-referrer"
                   crossOrigin="anonymous"
                 />
@@ -146,9 +150,7 @@ const SettingsPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  {user.hasSubscription 
-                    ? "✅ Active Subscription" 
-                    : "❌ No Active Subscription"}
+                  {user.hasSubscription ? '✅ Active Subscription' : '❌ No Active Subscription'}
                 </p>
                 {user.hasSubscription ? (
                   <Button
@@ -156,14 +158,11 @@ const SettingsPage: React.FC = () => {
                     disabled={isLoading}
                     variant="secondary"
                   >
-                    {isLoading ? "Loading..." : "Manage Subscription"}
+                    {isLoading ? 'Loading...' : 'Manage Subscription'}
                   </Button>
                 ) : (
-                  <Button
-                    onClick={handleSubscribe}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Loading..." : "Subscribe - $29/month"}
+                  <Button onClick={handleSubscribe} disabled={isLoading}>
+                    {isLoading ? 'Loading...' : 'Subscribe - $29/month'}
                   </Button>
                 )}
               </CardContent>

@@ -29,22 +29,29 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
 
   return (
     <div className="max-w-5xl mx-auto px-4">
-
       {/* hero section */}
       <div className="w-full text-center py-16 md:py-24 space-y-6">
         <h1 className="text-4xl md:text-6xl font-bold my-6">
-          <span>The AI agent for<span className="md:hidden"><br /></span> {text}<Cursor cursorStyle="|" /><br></br> research tool that outputs <span className="text-[#4169E1]">tables</span></span>
+          <span>
+            The AI agent for
+            <span className="md:hidden">
+              <br />
+            </span>{' '}
+            {text}
+            <Cursor cursorStyle="|" />
+            <br></br> research tool that outputs <span className="text-[#4169E1]">tables</span>
+          </span>
         </h1>
-        
+
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-          Intelligent web research assistant that helps you make informed decisions. 
-          From travel planning to product research, we analyze the web to give you 
-          comprehensive, table-based insights.
+          Intelligent web research assistant that helps you make informed decisions. From travel
+          planning to product research, we analyze the web to give you comprehensive, table-based
+          insights.
         </p>
 
         {/* Try it free now button */}
         <div className="flex justify-center mt-8">
-          <Button 
+          <Button
             className="bg-[#4169E1] hover:bg-[#3a5ecc] text-white px-8 py-6 text-lg"
             onClick={() => navigate('/login')}
           >
@@ -141,11 +148,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
           </CardContent>
         </Card>
       </div> */}
-    
-    {/* footer section */}
-    <div className="flex flex-row items-center justify-center mt-12 mb-8">
-      <p className="text-muted-foreground">© 2025 Deep Table Research Inc.</p>
-    </div>
+
+      {/* footer section */}
+      <div className="flex flex-row items-center justify-center mt-12 mb-8">
+        <p className="text-muted-foreground">© 2025 Deep Table Research Inc.</p>
+      </div>
     </div>
   );
 };

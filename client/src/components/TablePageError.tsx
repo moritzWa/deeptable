@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { AppLayout } from "./AppLayout";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { AppLayout } from './AppLayout';
+import { Button } from './ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 export const TablePageError = ({ error }: { error: string }) => {
   const navigate = useNavigate();
@@ -14,11 +14,7 @@ export const TablePageError = ({ error }: { error: string }) => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">{error}</p>
-            <Button 
-              onClick={() => navigate("/home")} 
-              className="w-full"
-              variant="default"
-            >
+            <Button onClick={() => navigate('/home')} className="w-full" variant="default">
               Return to Home
             </Button>
           </CardContent>

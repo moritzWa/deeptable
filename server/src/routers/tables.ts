@@ -19,7 +19,7 @@ const columnStateSchema = z.object({
   pivot: z.boolean().optional(),
   pivotIndex: z.number().optional(),
   flex: z.union([z.number(), z.null(), z.undefined()]).optional(),
-  orderIndex: z.number().optional()
+  orderIndex: z.number().optional(),
 });
 
 // Define a Zod schema for column validation
@@ -29,7 +29,7 @@ const columnSchema = z.object({
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
   description: z.string().optional(),
-  columnState: columnStateSchema.optional()
+  columnState: columnStateSchema.optional(),
 });
 
 export const tablesRouter = router({
@@ -38,24 +38,26 @@ export const tablesRouter = router({
     .input(z.object({ token: z.string() }))
     .query(async ({ input }): Promise<Table[]> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
         const tables = await TableModel.find({ userId: decoded.userId });
-        
+
         return tables.map((table: ITable) => ({
           id: table._id.toString(),
           name: table.name,
           description: table.description || null,
-          columns: table.columns.map(col => ({
+          columns: table.columns.map((col) => ({
             name: col.name,
             type: col.type,
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
-            columnState: col.columnState
+            columnState: col.columnState,
           })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
-          userId: table.userId
+          userId: table.userId,
         }));
       } catch (error) {
         console.error('Get tables error:', error);
@@ -65,41 +67,45 @@ export const tablesRouter = router({
 
   // Create a new table
   createTable: publicProcedure
-    .input(z.object({
-      token: z.string(),
-      name: z.string(),
-      description: z.string().optional(),
-      columns: z.array(columnSchema).optional()
-    }))
+    .input(
+      z.object({
+        token: z.string(),
+        name: z.string(),
+        description: z.string().optional(),
+        columns: z.array(columnSchema).optional(),
+      })
+    )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
-        
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
         // Convert string columns to proper column objects if needed
         const columns = input.columns || [];
-        
-        const table = await TableModel.create({
+
+        const table = (await TableModel.create({
           name: input.name,
           description: input.description,
           columns: columns,
-          userId: decoded.userId
-        }) as ITable;
+          userId: decoded.userId,
+        })) as ITable;
 
         return {
           id: table._id.toString(),
           name: table.name,
           description: table.description || null,
-          columns: table.columns.map(col => ({
+          columns: table.columns.map((col) => ({
             name: col.name,
             type: col.type,
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
-            columnState: col.columnState
+            columnState: col.columnState,
           })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
-          userId: table.userId
+          userId: table.userId,
         };
       } catch (error) {
         console.error('Create table error:', error);
@@ -109,26 +115,30 @@ export const tablesRouter = router({
 
   // Update a table
   updateTable: publicProcedure
-    .input(z.object({
-      token: z.string(),
-      id: z.string(),
-      name: z.string().optional(),
-      description: z.string().optional(),
-      columns: z.array(columnSchema).optional()
-    }))
+    .input(
+      z.object({
+        token: z.string(),
+        id: z.string(),
+        name: z.string().optional(),
+        description: z.string().optional(),
+        columns: z.array(columnSchema).optional(),
+      })
+    )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
-        
-        const table = await TableModel.findOneAndUpdate(
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        const table = (await TableModel.findOneAndUpdate(
           { _id: input.id, userId: decoded.userId },
-          { 
+          {
             ...(input.name && { name: input.name }),
             ...(input.description && { description: input.description }),
-            ...(input.columns && { columns: input.columns })
+            ...(input.columns && { columns: input.columns }),
           },
           { new: true }
-        ) as ITable | null;
+        )) as ITable | null;
 
         if (!table) {
           throw new Error('Table not found');
@@ -138,17 +148,17 @@ export const tablesRouter = router({
           id: table._id.toString(),
           name: table.name,
           description: table.description || null,
-          columns: table.columns.map(col => ({
+          columns: table.columns.map((col) => ({
             name: col.name,
             type: col.type,
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
-            columnState: col.columnState
+            columnState: col.columnState,
           })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
-          userId: table.userId
+          userId: table.userId,
         };
       } catch (error) {
         console.error('Update table error:', error);
@@ -158,104 +168,112 @@ export const tablesRouter = router({
 
   // Update column state
   updateColumnState: publicProcedure
-    .input(z.object({
-      token: z.string(),
-      tableId: z.string(),
-      columnStates: z.array(z.object({
-        name: z.string(),
-        columnState: columnStateSchema
-      }))
-    }))
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnStates: z.array(
+          z.object({
+            name: z.string(),
+            columnState: columnStateSchema,
+          })
+        ),
+      })
+    )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
-        
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
         // Get the table
-        const table = await TableModel.findOne({ _id: input.tableId, userId: decoded.userId }) as ITable | null;
-        
+        const table = (await TableModel.findOne({
+          _id: input.tableId,
+          userId: decoded.userId,
+        })) as ITable | null;
+
         if (!table) {
           throw new Error('Table not found');
         }
 
         // First, handle any column name changes in the row data
-        const nameChanges = input.columnStates.filter(cs => cs.columnState.colId && cs.columnState.colId !== cs.name);
+        const nameChanges = input.columnStates.filter(
+          (cs) => cs.columnState.colId && cs.columnState.colId !== cs.name
+        );
         if (nameChanges.length > 0) {
           for (const change of nameChanges) {
-            await Row.updateMany(
-              { tableId: input.tableId },
-              [
-                {
-                  $set: {
-                    data: {
-                      $mergeObjects: [
-                        "$$REMOVE",
-                        {
-                          $arrayToObject: {
-                            $map: {
-                              input: { $objectToArray: "$data" },
-                              in: {
-                                k: {
-                                  $cond: [
-                                    { $eq: ["$$this.k", change.name] },
-                                    change.columnState.colId,
-                                    "$$this.k"
-                                  ]
-                                },
-                                v: "$$this.v"
-                              }
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              ]
-            );
+            await Row.updateMany({ tableId: input.tableId }, [
+              {
+                $set: {
+                  data: {
+                    $mergeObjects: [
+                      '$$REMOVE',
+                      {
+                        $arrayToObject: {
+                          $map: {
+                            input: { $objectToArray: '$data' },
+                            in: {
+                              k: {
+                                $cond: [
+                                  { $eq: ['$$this.k', change.name] },
+                                  change.columnState.colId,
+                                  '$$this.k',
+                                ],
+                              },
+                              v: '$$this.v',
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                },
+              },
+            ]);
           }
         }
 
         // Build update operations for all columns at once
-        const bulkOps = input.columnStates.map(cs => {
+        const bulkOps = input.columnStates.map((cs) => {
           const isNameChange = cs.columnState.colId && cs.columnState.colId !== cs.name;
-          
+
           if (isNameChange) {
             return {
               updateOne: {
-                filter: { 
+                filter: {
                   _id: input.tableId,
                   userId: decoded.userId,
-                  "columns.name": cs.name
+                  'columns.name': cs.name,
                 },
-                update: { 
-                  $set: { 
-                    "columns.$.name": cs.columnState.colId,
-                    "columns.$.columnState": cs.columnState
-                  }
-                }
-              }
+                update: {
+                  $set: {
+                    'columns.$.name': cs.columnState.colId,
+                    'columns.$.columnState': cs.columnState,
+                  },
+                },
+              },
             };
           } else {
             return {
               updateOne: {
-                filter: { 
+                filter: {
                   _id: input.tableId,
                   userId: decoded.userId,
-                  "columns.name": cs.name
+                  'columns.name': cs.name,
                 },
-                update: { 
-                  $set: { 
-                    "columns.$.columnState": cs.columnState
-                  }
-                }
-              }
+                update: {
+                  $set: {
+                    'columns.$.columnState': cs.columnState,
+                  },
+                },
+              },
             };
           }
         });
 
         // Execute all updates in a single operation
         await TableModel.bulkWrite(bulkOps);
-        
+
         return { success: true };
       } catch (error) {
         console.error('Update column state error:', error);
@@ -265,16 +283,20 @@ export const tablesRouter = router({
 
   // Delete a table
   deleteTable: publicProcedure
-    .input(z.object({
-      token: z.string(),
-      id: z.string()
-    }))
+    .input(
+      z.object({
+        token: z.string(),
+        id: z.string(),
+      })
+    )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
-        
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
         const result = await TableModel.deleteOne({ _id: input.id, userId: decoded.userId });
-        
+
         if (result.deletedCount === 0) {
           throw new Error('Table not found');
         }
@@ -288,26 +310,33 @@ export const tablesRouter = router({
 
   // Add a new column
   addColumn: publicProcedure
-    .input(z.object({
-      token: z.string(),
-      tableId: z.string(),
-      columnName: z.string(),
-      position: z.enum(['left', 'right']),
-      relativeTo: z.string()
-    }))
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnName: z.string(),
+        position: z.enum(['left', 'right']),
+        relativeTo: z.string(),
+      })
+    )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
-        
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
         // Get the table
-        const table = await TableModel.findOne({ _id: input.tableId, userId: decoded.userId }) as ITable | null;
-        
+        const table = (await TableModel.findOne({
+          _id: input.tableId,
+          userId: decoded.userId,
+        })) as ITable | null;
+
         if (!table) {
           throw new Error('Table not found');
         }
 
         // Find the index of the reference column
-        const refColumnIndex = table.columns.findIndex(col => col.name === input.relativeTo);
+        const refColumnIndex = table.columns.findIndex((col) => col.name === input.relativeTo);
         if (refColumnIndex === -1) {
           throw new Error('Reference column not found');
         }
@@ -322,8 +351,8 @@ export const tablesRouter = router({
           type: 'string' as const,
           required: false,
           columnState: {
-            sortIndex: input.position === 'left' ? refSortIndex : refSortIndex + 1
-          }
+            sortIndex: input.position === 'left' ? refSortIndex : refSortIndex + 1,
+          },
         };
 
         // Insert the column at the correct position
@@ -335,10 +364,12 @@ export const tablesRouter = router({
           if (!col.columnState) {
             col.columnState = {};
           }
-          
+
           // For columns after the insertion point, increment their sortIndex
-          if (index !== insertIndex && 
-              (input.position === 'left' ? index >= refColumnIndex : index > refColumnIndex)) {
+          if (
+            index !== insertIndex &&
+            (input.position === 'left' ? index >= refColumnIndex : index > refColumnIndex)
+          ) {
             col.columnState.sortIndex = (col.columnState.sortIndex ?? index) + 1;
           }
           // For columns before the insertion point, keep their current sortIndex or use their array index
@@ -359,30 +390,38 @@ export const tablesRouter = router({
 
   // Delete a column
   deleteColumn: publicProcedure
-    .input(z.object({
-      token: z.string(),
-      tableId: z.string(),
-      columnName: z.string()
-    }))
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnName: z.string(),
+      })
+    )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as { userId: string };
-        
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
         // Get the table
-        const table = await TableModel.findOne({ _id: input.tableId, userId: decoded.userId }) as ITable | null;
-        
+        const table = (await TableModel.findOne({
+          _id: input.tableId,
+          userId: decoded.userId,
+        })) as ITable | null;
+
         if (!table) {
           throw new Error('Table not found');
         }
 
         // Find the index of the column to delete
-        const columnIndex = table.columns.findIndex(col => col.name === input.columnName);
+        const columnIndex = table.columns.findIndex((col) => col.name === input.columnName);
         if (columnIndex === -1) {
           throw new Error('Column not found');
         }
 
         // Get the column's current sortIndex
-        const deletedColumnSortIndex = table.columns[columnIndex].columnState?.sortIndex ?? columnIndex;
+        const deletedColumnSortIndex =
+          table.columns[columnIndex].columnState?.sortIndex ?? columnIndex;
 
         // Remove the column
         table.columns.splice(columnIndex, 1);
@@ -392,7 +431,7 @@ export const tablesRouter = router({
           if (!col.columnState) {
             col.columnState = {};
           }
-          
+
           // For columns that were after the deleted column, decrement their sortIndex
           if (col.columnState.sortIndex && col.columnState.sortIndex > deletedColumnSortIndex) {
             col.columnState.sortIndex -= 1;
@@ -411,5 +450,5 @@ export const tablesRouter = router({
         console.error('Delete column error:', error);
         throw new Error('Failed to delete column');
       }
-    })
-}); 
+    }),
+});
