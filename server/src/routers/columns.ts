@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { Row } from '../models/row';
 import { Table } from '../models/table';
 import { publicProcedure, router } from '../trpc';
-import { fillCell } from '../utils';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -179,57 +178,47 @@ export const columnsRouter = router({
     fillCell: publicProcedure
     .input(z.object({
       tableId: z.string(),
-      rowIndex: z.number(), // AG Grid's row index
-      columnName: z.string(), 
-      context: z.string().optional(), // Optional additional context for the AI
+      columnNames: z.array(z.string()),
+      startRow: z.number(),
+      endRow: z.number()
     }).strict())
     .output(z.string())
     .mutation(async ({ input }) => {
       try {
+        // get table
         const tableObjectId = new mongoose.Types.ObjectId(input.tableId);
-
-        // First find the row using tableId and rowIndex
-        const row = await Row.findOne({ 
-          tableId: tableObjectId,
-        }).skip(input.rowIndex).limit(1);
-
-        if (!row) {
-          console.error('Row not found:', { tableId: input.tableId, rowIndex: input.rowIndex });
-          return 'Error: Row not found';
-        }
-
-        // Get table and column data
         const table = await Table.findById(tableObjectId);
         if (!table) {
-          console.error('Table not found:', input.tableId);
-          return 'Error: Table not found';
+          throw new Error('Table not found');
         }
 
-        const column = table.columns.find(col => col.name === input.columnName);
-        if (!column) {
-          console.error('Column not found in table:', input.columnName);
-          return 'Error: Column not found in table';
+        // get table name
+        const tableName = table.name;
+        console.log('tableName', tableName);
+
+        // get table description
+        const tableDescription = table.description;
+        console.log('tableDescription', tableDescription);
+
+        // Find rows in the range
+        const rows = await Row.find({
+          tableId: tableObjectId,
+        })
+        .sort({ createdAt: -1 })
+        .skip(input.startRow)
+        .limit(input.endRow - input.startRow + 1);
+
+        if (!rows || rows.length === 0) {
+          throw new Error('No rows found in the selected range');
         }
+        
+        // log row data
+        console.log('rows', rows);
 
-        // Call fillCell with all the context
-        // const result = await fillCell(
-        //   input.context || table.description || table.name, // Use provided context or fall back to table info
-        //   JSON.stringify(row.data), // Pass the entire row data as context
-        //   column.name,
-        //   column.type
-        // );
+        // get and log column
+        const column = table.columns.find(col => input.columnNames.includes(col.name));
+        console.log('column', column);
 
-        // // Log the result
-        // console.log('FillCell Result:', {
-        //   tableId: input.tableId,
-        //   rowIndex: input.rowIndex,
-        //   rowData: row.data,
-        //   column: column.name,
-        //   columnType: column.type,
-        //   result: result
-        // });
-
-        // return result;
         return "test";
       } catch (error) {
         console.error('Error in fillCell:', error);

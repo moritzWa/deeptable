@@ -8,7 +8,7 @@ import {
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { trpc } from "@/utils/trpc";
-import { CellRange } from 'ag-grid-community';
+import { CellRange, GridApi } from 'ag-grid-community';
 import { Info, Plus, Sparkle } from "lucide-react";
 
 export interface TablePageHeaderProps {
@@ -18,6 +18,7 @@ export interface TablePageHeaderProps {
   isSidebarOpen: boolean;
   selectedRanges: CellRange[];
   onRowsAdded: () => void;
+  gridApi: GridApi | undefined;
 }
 
 const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string, onSuccess: () => void }) => {
@@ -66,7 +67,8 @@ export const TablePageHeader = ({
   tableId,
   isSidebarOpen,
   selectedRanges,
-  onRowsAdded
+  onRowsAdded,
+  gridApi
 }: TablePageHeaderProps) => {
   const token = localStorage.getItem("token");
   
@@ -105,7 +107,7 @@ export const TablePageHeader = ({
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="flex items-center gap-1"
             onClick={() => {
-              if (!token) return;
+              if (!token || !gridApi) return;
               if (selectedRanges.length === 0) {
                 console.log('No cells selected for enrichment');
                 return;
@@ -115,24 +117,39 @@ export const TablePageHeader = ({
               const rangeInfo = selectedRanges.map(range => ({
                 startRow: range.startRow?.rowIndex,
                 endRow: range.endRow?.rowIndex,
-                startColumn: range.startColumn
+                startColumn: range.startColumn,
+                columns: range.columns
               }));
+            
               console.log('Selected ranges:', rangeInfo);
+              console.log('selectedRanges', selectedRanges[0]);
 
-              const range = selectedRanges[0];
-              const column = range.startColumn.getColId();
-              const rowIndex = range.startRow?.rowIndex;
-
-              if (rowIndex === undefined) {
-                console.log('No valid row selected');
+              // Get the row nodes from the range
+              const startRowIndex = rangeInfo[0].startRow || 0;
+              const endRowIndex = rangeInfo[0].endRow || 0;
+              
+              // Get the row data using the grid API
+              const startRowNode = gridApi.getDisplayedRowAtIndex(startRowIndex);
+              const endRowNode = gridApi.getDisplayedRowAtIndex(endRowIndex);
+              
+              if (!startRowNode || !endRowNode) {
+                console.error('Could not get row nodes from selection');
                 return;
               }
 
+              // Get the row IDs from the row data
+              const startRowId = startRowNode.data.id;
+              const endRowId = endRowNode.data.id;
+
+              console.log('Row IDs:', { startRowId, endRowId });
+
+              const columnNames = rangeInfo[0].columns.map(col => col.getColDef().headerName);
+
               fillCellMutation.mutate({
                 tableId,
-                rowIndex,
-                columnName: column,
-                context: tableDescription || tableName, // Optional context
+                columnNames: columnNames.filter(name => name !== undefined) as string[],
+                startRow: startRowIndex,
+                endRow: endRowIndex
               });
             }}
           >
