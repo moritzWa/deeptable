@@ -234,6 +234,8 @@ const TablePage = () => {
           editable: true,
           cellRenderer: smartCellRenderer,
           suppressSizeToFit: true,
+          suppressHeaderMenuButton: true,
+          suppressHeaderContextMenu: true,
           ...columnStateProps,
           colId: column.name
         };
@@ -323,6 +325,8 @@ const TablePage = () => {
     filter: true,
     editable: true,
     headerComponent: CustomColumnHeader,
+    suppressHeaderMenuButton: true,
+    suppressHeaderContextMenu: true,
     suppressSizeToFit: true
   }), []);
 
