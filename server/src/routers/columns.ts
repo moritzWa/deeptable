@@ -19,8 +19,6 @@ Your task is to analyze a search query and generate:
 2. A brief description of what the table will contain
 3. A set of columns that would be useful for the research table
 
-Column names should be concise but descriptive. For example, use units of measurement if appropriate. Something like "# Reviews" can be unclear. "# Yelp Reviews" is more specific.
-
 Return the response in the following JSON format:
 {
   "name": "Table name here",
@@ -51,27 +49,27 @@ Output: {
       "required": true
     },
     {
-      "name": "Power (W)",
+      "name": "Motor Power",
       "type": "string",
-      "description": "Power rating of the scooter motor in watts",
+      "description": "Power rating of the scooter motor",
       "required": false
     },
     {
-      "name": "Max Speed (mph)",
+      "name": "Max Speed",
       "type": "number",
       "description": "Maximum speed in mph",
       "required": false
     },
     {
-      "name": "Range (mi)",
+      "name": "Range",
       "type": "number",
-      "description": "Maximum range in miles on a single charge, in miles",
+      "description": "Maximum range in miles on a single charge",
       "required": false
     },
     {
       "name": "Hill Climbing Ability",
       "type": "string",
-      "description": "How well the scooter handles SF hills. Good/OK/Bad",
+      "description": "How well the scooter handles SF hills",
       "required": false
     },
     {
@@ -240,7 +238,8 @@ export const columnsRouter = router({
               continue;
             }
 
-            console.log(`Processing cell: Row ${row._id}, Column ${column.name}`);
+            const firstColumnValue = Object.values(row.data)[0];
+            console.log(`Processing cell: Row "${firstColumnValue}", Column ${column.name}`);
 
             const llmResults = await fillCell(
               tableName,
@@ -250,7 +249,10 @@ export const columnsRouter = router({
               column.type,
               [{ data: row.data }] // Pass only the current row's data
             );
-            console.log(`llmResults for Row ${row._id}, Column ${column.name}:`, llmResults);
+            console.log(
+              `llmResults for Row "${firstColumnValue}", Column ${column.name}:`,
+              llmResults
+            );
 
             // Update the cell value in our data object
             updatedData[column.name] = llmResults;
