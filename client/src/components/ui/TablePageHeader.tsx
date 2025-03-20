@@ -72,6 +72,44 @@ export const TablePageHeader = ({
     },
   });
 
+  const handleEnrichCells = () => {
+    if (!token || !gridApi) return;
+    if (selectedRanges.length === 0) {
+      console.log('No cells selected for enrichment');
+      return;
+    }
+
+    console.log('selectedRanges', selectedRanges[0]);
+
+    // Get the row nodes from the range
+    const startRowIndex = selectedRanges[0].startRow?.rowIndex || 0;
+    const endRowIndex = selectedRanges[0].endRow?.rowIndex || 0;
+
+    // Get the row data using the grid API
+    const startRowNode = gridApi.getDisplayedRowAtIndex(startRowIndex);
+    const endRowNode = gridApi.getDisplayedRowAtIndex(endRowIndex);
+
+    if (!startRowNode || !endRowNode) {
+      console.error('Could not get row nodes from selection');
+      return;
+    }
+
+    // Get the row IDs from the row data
+    const startRowId = startRowNode.data.id;
+    const endRowId = endRowNode.data.id;
+
+    console.log('Row IDs:', { startRowId, endRowId });
+
+    const columnNames = selectedRanges[0].columns.map((col) => col.getColDef().headerName);
+
+    fillCellMutation.mutate({
+      tableId,
+      columnNames: columnNames.filter((name) => name !== undefined) as string[],
+      startRowId,
+      endRowId,
+    });
+  };
+
   return (
     <div className="sticky top-0 z-10 bg-background border-b">
       <div className="p-2 pl-3 flex items-center justify-between gap-2">
@@ -98,45 +136,7 @@ export const TablePageHeader = ({
             variant="outline"
             size="sm"
             className="flex items-center gap-1"
-            onClick={() => {
-              if (!token || !gridApi) return;
-              if (selectedRanges.length === 0) {
-                console.log('No cells selected for enrichment');
-                return;
-              }
-
-              console.log('selectedRanges', selectedRanges[0]);
-
-              // Get the row nodes from the range
-              const startRowIndex = selectedRanges[0].startRow?.rowIndex || 0;
-              const endRowIndex = selectedRanges[0].endRow?.rowIndex || 0;
-
-              // Get the row data using the grid API
-              const startRowNode = gridApi.getDisplayedRowAtIndex(startRowIndex);
-              const endRowNode = gridApi.getDisplayedRowAtIndex(endRowIndex);
-
-              if (!startRowNode || !endRowNode) {
-                console.error('Could not get row nodes from selection');
-                return;
-              }
-
-              // Get the row IDs from the row data
-              const startRowId = startRowNode.data.id;
-              const endRowId = endRowNode.data.id;
-
-              console.log('Row IDs:', { startRowId, endRowId });
-
-              const columnNames = selectedRanges[0].columns.map(
-                (col) => col.getColDef().headerName
-              );
-
-              fillCellMutation.mutate({
-                tableId,
-                columnNames: columnNames.filter((name) => name !== undefined) as string[],
-                startRowId,
-                endRowId,
-              });
-            }}
+            onClick={handleEnrichCells}
           >
             <Sparkle className="h-4 w-4" />
             Enrich Cells
