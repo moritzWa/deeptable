@@ -135,16 +135,56 @@ export const TablePageHeader = ({
       .map((col) => col.getColDef().headerName)
       .filter((name): name is string => name !== undefined);
 
-    const cellPromises: Promise<unknown>[] = [];
+    console.log('Starting update for range:', { startRowIndex, endRowIndex, selectedColumns });
 
-    // Collect all promises
+    const cellPromises: Promise<unknown>[] = [];
+    const updatedCells: { rowIndex: number; columnName: string }[] = [];
+
+    // First, update all selected cells to show "Enriching..."
+    for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
+      const rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
+      if (!rowNode) {
+        console.warn('Could not find row node for index:', rowIndex);
+        continue;
+      }
+
+      console.log('Row node data structure:', {
+        rowIndex,
+        data: rowNode.data,
+        // Log the actual structure to see how the data is organized
+      });
+
+      for (const columnName of selectedColumns) {
+        // Store which cells we're updating so we can track them
+        updatedCells.push({ rowIndex, columnName });
+
+        // Try both with and without the 'data.' prefix
+        try {
+          // Remove the return statement and try both paths
+          rowNode.setDataValue(`data.${columnName}`, 'Enriching...');
+          console.log(
+            `Attempted to set loading state with data. prefix for row ${rowIndex}, column ${columnName}`
+          );
+
+          // Log the value right after setting to see if it took effect
+          console.log('Current cell value after update:', {
+            withPrefix: rowNode.data[`data.${columnName}`],
+            withoutPrefix: rowNode.data[columnName],
+            rawData: rowNode.data,
+          });
+        } catch (error) {
+          console.error('Error updating cell value:', error);
+        }
+      }
+    }
+
+    // Then process each cell
     for (let rowIndex = startRowIndex; rowIndex <= endRowIndex; rowIndex++) {
       const rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
       if (!rowNode) continue;
 
       const rowId = rowNode.data.id;
 
-      // Process each selected column for this row
       for (const columnName of selectedColumns) {
         const promise = fillSingleCellMutation
           .mutateAsync({
@@ -154,6 +194,11 @@ export const TablePageHeader = ({
           })
           .catch((error) => {
             console.error(`Error processing cell at row ${rowIndex}, column ${columnName}:`, error);
+            // If there's an error, update the cell to show the error
+            const errorRowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
+            if (errorRowNode) {
+              errorRowNode.setDataValue(`data.${columnName}`, 'Error enriching cell');
+            }
             return null;
           });
 
@@ -171,6 +216,14 @@ export const TablePageHeader = ({
       }
     } catch (error) {
       console.error('Error processing cells:', error);
+
+      // If there's a catastrophic error, update all affected cells
+      updatedCells.forEach(({ rowIndex, columnName }) => {
+        const rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
+        if (rowNode) {
+          rowNode.setDataValue(`data.${columnName}`, 'Error enriching cell');
+        }
+      });
     }
   };
 
