@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { IRow, Row as RowModel } from '../models/row';
 import { Table as TableModel } from '../models/table';
 import { publicProcedure, router } from '../trpc';
+import { generateRows } from 'src/generateRowUtils';
 
 // Define the Row type for client-side use
 export interface Row {
@@ -155,21 +156,31 @@ export const rowsRouter = router({
           throw new Error('Table not found');
         }
 
+        console.log('table', table);
+        const entityColumnName = table.columns[0].name;
+        const entityColumnDescription = table.columns[0].description!;
+        console.log('table column', table.columns[0]);
+
+        const generatedRows = await generateRows(table.name, table.description!, entityColumnName, entityColumnDescription);
+
         // Create empty data object based on table columns
-        const emptyData: Record<string, any> = {};
-        table.columns.forEach((column) => {
-          const columnName = typeof column === 'string' ? column : column.name;
-          emptyData[columnName] = null;
-        });
+        // const emptyData: Record<string, any> = {};
+        // table.columns.forEach((column) => {
+        //   const columnName = typeof column === 'string' ? column : column.name;
+        //   emptyData[columnName] = null;
+        // });
+        // emptyData[entityColumnName] = generatedRows;
 
         // Create array of row objects
-        const rows = Array(input.count)
+        const rows = Array(generatedRows.length)
           .fill(null)
-          .map(() => ({
+          .map((_, i) => ({
             tableId: new mongoose.Types.ObjectId(input.tableId),
-            data: emptyData,
+            data: Object.fromEntries(table.columns.map((column) => [column.name, column.name === entityColumnName ? generatedRows[i] : null])),
             userId: decoded.userId,
           }));
+
+        console.log('rows', rows);
 
         // Insert all rows at once
         await RowModel.insertMany(rows);
