@@ -157,17 +157,12 @@
   background-color: hsl(var(--accent));
 }
 
-/* Cell selection in dark mode */
+/* Cell selection styles */
+.ag-theme-alpine .ag-cell-focus {
+  border: 1px solid #2196f3 !important;
+}
+
+/* Dark mode cell selection */
 .dark .ag-theme-alpine .ag-cell-focus {
-  border: 1px solid hsl(var(--ring)) !important;
-}
-
-/* Row hover in dark mode */
-.dark .ag-theme-alpine .ag-row-hover {
-  background-color: hsl(var(--accent)) !important;
-}
-
-/* Selected row in dark mode */
-.dark .ag-theme-alpine .ag-row-selected {
-  background-color: hsla(var(--primary), 0.2) !important;
+  border: 1px solid #2196f3 !important;
 }
