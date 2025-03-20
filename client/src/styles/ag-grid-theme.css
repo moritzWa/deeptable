@@ -56,8 +56,8 @@
 }
 
 .ag-theme-alpine .ag-cell {
-  border-right: 1px solid var(--ag-border-color);
-  border-bottom: 1px solid var(--ag-border-color);
+  border-right: .5px solid var(--ag-border-color);
+  /* border-bottom: .5px solid var(--ag-border-color); */
   display: flex;
   align-items: center;
   line-height: normal;
