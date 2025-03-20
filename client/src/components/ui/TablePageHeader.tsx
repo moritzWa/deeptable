@@ -105,20 +105,11 @@ export const TablePageHeader = ({
                 return;
               }
 
-              // Extract only the necessary range information
-              const rangeInfo = selectedRanges.map((range) => ({
-                startRow: range.startRow?.rowIndex,
-                endRow: range.endRow?.rowIndex,
-                startColumn: range.startColumn,
-                columns: range.columns,
-              }));
-
-              console.log('Selected ranges:', rangeInfo);
               console.log('selectedRanges', selectedRanges[0]);
 
               // Get the row nodes from the range
-              const startRowIndex = rangeInfo[0].startRow || 0;
-              const endRowIndex = rangeInfo[0].endRow || 0;
+              const startRowIndex = selectedRanges[0].startRow?.rowIndex || 0;
+              const endRowIndex = selectedRanges[0].endRow?.rowIndex || 0;
 
               // Get the row data using the grid API
               const startRowNode = gridApi.getDisplayedRowAtIndex(startRowIndex);
@@ -135,7 +126,9 @@ export const TablePageHeader = ({
 
               console.log('Row IDs:', { startRowId, endRowId });
 
-              const columnNames = rangeInfo[0].columns.map((col) => col.getColDef().headerName);
+              const columnNames = selectedRanges[0].columns.map(
+                (col) => col.getColDef().headerName
+              );
 
               fillCellMutation.mutate({
                 tableId,

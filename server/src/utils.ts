@@ -138,7 +138,7 @@ async function getFinalAnswer(
 
 Extract the right information from the search responses and return it in the correct format. Consider the quality and credibility of the information sources, the consistency across responses, and the reasoning provided. When sources disagree, make a judgment based on credibility and recency of information.
 
-Respond ONLY in the output format specified with no other text.`;
+Respond ONLY with the actual output value/type specified with no other text.`;
 
   // Serialize the responses as JSON
   const searchResponsesJson = JSON.stringify(searchResponses, null, 2);
