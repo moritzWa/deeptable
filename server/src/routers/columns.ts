@@ -19,6 +19,8 @@ Your task is to analyze a search query and generate:
 2. A brief description of what the table will contain
 3. A set of columns that would be useful for the research table
 
+Column names should be concise but descriptive. For example, use units of measurement if appropriate. Something like "# Reviews" can be unclear. "# Yelp Reviews" is more specific.
+
 Return the response in the following JSON format:
 {
   "name": "Table name here",
@@ -49,27 +51,27 @@ Output: {
       "required": true
     },
     {
-      "name": "Motor Power",
+      "name": "Power (W)",
       "type": "string",
-      "description": "Power rating of the scooter motor",
+      "description": "Power rating of the scooter motor in watts",
       "required": false
     },
     {
-      "name": "Max Speed",
+      "name": "Max Speed (mph)",
       "type": "number",
       "description": "Maximum speed in mph",
       "required": false
     },
     {
-      "name": "Range",
+      "name": "Range (mi)",
       "type": "number",
-      "description": "Maximum range in miles on a single charge",
+      "description": "Maximum range in miles on a single charge, in miles",
       "required": false
     },
     {
       "name": "Hill Climbing Ability",
       "type": "string",
-      "description": "How well the scooter handles SF hills",
+      "description": "How well the scooter handles SF hills. Good/OK/Bad",
       "required": false
     },
     {
