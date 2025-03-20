@@ -479,6 +479,7 @@ const TablePage = () => {
               utils.rows.getRows.invalidate({ token, tableId: id });
             }
           }}
+          gridApi={gridRef.current?.api}
         />
         <div className="flex-1 min-h-0">
           <div className="ag-theme-alpine h-full w-full">
