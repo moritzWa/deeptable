@@ -180,7 +180,7 @@ export const columnsRouter = router({
       return ['row 1', 'row 2', 'row 3'];
     }),
 
-  fillCell: publicProcedure
+  fillCellBatched: publicProcedure
     .input(
       z
         .object({
@@ -271,6 +271,64 @@ export const columnsRouter = router({
           return 'Error: Invalid table ID format';
         }
         return 'Error processing request';
+      }
+    }),
+  fillSingleCell: publicProcedure
+    .input(
+      z.object({
+        tableId: z.string(),
+        columnName: z.string(),
+        rowId: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        // Get table
+        const tableObjectId = new mongoose.Types.ObjectId(input.tableId);
+        const table = await Table.findById(tableObjectId);
+        if (!table) {
+          throw new Error('Table not found');
+        }
+
+        // Find the column
+        const column = table.columns.find((col) => col.name === input.columnName);
+        if (!column) {
+          throw new Error('Column not found');
+        }
+
+        // Find the row
+        const row = await Row.findOne({
+          _id: new mongoose.Types.ObjectId(input.rowId),
+          tableId: tableObjectId,
+        });
+        if (!row) {
+          throw new Error('Row not found');
+        }
+
+        // Fill the single cell
+        const llmResults = await fillCell(
+          table.name,
+          table.description,
+          column.name,
+          column.description,
+          column.type,
+          [{ data: row.data }]
+        );
+
+        console.log(
+          `llmResults for Row "${row.data[column.name]}", Column ${column.name}:`,
+          llmResults
+        );
+
+        // Update just this cell in the row
+        await Row.findByIdAndUpdate(row._id, {
+          $set: { [`data.${column.name}`]: llmResults },
+        });
+
+        return llmResults;
+      } catch (error) {
+        console.error('Error in fillSingleCell:', error);
+        throw error;
       }
     }),
 });

@@ -12,21 +12,21 @@
   --ag-header-column-separator-height: 100%;
   --ag-header-column-separator-width: 1px;
   --ag-header-column-separator-color: hsl(var(--border));
-  
+
   /* Border colors */
   --ag-border-color: hsl(var(--border));
   --ag-cell-horizontal-border: hsl(var(--border));
-  
+
   /* Sizing */
   --ag-header-height: 48px;
   --ag-row-height: 48px;
   --ag-cell-horizontal-padding: 1rem;
   --ag-grid-size: 6px;
-  
+
   /* Font */
   --ag-font-size: 14px;
   --ag-font-family: inherit;
-  
+
   /* Row Hover */
   --ag-row-hover-color: hsl(var(--accent) / 0.1);
 }
@@ -56,7 +56,7 @@
 }
 
 .ag-theme-alpine .ag-cell {
-  border-right: .5px solid var(--ag-border-color);
+  border-right: 0.5px solid var(--ag-border-color);
   /* border-bottom: .5px solid var(--ag-border-color); */
   display: flex;
   align-items: center;
@@ -93,7 +93,7 @@
   /* Override with dark mode specific values */
   --ag-alpine-active-color: hsl(var(--primary));
   --ag-selected-row-background-color: hsla(var(--primary), 0.2);
-  
+
   /* Additional styles for better dark mode appearance */
   --ag-header-column-separator-color: hsl(var(--border));
   --ag-header-column-resize-handle-color: hsl(var(--border));
@@ -170,4 +170,4 @@
 /* Selected row in dark mode */
 .dark .ag-theme-alpine .ag-row-selected {
   background-color: hsla(var(--primary), 0.2) !important;
-} 
+}
