@@ -62,6 +62,7 @@ export const TablePageHeader = ({
   gridApi,
 }: TablePageHeaderProps) => {
   const token = localStorage.getItem('token');
+  const trpcUtils = trpc.useContext();
 
   const fillCellMutation = trpc.columns.fillCellBatched.useMutation({
     onSuccess: (result) => {
@@ -153,7 +154,6 @@ export const TablePageHeader = ({
           })
           .catch((error) => {
             console.error(`Error processing cell at row ${rowIndex}, column ${columnName}:`, error);
-            // Return null or some other value to indicate failure
             return null;
           });
 
@@ -161,8 +161,17 @@ export const TablePageHeader = ({
       }
     }
 
-    // Execute all promises in parallel
-    await Promise.all(cellPromises);
+    try {
+      // Execute all promises in parallel
+      await Promise.all(cellPromises);
+
+      // After all cells are processed, invalidate the rows data once
+      if (token && tableId) {
+        trpcUtils.rows.getRows.invalidate({ token, tableId });
+      }
+    } catch (error) {
+      console.error('Error processing cells:', error);
+    }
   };
 
   return (
