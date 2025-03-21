@@ -2,8 +2,8 @@ import { User } from '@shared/types';
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
-import { publicProcedure, router } from '../trpc';
 import { User as UserModel } from '../models/user';
+import { publicProcedure, router } from '../trpc';
 
 const googleClient = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
@@ -131,6 +131,7 @@ export const authRouter = router({
         name: user.name,
         picture: user.picture,
         hasSubscription: user.hasSubscription,
+        isWaitlisted: user.isWaitlisted,
       } satisfies User;
     } catch (error) {
       console.error('Get user error:', error);

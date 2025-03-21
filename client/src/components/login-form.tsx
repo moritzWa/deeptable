@@ -1,4 +1,5 @@
 import { defaultPage, LINK_TO_WAITLIST } from '@/App';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc';
 import { cn } from '@/lib/utils';

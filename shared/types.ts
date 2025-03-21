@@ -48,4 +48,5 @@ export interface User {
   picture?: string | null;
   hasSubscription?: boolean;
   stripeCustomerId?: string;
+  isWaitlisted?: boolean;
 }

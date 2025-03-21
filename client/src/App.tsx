@@ -2,9 +2,9 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom';
 import BlogPostPage from './app/blog/[slug]/page';
 import BlogPage from './app/blog/page';
 import HomePage from './components/HomePage';
@@ -20,6 +20,34 @@ import { trpc } from './utils/trpc';
 
 export const defaultPage = '/home';
 export const LINK_TO_WAITLIST = process.env.REACT_APP_LINK_TO_WAITLIST === 'true'; // Toggle this to control the flow after login
+
+// Add a new ProtectedRoute component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const navigate = useNavigate();
+  const { data: userData, isLoading } = trpc.auth.getUser.useQuery(
+    { token: localStorage.getItem('token') || '' },
+    {
+      enabled: !!localStorage.getItem('token'),
+    }
+  );
+
+  useEffect(() => {
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
+      return;
+    }
+
+    if (!isLoading && userData?.isWaitlisted) {
+      navigate('/waitlist-form');
+    }
+  }, [userData, isLoading, navigate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  return <>{children}</>;
+};
 
 function AppContent() {
   return (
@@ -43,9 +71,40 @@ function AppContent() {
               </>
             }
           />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/new" element={<ResearchPromptPage />} />
-          <Route path="/tables/:id" element={<TablePage />} />
+          {/* Protect these routes */}
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <HomePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/new"
+            element={
+              <ProtectedRoute>
+                <ResearchPromptPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tables/:id"
+            element={
+              <ProtectedRoute>
+                <TablePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          {/* Leave these routes unprotected */}
           <Route
             path="/login"
             element={
@@ -68,7 +127,6 @@ function AppContent() {
               </>
             }
           />
-          <Route path="/settings" element={<SettingsPage />} />
           <Route
             path="/blog"
             element={

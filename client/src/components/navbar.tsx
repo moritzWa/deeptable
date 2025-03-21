@@ -1,6 +1,5 @@
 import { Menu } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { ThemeToggle } from './theme-toggle';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
@@ -38,7 +37,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center">
+        <div className="flex items-center justify-between w-full">
           <Link to="/" className="text-xl font-bold mr-8">
             Deep Table
           </Link>
@@ -50,9 +49,6 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center space-x-2">
-          {/* Theme Toggle */}
-          <ThemeToggle />
-
           {/* Mobile Navigation */}
           <Sheet>
             <SheetTrigger asChild className="md:hidden">
