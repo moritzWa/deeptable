@@ -6,28 +6,33 @@ const examples = [
   {
     category: 'Travel & Lifestyle',
     items: [
-      '🏖️ best nomad style beach cities to workcation in costa rica close to sfo',
-      '🏋️ best gym in Canggu bali with Sauna and cold plunge',
+      '🏖️ best nomad style beach cities to workcation in Costa Rica close to SFO',
+      '🏋️ best gym in Canggu Bali with Sauna and cold plunge',
     ],
   },
   {
     category: 'Business & Investment',
     items: [
       '💼 best vc firms and angel investors for pre-seed companies interested in ai dev tools and ai infra',
-      '🚁 founders of evtol companies',
-      '🚗 car dealerships us vs germany market size, revenue, and number of dealerships comparison',
+      '🚁 founders of eVTOL companies',
+      '🎯 startups in the US using GPU infrastructure that might need serverless solutions',
+      '🏠 compare investment potential of 3 bedroom properties in Austin TX - ROI, appreciation, rental demand',
     ],
   },
   {
     category: 'Technology & Software',
     items: [
-      '⏱️ best time tracking software like toggle tracker',
-      '⚛️ Compare react libraries for tables - look at weekly downloads number of github stars and when it was last updated',
+      '⏱️ best time tracking software like Toggl Track',
+      '⚛️ Compare React libraries for tables - look at weekly downloads number of GitHub stars and when it was last updated',
+      '📊 compare top 5 product management saas - pricing, features, user reviews',
     ],
   },
   {
     category: 'Real Estate & Rentals',
-    items: ['🏠 2 bed 2 bath apartments in san francisco for rent, price, modern'],
+    items: [
+      '🏠 2 bed 2 bath apartments in San Francisco for rent, price, modern',
+      '🏢 compare coworking spaces in Manhattan - daily rates, amenities, meeting rooms, reviews',
+    ],
   },
   {
     category: 'Products & Gadgets',
@@ -40,6 +45,14 @@ const examples = [
     category: 'Health & Productivity',
     items: [
       '💡 list most knowledgeable person on lights effect on the circadian rhythm, productivity, alertness, etc…',
+      '🧘‍♀️ compare top meditation retreats in California - duration, cost, teaching style, accommodation',
+    ],
+  },
+  {
+    category: 'Talent Research',
+    items: [
+      '🏅 find career paths of International Math Olympiad gold medalists from 2015-2020',
+      '👩‍💻 research technical leaders who previously worked at Anthropic, OpenAI, or DeepMind',
     ],
   },
 ];
