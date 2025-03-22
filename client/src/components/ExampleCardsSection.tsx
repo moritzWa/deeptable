@@ -114,6 +114,10 @@ const examples: CategoryExample[] = [
         emoji: '👩‍💻',
         text: 'research technical leaders who previously worked at Anthropic, OpenAI, or DeepMind',
       },
+      {
+        emoji: '👩‍💼',
+        text: 'list people that worked at Thiel Capital and Founders Fund and which other companies they worked at',
+      },
     ],
   },
 ];
