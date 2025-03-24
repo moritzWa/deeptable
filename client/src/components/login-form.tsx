@@ -40,13 +40,13 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   }, []);
 
   return (
-    <div className={cn('flex flex-col w-full gap-6', className)} {...props}>
-      <Card className="w-1/3">
+    <div className={cn('flex flex-col items-center w-full gap-6', className)} {...props}>
+      <Card className="w-[90%] max-w-md mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%]">
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome back</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl">Welcome back</CardTitle>
           <CardDescription>Login with your Google account</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <form>
             <div className="grid gap-6">
               <div className="flex flex-col gap-4">
