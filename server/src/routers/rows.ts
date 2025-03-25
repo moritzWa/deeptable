@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { IRow, Row as RowModel } from '../models/row';
 import { Table as TableModel } from '../models/table';
 import { publicProcedure, router } from '../trpc';
-import { generateRows } from 'src/generateRowUtils';
+import { generateRows } from '../generateRowUtils';
 
 // Define the Row type for client-side use
 export interface Row {
