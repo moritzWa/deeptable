@@ -1,7 +1,7 @@
+import { ColumnType } from '@shared/types';
 import mongoose, { Document } from 'mongoose';
 
 // Define column types
-export type ColumnType = 'string' | 'number' | 'boolean' | 'date' | 'array' | 'object';
 
 // Column state interface
 export interface IColumnState {
