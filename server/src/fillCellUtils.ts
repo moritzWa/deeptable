@@ -1,3 +1,4 @@
+import { ColumnType } from '@shared/types';
 import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
@@ -124,11 +125,53 @@ async function askGoogle(question: string): Promise<string> {
   return completion.candidates[0].content.parts.map((part: GooglePart) => part.text).join('\n');
 }
 
+/**
+ * Converts a ColumnType string to a JSON schema for OpenAI API
+ * Always creates an object schema with a 'result' field of the requested type
+ */
+function columnTypeToJsonSchema(columnType: ColumnType): Record<string, unknown> {
+  let resultSchema: Record<string, unknown>;
+  
+  switch (columnType) {
+    case 'string':
+      resultSchema = { type: 'string' };
+      break;
+    case 'number':
+      resultSchema = { type: 'number' };
+      break;
+    case 'boolean':
+      resultSchema = { type: 'boolean' };
+      break;
+    case 'date':
+      resultSchema = { type: 'string', format: 'date-time' };
+      break;
+    case 'array':
+      resultSchema = { type: 'array', items: { type: 'string' } };
+      break;
+    case 'object':
+      resultSchema = { type: 'object', additionalProperties: true };
+      break;
+    default:
+      // Fallback for any unexpected types
+      resultSchema = { type: 'string' };
+  }
+  
+  // Wrap in an object schema with a result field
+  return {
+    type: 'object',
+    properties: {
+      result: resultSchema
+    },
+    additionalProperties: false,
+    required: ['result']
+  };
+}
+
 async function getFinalAnswer(
   tableName: string,
   columnName: string,
   columnDescription: string,
-  outputType: Record<string, unknown>, // todo make this a json schema
+  outputType: Record<string, unknown>,
   searchResponses: Array<{ response: string; provider: string }>
 ) {
   // Initialize OpenAI client
@@ -174,7 +217,15 @@ Respond ONLY with the actual output value/type specified with no other text.`;
   if (!message) {
     throw new Error('No message');
   }
-  return message.trim();
+  
+  // Parse the message and extract the result field
+  try {
+    const parsed = JSON.parse(message.trim());
+    return parsed.result;
+  } catch (error) {
+    console.error('Error parsing model response:', error, 'message', message);
+    throw error;
+  }
 }
 
 export async function fillCell(
@@ -182,7 +233,7 @@ export async function fillCell(
   tableDescription: string | null | undefined,
   columnName: string,
   columnDescription: string | null | undefined,
-  outputType: string,
+  outputType: ColumnType,
   rows: Array<{ data: Record<string, any> }>
 ) {
   const question = `The user is making a spreadsheet with the following table: ${tableName}. The table has the following description: ${tableDescription}. The column they are filling out is: ${columnName}. The column has the following description: ${columnDescription} and the type is ${outputType}. The existing rows are: ${rows.map((row) => JSON.stringify(row.data)).join(', ')}. Help them fill in this cell.`;
@@ -214,11 +265,14 @@ export async function fillCell(
   const searchResponses = await Promise.all(searchPromises);
   console.log('Search results collected from all providers');
 
+  const jsonSchema = columnTypeToJsonSchema(outputType);
+
+  console.log('filling cell with json schema', jsonSchema);
   const extracted = await getFinalAnswer(
     tableName,
     columnName,
     columnDescription || '',
-    'string',
+    jsonSchema,
     searchResponses
   );
   return extracted;
