@@ -313,8 +313,10 @@ export const columnsRouter = router({
           [{ data: row.data }]
         );
 
+        // Get the first property value from row.data object
+        const firstPropertyValue = Object.values(row.data)[0];
         console.log(
-          `llmResults for Row "${row.data[column.name]}", Column ${column.name}:`,
+          `llmResults for Row "${firstPropertyValue}", Column ${column.name}:`,
           llmResults
         );
 
