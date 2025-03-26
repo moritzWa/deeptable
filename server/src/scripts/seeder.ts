@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { User } from '../models/user';
 import { createRestaurantTable } from './seeds/germanRestaurants';
-import { createApiPricingTable } from './seeds/apiPricing';
+import { createApiPricingTable } from './seeds/searchAiApiPricing';
 
 // Connect to MongoDB
 const connectDB = async () => {

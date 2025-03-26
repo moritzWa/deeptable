@@ -1,11 +1,0 @@
-company,product name,pricing info link,api docs,USD price per 1k request,Note
-Exa.AI,,https://exa.ai/pricing?tab=api,https://docs.exa.ai/reference/getting-started,2.5,"AI auto decides search type, higher latency. Get started with $10 in free credits. Discounts for startups and education are available - contact them."
-Google,Google Gemini API,https://ai.google.dev/gemini-api/docs/pricing,https://ai.google.dev/gemini-api/docs,35,"For ""Grounding with Google Search"" functionality.
-"
-Google,Google Vertex AI Search (Standard)        ,https://cloud.google.com/generative-ai-app-builder/pricing#enterprise_pricing,Google Vertex AI Docs,2,$4 per 1k with LLM Add-On and $10 per 1k with Advanced
-Perplexity,Sonar,https://docs.perplexity.ai/guides/pricing,Perplexity API Docs,8,
-Perplexity,Sonar Pro,https://docs.perplexity.ai/guides/pricing,Perplexity API Docs,10,
-Perplexity,Sonar Reasoning,https://docs.perplexity.ai/guides/pricing,Perplexity API Docs,8,
-Perplexity,Sonar Reasoning Pro,https://docs.perplexity.ai/guides/pricing,Perplexity API Docs,10,
-OpenAI,Open AI Agents,https://platform.openai.com/docs/pricing,OpenAI API Docs,2.5,"$2.50 per million tokens, each query + response is ~1k tokens"
-Bing Search API,Bing Search API,https://www.microsoft.com/en-us/bing/apis/pricing,https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/,1,not ai answering engine
