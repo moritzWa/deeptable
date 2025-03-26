@@ -129,7 +129,7 @@ async function askGoogle(question: string): Promise<string> {
  */
 function columnTypeToJsonSchema(columnType: ColumnType): Record<string, unknown> {
   let resultSchema: Record<string, unknown>;
-  
+
   switch (columnType) {
     case 'text':
       resultSchema = { type: 'string' };
@@ -138,18 +138,18 @@ function columnTypeToJsonSchema(columnType: ColumnType): Record<string, unknown>
       resultSchema = { type: 'number' };
       break;
     case 'link':
-      resultSchema = { type: 'string', format: 'uri' };
+      resultSchema = { type: 'string' }; // TODO: add format: 'uri'
       break;
   }
-  
+
   // Wrap in an object schema with a result field
   return {
     type: 'object',
     properties: {
-      result: resultSchema
+      result: resultSchema,
     },
     additionalProperties: false,
-    required: ['result']
+    required: ['result'],
   };
 }
 
@@ -178,6 +178,11 @@ Respond ONLY with the actual output value/type specified with no other text.`;
 
   const question = `Table: ${tableName}\nColumn: ${columnName}\nColumn Description: ${columnDescription}\nOutput type: ${serializedOutputType}\n \nSearch Responses:\n${searchResponsesJson}`;
 
+  // log col type
+  console.log('columnName', columnName);
+
+  // log existing row content
+
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini-2024-07-18',
     messages: [
@@ -203,7 +208,7 @@ Respond ONLY with the actual output value/type specified with no other text.`;
   if (!message) {
     throw new Error('No message');
   }
-  
+
   // Parse the message and extract the result field
   try {
     const parsed = JSON.parse(message.trim());
