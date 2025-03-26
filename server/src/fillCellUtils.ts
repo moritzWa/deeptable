@@ -131,23 +131,14 @@ function columnTypeToJsonSchema(columnType: ColumnType): Record<string, unknown>
   let resultSchema: Record<string, unknown>;
   
   switch (columnType) {
-    case 'string':
+    case 'text':
       resultSchema = { type: 'string' };
       break;
     case 'number':
       resultSchema = { type: 'number' };
       break;
-    case 'boolean':
-      resultSchema = { type: 'boolean' };
-      break;
-    case 'date':
-      resultSchema = { type: 'string', format: 'date-time' };
-      break;
-    case 'array':
-      resultSchema = { type: 'array', items: { type: 'string' } };
-      break;
-    case 'object':
-      resultSchema = { type: 'object', additionalProperties: true };
+    case 'link':
+      resultSchema = { type: 'string', format: 'uri' };
       break;
     default:
       // Fallback for any unexpected types
