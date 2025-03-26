@@ -2,10 +2,10 @@ import { Column, ColumnType } from '@shared/types';
 import mongoose from 'mongoose';
 import OpenAI from 'openai';
 import { z } from 'zod';
+import { fillCell } from '../fillCellUtils';
 import { Row } from '../models/row';
 import { Table } from '../models/table';
 import { publicProcedure, router } from '../trpc';
-import { fillCell } from '../fillCellUtils';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -26,7 +26,7 @@ Return the response in the following JSON format:
   "columns": [
     {
       "name": "Column Name",
-      "type": "string", // One of: string, number, boolean, date, array, object
+      "type": "text", // One of: "text", "number", "link"
       "description": "Brief description of what this column contains",
       "required": false // Whether this column is required
     },
@@ -44,45 +44,43 @@ Output: {
   "columns": [
     {
       "name": "Scooter Model",
-      "type": "string",
+      "type": "text",
       "description": "Name and model of the scooter",
-      "required": true
+    },
+    {
+      "name": "Product Link",
+      "type": "link",
+      "description": "URL to the product page",
     },
     {
       "name": "Motor Power in Watts",
       "type": "number",
       "description": "Power rating of the scooter motor",
-      "required": false
     },
     {
       "name": "Max Speed in mph",
       "type": "number",
       "description": "Maximum speed in mph",
-      "required": false
     },
     {
       "name": "Range in Miles",
       "type": "number",
       "description": "Maximum range in miles on a single charge",
-      "required": false
     },
     {
       "name": "Hill Climbing Ability",
-      "type": "string",
+      "type": "text",
       "description": "How well the scooter handles SF hills",
-      "required": false
     },
     {
       "name": "Key Features",
       "type": "text",
       "description": "List of notable features",
-      "required": false
     },
     {
       "name": "Image",
       "type": "link",
       "description": "URL to an image of the scooter",
-      "required": false
     }
   ]
 }`;
@@ -138,9 +136,8 @@ export const columnsRouter = router({
             // Ensure each column has the required properties
             return {
               name: col.name || 'Unnamed Column',
-              type: (col.type as ColumnType) || 'string',
+              type: (col.type as ColumnType) || 'text',
               description: col.description || '',
-              required: col.required || false,
             };
           });
 

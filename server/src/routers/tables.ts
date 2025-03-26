@@ -477,7 +477,7 @@ export const tablesRouter = router({
           },
           {
             $set: {
-              'columns.$.type': input.type === 'text' ? 'string' : input.type, // Convert 'text' to 'string' for database
+              'columns.$.type': input.type,
             },
           }
         );
