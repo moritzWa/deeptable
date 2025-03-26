@@ -1,4 +1,6 @@
 import OpenAI from 'openai';
+import { zodResponseFormat } from 'openai/helpers/zod';
+import { z } from 'zod';
 
 // Type definitions for API responses
 interface PerplexityResponse {
@@ -126,7 +128,7 @@ async function getFinalAnswer(
   tableName: string,
   columnName: string,
   columnDescription: string,
-  outputType: string,
+  outputType: Record<string, unknown>, // todo make this a json schema
   searchResponses: Array<{ response: string; provider: string }>
 ) {
   // Initialize OpenAI client
@@ -143,7 +145,9 @@ Respond ONLY with the actual output value/type specified with no other text.`;
   // Serialize the responses as JSON
   const searchResponsesJson = JSON.stringify(searchResponses, null, 2);
 
-  const question = `Table: ${tableName}\nColumn: ${columnName}\nColumn Description: ${columnDescription}\nOutput type: ${outputType}\n \nSearch Responses:\n${searchResponsesJson}`;
+  const serializedOutputType = JSON.stringify(outputType, null, 2);
+
+  const question = `Table: ${tableName}\nColumn: ${columnName}\nColumn Description: ${columnDescription}\nOutput type: ${serializedOutputType}\n \nSearch Responses:\n${searchResponsesJson}`;
 
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini-2024-07-18',
@@ -157,6 +161,14 @@ Respond ONLY with the actual output value/type specified with no other text.`;
         content: question,
       },
     ],
+    response_format: {
+      type: 'json_schema',
+      json_schema: {
+        name: 'output',
+        strict: true,
+        schema: outputType,
+      },
+    },
   });
   const message = completion.choices[0].message.content;
   if (!message) {
