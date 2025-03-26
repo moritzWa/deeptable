@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ag-grid-community/client-side-row-model": "^32.3.4",
     "@ag-grid-community/core": "^32.3.4",
+    "@ag-grid-community/client-side-row-model": "^32.3.4",
     "@hookform/resolvers": "^3.10.0",
     "@octokit/core": "^3.5.1",
     "@radix-ui/react-alert-dialog": "^1.1.5",
