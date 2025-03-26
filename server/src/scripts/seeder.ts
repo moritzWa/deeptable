@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
-import { Table } from '../models/table';
-import { Column } from '@shared/types';
 import { User } from '../models/user';
+import { createRestaurantTable } from './seeds/restaurants';
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -14,11 +13,10 @@ const connectDB = async () => {
   }
 };
 
-// Seed database with restaurant table
+// Seed database with all data
 const seedDatabase = async () => {
   try {
     // Find or create a test user
-
     const yourEmail = 'wallawitsch@gmail.com';
     const user = await User.findOne({ email: yourEmail });
 
@@ -28,28 +26,14 @@ const seedDatabase = async () => {
 
     const userId = user._id.toString();
 
-    // Create restaurant table
-    const restaurantColumns: Column[] = [
-      { name: 'Restaurant Name', type: 'text', required: true },
-      { name: 'Address', type: 'text', required: true },
-      { name: 'Average Price (in USD)', type: 'number', required: false },
-      { name: 'Ratings', type: 'number', required: false },
-      { name: 'Google Maps Review Count', type: 'number', required: false },
-      { name: 'Special Features', type: 'text', required: false },
-      { name: 'Website', type: 'link', required: false },
-    ];
-
-    const restaurantTable = await Table.create({
-      name: 'SF German Restaurants',
-      description: 'A collection of German restaurants in San Francisco',
-      columns: restaurantColumns,
-      userId,
-    });
-
+    // Create restaurant table and its rows
+    const restaurantTable = await createRestaurantTable(userId);
     console.log(`Created table: ${restaurantTable.name} with ID: ${restaurantTable._id}`);
 
+    // Add more seed functions here as needed
+    // await createOtherTable(userId);
+
     console.log('Database seeded successfully!');
-    console.log('To add rows to this table, run the rowSeeder.ts script');
   } catch (error: any) {
     console.error(`Error seeding database: ${error.message}`);
   } finally {
