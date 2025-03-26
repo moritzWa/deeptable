@@ -1,7 +1,7 @@
 import { smartCellRenderer } from '@/components/ui/CustomCellRenderers';
 import { useSidebar } from '@/components/ui/sidebar';
 import { trpc } from '@/utils/trpc';
-import { ColumnState, Table } from '@shared/types';
+import { ColumnState, ColumnType, Table } from '@shared/types';
 import {
   CellRange,
   CellValueChangedEvent,
@@ -152,6 +152,14 @@ const TablePage = () => {
       console.error('Failed to delete column:', error.message);
     },
   });
+  const updateColumnTypeMutation = trpc.tables.updateColumnType.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error('Failed to update column type:', error);
+    },
+  });
 
   // USE EFFECTS
   // This effect will run whenever the id parameter changes
@@ -249,6 +257,13 @@ const TablePage = () => {
           suppressHeaderContextMenu: true,
           ...columnStateProps,
           colId: column.name,
+          type: column.type || 'text',
+          valueParser: (params) => {
+            if (column.type === 'number') {
+              return Number(params.newValue);
+            }
+            return params.newValue;
+          },
         };
 
         return colDef;
@@ -332,6 +347,16 @@ const TablePage = () => {
           columnName,
         });
       },
+      updateColumnType: (columnName: string, newType: ColumnType) => {
+        if (!token || !id) return;
+
+        updateColumnTypeMutation.mutate({
+          token,
+          tableId: id,
+          columnName,
+          type: newType,
+        });
+      },
     }),
     [
       id,
@@ -342,6 +367,7 @@ const TablePage = () => {
       table?.columns,
       addColumnMutation,
       deleteColumnMutation,
+      updateColumnTypeMutation,
     ]
   );
 

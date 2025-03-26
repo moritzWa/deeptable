@@ -5,9 +5,12 @@ import {
   ArrowRightToLine,
   Eye,
   EyeOff,
+  Hash,
+  Link2,
   PinIcon,
   PinOff,
   Trash2,
+  Type,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -26,6 +29,7 @@ interface CustomHeaderParams extends IHeaderParams {
     updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => void;
     addColumn?: (position: 'left' | 'right', relativeTo: string) => void;
     deleteColumn?: (columnName: string) => void;
+    updateColumnType?: (columnName: string, newType: string) => void;
   };
   enableSorting: boolean;
   column: Column;
@@ -123,6 +127,12 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     props.context.deleteColumn(props.column.getColId());
   };
 
+  const handleTypeChange = (newType: string) => {
+    if (props.context.updateColumnType) {
+      props.context.updateColumnType(props.column.getColId(), newType);
+    }
+  };
+
   return (
     <ContextMenu onOpenChange={handleOpenChange}>
       <ContextMenuTrigger asChild>
@@ -199,6 +209,30 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
           >
             <Trash2 className="h-4 w-4" />
             Delete Column
+          </ContextMenuItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <ContextMenuItem
+            onClick={() => handleTypeChange('text')}
+            className="flex items-center gap-2"
+          >
+            <Type className="h-4 w-4" />
+            Text
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => handleTypeChange('number')}
+            className="flex items-center gap-2"
+          >
+            <Hash className="h-4 w-4" />
+            Number
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => handleTypeChange('link')}
+            className="flex items-center gap-2"
+          >
+            <Link2 className="h-4 w-4" />
+            Link
           </ContextMenuItem>
         </ContextMenuGroup>
       </ContextMenuContent>

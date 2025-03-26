@@ -1,5 +1,5 @@
 // Column type definition
-export type ColumnType = 'string' | 'number' | 'boolean' | 'date' | 'array' | 'object';
+export type ColumnType = 'text' | 'number' | 'link';
 
 // Column state interface for AG Grid state persistence
 export interface ColumnState {

@@ -49,19 +49,19 @@ Output: {
       "required": true
     },
     {
-      "name": "Motor Power",
-      "type": "string",
+      "name": "Motor Power in Watts",
+      "type": "number",
       "description": "Power rating of the scooter motor",
       "required": false
     },
     {
-      "name": "Max Speed",
+      "name": "Max Speed in mph",
       "type": "number",
       "description": "Maximum speed in mph",
       "required": false
     },
     {
-      "name": "Range",
+      "name": "Range in Miles",
       "type": "number",
       "description": "Maximum range in miles on a single charge",
       "required": false
@@ -74,13 +74,13 @@ Output: {
     },
     {
       "name": "Key Features",
-      "type": "array",
+      "type": "text",
       "description": "List of notable features",
       "required": false
     },
     {
       "name": "Image",
-      "type": "string",
+      "type": "link",
       "description": "URL to an image of the scooter",
       "required": false
     }

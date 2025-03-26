@@ -1,4 +1,4 @@
-import { Table } from '@shared/types';
+import { ColumnType, Table } from '@shared/types';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { Row } from '../models/row';
@@ -25,7 +25,7 @@ const columnStateSchema = z.object({
 // Define a Zod schema for column validation
 const columnSchema = z.object({
   name: z.string(),
-  type: z.enum(['string', 'number', 'boolean', 'date', 'array', 'object']),
+  type: z.enum(['text', 'number', 'link', 'string', 'boolean', 'date', 'array', 'object']),
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
   description: z.string().optional(),
@@ -348,7 +348,7 @@ export const tablesRouter = router({
         // Create the new column with the appropriate sortIndex
         const newColumn = {
           name: input.columnName,
-          type: 'string' as const,
+          type: 'text' as ColumnType,
           required: false,
           columnState: {
             sortIndex: input.position === 'left' ? refSortIndex : refSortIndex + 1,
@@ -449,6 +449,64 @@ export const tablesRouter = router({
       } catch (error) {
         console.error('Delete column error:', error);
         throw new Error('Failed to delete column');
+      }
+    }),
+
+  // Add the new updateColumnType route
+  updateColumnType: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnName: z.string(),
+        type: z.enum(['text', 'number', 'link']),
+      })
+    )
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        // Update the column type in the table
+        const result = await TableModel.updateOne(
+          {
+            _id: input.tableId,
+            userId: decoded.userId,
+            'columns.name': input.columnName,
+          },
+          {
+            $set: {
+              'columns.$.type': input.type === 'text' ? 'string' : input.type, // Convert 'text' to 'string' for database
+            },
+          }
+        );
+
+        if (result.matchedCount === 0) {
+          throw new Error('Table or column not found');
+        }
+
+        // Convert existing data to the new type
+        await Row.updateMany({ tableId: input.tableId }, [
+          {
+            $set: {
+              [`data.${input.columnName}`]: {
+                $cond: {
+                  if: { $eq: [input.type, 'number'] },
+                  then: {
+                    $convert: { input: `$data.${input.columnName}`, to: 'double', onError: null },
+                  },
+                  else: { $toString: `$data.${input.columnName}` }, // Convert to string for 'text' and 'link'
+                },
+              },
+            },
+          },
+        ]);
+
+        return { success: true };
+      } catch (error) {
+        console.error('Update column type error:', error);
+        throw new Error('Failed to update column type');
       }
     }),
 });
