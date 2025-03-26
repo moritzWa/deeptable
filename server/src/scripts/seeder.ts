@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { User } from '../models/user';
-import { createRestaurantTable } from './seeds/restaurants';
+import { createRestaurantTable } from './seeds/germanRestaurants';
 
 // Connect to MongoDB
 const connectDB = async () => {
