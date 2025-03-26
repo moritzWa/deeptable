@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { User } from '../models/user';
 import { createHardwareStartupsTable } from './seeds/consumerHardwareStartups';
 import { createRestaurantTable } from './seeds/germanRestaurants';
+import { createSciFiMoviesTable } from './seeds/sciFiMovies';
 import { createApiPricingTable } from './seeds/searchAiApiPricing';
 
 // Connect to MongoDB
@@ -39,6 +40,8 @@ const seedDatabase = async () => {
     console.log(
       `Created table: ${consumerHardwareStartupsTable.name} with ID: ${consumerHardwareStartupsTable._id}`
     );
+    const sciFiMoviesTable = await createSciFiMoviesTable(userId);
+    console.log(`Created table: ${sciFiMoviesTable.name} with ID: ${sciFiMoviesTable._id}`);
 
     console.log('Database seeded successfully!');
   } catch (error: any) {

@@ -1,0 +1,6 @@
+Library,Weekly Downloads,GitHub Stars,Last Updated (days ago),Size (KB),Use Case (String),Homepage (URL),Github Link (URL)
+React Table (TanStack Table),"1,360,265","25,994",0,940,"Enterprise applications, large datasets, complex data manipulation, financial dashboards",https://tanstack.com/table/latest,https://github.com/TanStack/table
+ag-grid-react,"455,384","13,600",23,619,"Simple to complex tables, customizable UI, data grids, sorting, filtering, pagination",https://www.ag-grid.com/react-data-grid,https://github.com/ag-grid/ag-grid
+react-data-table-component,"140,893","2,109",18,629,"Material-UI based projects, responsive tables, filtering, sorting, exporting",https://reactdatatable.com/,https://github.com/jbetancur/react-data-table-component
+material-table,"50,738","3,503",21,335,"Tree views, virtualization, fixed headers/columns, RTL support",https://www.material-react-table.com/,https://github.com/KevinVandy/material-react-table
+mantine-datatable,"27,285","1,013",8,502,"Bootstrap-based projects, simple tables with basic features",https://icflorescu.github.io/mantine-datatable/,https://github.com/icflorescu/mantine-datatable
