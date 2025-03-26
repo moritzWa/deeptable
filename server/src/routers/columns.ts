@@ -28,7 +28,6 @@ Return the response in the following JSON format:
       "name": "Column Name",
       "type": "text", // One of: "text", "number", "link"
       "description": "Brief description of what this column contains",
-      "required": false // Whether this column is required
     },
     // More columns...
   ]
@@ -126,6 +125,8 @@ export const columnsRouter = router({
 
         // Extract the generated response from the API
         const responseText = response.choices[0]?.message?.content?.trim() || '';
+
+        console.log('responseText for generateColumns', responseText);
 
         try {
           // Parse the JSON response
