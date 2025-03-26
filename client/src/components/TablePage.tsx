@@ -18,13 +18,18 @@ import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
+import { ModuleRegistry } from 'ag-grid-community';
 import 'ag-grid-enterprise'; // This is the correct way to import enterprise features
+import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
 import { TablePageError } from './TablePageError';
 import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { TablePageHeader } from './ui/TablePageHeader';
+
+// Register all enterprise modules (includes ClientSideRowModel)
+ModuleRegistry.registerModules([AllEnterpriseModule]);
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
