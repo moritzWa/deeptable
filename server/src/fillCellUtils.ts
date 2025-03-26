@@ -242,10 +242,11 @@ export async function fillCell(
       name: 'OpenAI',
       fn: askOpenAI,
     },
-    {
-      name: 'Perplexity',
-      fn: askPerplexity,
-    },
+    // let's not waste $ on this
+    // {
+    //   name: 'Perplexity',
+    //   fn: askPerplexity,
+    // },
     {
       name: 'Google',
       fn: askGoogle,
