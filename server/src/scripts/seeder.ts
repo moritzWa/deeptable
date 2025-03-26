@@ -29,13 +29,13 @@ const seedDatabase = async () => {
 
     // Create restaurant table
     const restaurantColumns: IColumn[] = [
-      { name: 'Restaurant Name', type: 'string', required: true },
-      { name: 'Address', type: 'string', required: true },
+      { name: 'Restaurant Name', type: 'text', required: true },
+      { name: 'Address', type: 'text', required: true },
       { name: 'Average Price (in USD)', type: 'number', required: false },
       { name: 'Ratings', type: 'number', required: false },
       { name: 'Google Maps Review Count', type: 'number', required: false },
-      { name: 'Special Features', type: 'string', required: false },
-      { name: 'Website', type: 'string', required: false },
+      { name: 'Special Features', type: 'text', required: false },
+      { name: 'Website', type: 'link', required: false },
     ];
 
     const restaurantTable = await Table.create({
