@@ -11,10 +11,8 @@ import {
   ColumnResizedEvent,
   ColumnVisibleEvent,
   GridReadyEvent,
-  ModuleRegistry,
   SortChangedEvent,
 } from 'ag-grid-community';
-import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
@@ -26,9 +24,6 @@ import { AppLayout } from './AppLayout';
 import { TablePageError } from './TablePageError';
 import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { TablePageHeader } from './ui/TablePageHeader';
-
-// Register required modules
-ModuleRegistry.registerModules([AllEnterpriseModule]);
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
