@@ -52,24 +52,18 @@ The project includes scripts to seed your database with sample data:
 
 Or run individual commands:
 
-1. **Seed Tables**: Creates table structures in the database
+1. **Seed Database**: Creates tables and populates them with sample data
 
    ```bash
-   doppler run -- bun run --cwd server seed:table
+   doppler run -- bun run --cwd server db:seed
    ```
 
-2. **Seed Rows**: Populates tables with sample data (run after seeding tables)
-
-   ```bash
-   doppler run -- bun run --cwd server seed:rows
-   ```
-
-3. **Delete Data**: Removes all data except user accounts
+2. **Delete Data**: Removes all data except user accounts
    ```bash
    doppler run -- bun run --cwd server db:delete
    ```
 
-Note: The seeding scripts use the email specified in the script to associate data with a user. Make sure to update the email in the scripts (`server/src/scripts/seeder.ts` and `server/src/scripts/rowSeeder.ts`) to match an existing user in your database.
+Note: The seeding script uses the email specified in the script to associate data with a user. Make sure to update the email in the script (`server/src/scripts/seeder.ts`) to match an existing user in your database.
 
 ### Installation
 
