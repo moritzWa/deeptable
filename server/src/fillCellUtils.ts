@@ -1,7 +1,5 @@
 import { ColumnType } from '@shared/types';
 import OpenAI from 'openai';
-import { zodResponseFormat } from 'openai/helpers/zod';
-import { z } from 'zod';
 
 // Type definitions for API responses
 interface PerplexityResponse {
