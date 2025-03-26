@@ -227,7 +227,15 @@ export async function fillCell(
   outputType: ColumnType,
   rows: Array<{ data: Record<string, any> }>
 ) {
-  const question = `The user is making a spreadsheet with the following table: ${tableName}. The table has the following description: ${tableDescription}. The column they are filling out is: ${columnName}. The column has the following description: ${columnDescription} and the type is ${outputType}. The existing rows are: ${rows.map((row) => JSON.stringify(row.data)).join(', ')}. Help them fill in this cell.`;
+  const question = `The user is making a spreadsheet called "${tableName}". ${
+    tableDescription ? `Purpose of the table: ${tableDescription}. ` : ''
+  }They want to fill out the "${columnName}" column${
+    columnDescription ? ` (${columnDescription})` : ''
+  }. The column type is ${outputType}.
+  
+  Here is the existing row data: ${rows.map((row) => JSON.stringify(row.data)).join('\n')}
+  
+  Help fill in this cell based on the existing row data.`;
 
   const providers = [
     {
