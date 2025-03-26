@@ -18,6 +18,7 @@ import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
+import 'ag-grid-enterprise'; // This is the correct way to import enterprise features
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
