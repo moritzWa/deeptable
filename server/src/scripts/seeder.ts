@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { User } from '../models/user';
+import { createHardwareStartupsTable } from './seeds/consumerHardwareStartups';
 import { createRestaurantTable } from './seeds/germanRestaurants';
 import { createApiPricingTable } from './seeds/searchAiApiPricing';
 
@@ -34,8 +35,10 @@ const seedDatabase = async () => {
     console.log(
       `Created table: ${searchAiApiPricingTable.name} with ID: ${searchAiApiPricingTable._id}`
     );
-    // Add more seed functions here as needed
-    // await createOtherTable(userId);
+    const consumerHardwareStartupsTable = await createHardwareStartupsTable(userId);
+    console.log(
+      `Created table: ${consumerHardwareStartupsTable.name} with ID: ${consumerHardwareStartupsTable._id}`
+    );
 
     console.log('Database seeded successfully!');
   } catch (error: any) {
