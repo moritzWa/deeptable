@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { User } from '../models/user';
 import { createRestaurantTable } from './seeds/germanRestaurants';
+import { createApiPricingTable } from './seeds/apiPricing';
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -29,7 +30,10 @@ const seedDatabase = async () => {
     // Create restaurant table and its rows
     const restaurantTable = await createRestaurantTable(userId);
     console.log(`Created table: ${restaurantTable.name} with ID: ${restaurantTable._id}`);
-
+    const searchAiApiPricingTable = await createApiPricingTable(userId);
+    console.log(
+      `Created table: ${searchAiApiPricingTable.name} with ID: ${searchAiApiPricingTable._id}`
+    );
     // Add more seed functions here as needed
     // await createOtherTable(userId);
 
