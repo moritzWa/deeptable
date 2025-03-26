@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import { IColumn, Table } from '../models/table';
+import { Table } from '../models/table';
+import { Column } from '@shared/types';
 import { User } from '../models/user';
 
 // Connect to MongoDB
@@ -28,7 +29,7 @@ const seedDatabase = async () => {
     const userId = user._id.toString();
 
     // Create restaurant table
-    const restaurantColumns: IColumn[] = [
+    const restaurantColumns: Column[] = [
       { name: 'Restaurant Name', type: 'text', required: true },
       { name: 'Address', type: 'text', required: true },
       { name: 'Average Price (in USD)', type: 'number', required: false },

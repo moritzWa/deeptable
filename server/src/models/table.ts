@@ -1,34 +1,11 @@
-import { ColumnType } from '@shared/types';
 import mongoose, { Document } from 'mongoose';
+import { ColumnType, ColumnState, Column } from '@shared/types';
 
-// Define column types
+// Column state interface extends from shared type
+export interface IColumnState extends ColumnState {}
 
-// Column state interface
-export interface IColumnState {
-  colId?: string;
-  width?: number;
-  hide?: boolean;
-  pinned?: 'left' | 'right' | null;
-  sort?: 'asc' | 'desc' | null;
-  sortIndex?: number | null;
-  aggFunc?: string | null;
-  rowGroup?: boolean;
-  rowGroupIndex?: number;
-  pivot?: boolean;
-  pivotIndex?: number;
-  flex?: number | null;
-  orderIndex?: number;
-}
-
-// Column definition interface
-export interface IColumn {
-  name: string;
-  type: ColumnType;
-  required?: boolean;
-  defaultValue?: any;
-  description?: string;
-  columnState?: IColumnState;
-}
+// Column definition interface extends from shared type
+export interface IColumn extends Column {}
 
 export interface ITable extends Document {
   name: string;
