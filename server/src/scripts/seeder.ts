@@ -32,21 +32,18 @@ const seedDatabase = async () => {
 
     // Create restaurant table and its rows
     const restaurantTable = await createRestaurantTable(userId);
-    console.log(`Created table: ${restaurantTable.name} with ID: ${restaurantTable._id}`);
     const searchAiApiPricingTable = await createApiPricingTable(userId);
-    console.log(
-      `Created table: ${searchAiApiPricingTable.name} with ID: ${searchAiApiPricingTable._id}`
-    );
+
     const consumerHardwareStartupsTable = await createHardwareStartupsTable(userId);
-    console.log(
-      `Created table: ${consumerHardwareStartupsTable.name} with ID: ${consumerHardwareStartupsTable._id}`
-    );
+
     const sciFiMoviesTable = await createSciFiMoviesTable(userId);
-    console.log(`Created table: ${sciFiMoviesTable.name} with ID: ${sciFiMoviesTable._id}`);
     const reactTableLibrariesTable = await createReactTableLibrariesTable(userId);
-    console.log(
-      `Created table: ${reactTableLibrariesTable.name} with ID: ${reactTableLibrariesTable._id}`
-    );
+
+    console.log(`Created ${restaurantTable.name}`);
+    console.log(`Created ${searchAiApiPricingTable.name}`);
+    console.log(`Created ${consumerHardwareStartupsTable.name}`);
+    console.log(`Created ${sciFiMoviesTable.name}`);
+    console.log(`Created ${reactTableLibrariesTable.name}`);
 
     console.log('Database seeded successfully!');
   } catch (error: any) {
