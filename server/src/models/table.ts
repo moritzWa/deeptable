@@ -45,8 +45,8 @@ const columnSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['string', 'number', 'boolean', 'date', 'array', 'object'],
-    default: 'string',
+    enum: ['text', 'number', 'link'],
+    default: 'text',
     required: true,
   },
   required: {
