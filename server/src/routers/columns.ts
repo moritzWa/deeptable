@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { Row } from '../models/row';
 import { Table } from '../models/table';
 import { publicProcedure, router } from '../trpc';
-import { fillCell } from '../utils';
+import { fillCell } from '../fillCellUtils';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
