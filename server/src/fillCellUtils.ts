@@ -140,9 +140,6 @@ function columnTypeToJsonSchema(columnType: ColumnType): Record<string, unknown>
     case 'link':
       resultSchema = { type: 'string', format: 'uri' };
       break;
-    default:
-      // Fallback for any unexpected types
-      resultSchema = { type: 'string' };
   }
   
   // Wrap in an object schema with a result field
