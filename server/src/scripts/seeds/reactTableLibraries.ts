@@ -10,6 +10,7 @@ export const reactTableColumns: Column[] = [
   { name: 'Size (KB)', type: 'number' },
   { name: 'Use Case', type: 'text' },
   { name: 'Homepage', type: 'link' },
+  { name: 'NPM Link', type: 'link' },
   { name: 'Github Link', type: 'link' },
 ];
 
@@ -23,17 +24,19 @@ export const reactTableData = [
     'Use Case':
       'Enterprise applications, large datasets, complex data manipulation, financial dashboards',
     Homepage: 'https://tanstack.com/table/latest',
+    'NPM Link': 'https://www.npmjs.com/package/@tanstack/react-table',
     'Github Link': 'https://github.com/TanStack/table',
   },
   {
     Library: 'ag-grid-react',
     'Weekly Downloads': 455384,
     'GitHub Stars': 13600,
-    'Last Updated (days ago)': 23,
+    'Last Updated (days ago)': 3,
     'Size (KB)': 619,
     'Use Case':
       'Simple to complex tables, customizable UI, data grids, sorting, filtering, pagination',
     Homepage: 'https://www.ag-grid.com/react-data-grid',
+    'NPM Link': 'https://www.npmjs.com/package/ag-grid-react',
     'Github Link': 'https://github.com/ag-grid/ag-grid',
   },
   {
@@ -44,17 +47,19 @@ export const reactTableData = [
     'Size (KB)': 629,
     'Use Case': 'Material-UI based projects, responsive tables, filtering, sorting, exporting',
     Homepage: 'https://reactdatatable.com/',
+    'NPM Link': 'https://www.npmjs.com/package/react-data-table-component',
     'Github Link': 'https://github.com/jbetancur/react-data-table-component',
   },
   {
     Library: 'material-table',
     'Weekly Downloads': 50738,
     'GitHub Stars': 3503,
-    'Last Updated (days ago)': 21,
+    'Last Updated (days ago)': 213,
     'Size (KB)': 335,
     'Use Case': 'Tree views, virtualization, fixed headers/columns, RTL support',
-    Homepage: 'https://www.material-react-table.com/',
-    'Github Link': 'https://github.com/KevinVandy/material-react-table',
+    Homepage: 'https://www.material-table.com/',
+    'NPM Link': 'https://www.npmjs.com/package/material-table',
+    'Github Link': 'https://github.com/mbrn/material-table',
   },
   {
     Library: 'mantine-datatable',
@@ -64,6 +69,7 @@ export const reactTableData = [
     'Size (KB)': 502,
     'Use Case': 'Bootstrap-based projects, simple tables with basic features',
     Homepage: 'https://icflorescu.github.io/mantine-datatable/',
+    'NPM Link': 'https://www.npmjs.com/package/mantine-datatable',
     'Github Link': 'https://github.com/icflorescu/mantine-datatable',
   },
 ];
