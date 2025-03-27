@@ -108,7 +108,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">
+          <h2 className="text-lg ml-2 font-semibold">
             <Link to="/home">Deep Table</Link>
           </h2>
           <div className="flex items-center gap-2">

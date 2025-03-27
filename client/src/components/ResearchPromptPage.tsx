@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { trpc } from '@/utils/trpc';
 import { Column } from '@shared/types';
+import { FileImage, TableProperties } from 'lucide-react';
 import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
@@ -34,6 +35,8 @@ const ResearchPromptPage: React.FC = () => {
   const [error, setError] = useState('');
   const [isFromUrl, setIsFromUrl] = useState(false);
   const token = localStorage.getItem('token');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [pastedImage, setPastedImage] = useState<string | null>(null);
 
   // Use the tRPC mutations
   const generateColumnsMutation = trpc.columns.generateColumns.useMutation({
@@ -133,6 +136,42 @@ const ResearchPromptPage: React.FC = () => {
     }
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file type
+      const validTypes = ['.csv', '.xlsx', '.xls'];
+      const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+
+      if (validTypes.includes(fileExtension)) {
+        setSelectedFile(file);
+        // TODO: Implement actual file processing
+      } else {
+        setError('Please upload a CSV or Excel file');
+      }
+    }
+  };
+
+  const handlePasteImage = (e: React.ClipboardEvent) => {
+    const items = e.clipboardData?.items;
+
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          if (blob) {
+            const reader = new FileReader();
+            reader.onload = () => {
+              setPastedImage(reader.result as string);
+              // TODO: Implement actual image processing
+            };
+            reader.readAsDataURL(blob);
+          }
+        }
+      }
+    }
+  };
+
   return (
     <AppLayout>
       <div className="max-w-4xl mx-auto p-6">
@@ -165,6 +204,79 @@ const ResearchPromptPage: React.FC = () => {
                 {isLoading ? 'Generating Structure...' : 'Generate Table Structure'}
               </Button>
             </form>
+          </CardContent>
+        </Card>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Import Existing Data</CardTitle>
+            <CardDescription>
+              Upload a CSV/Excel file or paste a screenshot to generate your table structure
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="col-span-1">
+                  <Card className="border-2 border-dashed">
+                    <CardContent className="p-6">
+                      <div className="text-center">
+                        <Input
+                          type="file"
+                          accept=".csv,.xlsx,.xls"
+                          onChange={handleFileUpload}
+                          className="hidden"
+                          id="file-upload"
+                        />
+                        <label htmlFor="file-upload" className="cursor-pointer">
+                          <div className="space-y-2">
+                            <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                              <TableProperties className="w-6 h-6 text-primary" />
+                            </div>
+                            <h3 className="text-sm font-medium">Upload CSV/Excel</h3>
+                            <p className="text-xs text-muted-foreground">
+                              Drag & drop or click to upload
+                            </p>
+                          </div>
+                        </label>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="col-span-1">
+                  <Card
+                    className="border-2 border-dashed"
+                    onPaste={handlePasteImage}
+                    tabIndex={0}
+                    role="button"
+                  >
+                    <CardContent className="p-6">
+                      <div className="text-center">
+                        <div className="space-y-2">
+                          <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                            <FileImage className="w-6 h-6 text-primary" />
+                          </div>
+                          <h3 className="text-sm font-medium">Paste Screenshot</h3>
+                          <p className="text-xs text-muted-foreground">
+                            Ctrl+V or Cmd+V to paste image
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+
+              {selectedFile && (
+                <p className="text-sm text-muted-foreground">Selected file: {selectedFile.name}</p>
+              )}
+              {pastedImage && (
+                <p className="text-sm text-muted-foreground">
+                  Screenshot received! Ready to process.
+                </p>
+              )}
+            </div>
           </CardContent>
         </Card>
 
