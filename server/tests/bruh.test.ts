@@ -26,7 +26,20 @@ async function checkCell(
   2 - wrong, bad, would misguide the user
   3 - directionally correct, still needs substantial improvement
   4 - mostly correct, maybe a little bit off
-  5 - basically perfect match`;
+  5 - basically perfect match
+  
+  For numberical quantities, use the 1-5 scale as a measure of how close they are.
+  For example:
+  - ground truth value: 100, generated value: 70 -> 3
+  - ground truth value: 100, generated value: 110 -> 4
+  - ground truth value: 100, generated value: 90 -> 4
+  - ground truth value: 100, generated value: 100 -> 5
+  - ground truth value: 100, generated value: 60 -> 2
+  - ground truth value: 100, generated value: 160 -> 2
+  - ground truth value: 100, generated value: 30 -> 1
+  - ground truth value: 123456789, generated value: 198765432 -> 2
+  - ground truth value: 123456789, generated value: 116469134 -> 4
+  `;
 
   const question = `Table: ${tableName}\n Table description: ${tableDescription}\n Row: ${row}\n Column: ${columnName}\nColumn Description: ${columnDescription}\n Ground truth value: ${groundTruthValue}\n Generated value: ${llmValue}`;
 

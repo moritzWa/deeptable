@@ -47,7 +47,7 @@ export const restaurantData = [
     Ratings: 4.4,
     'Google Maps Review Count': 1105,
     'Special Features': 'Outdoor Seating, Communal Tables',
-    Website: 'https://biergarten.cuba-cafe.com/',
+    Website: 'https://www.biergartensf.com/',
   },
   {
     'Restaurant Name': "Schroeder's",
