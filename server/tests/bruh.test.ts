@@ -4,6 +4,7 @@ import { fillCell } from '../src/fillCellUtils';
 import OpenAI from 'openai';
 import mongoose from 'mongoose';
 import { createRestaurantTable } from 'src/scripts/seeds/germanRestaurants';
+import { createReactTableLibrariesTable } from 'src/scripts/seeds/reactTableLibraries';
 
 // Helper function to check similarity between two cell values
 async function checkCell(
@@ -177,8 +178,11 @@ const connectDB = async () => {
 await connectDB();
 
 const userId = '67e334b701eaff0a0a930020';
-const entityKey = 'Restaurant Name';
-const myTable = await createRestaurantTable(userId);
+// const entityKey = 'Restaurant Name';
+// const myTable = await createRestaurantTable(userId);
+
+const entityKey = 'Library';
+const myTable = await createReactTableLibrariesTable(userId);
 
 // Example usage:
 const analysis = await analyzeTableAccuracy(myTable._id, entityKey);
