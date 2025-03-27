@@ -4,11 +4,11 @@ import { Table } from '../../models/table';
 
 export const hardwareStartupsColumns: Column[] = [
   { name: 'company name', type: 'text', description: 'Name of the hardware startup company' },
-  { name: 'company website or crodwfunding compaign', type: 'link', description: 'URL to company website or crowdfunding page' },
+  { name: 'company website or crowdfunding compaign', type: 'link', description: 'URL to company website or crowdfunding page' },
   { name: 'year founded', type: 'number', description: 'Year the company was established' },
   { name: 'product name', type: 'text', description: 'Name of the main product' },
   { name: 'extremely concise company description', type: 'text', description: 'Brief description of what the company does' },
-  { name: 'funding raise', type: 'text', description: 'Amount of funding raised by the company' },
+  { name: 'funding raised (usd)', type: 'text', description: 'Total funding raised by the company' },
   { name: 'outcome', type: 'text', description: 'Current status of the company (acquired, private, bankrupt, etc.)' },
   { name: 'investors', type: 'text', description: 'List of investors who funded the company' },
   { name: 'founder name', type: 'text', description: 'Name of the primary founder' },
