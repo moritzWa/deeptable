@@ -126,12 +126,17 @@ export const columnsRouter = router({
         // Extract the generated response from the API
         const responseText = response.choices[0]?.message?.content?.trim() || '';
 
-        // Remove or modify this log to not interfere with the response
-        console.log('OpenAI Response:', responseText);
+        // Clean the response text by removing markdown code blocks if present
+        const cleanedResponse = responseText
+          .replace(/^```json\n/, '') // Remove opening ```json
+          .replace(/\n```$/, '') // Remove closing ```
+          .trim();
+
+        console.log('OpenAI Response:', cleanedResponse);
 
         try {
-          // Parse the JSON response
-          const parsedResponse = JSON.parse(responseText);
+          // Parse the cleaned JSON response
+          const parsedResponse = JSON.parse(cleanedResponse);
 
           // Validate the column structure
           const columns = parsedResponse.columns.map((col: any) => {
@@ -150,7 +155,7 @@ export const columnsRouter = router({
             columns: columns,
           };
         } catch (parseError) {
-          console.error('Failed to parse JSON:', responseText);
+          console.error('Failed to parse JSON:', cleanedResponse);
           console.error('Parse error:', parseError);
           return {
             success: false as const,
