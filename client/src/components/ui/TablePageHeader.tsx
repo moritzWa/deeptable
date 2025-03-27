@@ -8,6 +8,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useToast } from '@/hooks/use-toast';
 import { trpc } from '@/utils/trpc';
 import { CellRange, GridApi } from 'ag-grid-community';
 import { Info, Plus, Sparkle } from 'lucide-react';
@@ -68,6 +69,7 @@ export const TablePageHeader = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(tableName);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
 
   const updateTableMutation = trpc.tables.updateTable.useMutation({
     onSuccess: () => {
@@ -136,6 +138,11 @@ export const TablePageHeader = ({
     if (!token || !gridApi) return;
     if (selectedRanges.length === 0) {
       console.log('No cells selected for enrichment');
+      toast({
+        title: 'No cells selected',
+        description: 'Please select one or more cells to enrich by clicking (and dragging).',
+        variant: 'default',
+      });
       return;
     }
 
@@ -310,7 +317,7 @@ export const TablePageHeader = ({
             onClick={handleEnrichCells}
           >
             <Sparkle className="h-4 w-4" />
-            Enrich Cells
+            Enrich Selected Cells
           </Button>
           <AddRowsDropdown tableId={tableId} onSuccess={onRowsAdded} />
         </div>
