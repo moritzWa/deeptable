@@ -26,30 +26,120 @@ export interface TablePageHeaderProps {
 
 const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: () => void }) => {
   const token = localStorage.getItem('token');
+  const { toast } = useToast();
+
   const createRowsMutation = trpc.rows.createRows.useMutation({
     onSuccess: () => {
       onSuccess();
+      toast({
+        title: 'Success',
+        description: 'Rows added successfully',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to add rows',
+        variant: 'destructive',
+      });
     },
   });
 
-  const handleAddRows = (count: number) => {
+  const createRowsWithEntitiesMutation = trpc.rows.createRowsWithEntities.useMutation({
+    onSuccess: () => {
+      onSuccess();
+      toast({
+        title: 'Success',
+        description: 'Rows with entities added successfully',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to add rows with entities',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const handleAddRows = (count: number, withEntities: boolean = false) => {
     if (!token) return;
-    createRowsMutation.mutate({ token, tableId, count });
+
+    if (withEntities) {
+      createRowsWithEntitiesMutation.mutate({ token, tableId, count });
+    } else {
+      createRowsMutation.mutate({ token, tableId, count });
+    }
+  };
+
+  const isLoadingRegular = createRowsMutation.isLoading;
+  const isLoadingEntities = createRowsWithEntitiesMutation.isLoading;
+  const isLoading = isLoadingRegular || isLoadingEntities;
+
+  const rowCounts = [10, 25, 50];
+
+  interface AddRowMenuItemProps {
+    count: number;
+    withEntities?: boolean;
+    isLoadingRegular: boolean;
+    isLoadingEntities: boolean;
+    onAdd: (count: number, withEntities: boolean) => void;
+  }
+
+  const AddRowMenuItem = ({
+    count,
+    withEntities = false,
+    isLoadingRegular,
+    isLoadingEntities,
+    onAdd,
+  }: AddRowMenuItemProps) => {
+    const isLoading = isLoadingRegular || isLoadingEntities;
+    const isCurrentTypeLoading = withEntities ? isLoadingEntities : isLoadingRegular;
+
+    return (
+      <DropdownMenuItem
+        onClick={() => onAdd(count, withEntities)}
+        disabled={isLoading}
+        className={isLoading ? 'cursor-wait' : 'cursor-pointer'}
+      >
+        {isCurrentTypeLoading
+          ? `Adding ${count} rows${withEntities ? ' with entities' : ''}...`
+          : `Add ${count} rows${withEntities ? ' with entities' : ''}`}
+      </DropdownMenuItem>
+    );
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="flex items-center gap-1">
+        <Button
+          variant="outline"
+          size="sm"
+          className={`flex items-center gap-1 ${isLoading ? 'cursor-wait' : 'cursor-pointer'}`}
+          disabled={isLoading}
+        >
           <Plus className="h-4 w-4" />
-          Add Rows
+          {isLoading ? 'Adding Rows...' : 'Add Rows'}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => handleAddRows(10)}>Add 10 rows</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(25)}>Add 25 rows</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(50)}>Add 50 rows</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleAddRows(100)}>Add 100 rows</DropdownMenuItem>
+        {rowCounts.map((count) => (
+          <div key={count}>
+            <AddRowMenuItem
+              count={count}
+              isLoadingRegular={isLoadingRegular}
+              isLoadingEntities={isLoadingEntities}
+              onAdd={handleAddRows}
+            />
+            <AddRowMenuItem
+              count={count}
+              withEntities={true}
+              isLoadingRegular={isLoadingRegular}
+              isLoadingEntities={isLoadingEntities}
+              onAdd={handleAddRows}
+            />
+          </div>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

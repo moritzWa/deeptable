@@ -169,11 +169,21 @@ Respond ONLY in the output format specified with no other text.`;
   return message.trim();
 }
 
-export async function generateRows(tableName: string, tableDescription: string, entityColumnName: string, entityColumnDescription: string): Promise<string[]> {
-
+export async function generateRows(
+  tableName: string,
+  tableDescription: string,
+  entityColumnName: string,
+  entityColumnDescription: string
+): Promise<string[]> {
   const question = `Generate a list candidates entities for the users spreadsheet. Table name: ${tableName}. Table description: ${tableDescription}. Entity column name: ${entityColumnName}. Entity column description: ${entityColumnDescription}.`;
   const rawResult = await askGoogle(question);
-  const finalAnswerRaw = await getFinalAnswer(tableName, tableDescription, entityColumnName, entityColumnDescription, rawResult);
-  console.log('finalAnswerRaw', finalAnswerRaw);
+  const finalAnswerRaw = await getFinalAnswer(
+    tableName,
+    tableDescription,
+    entityColumnName,
+    entityColumnDescription,
+    rawResult
+  );
+  // console.log('finalAnswerRaw', finalAnswerRaw);
   return JSON.parse(finalAnswerRaw);
 }

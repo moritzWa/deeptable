@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { z } from 'zod';
+import { generateRows } from '../generateRowUtils';
 import { IRow, Row as RowModel } from '../models/row';
 import { Table as TableModel } from '../models/table';
 import { publicProcedure, router } from '../trpc';
-import { generateRows } from '../generateRowUtils';
 
 // Define the Row type for client-side use
 export interface Row {
@@ -156,31 +156,21 @@ export const rowsRouter = router({
           throw new Error('Table not found');
         }
 
-        console.log('table', table);
-        const entityColumnName = table.columns[0].name;
-        const entityColumnDescription = table.columns[0].description!;
-        console.log('table column', table.columns[0]);
-
-        const generatedRows = await generateRows(table.name, table.description!, entityColumnName, entityColumnDescription);
-
         // Create empty data object based on table columns
-        // const emptyData: Record<string, any> = {};
-        // table.columns.forEach((column) => {
-        //   const columnName = typeof column === 'string' ? column : column.name;
-        //   emptyData[columnName] = null;
-        // });
-        // emptyData[entityColumnName] = generatedRows;
+        const emptyData: Record<string, any> = {};
+        table.columns.forEach((column) => {
+          const columnName = typeof column === 'string' ? column : column.name;
+          emptyData[columnName] = null;
+        });
 
         // Create array of row objects
-        const rows = Array(generatedRows.length)
+        const rows = Array(input.count)
           .fill(null)
-          .map((_, i) => ({
+          .map(() => ({
             tableId: new mongoose.Types.ObjectId(input.tableId),
-            data: Object.fromEntries(table.columns.map((column) => [column.name, column.name === entityColumnName ? generatedRows[i] : null])),
+            data: { ...emptyData },
             userId: decoded.userId,
           }));
-
-        console.log('rows', rows);
 
         // Insert all rows at once
         await RowModel.insertMany(rows);
@@ -189,6 +179,65 @@ export const rowsRouter = router({
       } catch (error) {
         console.error('Create rows error:', error);
         throw new Error('Failed to create rows');
+      }
+    }),
+
+  // Create multiple rows with entities
+  createRowsWithEntities: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        count: z.number().min(1).max(100), // Limit to 100 rows at once
+      })
+    )
+    .mutation(async ({ input }): Promise<{ count: number }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        // Verify table exists and belongs to user
+        const table = await TableModel.findOne({
+          _id: input.tableId,
+          userId: decoded.userId,
+        });
+
+        if (!table) {
+          throw new Error('Table not found');
+        }
+
+        const entityColumnName = table.columns[0].name;
+        const entityColumnDescription = table.columns[0].description!;
+
+        const generatedRows = await generateRows(
+          table.name,
+          table.description!,
+          entityColumnName,
+          entityColumnDescription
+        );
+
+        // Create array of row objects with generated entities
+        const rows = Array(input.count)
+          .fill(null)
+          .map((_, i) => ({
+            tableId: new mongoose.Types.ObjectId(input.tableId),
+            data: Object.fromEntries(
+              table.columns.map((column) => [
+                column.name,
+                column.name === entityColumnName ? generatedRows[i % generatedRows.length] : null,
+              ])
+            ),
+            userId: decoded.userId,
+          }));
+
+        // Insert all rows at once
+        await RowModel.insertMany(rows);
+
+        return { count: input.count };
+      } catch (error) {
+        console.error('Create rows with entities error:', error);
+        throw new Error('Failed to create rows with entities');
       }
     }),
 
