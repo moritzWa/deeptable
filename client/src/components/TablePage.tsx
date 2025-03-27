@@ -16,17 +16,11 @@ import {
 import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
-// Keep the CSS imports for legacy theming
+// Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';
-
-// Import enterprise features
-import 'ag-grid-enterprise';
-
-// Import and register only ClientSideRowModelModule
-import { ClientSideRowModelModule, ModuleRegistry } from 'ag-grid-community';
-
+import { ModuleRegistry } from 'ag-grid-community';
+import 'ag-grid-enterprise'; // This is the correct way to import enterprise features
+import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
@@ -34,8 +28,8 @@ import { TablePageError } from './TablePageError';
 import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { TablePageHeader } from './ui/TablePageHeader';
 
-// Register just the ClientSideRowModelModule
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
+// Register all enterprise modules (includes ClientSideRowModel)
+ModuleRegistry.registerModules([AllEnterpriseModule]);
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
@@ -582,7 +576,6 @@ const TablePage = () => {
               context={gridContext}
               cellSelection={cellSelection}
               onRangeSelectionChanged={onRangeSelectionChanged}
-              theme="legacy"
             />
           </div>
         </div>
