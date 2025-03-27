@@ -3,15 +3,15 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const reactTableColumns: Column[] = [
-  { name: 'Library', type: 'text' },
-  { name: 'Weekly Downloads', type: 'number' },
-  { name: 'GitHub Stars', type: 'number' },
-  { name: 'Last Updated (days ago)', type: 'number' },
-  { name: 'Size (KB)', type: 'number' },
-  { name: 'Use Case', type: 'text' },
-  { name: 'Homepage', type: 'link' },
-  { name: 'NPM Link', type: 'link' },
-  { name: 'Github Link', type: 'link' },
+  { name: 'Library', type: 'text', description: 'Name of the React table library' },
+  { name: 'Weekly Downloads', type: 'number', description: 'Number of weekly downloads from NPM' },
+  { name: 'GitHub Stars', type: 'number', description: 'Number of stars on GitHub repository' },
+  { name: 'Last Updated (days ago)', type: 'number', description: 'Days since the last update to the library' },
+  { name: 'Size (KB)', type: 'number', description: 'Size of the library in kilobytes' },
+  { name: 'Use Case', type: 'text', description: 'Primary use cases for the library' },
+  { name: 'Homepage', type: 'link', description: 'Link to the library homepage' },
+  { name: 'NPM Link', type: 'link', description: 'Link to the NPM package page' },
+  { name: 'Github Link', type: 'link', description: 'Link to the GitHub repository' },
 ];
 
 export const reactTableData = [

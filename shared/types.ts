@@ -24,7 +24,7 @@ export interface Column {
   type: ColumnType;
   required?: boolean;
   defaultValue?: any;
-  description?: string;
+  description: string;
   columnState?: ColumnState;
 }
 

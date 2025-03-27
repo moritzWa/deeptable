@@ -3,20 +3,20 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const hardwareStartupsColumns: Column[] = [
-  { name: 'company name', type: 'text' },
-  { name: 'company website or crodwfunding compaign', type: 'link' },
-  { name: 'year founded', type: 'number' },
-  { name: 'product name', type: 'text' },
-  { name: 'extremely concise company description', type: 'text' },
-  { name: 'funding raise', type: 'text' },
-  { name: 'outcome', type: 'text' },
-  { name: 'investors', type: 'text' },
-  { name: 'founder name', type: 'text' },
-  { name: 'other co-founders', type: 'text' },
-  { name: 'main founder email', type: 'text' },
-  { name: 'main founder x.com account link', type: 'link' },
-  { name: 'main founder linkedin account link', type: 'link' },
-  { name: 'main founder crunchbase account link', type: 'link' },
+  { name: 'company name', type: 'text', description: 'Name of the hardware startup company' },
+  { name: 'company website or crodwfunding compaign', type: 'link', description: 'URL to company website or crowdfunding page' },
+  { name: 'year founded', type: 'number', description: 'Year the company was established' },
+  { name: 'product name', type: 'text', description: 'Name of the main product' },
+  { name: 'extremely concise company description', type: 'text', description: 'Brief description of what the company does' },
+  { name: 'funding raise', type: 'text', description: 'Amount of funding raised by the company' },
+  { name: 'outcome', type: 'text', description: 'Current status of the company (acquired, private, bankrupt, etc.)' },
+  { name: 'investors', type: 'text', description: 'List of investors who funded the company' },
+  { name: 'founder name', type: 'text', description: 'Name of the primary founder' },
+  { name: 'other co-founders', type: 'text', description: 'Names of additional co-founders' },
+  { name: 'main founder email', type: 'text', description: 'Email contact for the primary founder' },
+  { name: 'main founder x.com account link', type: 'link', description: 'Link to founder\'s X/Twitter profile' },
+  { name: 'main founder linkedin account link', type: 'link', description: 'Link to founder\'s LinkedIn profile' },
+  { name: 'main founder crunchbase account link', type: 'link', description: 'Link to founder\'s Crunchbase profile' },
 ];
 
 export const hardwareStartupsData = [
