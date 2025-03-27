@@ -11,22 +11,27 @@ import {
   ColumnResizedEvent,
   ColumnVisibleEvent,
   GridReadyEvent,
+  ModuleRegistry,
   SortChangedEvent,
 } from 'ag-grid-community';
+import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
-// Finally our custom overrides
+// Keep the CSS imports for legacy theming
 import '@/styles/ag-grid-theme.css';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import 'ag-grid-enterprise';
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
 import { TablePageError } from './TablePageError';
 import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { TablePageHeader } from './ui/TablePageHeader';
+
+// Register all Community and Enterprise features
+ModuleRegistry.registerModules([AllEnterpriseModule]);
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
@@ -573,6 +578,7 @@ const TablePage = () => {
               context={gridContext}
               cellSelection={cellSelection}
               onRangeSelectionChanged={onRangeSelectionChanged}
+              theme="legacy"
             />
           </div>
         </div>
