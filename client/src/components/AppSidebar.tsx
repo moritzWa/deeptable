@@ -84,6 +84,11 @@ export function AppSidebar() {
         token: token || '',
         id: tableId,
       });
+
+      // If we're currently viewing the table that was deleted, navigate to home
+      if (currentTableId === tableId) {
+        navigate('/home');
+      }
     } catch (error) {
       console.error('Failed to delete table:', error);
     }
@@ -122,35 +127,38 @@ export function AppSidebar() {
               {tables.map((table) => (
                 <SidebarMenuItem key={table.id}>
                   <SidebarMenuButton
+                    asChild
                     onClick={() => navigate(`/tables/${table.id}`)}
                     isActive={currentTableId === table.id}
                     className="group/item relative flex w-full items-center"
                   >
-                    <span className="flex-1">{table.name}</span>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-6 w-6 opacity-0 group-hover/item:opacity-100 absolute right-1"
-                        >
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => alert('TODO: Implement sharing')}>
-                          <Share className="mr-2 h-4 w-4" />
-                          <span>Share</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="text-destructive focus:text-destructive"
-                          onClick={() => handleDeleteTable(table.id)}
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          <span>Delete</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div>
+                      <span className="flex-1">{table.name}</span>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 opacity-0 group-hover/item:opacity-100 absolute right-1"
+                          >
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => alert('TODO: Implement sharing')}>
+                            <Share className="mr-2 h-4 w-4" />
+                            <span>Share</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="text-destructive focus:text-destructive"
+                            onClick={() => handleDeleteTable(table.id)}
+                          >
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            <span>Delete</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
