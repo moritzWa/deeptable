@@ -46,7 +46,7 @@ export const tablesRouter = router({
         return tables.map((table: ITable) => ({
           id: table._id.toString(),
           name: table.name,
-          description: table.description || null,
+          description: table.description,
           columns: table.columns.map((col) => ({
             name: col.name,
             type: col.type,
@@ -71,7 +71,7 @@ export const tablesRouter = router({
       z.object({
         token: z.string(),
         name: z.string(),
-        description: z.string().optional(),
+        description: z.string(),
         columns: z.array(columnSchema).optional(),
       })
     )
@@ -94,7 +94,7 @@ export const tablesRouter = router({
         return {
           id: table._id.toString(),
           name: table.name,
-          description: table.description || null,
+          description: table.description,
           columns: table.columns.map((col) => ({
             name: col.name,
             type: col.type,
@@ -120,7 +120,7 @@ export const tablesRouter = router({
         token: z.string(),
         id: z.string(),
         name: z.string().optional(),
-        description: z.string().optional(),
+        description: z.string(),
         columns: z.array(columnSchema).optional(),
       })
     )
@@ -134,7 +134,7 @@ export const tablesRouter = router({
           { _id: input.id, userId: decoded.userId },
           {
             ...(input.name && { name: input.name }),
-            ...(input.description && { description: input.description }),
+            description: input.description,
             ...(input.columns && { columns: input.columns }),
           },
           { new: true }
@@ -147,7 +147,7 @@ export const tablesRouter = router({
         return {
           id: table._id.toString(),
           name: table.name,
-          description: table.description || null,
+          description: table.description,
           columns: table.columns.map((col) => ({
             name: col.name,
             type: col.type,
