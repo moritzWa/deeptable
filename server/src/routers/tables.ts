@@ -295,11 +295,15 @@ export const tablesRouter = router({
           userId: string;
         };
 
-        const result = await TableModel.deleteOne({ _id: input.id, userId: decoded.userId });
+        // Delete the table
+        const tableResult = await TableModel.deleteOne({ _id: input.id, userId: decoded.userId });
 
-        if (result.deletedCount === 0) {
+        if (tableResult.deletedCount === 0) {
           throw new Error('Table not found');
         }
+
+        // Delete all rows associated with this table
+        await Row.deleteMany({ tableId: input.id });
 
         return { success: true };
       } catch (error) {

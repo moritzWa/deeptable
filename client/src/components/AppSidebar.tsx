@@ -1,5 +1,5 @@
 import { Table } from '@shared/types';
-import { Moon, Plus, Settings, Sun } from 'lucide-react';
+import { Moon, MoreVertical, Plus, Settings, Share, Sun, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { trpc } from '../utils/trpc';
@@ -31,6 +31,7 @@ export function AppSidebar() {
   const { id: currentTableId } = useParams<{ id?: string }>();
   const [tables, setTables] = useState<Table[]>([]);
   const token = localStorage.getItem('token');
+  const utils = trpc.useContext();
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(() => {
     const stored = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null;
     return stored || 'system';
@@ -68,6 +69,26 @@ export function AppSidebar() {
     { enabled: !!token }
   );
 
+  const deleteTableMutation = trpc.tables.deleteTable.useMutation({
+    onSuccess: () => {
+      // Refetch tables after deletion
+      if (token) {
+        utils.tables.getTables.invalidate();
+      }
+    },
+  });
+
+  const handleDeleteTable = async (tableId: string) => {
+    try {
+      await deleteTableMutation.mutateAsync({
+        token: token || '',
+        id: tableId,
+      });
+    } catch (error) {
+      console.error('Failed to delete table:', error);
+    }
+  };
+
   useEffect(() => {
     if (tablesData) {
       setTables(tablesData);
@@ -103,8 +124,33 @@ export function AppSidebar() {
                   <SidebarMenuButton
                     onClick={() => navigate(`/tables/${table.id}`)}
                     isActive={currentTableId === table.id}
+                    className="group/item relative flex w-full items-center"
                   >
-                    {table.name}
+                    <span className="flex-1">{table.name}</span>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 opacity-0 group-hover/item:opacity-100 absolute right-1"
+                        >
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => alert('TODO: Implement sharing')}>
+                          <Share className="mr-2 h-4 w-4" />
+                          <span>Share</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onClick={() => handleDeleteTable(table.id)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          <span>Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
