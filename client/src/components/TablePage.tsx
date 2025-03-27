@@ -11,10 +11,8 @@ import {
   ColumnResizedEvent,
   ColumnVisibleEvent,
   GridReadyEvent,
-  ModuleRegistry,
   SortChangedEvent,
 } from 'ag-grid-community';
-import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from './TablePageHelpers';
 
@@ -23,6 +21,12 @@ import '@/styles/ag-grid-theme.css';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
+// Import enterprise features
+import 'ag-grid-enterprise';
+
+// Import and register only ClientSideRowModelModule
+import { ClientSideRowModelModule, ModuleRegistry } from 'ag-grid-community';
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
@@ -30,8 +34,8 @@ import { TablePageError } from './TablePageError';
 import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { TablePageHeader } from './ui/TablePageHeader';
 
-// Register all Community and Enterprise features
-ModuleRegistry.registerModules([AllEnterpriseModule]);
+// Register just the ClientSideRowModelModule
+ModuleRegistry.registerModules([ClientSideRowModelModule]);
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
