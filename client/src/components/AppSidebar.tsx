@@ -107,15 +107,15 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center p-[0.12rem] justify-between">
           <h2 className="text-lg ml-2 font-semibold">
             <Link to="/home">Deep Table</Link>
           </h2>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" onClick={handleCreateTable} className="h-8 w-8">
+            <Button variant="ghost" size="icon" onClick={handleCreateTable} className="h-6 w-6">
               <Plus />
             </Button>
-            <SidebarTrigger className="h-8 w-8" />
+            {location.pathname !== '/home' && <SidebarTrigger className="h-6 w-6" />}
           </div>
         </div>
       </SidebarHeader>
