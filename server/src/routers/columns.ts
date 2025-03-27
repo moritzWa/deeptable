@@ -126,7 +126,8 @@ export const columnsRouter = router({
         // Extract the generated response from the API
         const responseText = response.choices[0]?.message?.content?.trim() || '';
 
-        console.log('responseText for generateColumns', responseText);
+        // Remove or modify this log to not interfere with the response
+        console.log('OpenAI Response:', responseText);
 
         try {
           // Parse the JSON response
@@ -149,7 +150,8 @@ export const columnsRouter = router({
             columns: columns,
           };
         } catch (parseError) {
-          console.error('Error parsing OpenAI response:', parseError);
+          console.error('Failed to parse JSON:', responseText);
+          console.error('Parse error:', parseError);
           return {
             success: false as const,
             error: 'Failed to parse the generated response. Please try again.',
