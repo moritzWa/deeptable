@@ -5,11 +5,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { trpc } from '@/utils/trpc';
 import { CellRange, GridApi } from 'ag-grid-community';
 import { Info, Plus, Sparkle } from 'lucide-react';
+import { KeyboardEvent, useRef, useState } from 'react';
 
 export interface TablePageHeaderProps {
   tableName: string;
@@ -63,6 +65,15 @@ export const TablePageHeader = ({
 }: TablePageHeaderProps) => {
   const token = localStorage.getItem('token');
   const trpcUtils = trpc.useContext();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedName, setEditedName] = useState(tableName);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const updateTableMutation = trpc.tables.updateTable.useMutation({
+    onSuccess: () => {
+      trpcUtils.tables.getTables.invalidate();
+    },
+  });
 
   const fillCellMutation = trpc.columns.fillCellBatched.useMutation({
     onSuccess: (result) => {
@@ -226,13 +237,57 @@ export const TablePageHeader = ({
     }
   };
 
+  const handleStartEditing = () => {
+    setIsEditing(true);
+    setEditedName(tableName);
+    setTimeout(() => inputRef.current?.focus(), 0);
+  };
+
+  const handleSaveTitle = async () => {
+    if (!token || editedName.trim() === '') return;
+
+    setIsEditing(false);
+    if (editedName !== tableName) {
+      updateTableMutation.mutate({
+        token,
+        id: tableId,
+        name: editedName.trim(),
+      });
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSaveTitle();
+    } else if (e.key === 'Escape') {
+      setIsEditing(false);
+      setEditedName(tableName);
+    }
+  };
+
   return (
     <div className="sticky top-0 z-10 bg-background border-b">
       <div className="p-2 pl-3 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           {!isSidebarOpen && <SidebarTrigger className="h-8 w-8" />}
           <div className="font-semibold flex items-center gap-2">
-            {tableName}
+            {isEditing ? (
+              <Input
+                ref={inputRef}
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                onBlur={handleSaveTitle}
+                onKeyDown={handleKeyDown}
+                className="h-7 w-[200px] px-0 border-0 shadow-none font-semibold focus-visible:ring-0 hover:text-primary transition-colors"
+              />
+            ) : (
+              <span
+                onClick={handleStartEditing}
+                className="cursor-pointer hover:text-primary transition-colors"
+              >
+                {tableName}
+              </span>
+            )}
             {tableDescription && !isSidebarOpen && (
               <TooltipProvider>
                 <Tooltip>
