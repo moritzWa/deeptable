@@ -3,16 +3,16 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const sciFiMoviesColumns: Column[] = [
-  { name: 'Movie Name', type: 'text' },
-  { name: 'Director', type: 'text' },
-  { name: 'Imdb link', type: 'link' },
-  { name: 'Release Year', type: 'number' },
-  { name: 'Rotten Tomatoes Score', type: 'text' },
-  { name: 'IMDb Score', type: 'number' },
-  { name: 'Duration (Hours)', type: 'number' },
-  { name: 'Concise Description', type: 'text' },
-  { name: 'Awards', type: 'text' },
-  { name: 'Trailer link', type: 'link' },
+  { name: 'Movie Name', type: 'text', description: 'Name of the sci-fi movie' },
+  { name: 'Director', type: 'text', description: 'Director of the movie' },
+  { name: 'Imdb link', type: 'link', description: 'Link to the movie on IMDB' },
+  { name: 'Release Year', type: 'number', description: 'Year the movie was released' },
+  { name: 'Rotten Tomatoes Score', type: 'text', description: 'Rating on Rotten Tomatoes' },
+  { name: 'IMDb Score', type: 'number', description: 'Rating on IMDB' },
+  { name: 'Duration (Hours)', type: 'number', description: 'Movie length in hours' },
+  { name: 'Concise Description', type: 'text', description: 'Brief summary of the movie plot' },
+  { name: 'Awards', type: 'text', description: 'Major awards won by the movie' },
+  { name: 'Trailer link', type: 'link', description: 'Link to the official trailer' },
 ];
 
 export const sciFiMoviesData = [

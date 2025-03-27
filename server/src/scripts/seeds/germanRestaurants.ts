@@ -3,13 +3,13 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const restaurantColumns: Column[] = [
-  { name: 'Restaurant Name', type: 'text' },
-  { name: 'Address', type: 'text' },
-  { name: 'Average Price (in USD)', type: 'number' },
-  { name: 'Ratings', type: 'number' },
-  { name: 'Google Maps Review Count', type: 'number' },
-  { name: 'Special Features', type: 'text' },
-  { name: 'Website', type: 'link' },
+  { name: 'Restaurant Name', type: 'text', description: 'Name of the German restaurant' },
+  { name: 'Address', type: 'text', description: 'Physical address of the restaurant' },
+  { name: 'Average Price (in USD)', type: 'number', description: 'Average cost per person in USD' },
+  { name: 'Ratings', type: 'number', description: 'Average customer rating out of 5' },
+  { name: 'Google Maps Review Count', type: 'number', description: 'Number of reviews on Google Maps' },
+  { name: 'Special Features', type: 'text', description: 'Unique features or specialties of the restaurant' },
+  { name: 'Website', type: 'link', description: 'Link to the restaurant\'s official website' },
 ];
 
 export const restaurantData = [

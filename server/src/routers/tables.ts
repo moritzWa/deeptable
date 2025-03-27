@@ -28,7 +28,7 @@ const columnSchema = z.object({
   type: z.enum(['text', 'number', 'link', 'string', 'boolean', 'date', 'array', 'object']),
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
-  description: z.string().optional(),
+  description: z.string(),
   columnState: columnStateSchema.optional(),
 });
 
@@ -354,6 +354,7 @@ export const tablesRouter = router({
           name: input.columnName,
           type: 'text' as ColumnType,
           required: false,
+          description: '',
           columnState: {
             sortIndex: input.position === 'left' ? refSortIndex : refSortIndex + 1,
           },
