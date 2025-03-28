@@ -13,6 +13,7 @@ import {
   Type,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { CustomColDef } from '../TablePage';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -22,6 +23,7 @@ import {
   ContextMenuTrigger,
 } from './context-menu';
 import { Input } from './input';
+import { Label } from './label';
 
 interface CustomHeaderParams extends IHeaderParams {
   context: {
@@ -30,25 +32,36 @@ interface CustomHeaderParams extends IHeaderParams {
     addColumn?: (position: 'left' | 'right', relativeTo: string) => void;
     deleteColumn?: (columnName: string) => void;
     updateColumnType?: (columnName: string, newType: string) => void;
+    updateColumnDescription?: (columnName: string, description: string) => void;
   };
   enableSorting: boolean;
   column: Column;
+  description?: string;
 }
 
 export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const [columnName, setColumnName] = useState(props.displayName);
+  const [description, setDescription] = useState(() => {
+    const colDef = props.column.getColDef() as CustomColDef;
+    console.log('colDef.description', colDef.description);
+    return colDef.description || '';
+  });
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Update local state when displayName changes (after refetch)
+  // Update local state when displayName or description changes
   useEffect(() => {
     setColumnName(props.displayName);
-  }, [props.displayName]);
+    const colDef = props.column.getColDef() as CustomColDef;
+    setDescription(colDef.description || '');
+  }, [props.displayName, props.column]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     setColumnName(e.target.value);
   };
 
-  const handleNameBlur = () => {
+  const handleNameSave = () => {
     if (columnName === props.displayName) return;
 
     // Get current column state
@@ -69,10 +82,49 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         name: props.column.getColId(),
         columnState: {
           ...currentState,
-          colId: columnName, // Update the column name
+          colId: columnName,
         },
       },
     ]);
+  };
+
+  const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.stopPropagation(); // Prevent event from bubbling up
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleNameSave();
+      e.currentTarget.blur();
+    }
+  };
+
+  const handleNameBlur = () => {
+    handleNameSave();
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDescription(e.target.value);
+  };
+
+  const handleDescriptionSave = () => {
+    if (description === props.description) return;
+    if (props.context.updateColumnDescription) {
+      props.context.updateColumnDescription(props.column.getColId(), description);
+    }
+  };
+
+  const handleDescriptionKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    e.stopPropagation(); // Prevent event from bubbling up
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleDescriptionSave();
+      e.currentTarget.blur();
+    }
+  };
+
+  const handleDescriptionBlur = () => {
+    handleDescriptionSave();
   };
 
   const handlePin = (direction: 'left' | 'right' | null) => {
@@ -149,15 +201,30 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent className="w-64">
-        <div className="pb-2">
-          <Input
-            ref={inputRef}
-            value={columnName}
-            onChange={handleNameChange}
-            onBlur={handleNameBlur}
-            className="h-8 w-full"
-            placeholder="Column name"
-          />
+        <div className="p-2 flex flex-col gap-2">
+          <div className="flex flex-col gap-2">
+            <Label>Name</Label>
+            <Input
+              ref={inputRef}
+              value={columnName}
+              onChange={handleNameChange}
+              onBlur={handleNameBlur}
+              onKeyDown={handleNameKeyDown}
+              className="h-8 w-full"
+              placeholder="Column name"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label>Description/Prompt</Label>
+            <Input
+              value={description}
+              onChange={handleDescriptionChange}
+              onBlur={handleDescriptionBlur}
+              onKeyDown={handleDescriptionKeyDown}
+              className="h-8 w-full"
+              placeholder="Column description"
+            />
+          </div>
         </div>
         <ContextMenuGroup>
           <ContextMenuItem onClick={() => handlePin('left')} className="flex items-center gap-2">
