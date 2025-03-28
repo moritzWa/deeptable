@@ -16,7 +16,7 @@ import { KeyboardEvent, useRef, useState } from 'react';
 
 export interface TablePageHeaderProps {
   tableName: string;
-  tableDescription: string | null | undefined;
+  tableDescription: string;
   tableId: string;
   isSidebarOpen: boolean;
   selectedRanges: CellRange[];
@@ -259,6 +259,7 @@ export const TablePageHeader = ({
         token,
         id: tableId,
         name: editedName.trim(),
+        description: tableDescription,
       });
     }
   };
@@ -295,7 +296,7 @@ export const TablePageHeader = ({
                 {tableName}
               </span>
             )}
-            {tableDescription && !isSidebarOpen && (
+            {!isSidebarOpen && (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>

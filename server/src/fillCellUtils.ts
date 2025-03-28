@@ -1,5 +1,6 @@
 import { ColumnType } from '@shared/types';
 import OpenAI from 'openai';
+import fs from 'fs';
 
 // Type definitions for API responses
 interface PerplexityResponse {
@@ -76,7 +77,11 @@ async function askPerplexity(question: string): Promise<string> {
         },
       ],
     }),
-  }).then((res) => res.json())) as PerplexityResponse;
+  }).then(async (res) => {
+    const txt = await res.text();
+    // console.log('txt', txt);
+    return JSON.parse(txt) as PerplexityResponse;
+  }));
 
   if (!completion.choices?.[0]?.message?.content) {
     throw new Error('Invalid response from Perplexity API');
@@ -116,6 +121,7 @@ async function askGoogle(question: string): Promise<string> {
   ).then((res) => res.json())) as GoogleResponse;
 
   if (!completion.candidates?.[0]?.content?.parts) {
+    console.error('bad completion', completion);
     throw new Error('Invalid response from Google API');
   }
 
@@ -219,11 +225,16 @@ Respond ONLY with the actual output value/type specified with no other text.`;
   }
 }
 
+// Function to append data to test.txt
+function appendToTestFile(data: string) {
+  fs.appendFileSync('test.txt', data + '\n\n', 'utf8');
+}
+
 export async function fillCell(
   tableName: string,
-  tableDescription: string | null | undefined,
+  tableDescription: string,
   columnName: string,
-  columnDescription: string | null | undefined,
+  columnDescription: string,
   outputType: ColumnType,
   rows: Array<{ data: Record<string, any> }>
 ) {
@@ -242,11 +253,10 @@ export async function fillCell(
       name: 'OpenAI',
       fn: askOpenAI,
     },
-    // let's not waste $ on this
-    // {
-    //   name: 'Perplexity',
-    //   fn: askPerplexity,
-    // },
+    {
+      name: 'Perplexity',
+      fn: askPerplexity,
+    },
     {
       name: 'Google',
       fn: askGoogle,
@@ -263,15 +273,26 @@ export async function fillCell(
       }))
   );
   const searchResponses = await Promise.all(searchPromises);
-  console.log('Search results collected from all providers');
+  console.log('Search results collected from all providers', JSON.stringify(searchResponses, null, 2));
+  
+  // Append search results to test.txt
+  const logData = `
+Table: ${tableName}
+Column: ${columnName}
+Description: ${columnDescription}
+Type: ${outputType}
+Row Data: ${JSON.stringify(rows, null, 2)}
+Search Responses: ${JSON.stringify(searchResponses, null, 2)}
+---------------------------------------------
+`;
+  appendToTestFile(logData);
 
   const jsonSchema = columnTypeToJsonSchema(outputType);
 
-  console.log('filling cell with json schema', jsonSchema);
   const extracted = await getFinalAnswer(
     tableName,
     columnName,
-    columnDescription || '',
+    columnDescription,
     jsonSchema,
     searchResponses
   );
