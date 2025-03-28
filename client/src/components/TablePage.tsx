@@ -59,6 +59,10 @@ interface AgGridColumnState {
   pivotIndex?: number;
 }
 
+export interface CustomColDef extends ColDef {
+  description?: string;
+}
+
 // Helper function to convert null to undefined for AG Grid compatibility
 function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
@@ -160,6 +164,14 @@ const TablePage = () => {
       console.error('Failed to update column type:', error);
     },
   });
+  const updateColumnDescriptionMutation = trpc.tables.updateColumnDescription.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error('Failed to update column description:', error);
+    },
+  });
 
   // USE EFFECTS
   // This effect will run whenever the id parameter changes
@@ -240,11 +252,11 @@ const TablePage = () => {
         return orderA - orderB;
       });
 
-      const agGridColumns: ColDef[] = sortedColumns.map((column) => {
+      const agGridColumns: CustomColDef[] = sortedColumns.map((column) => {
         // Convert our column state to AG Grid properties
         const columnStateProps = convertColumnStateToAgGridProps(column.columnState);
 
-        const colDef: ColDef = {
+        const colDef: CustomColDef = {
           headerName: column.name,
           field: `data.${column.name}`,
           sortable: true,
@@ -258,6 +270,7 @@ const TablePage = () => {
           ...columnStateProps,
           colId: column.name,
           type: column.type || 'text',
+          description: column.description,
           valueParser: (params) => {
             if (column.type === 'number') {
               return Number(params.newValue);
@@ -357,6 +370,16 @@ const TablePage = () => {
           type: newType,
         });
       },
+      updateColumnDescription: (columnName: string, description: string) => {
+        if (!token || !id) return;
+
+        updateColumnDescriptionMutation.mutate({
+          token,
+          tableId: id,
+          columnName,
+          description,
+        });
+      },
     }),
     [
       id,
@@ -368,6 +391,7 @@ const TablePage = () => {
       addColumnMutation,
       deleteColumnMutation,
       updateColumnTypeMutation,
+      updateColumnDescriptionMutation,
     ]
   );
 
