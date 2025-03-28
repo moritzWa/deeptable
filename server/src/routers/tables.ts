@@ -554,4 +554,61 @@ export const tablesRouter = router({
         throw new Error('Failed to update column description');
       }
     }),
+
+  createTableFromCSV: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        name: z.string(),
+        description: z.string(),
+        columns: z.array(columnSchema),
+        rows: z.array(z.record(z.any())),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { name, description, columns, rows } = input;
+
+      const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+        userId: string;
+      };
+
+      // Create the table
+      const table = await TableModel.create({
+        name,
+        description,
+        columns,
+        userId: decoded.userId,
+      });
+
+      try {
+        // Create all rows
+        await Row.insertMany(
+          rows.map((row) => ({
+            tableId: table._id,
+            userId: decoded.userId,
+            data: row,
+          }))
+        );
+      } catch (error) {
+        console.error('Error creating rows:', error);
+        throw new Error('Failed to create rows');
+      }
+
+      return {
+        id: table._id.toString(),
+        name: table.name,
+        description: table.description,
+        columns: table.columns.map((col) => ({
+          name: col.name,
+          type: col.type,
+          required: col.required || false,
+          defaultValue: col.defaultValue,
+          description: col.description,
+          columnState: col.columnState,
+        })),
+        createdAt: table.createdAt.toISOString(),
+        updatedAt: table.updatedAt.toISOString(),
+        userId: table.userId,
+      };
+    }),
 });
