@@ -110,7 +110,7 @@ export const hardwareStartupsData = [
     outcome: 'Acquired by Amazon',
     investors: 'Menlo Ventures, Index Ventures',
     'founder name': 'Nick Weaver',
-    'other co-founders': 'Amos Schallich ,Nate Hardison',
+    'other co-founders': 'Amos Schallich, Nate Hardison',
     'main founder x.com account link': 'https://x.com/nsweaves?lang=en',
     'main founder linkedin account link': 'https://www.linkedin.com/in/nsweaver/',
     'main founder crunchbase account link': 'https://www.crunchbase.com/person/nick-weaver',
@@ -156,9 +156,9 @@ export const hardwareStartupsData = [
     'founder name': 'Ryan Grepper',
   },
   {
-    'company name': 'Daylight',
-    'company website or crodwfunding compaign': 'https://daylightcomputer.com/',
-    'product name': '',
+    'company name': 'Daylight', 
+    'company website or crowdfunding compaign': 'https://daylightcomputer.com/',
+    'product name': 'Daylight DC1',
     'extremely concise company description': 'E-Inc tablet',
     investors: 'Jordi Hays',
     'founder name': 'Patrick Jacquelin',
@@ -195,7 +195,7 @@ export const hardwareStartupsData = [
   },
   {
     'company name': 'Elio Motors',
-    'company website or crodwfunding compaign': 'Elio Motors',
+    'company website or crodwfunding compaign': 'https://www.eliomotors.com/',
     'year founded': 2009,
     'product name': 'Elio Motor Vehicle',
     'extremely concise company description':

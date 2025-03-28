@@ -31,7 +31,17 @@ Return the response in the following JSON format:
     },
     // More columns...
   ]
-}`;
+}
+  
+
+Make the columns as descriptive and precise as possible.
+Include units, currency, etc...
+
+Here are some examples of OK column descriptions, and how to make them great:
+Rotten tomatoes score -> rotten tomatoes score (tomatometer) # this differentiates between the tomatometer and audience score
+NPM package size in kilobytes -> unpacked npm package size in kilobytes # this differentiates between the unpacked and gzipped size
+Average cost -> Average cost per person in USD. Google might give a range like $10-$20, take the average. # this specifies what data to look for and how to calculate the avg
+`;
 
 // Example for the model to understand the expected output format
 const EXAMPLE_PROMPT = `
