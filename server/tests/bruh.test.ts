@@ -8,6 +8,9 @@ import { createReactTableLibrariesTable } from 'src/scripts/seeds/reactTableLibr
 import { createHardwareStartupsTable } from 'src/scripts/seeds/consumerHardwareStartups';
 import fs from 'fs';
 import { createSciFiMoviesTable } from 'src/scripts/seeds/sciFiMovies';
+import { Column } from '@shared/types';
+import  type { ColumnType } from '@shared/types';
+import * as cheerio from 'cheerio';
 
 // Helper function to check similarity between two cell values
 async function checkCell(
@@ -16,15 +19,17 @@ async function checkCell(
   row: string,
   columnName: string,
   columnDescription: string,
+  columnType: ColumnType,
   groundTruthValue: any,
   llmValue: any
-): Promise<number> {
+): Promise<{ score: number, hydratedGroundTruthValue: any, hydratedLlmValue: any }> {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
   const SYSTEM_PROMPT = `You are helping check cells in a generated spreadsheet against the ground truth value. Judge the similarity of the generated cell vs the ground truth value on a scale of 1 to 5.
   
+  General guidelines:
   1 - complete mismatch, useless, garbage result
   2 - wrong, bad, would misguide the user
   3 - directionally correct, still needs substantial improvement
@@ -43,6 +48,54 @@ async function checkCell(
   - ground truth value: 123456789, generated value: 198765432 -> 2
   - ground truth value: 123456789, generated value: 116469134 -> 4
   `;
+
+  console.log('columnType', columnType);
+  if (columnType === 'link') {
+    // Fetch metadata for both URLs
+    const fetchMetadata = async (url: string) => {
+      try {
+        const response = await fetch(url, {
+          redirect: 'follow'
+        });
+        
+        // Get final URL after redirects
+        const finalUrl = response.url;
+        
+        // const text = await response.text();
+        // const $ = cheerio.load(text);
+        
+        // // Extract metadata using cheerio
+        // const title = $('title').text();
+        // const description = $('meta[name="description"]').attr('content');
+        // const ogTitle = $('meta[property="og:title"]').attr('content');
+        // const ogDescription = $('meta[property="og:description"]').attr('content');
+        // const canonicalUrl = $('link[rel="canonical"]').attr('href') || finalUrl;
+        
+        // return {
+        //   url,
+        //   canonicalUrl,
+        //   metadata: {
+        //     title,
+        //     description,
+        //     ogTitle,
+        //     ogDescription
+        //   }
+        // };
+        return finalUrl;
+      } catch (error) {
+        console.error(`Error fetching metadata for ${url}:`, error);
+        return url;
+      }
+    };
+
+    // Fetch metadata for both URLs
+    const groundTruthMetadata = await fetchMetadata(groundTruthValue);
+    const llmMetadata = await fetchMetadata(llmValue);
+
+    // Update the values to include metadata
+    groundTruthValue = groundTruthMetadata;
+    llmValue = llmMetadata;
+  }
 
   const question = `Table: ${tableName}\n Table description: ${tableDescription}\n Row: ${row}\n Column: ${columnName}\nColumn Description: ${columnDescription}\n Ground truth value: ${groundTruthValue}\n Generated value: ${llmValue}`;
 
@@ -76,7 +129,7 @@ async function checkCell(
 
   try {
     const parsed = JSON.parse(message.trim());
-    return parsed.result;
+    return { score: parsed.result, hydratedGroundTruthValue: groundTruthValue, hydratedLlmValue: llmValue };
   } catch (error) {
     console.error('Error parsing model response:', error, 'message', message);
     throw error;
@@ -128,6 +181,7 @@ async function analyzeCellAccuracy(
       const columnName = table.columns[c].name;
       const groundTruthValue = groundTruthRows[r].data[columnName];
       const llmValue = testRows[r][columnName];
+      const columnType = table.columns[c].type;
 
       const scorePromise = checkCell(
         table.name,
@@ -135,10 +189,11 @@ async function analyzeCellAccuracy(
         entityValue,
         columnName,
         table.columns[c].description,
+        columnType,
         groundTruthValue,
         llmValue
-      ).then((score) => {
-        cellResults.push({ entityValue, columnName, groundTruthValue, llmValue, score });
+      ).then(({ score, hydratedGroundTruthValue, hydratedLlmValue }) => {
+        cellResults.push({ entityValue, columnName, groundTruthValue: hydratedGroundTruthValue, llmValue: hydratedLlmValue, score });
       });
       scorePromises.push(scorePromise);
     }
