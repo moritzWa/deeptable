@@ -3,20 +3,20 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const hardwareStartupsColumns: Column[] = [
-  { name: 'company name', type: 'text' },
-  { name: 'company website or crodwfunding compaign', type: 'link' },
-  { name: 'year founded', type: 'number' },
-  { name: 'product name', type: 'text' },
-  { name: 'extremely concise company description', type: 'text' },
-  { name: 'funding raise', type: 'text' },
-  { name: 'outcome', type: 'text' },
-  { name: 'investors', type: 'text' },
-  { name: 'founder name', type: 'text' },
-  { name: 'other co-founders', type: 'text' },
-  { name: 'main founder email', type: 'text' },
-  { name: 'main founder x.com account link', type: 'link' },
-  { name: 'main founder linkedin account link', type: 'link' },
-  { name: 'main founder crunchbase account link', type: 'link' },
+  { name: 'company name', type: 'text', description: 'Name of the hardware startup company' },
+  { name: 'company website or crowdfunding compaign', type: 'link', description: 'URL to company website or crowdfunding page' },
+  { name: 'year founded', type: 'number', description: 'Year the company was established' },
+  { name: 'product name', type: 'text', description: 'Name of the main product' },
+  { name: 'extremely concise company description', type: 'text', description: 'Brief description of what the company does' },
+  { name: 'funding raised (usd)', type: 'text', description: 'Total funding raised by the company' },
+  { name: 'outcome', type: 'text', description: 'Current status of the company (acquired, private, bankrupt, etc.)' },
+  { name: 'investors', type: 'text', description: 'List of investors who funded the company' },
+  { name: 'founder name', type: 'text', description: 'Name of the primary founder' },
+  { name: 'other co-founders', type: 'text', description: 'Names of additional co-founders' },
+  { name: 'main founder email', type: 'text', description: 'Email contact for the primary founder' },
+  { name: 'main founder x.com account link', type: 'link', description: 'Link to founder\'s X/Twitter profile' },
+  { name: 'main founder linkedin account link', type: 'link', description: 'Link to founder\'s LinkedIn profile' },
+  { name: 'main founder crunchbase account link', type: 'link', description: 'Link to founder\'s Crunchbase profile' },
 ];
 
 export const hardwareStartupsData = [
@@ -110,7 +110,7 @@ export const hardwareStartupsData = [
     outcome: 'Acquired by Amazon',
     investors: 'Menlo Ventures, Index Ventures',
     'founder name': 'Nick Weaver',
-    'other co-founders': 'Amos Schallich ,Nate Hardison',
+    'other co-founders': 'Amos Schallich, Nate Hardison',
     'main founder x.com account link': 'https://x.com/nsweaves?lang=en',
     'main founder linkedin account link': 'https://www.linkedin.com/in/nsweaver/',
     'main founder crunchbase account link': 'https://www.crunchbase.com/person/nick-weaver',
@@ -156,9 +156,9 @@ export const hardwareStartupsData = [
     'founder name': 'Ryan Grepper',
   },
   {
-    'company name': 'Daylight',
-    'company website or crodwfunding compaign': 'https://daylightcomputer.com/',
-    'product name': '',
+    'company name': 'Daylight', 
+    'company website or crowdfunding compaign': 'https://daylightcomputer.com/',
+    'product name': 'Daylight DC1',
     'extremely concise company description': 'E-Inc tablet',
     investors: 'Jordi Hays',
     'founder name': 'Patrick Jacquelin',
@@ -195,7 +195,7 @@ export const hardwareStartupsData = [
   },
   {
     'company name': 'Elio Motors',
-    'company website or crodwfunding compaign': 'Elio Motors',
+    'company website or crodwfunding compaign': 'https://www.eliomotors.com/',
     'year founded': 2009,
     'product name': 'Elio Motor Vehicle',
     'extremely concise company description':

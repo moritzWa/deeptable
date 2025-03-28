@@ -124,6 +124,16 @@ const ResearchPromptPage: React.FC = () => {
       return;
     }
 
+    if (!name.trim()) {
+      setError('Please enter a table name');
+      return;
+    }
+
+    if (!description.trim()) {
+      setError('Please enter a table description');
+      return;
+    }
+
     try {
       await createTableMutation.mutateAsync({
         token,

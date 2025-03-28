@@ -3,13 +3,13 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const restaurantColumns: Column[] = [
-  { name: 'Restaurant Name', type: 'text' },
-  { name: 'Address', type: 'text' },
-  { name: 'Average Price (in USD)', type: 'number' },
-  { name: 'Ratings', type: 'number' },
-  { name: 'Google Maps Review Count', type: 'number' },
-  { name: 'Special Features', type: 'text' },
-  { name: 'Website', type: 'link' },
+  { name: 'Restaurant Name', type: 'text', description: 'Name of the German restaurant' },
+  { name: 'Address', type: 'text', description: 'Street address of the restaurant' },
+  { name: 'Average Price (in USD)', type: 'number', description: 'Average cost per person in USD. Google might give a range like $10-$20, take the average.' },
+  { name: 'Ratings', type: 'number', description: 'Average customer rating out of 5' },
+  { name: 'Review Count', type: 'number', description: 'Number of reviews on Google Maps' },
+  { name: 'Special Features', type: 'text', description: 'Unique features or specialties of the restaurant' },
+  { name: 'Website', type: 'link', description: 'Link to the restaurant\'s official website' },
 ];
 
 export const restaurantData = [
@@ -47,7 +47,7 @@ export const restaurantData = [
     Ratings: 4.4,
     'Google Maps Review Count': 1105,
     'Special Features': 'Outdoor Seating, Communal Tables',
-    Website: 'https://biergarten.cuba-cafe.com/',
+    Website: 'https://www.biergartensf.com/',
   },
   {
     'Restaurant Name': "Schroeder's",

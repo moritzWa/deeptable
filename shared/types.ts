@@ -24,7 +24,7 @@ export interface Column {
   type: ColumnType;
   required?: boolean;
   defaultValue?: any;
-  description?: string;
+  description: string;
   columnState?: ColumnState;
 }
 
@@ -32,7 +32,7 @@ export interface Column {
 export interface Table {
   id: string;
   name: string;
-  description?: string | null;
+  description: string;
   columns: Column[];
   createdAt: string;
   updatedAt: string;

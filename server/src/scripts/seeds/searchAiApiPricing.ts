@@ -3,12 +3,12 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const apiPricingColumns: Column[] = [
-  { name: 'company', type: 'text' },
-  { name: 'product name', type: 'text' },
-  { name: 'pricing info link', type: 'link' },
-  { name: 'api docs', type: 'link' },
-  { name: 'USD price per 1k request', type: 'number' },
-  { name: 'Note', type: 'text' },
+  { name: 'company', type: 'text', description: 'Company providing the API service' },
+  { name: 'product name', type: 'text', description: 'Name of the specific API product' },
+  { name: 'pricing info link', type: 'link', description: 'Link to official pricing information' },
+  { name: 'api docs', type: 'link', description: 'Link to API documentation' },
+  { name: 'USD price per 1k request', type: 'number', description: 'Cost in USD per 1,000 API requests' },
+  { name: 'Note', type: 'text', description: 'Additional information or special conditions' },
 ];
 
 export const apiPricingData = [
