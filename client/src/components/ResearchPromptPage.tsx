@@ -2,8 +2,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { parseCSVFile } from '@/utils/csvParser';
 import { trpc } from '@/utils/trpc';
-import { Column } from '@shared/types';
+import { Column, Table } from '@shared/types';
 import { FileImage, TableProperties } from 'lucide-react';
 import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -63,6 +64,15 @@ const ResearchPromptPage: React.FC = () => {
     },
     onError: (error: any) => {
       setError(error.message || 'Failed to create table. Please try again.');
+    },
+  });
+
+  const createTableFromCSVMutation = trpc.tables.createTableFromCSV.useMutation({
+    onSuccess: (data: Table) => {
+      navigate(`/tables/${data.id}`);
+    },
+    onError: (error: any) => {
+      setError(error.message || 'Failed to create table from CSV. Please try again.');
     },
   });
 
@@ -146,18 +156,37 @@ const ResearchPromptPage: React.FC = () => {
     }
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Validate file type
       const validTypes = ['.csv', '.xlsx', '.xls'];
       const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
 
-      if (validTypes.includes(fileExtension)) {
-        setSelectedFile(file);
-        // TODO: Implement actual file processing
-      } else {
+      if (!validTypes.includes(fileExtension)) {
         setError('Please upload a CSV or Excel file');
+        return;
+      }
+
+      if (fileExtension === '.csv') {
+        try {
+          setIsLoading(true);
+          const { columns, rows, name, description } = await parseCSVFile(file);
+
+          await createTableFromCSVMutation.mutateAsync({
+            token: token!,
+            name,
+            description,
+            columns,
+            rows,
+          });
+        } catch (error) {
+          setError('Failed to process CSV file. Please try again.');
+          console.error('CSV processing error:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setError('Excel file support coming soon!');
       }
     }
   };
