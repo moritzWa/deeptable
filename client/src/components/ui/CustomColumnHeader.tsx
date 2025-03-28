@@ -45,7 +45,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const [columnName, setColumnName] = useState(props.displayName);
   const [description, setDescription] = useState(() => {
     const colDef = props.column.getColDef() as CustomColDef;
-    console.log('colDef.description', colDef.description);
+    // console.log('colDef.description', colDef.description);
     return colDef.description || '';
   });
   const inputRef = useRef<HTMLInputElement>(null);
