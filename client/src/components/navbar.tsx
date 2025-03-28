@@ -9,14 +9,14 @@ export function Navbar() {
 
   const NavLinks = () => (
     <>
-      <Link
+      {/* <Link
         to="/blog"
         className={`hover:text-primary transition-colors ${location.pathname === '/blog' || location.pathname.startsWith('/blog/') ? 'text-primary font-medium' : ''}`}
       >
         Blog
-      </Link>
+      </Link> */}
 
-      {isAuthenticated ? (
+      {/* {isAuthenticated ? (
         <Link
           to="/home"
           className={`hover:text-primary transition-colors ${location.pathname === '/home' ? 'text-primary font-medium' : ''}`}
@@ -30,7 +30,7 @@ export function Navbar() {
         >
           Login
         </Link>
-      )}
+      )} */}
     </>
   );
 

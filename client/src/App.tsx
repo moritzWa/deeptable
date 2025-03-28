@@ -105,7 +105,7 @@ function AppContent() {
             }
           />
           {/* Leave these routes unprotected */}
-          {/* <Route
+          <Route
             path="/login"
             element={
               <>
@@ -115,7 +115,7 @@ function AppContent() {
                 </div>
               </>
             }
-          /> */}
+          />
           <Route
             path="/waitlist-form"
             element={
