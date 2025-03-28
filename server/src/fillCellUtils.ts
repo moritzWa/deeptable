@@ -273,7 +273,6 @@ export async function fillCell(
       }))
   );
   const searchResponses = await Promise.all(searchPromises);
-  console.log('hi')
   console.log('Search results collected from all providers', JSON.stringify(searchResponses, null, 2));
   
   // Append search results to test.txt
@@ -293,7 +292,7 @@ Search Responses: ${JSON.stringify(searchResponses, null, 2)}
   const extracted = await getFinalAnswer(
     tableName,
     columnName,
-    columnDescription || '',
+    columnDescription,
     jsonSchema,
     searchResponses
   );

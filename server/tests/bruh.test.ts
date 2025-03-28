@@ -5,6 +5,9 @@ import OpenAI from 'openai';
 import mongoose from 'mongoose';
 import { createRestaurantTable } from 'src/scripts/seeds/germanRestaurants';
 import { createReactTableLibrariesTable } from 'src/scripts/seeds/reactTableLibraries';
+import { createHardwareStartupsTable } from 'src/scripts/seeds/consumerHardwareStartups';
+import fs from 'fs';
+import { createSciFiMoviesTable } from 'src/scripts/seeds/sciFiMovies';
 
 // Helper function to check similarity between two cell values
 async function checkCell(
@@ -115,9 +118,9 @@ async function analyzeCellAccuracy(
   testRows: Record<string, any>[],
   rowEntities: string[]
 ) {
-  let totalScore = 0;
-  let numCells = 0;
   const cellResults = [];
+
+  const scorePromises = [];
 
   for (let r = 0; r < testRows.length; r++) {
     const entityValue = rowEntities[r];
@@ -126,7 +129,7 @@ async function analyzeCellAccuracy(
       const groundTruthValue = groundTruthRows[r].data[columnName];
       const llmValue = testRows[r][columnName];
 
-      const score = await checkCell(
+      const scorePromise = checkCell(
         table.name,
         table.description,
         entityValue,
@@ -134,13 +137,16 @@ async function analyzeCellAccuracy(
         table.columns[c].description,
         groundTruthValue,
         llmValue
-      );
-
-      cellResults.push({ entityValue, columnName, groundTruthValue, llmValue, score });
-      totalScore += score;
-      numCells++;
+      ).then((score) => {
+        cellResults.push({ entityValue, columnName, groundTruthValue, llmValue, score });
+      });
+      scorePromises.push(scorePromise);
     }
   }
+
+  await Promise.all(scorePromises);
+  const totalScore = cellResults.reduce((sum, result) => sum + result.score, 0);
+  const numCells = cellResults.length;
 
   return {
     cellResults: cellResults.sort((a, b) => b.score - a.score),
@@ -194,9 +200,16 @@ const userId = '67e334b701eaff0a0a930020';
 // const entityKey = 'Restaurant Name';
 // const myTable = await createRestaurantTable(userId);
 
-const entityKey = 'Library';
-const myTable = await createReactTableLibrariesTable(userId);
+// const entityKey = 'Library';
+// const myTable = await createReactTableLibrariesTable(userId);
+
+// const entityKey = 'company name';
+// const myTable = await createHardwareStartupsTable(userId);
+
+const entityKey = 'Movie Name';
+const myTable = await createSciFiMoviesTable(userId);
 
 // Example usage:
 const analysis = await analyzeTableAccuracy(myTable._id, entityKey);
-console.log('Analysis Results:', analysis);
+// dump analysis to result.txt
+fs.writeFileSync('result.txt', JSON.stringify(analysis, null, 2));
