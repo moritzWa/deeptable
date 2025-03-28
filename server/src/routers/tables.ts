@@ -513,4 +513,44 @@ export const tablesRouter = router({
         throw new Error('Failed to update column type');
       }
     }),
+
+  updateColumnDescription: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnName: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        // Update the column description in the table
+        const result = await TableModel.updateOne(
+          {
+            _id: input.tableId,
+            userId: decoded.userId,
+            'columns.name': input.columnName,
+          },
+          {
+            $set: {
+              'columns.$.description': input.description,
+            },
+          }
+        );
+
+        if (result.matchedCount === 0) {
+          throw new Error('Table or column not found');
+        }
+
+        return { success: true };
+      } catch (error) {
+        console.error('Update column description error:', error);
+        throw new Error('Failed to update column description');
+      }
+    }),
 });
