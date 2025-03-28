@@ -1,8 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cursor, useTypewriter } from 'react-simple-typewriter';
-import ExampleCardsSection from './ExampleCardsSection';
-import { Button } from './ui/button';
 
 interface LandingPageProps {
   landingPageKeyword?: string;
@@ -13,7 +11,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
   const navigate = useNavigate();
 
   const [text] = useTypewriter({
-    words: ['products', 'travel locations', 'leads', 'companies', 'prospects', 'VCs'],
+    words: ['product', 'travel location', 'lead', 'company', 'prospect', 'VC'],
     loop: true,
     delaySpeed: 500,
     deleteSpeed: 100,
@@ -33,13 +31,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
       <div className="w-full text-center py-16 md:py-24 space-y-6">
         <h1 className="text-4xl md:text-6xl font-bold my-6">
           <span>
-            The AI agent for
-            <span className="md:hidden">
-              <br />
-            </span>{' '}
+            AI agents that research
+            <br />
             {text}
             <Cursor cursorStyle="|" />
-            <br></br> research tool that outputs <span className="text-[#4169E1]">tables</span>
+            <br></br> and output <span className="text-[#4169E1]">tables</span>
           </span>
         </h1>
 
