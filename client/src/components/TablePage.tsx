@@ -568,7 +568,7 @@ const TablePage = () => {
       <div className="h-full w-full flex flex-col">
         <TablePageHeader
           tableName={table.name}
-          tableDescription={table.description}
+          tableDescription={table.description || ''}
           tableId={table.id}
           isSidebarOpen={sidebar.open}
           selectedRanges={selectedRanges}
