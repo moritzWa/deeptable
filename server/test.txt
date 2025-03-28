@@ -1,0 +1,2520 @@
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Grape",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Grapes are typically in season from August through October in the United States. However, the exact timing can vary depending on the region and grape variety. For example, in California, the largest grape-producing state, the season extends from May to December. ([whenistheseason.com](https://www.whenistheseason.com/when-is-grape-season/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Error with Perplexity search: Invalid response from Perplexity API",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you fill in the \"Seasonality\" column for Grapes in your \"Top Fruits Analysis\" spreadsheet. To provide the most accurate information, I will search for the best seasons or months when grapes are typically available and in peak condition.\n\n\nBased on the search results, here's the information for the \"Seasonality\" column for Grapes:\n\n**Seasonality:** August through October is the peak season for grapes in the United States. However, some varieties may be harvested in early summer or late fall. Grapes are generally available from April through December, depending on the specific variety.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Grape",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Grapes offer numerous health benefits due to their rich nutrient and antioxidant content. They are high in vitamin C, which supports the immune system, and contain resveratrol, an antioxidant that may reduce inflammation and protect against heart disease and certain cancers. The potassium in grapes helps lower blood pressure, while their fiber content aids in reducing cholesterol levels. Additionally, compounds in grapes may improve brain health, support bone strength, and promote better sleep. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-grapes?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Error with Perplexity search: Invalid response from Perplexity API",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Health Benefits\" column for grapes in your \"Top Fruits Analysis\" spreadsheet. I will use web search to find the health benefits associated with grapes.\n\n\nHere's a possible entry for the \"Health Benefits\" column in your spreadsheet, based on the search results:\n\n\"Grapes are rich in antioxidants and phytonutrients, including resveratrol, which may help protect against heart disease, high blood pressure, certain cancers, and oxidative stress. They contain vitamins C and K, and minerals like potassium, which supports healthy blood pressure. Grapes may also improve brain health and cognitive function.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Grape",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "As of March 2025, the average retail price for fresh grapes in the United States ranges between $1.80 and $2.21 per pound. ([selinawamucii.com](https://www.selinawamucii.com/insights/prices/united-states-of-america/grapes/?utm_source=openai)) This price can vary based on factors such as grape variety, quality, and seasonality. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Error with Perplexity search: Invalid response from Perplexity API",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The average price of grapes per pound in USD is between $1.26 and $1.55. However, depending on the variety and whether they are organic, they can range from $3 to $8 per pound.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Apple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Apples are harvested from mid to late July through December, with peak availability in September and October. Specific varieties have distinct seasons:\n\n- **Gala**: Mid-August to early September.\n- **Honeycrisp**: Mid-September to October.\n- **Fuji**: October.\n- **Granny Smith**: October.\n- **McIntosh**: September through January.\n- **Cortland**: October.\n\nDue to their excellent storage capabilities, many apple varieties are available year-round. ([seasonalcornucopia.com](https://seasonalcornucopia.com/70/apple-season-and-storage-tips/?utm_source=openai), [thefreshmarket.com](https://www.thefreshmarket.com/appleguide?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Error with Perplexity search: Invalid response from Perplexity API",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you fill in the \"Seasonality\" column for the \"Apple\" row in your \"Top Fruits Analysis\" spreadsheet.\n\n\nThe seasonality of apples depends on the variety and location, but generally:\n\n*   **Peak Season:** Late summer to late fall (August - November) in many regions.\n*   **Availability:** Some varieties are available from late July. Due to storage, some locally grown apples are available through spring, and imports from the Southern Hemisphere are available in the summer.\n\nSo, for the \"Seasonality\" column in your spreadsheet, you could input: \"Late Summer to Late Fall (August to November), but availability can vary depending on the variety and storage.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Orange",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "You can find a suitable image of an orange fruit at the following URL:\n\n([pixabay.com](https://pixabay.com/images/search/orange%20fruit/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Error with Perplexity search: Invalid response from Perplexity API",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you with that! Here are a few image URLs for oranges that you can use:\n\n*   **Option 1 (Simple, single orange):** [https://www.istockphoto.com/photo/orange-fruit-isolated-on-a-white-background-gm1367323483-437982048](https://www.istockphoto.com/photo/orange-fruit-isolated-on-a-white-background-gm1367323483-437982048)\n*   **Option 2 (Oranges with leaves):** [https://www.istockphoto.com/photo/ripe-oranges-with-halves-and-slices-with-orange-tree-leaves-gm1450894612-488847156](https://www.istockphoto.com/photo/ripe-oranges-with-halves-and-slices-with-orange-tree-leaves-gm1450894612-488847156)\n*   **Option 3 (Close-up of orange slices):** [https://www.shutterstock.com/image-photo/orange-fruit-slice-isolated-on-268796433](https://www.shutterstock.com/image-photo/orange-fruit-slice-isolated-on-268796433)\n\nPlease choose the one that best fits the style of your spreadsheet. Let me know if you'd like more options!\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Mango",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name of the mango is *Mangifera indica*. ([britannica.com](https://www.britannica.com/plant/mango-plant-and-fruit?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The scientific name for Mango is Mangifera indica L.[1][2][3]",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name of a mango is *Mangifera indica*.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Apple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name of the apple is *Malus domestica*. ([britannica.com](https://www.britannica.com/plant/apple-fruit-and-tree?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The scientific name for apple is Malus domestica[1][3][7].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name of the apple is *Malus domestica*.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pear",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "To fill in the \"Image\" column for the \"Pear\" row in your \"Top Fruits Analysis\" spreadsheet, you can use the following URL:\n\n[https://pixabay.com/photos/pear-fruit-healthy-food-wood-256268/](https://pixabay.com/photos/pear-fruit-healthy-food-wood-256268/)\n\nThis link directs to a high-quality image of a pear, which is free to use under Pixabay's license. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Error with Perplexity search: Invalid response from Perplexity API",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find an image URL for a pear to fill in the \"Image\" column of your \"Top Fruits Analysis\" spreadsheet.\n\n\nOkay, here are a few options for image URLs of pears that you could use:\n\n*   **Option 1 (Shutterstock):** While I can't directly provide a specific image URL from Shutterstock without a subscription, searching \"Pear Fruit\" on their site ([https://www.shutterstock.com/search/pear-fruit](https://www.shutterstock.com/search/pear-fruit)) will give you access to a wide variety of high-quality pear images. You can then select one and copy its URL.\n*   **Option 2 (iStockphoto):** Similar to Shutterstock, iStockphoto ([https://www.istockphoto.com/photos/pear](https://www.istockphoto.com/photos/pear)) offers a range of pear images. Again, you'll need to browse and choose an image to get its specific URL.\n*   **Option 3 (Vecteezy):** Vecteezy ([https://www.vecteezy.com/en/photos/pear-fruit](https://www.vecteezy.com/en/photos/pear-fruit)) offers royalty-free stock photos. You should be able to find a suitable image and its URL there.\n*   **Option 4 (FreeImages):** FreeImages ([https://www.freeimages.com/search/pear-fruit](https://www.freeimages.com/search/pear-fruit)) provides a collection of free pear images for personal or commercial use.\n\nPlease note that you should always check the usage rights and licenses for any image you use, especially for commercial purposes.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pear",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name for the common pear is *Pyrus communis*. ([britannica.com](https://www.britannica.com/plant/pear?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Pyrus communis",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name of the pear is *Pyrus communis*.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Peach",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name of the peach is *Prunus persica*. ([britannica.com](https://www.britannica.com/plant/peach?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The scientific name for peach is Prunus persica[1][2][3][4]. This is the correct botanical name to fill in the \"Scientific Name\" column for the peach row in the \"Top Fruits Analysis\" spreadsheet.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name of the peach is *Prunus persica*.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pineapple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name of the pineapple is *Ananas comosus*. ([britannica.com](https://www.britannica.com/plant/pineapple?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The scientific name (botanical name) for pineapple is Ananas comosus[1][3][4]. This should be entered in the \"Scientific Name\" column for the pineapple row in the \"Top Fruits Analysis\" spreadsheet.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name for Pineapple is *Ananas comosus*.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Grape",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name for the common grape is *Vitis vinifera*. ([britannica.com](https://www.britannica.com/plant/grape?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The scientific name (botanical name) for grape is Vitis vinifera[1][3][5]. This is the species name for the common grapevine that produces most of the grapes used for wine production and table consumption worldwide.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name for Grape is Vitis vinifera.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Watermelon",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name of watermelon is *Citrullus lanatus*. ([britannica.com](https://www.britannica.com/plant/watermelon?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The scientific name for watermelon is Citrullus lanatus[1][2][3]. This is the correct botanical name to fill in the \"Scientific Name\" column for the watermelon row in the \"Top Fruits Analysis\" spreadsheet.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name of watermelon is *Citrullus lanatus*.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Strawberry",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name of the strawberry is *Fragaria × ananassa*. ([britannica.com](https://www.britannica.com/plant/strawberry?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The scientific name for strawberry is Fragaria × ananassa[1][2][3]. This is the botanical name for the garden strawberry, which is the most commonly cultivated variety of strawberry for commercial production and consumption[2][3].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name of the Strawberry is Fragaria × ananassa.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Watermelon",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Watermelon seasonality varies by region:\n\n- **United States**: Generally in season from May to September, with peak availability in July and August. ([foodrepublic.com](https://www.foodrepublic.com/1386679/when-does-watermelon-season-end/?utm_source=openai))\n\n- **Mexico**: Harvested from March to September, peaking in June and July. ([greenplatepursuits.com](https://greenplatepursuits.com/is-watermelon-in-season/?utm_source=openai))\n\n- **Europe**: Typically available from June to September, with peak production in July and August. ([greenplatepursuits.com](https://greenplatepursuits.com/is-watermelon-in-season/?utm_source=openai))\n\n- **Australia**: Season runs from November to March, peaking in December and January. ([greenplatepursuits.com](https://greenplatepursuits.com/is-watermelon-in-season/?utm_source=openai))\n\nDue to global imports, watermelons are available year-round in many markets. ([watermelon.org](https://www.watermelon.org/watermelon-101/year-round-story/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the seasonality of watermelons can be summarized as follows:\n\nMay to September, with peak availability in July and August[1][2]. Watermelons are primarily grown in the United States from April through November, with production shifting to Central and South America (mostly Mexico) during the fall and winter months[3][5]. This allows for year-round availability, though the domestic peak season offers the best quality and taste.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the seasonality of watermelons for your spreadsheet.\n\n\nFor the \"Seasonality\" column of your \"Watermelon\" row, here's the information:\n\n*   **In the US:** Watermelons are typically at their best between May and September. Sales often spike in the spring (March-May) and late summer (August-September).\n*   **In Australia:** Watermelon season peaks during the warmer months, from December to March. There's a smaller crop in winter (June/July).\n*   **General Availability:** Watermelons are available year-round, with imports from Mexico and Central America during the off-season in the US.\n\nSo, a good entry for your spreadsheet would be: \"May to September (US), December to March (Australia), Available Year-Round\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pineapple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Pineapples are available year-round, but their peak season varies by region. In the United States, particularly in Hawaii, the prime harvest period is from March to July. ([seasonalcornucopia.com](https://seasonalcornucopia.com/54/season-and-benefits-of-pineapple/?utm_source=openai)) In other major pineapple-producing countries, such as Costa Rica, the peak season typically runs from May to July. ([pineapples.info](https://www.pineapples.info/pineapple-season-when/?utm_source=openai)) Therefore, the best time to enjoy pineapples at their freshest and most flavorful is during these months. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the seasonality for pineapple can be described as follows:\n\nMarch to July[1][3][4]\n\nWhile pineapples are generally available year-round due to global production, the peak season when they are at their sweetest and juiciest is typically from March to July. This period represents the optimal time for harvesting in many major pineapple-producing regions.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the seasonality of pineapples to fill in that column.\n\n\nOkay, based on the search results, here's the seasonality information for pineapples that I can add to your spreadsheet:\n\n**Seasonality:** March to July (peak season), available year-round.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Strawberry",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Strawberries are cultivated worldwide, leading to varying peak seasons depending on the region. In the United States, California, the largest producer, has a season extending from February through October, with peak production in June. Florida's season runs from November to April, peaking in March and April. In the Northern Hemisphere, strawberries are typically in season from March to July, with peak production in June. In the Southern Hemisphere, the season runs from October to February, peaking in December. ([whenistheseason.com](https://www.whenistheseason.com/when-is-strawberry-season/?utm_source=openai), [shiftychevre.com](https://shiftychevre.com/when-are-strawberries-in-season/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The seasonality of strawberries varies depending on the region, but generally, the peak season for strawberries in most parts of the United States is from late spring to early summer. Specifically:\n\n- Peak season: May to June[1][4]\n- Extended season: Late April to early July (varies by region)[5][6]\n- Year-round availability: January through November (due to different growing regions)[1]\n\nFor the most flavorful and freshest strawberries, the best time to enjoy them is during their peak local season, typically in May and June for most regions[1][4]. However, availability can extend from late spring through early fall, depending on the strawberry variety and growing location[2].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you fill in the \"Seasonality\" column for Strawberries in your \"Top Fruits Analysis\" spreadsheet.\n\n\nStrawberries are available for a good portion of the year, with the peak season typically occurring in spring and early summer. However, availability can vary depending on location:\n\n*   **General:** January to November is considered the national strawberry season.\n*   **Florida:** Late November to April.\n*   **Coastal and Lower South (Alabama, Georgia, Mississippi, Texas, South Carolina):** Late April and May.\n*   **Middle South (Tennessee, Arkansas, Virginia, parts of North Carolina):** Late May or June.\n*   **Mid-Atlantic and Mountainous Regions:** June.\n*   **California:** Harvested throughout the year, with the peak in early spring through fall.\n*   **United Kingdom:** The British strawberry season begins with the arrival of early season fruit grown under cover.\n\nGiven this information, a reasonable entry for the \"Seasonality\" column would be: \"Primarily Spring and early Summer, though availability varies by region. Can be found from January to November depending on location.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Grape",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "To fill in the \"Image\" column for the \"Grape\" row in your \"Top Fruits Analysis\" spreadsheet, you can use the following URL to a high-quality image of grapes:\n\n[https://unsplash.com/photos/1xX1zX1zX1z](https://unsplash.com/photos/1xX1zX1zX1z)\n\nThis image is sourced from Unsplash, a platform offering free high-resolution photos. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the existing row data for the \"Grape\" fruit, I can provide a suitable image URL for the \"Image\" column in the \"Top Fruits Analysis\" spreadsheet. Here's an appropriate image link for grapes:\n\nhttps://www.istockphoto.com/photos/red-grape[1]\n\nThis URL leads to a collection of high-quality stock photos of red grapes, which would be suitable for representing grapes in your analysis. The images on this page show various views of red grapes, including whole bunches and individual grapes, which can effectively illustrate the fruit for your spreadsheet.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help with that! Here are a few image URLs for grapes that you can use for your spreadsheet:\n\n*   **Red Grapes:** [https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblryb6WkVstjwM0qP1ivXCjVB-eU0B71ype2Ja_CbHEwgcJ8Efc8YLq7HP1U3UkE02drIwKyohIreskfFkrScoOXJ6PADGru-91vlg2k_RlxwDuteUbmOCTN2rNBqwLFfZWEf35_wiESC](https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblryb6WkVstjwM0qP1ivXCjVB-eU0B71ype2Ja_CbHEwgcJ8Efc8YLq7HP1U3UkE02drIwKyohIreskfFkrScoOXJ6PADGru-91vlg2k_RlxwDuteUbmOCTN2rNBqwLFfZWEf35_wiESC)\n*   **White Grapes:** [https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrxnjF4yCh8mtBdpNLvd21zhvHQ0lgjY4fIQQzGx4IhcffHd0Dd0YpFemlUV_eaFD7Gsk2lySvPtOIx_qo6YPKwytLRsvMt32UUmK3Hwvm220EyD_n5RjLnCmeCFD9Fn8ZXx8yErakABK4Bdxg==](https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrxnjF4yCh8mtBdpNLvd21zhvHQ0lgjY4fIQQzGx4IhcffHd0Dd0YpFemlUV_eaFD7Gsk2lySvPtOIx_qo6YPKwytLRsvMt32UUmK3Hwvm220EyD_n5RjLnCmeCFD9Fn8ZXx8yErakABK4Bdxg==)\n\nI hope this helps!\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Banana",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Bananas are available year-round due to their cultivation in tropical regions worldwide, ensuring continuous production and supply. ([freshpoint.com](https://www.freshpoint.com/archive/commodity-bananas/?utm_source=openai)) However, factors such as regional climate variations and farming practices can influence their availability and size. For instance, bananas tend to be smaller during the winter months and larger in the summer when temperatures are higher. ([earlsorganic.com](https://www.earlsorganic.com/blog/seasonality-determines-the-size-of-bananas?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Bananas are available year-round[1][5][7]. Unlike many other fruits, bananas do not have a specific growing season and can be harvested throughout the year in tropical regions where they are primarily cultivated[7]. This constant availability is due to the non-seasonal nature of banana plants, which produce fruit continuously in suitable climates[5]. As a result, there is no peak season for bananas, making them a reliable and consistent fruit option in markets worldwide throughout the year[1][7].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the seasonality of bananas.\n\n\nBananas are typically available year-round due to their cultivation in tropical regions. Therefore, the \"Seasonality\" for bananas can be filled as \"Year-round\".\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Watermelon",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Watermelon offers numerous health benefits:\n\n- **Hydration**: Composed of 92% water, watermelon helps maintain hydration, essential for bodily functions such as temperature regulation and nutrient transport. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Nutrient-Rich**: Provides vitamins A and C, potassium, and magnesium, supporting overall health. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Heart Health**: Contains lycopene and citrulline, compounds that may help lower blood pressure and cholesterol levels, reducing heart disease risk. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Anti-Inflammatory Properties**: Rich in antioxidants like lycopene and vitamin C, which may reduce inflammation and oxidative stress. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Skin Health**: Vitamin C aids collagen production, promoting skin elasticity, while vitamin A supports skin cell repair. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Digestive Health**: Contains water and fiber, supporting healthy digestion and regular bowel movements. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Muscle Soreness Relief**: Citrulline may improve exercise performance and reduce muscle soreness by enhancing blood flow. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Eye Health**: Lycopene may help prevent age-related macular degeneration, supporting eye health. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Weight Management**: Low in calories and high in water content, watermelon can promote satiety, aiding in weight management. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai))\n\n- **Immune Support**: Vitamin C strengthens the immune system, helping the body fight infections. ([healthline.com](https://www.healthline.com/nutrition/watermelon-health-benefits?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here is a concise list of health benefits associated with watermelon for the \"Health Benefits\" column:\n\nSupports hydration, aids in weight management, rich in antioxidants (especially lycopene), promotes heart health, supports eye and skin health, may reduce inflammation, assists in muscle recovery, helps maintain healthy blood pressure, provides vitamin C for immune support, offers potential cancer-fighting properties, supports digestive health, and may help regulate blood sugar levels.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Health Benefits\" column for Watermelon in your \"Top Fruits Analysis\" spreadsheet.\n\n\nHere's a suggestion for the \"Health Benefits\" column for Watermelon, based on the search results:\n\n**Health Benefits:** Rich in vitamins A, B6, and C, which support immune function, skin health, and nerve function. High in lycopene, an antioxidant that may reduce the risk of heart disease, cancer, and age-related eye disorders. Contains citrulline, an amino acid that may improve blood flow and lower blood pressure. The high water content promotes hydration and can aid in digestion. May also help reduce muscle soreness and inflammation.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pear",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Pears are believed to have originated in the foothills of the Tian Shan mountain range in present-day western China. From there, they spread along mountain chains to various regions, including Western Europe, North Africa, and Asia. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Pear?utm_source=openai)) Today, pears are cultivated in temperate zones worldwide, with significant production in countries such as China, the United States, and Argentina. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results and the existing row data, I can provide the following information for the \"Origin\" column of the \"Top Fruits Analysis\" spreadsheet:\n\nCentral and eastern Europe, western Asia, and China\n\nThis origin information encompasses the primary regions where pears originated and are widely grown. The common pear (Pyrus communis) is native to central and eastern Europe and western Asia[3], while Asian pear varieties originated in China[1][2]. These regions represent the main geographical origins and cultivation areas for pears worldwide.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the origin of pears.\n\n\nOkay, based on my research, here's what I can tell you about the origin of pears:\n\n*   **General Origin:** Pears are native to coastal and temperate regions of Europe, North Africa, and Asia. The genus *Pyrus* is thought to have originated in present-day Western China, in the foothills of the Tian Shan mountains. From there, they spread north and south along mountain chains.\n*   **Domestication Centers:** There are two primary domestication centers for pears: China and Asia Minor/the Middle East.\n*   **Early Cultivation:** Pears have been cultivated since ancient times. They were grown in China as early as 2000 BC. They were introduced to the New World by Europeans.\n*   **Major Production Areas Today:**\n    *   China is the largest producer of pears.\n    *   In the U.S., the Pacific Northwest (Oregon and Washington) is a major pear-growing region, producing over 80% of the nation's fresh pears. California is also a significant producer.\n*   **European Pears:** European pears (*Pyrus communis*) are thought to have originated in Europe and Northern Asia.\n*   **Asian Pears:** Asian pears (*Pyrus pyrifolia*) are indigenous to China, where they have been cultivated for thousands of years.\n\nGiven this information, I would suggest filling in the \"Origin\" column with the following:\n\n\"Europe, North Africa, Asia (Temperate Regions). Domesticated primarily in China and Asia Minor/Middle East.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Peach",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "You can find a variety of high-quality peach images on Pixabay. For example, here's a direct link to one such image:\n\nPlease ensure to check the licensing terms on Pixabay to confirm that the image meets your usage requirements. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the existing row data for the \"Top Fruits Analysis\" spreadsheet, I can help fill in the \"Image\" column for the peach fruit. Here's a suitable image URL for the peach:\n\nhttps://unsplash.com/photos/Lrt-L4OwSXo\n\nThis image from Unsplash shows a ripe, whole peach fruit with a green leaf, which perfectly represents the \"Peach\" entry in your spreadsheet[5]. The image is high-quality, free to use, and does not require attribution, making it ideal for your analysis document.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find an image URL for a peach to fill in the \"Image\" column of your spreadsheet.\n\n\nOkay, I have gathered some potential image URLs for peaches. I will provide you with a few options. Please choose the one that best suits your needs for the spreadsheet:\n\n1.  Since the search results point to websites with collections of images, it's difficult to provide a direct URL. However, you can visit websites like Unsplash ([https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrwX91vOxvD8-AqAcyHKSZbVQw5PCkUN0LVEZRtIBjXhPwsXg7ne_yfM4GEKtftg5W5-G4XxTogCl0MAQHQxnRT-swZqToT17at_Ox0gOzTOfxA6Tr6BPMhCWE9kSy87_jRVexWD](https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrwX91vOxvD8-AqAcyHKSZbVQw5PCkUN0LVEZRtIBjXhPwsXg7ne_yfM4GEKtftg5W5-G4XxTogCl0MAQHQxnRT-swZqToT17at_Ox0gOzTOfxA6Tr6BPMhCWE9kSy87_jRVexWD)) or iStock ([https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrwJYtkgSm81JQu3AAZJrksKuD_9nujS9duqDHxkc72rjmOySQ73qsEfBSxUrlsfLoHYty4Qr_mwvECO-0oOgQe68NjcOvTlwB-_AqSMgX-ufM5nWLwLl75tb08ReDpA10qI0O-UK5nWcSY=](https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrwJYtkgSm81JQu3AAZJrksKuD_9nujS9duqDHxkc72rjmOySQ73qsEfBSxUrlsfLoHYty4Qr_mwvECO-0oOgQe68NjcOvTlwB-_AqSMgX-ufM5nWLwLl75tb08ReDpA10qI0O-UK5nWcSY=)) and find a suitable image to use.\n\n2.  You could also use a PNG image from Vecteezy ([https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrxPWexvDAr2LedfCCUVOLia5fbVuo6VjsNL7h4c2eDocSMWzdKWK4gJaRHnSOtLZ96i_fnKpmj2jMq9_bqXPiFgRCo4r4cyOobFShYMiNwX_DSelGh6Eqm4LMwJXwEZGS4Y8DFMsBab2A==](https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrxPWexvDAr2LedfCCUVOLia5fbVuo6VjsNL7h4c2eDocSMWzdKWK4gJaRHnSOtLZ96i_fnKpmj2jMq9_bqXPiFgRCo4r4cyOobFShYMiNwX_DSelGh6Eqm4LMwJXwEZGS4Y8DFMsBab2A==)), which may offer transparent backgrounds.\n\nOnce you have chosen an image, copy and paste the URL into your spreadsheet.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Peach",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Peaches offer numerous health benefits:\n\n- **Rich in Antioxidants**: Peaches are high in antioxidants, including vitamin C, polyphenols, and carotenoids, which help combat oxidative stress and may reduce the risk of chronic diseases. ([health.clevelandclinic.org](https://health.clevelandclinic.org/benefits-of-peaches?utm_source=openai))\n\n- **Supports Heart Health**: Regular consumption of peaches may lower risk factors for heart disease, such as high blood pressure and cholesterol levels. ([healthline.com](https://www.healthline.com/nutrition/peach-fruit-benefits?utm_source=openai))\n\n- **Aids Digestion**: The fiber content in peaches promotes healthy digestion and helps prevent constipation. ([health.clevelandclinic.org](https://health.clevelandclinic.org/benefits-of-peaches?utm_source=openai))\n\n- **Enhances Skin Health**: Compounds in peaches may improve skin texture and protect against UV damage. ([healthline.com](https://www.healthline.com/nutrition/peach-fruit-benefits?utm_source=openai))\n\n- **Boosts Immunity**: The vitamin C and antioxidants in peaches strengthen the immune system, helping the body fight off infections. ([health.clevelandclinic.org](https://health.clevelandclinic.org/benefits-of-peaches?utm_source=openai))\n\n- **May Reduce Allergy Symptoms**: Peaches may help reduce allergy symptoms by preventing the release of histamines in the blood. ([healthline.com](https://www.healthline.com/nutrition/peach-fruit-benefits?utm_source=openai))\n\n- **Supports Eye Health**: Peaches are a moderate source of beta-carotene, which the body converts into vitamin A, essential for healthy vision. ([health.clevelandclinic.org](https://health.clevelandclinic.org/benefits-of-peaches?utm_source=openai))\n\n- **May Help Prevent Certain Cancers**: The antioxidants and polyphenols in peaches may offer some protection against certain types of cancer by limiting the formation, growth, and spread of cancerous cells. ([healthline.com](https://www.healthline.com/nutrition/peach-fruit-benefits?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here are the key health benefits associated with peaches to fill in the \"Health Benefits\" column:\n\nAids in weight loss; reduces risk of cancer; improves heart health; boosts immunity; improves skin health; provides antioxidants; reduces inflammation; promotes digestive health; supports eye health; may help with allergy symptoms; supports bone health; helps regulate blood sugar; provides hydration; may have anti-obesity effects; supports dental health.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you with that. I will search for the health benefits associated with peaches to fill in the \"Health Benefits\" column of your spreadsheet.\n\n\nBased on the search results, here's a list of health benefits associated with peaches that you can use to fill in your spreadsheet:\n\n*   **Improved digestion:** Peaches contain soluble and insoluble fiber, which aids digestion and prevents constipation. They also contain prebiotics.\n*   **Heart health:** Peaches are rich in potassium, which helps regulate heart rate and blood pressure. They may also help improve cholesterol levels.\n*   **Stronger immune system:** Peaches contain vitamin C, vitamin A, iron, and zinc, all of which boost immune function.\n*   **Healthy eyes:** The lutein and zeaxanthin in peaches help protect the retina and lens, reducing the risk of macular degeneration and cataracts.\n*   **Smoother skin:** Vitamin A in peaches supports the process of replacing old skin cells with new, healthy cells.\n*   **Antioxidant protection:** Peaches are a good source of antioxidants, including vitamin C, polyphenols, and carotenoids, which fight cell damage.\n*   **Decreased inflammation:** Polyphenols and probiotics found in peaches can decrease inflammation, reducing the risk of chronic diseases.\n*   **May help manage blood sugar:** Soluble fiber helps stabilize blood sugar levels.\n*   **Cardiometabolic Health:** Shown to play a significant role in preventing cardiometabolic disorders\n\nI would suggest using the following text for the \"Health Benefits\" column:\n\n\"Rich in antioxidants, vitamins A and C, and fiber. Supports heart health, improves digestion, boosts the immune system, and promotes healthy eyes and skin. Contains potassium, which helps regulate blood pressure. May also help in disease prevention and reducing inflammation.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Orange",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name of the sweet orange is *Citrus × sinensis*. ([britannica.com](https://www.britannica.com/plant/orange-fruit?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The scientific name for the orange is Citrus × sinensis[1][2][3]. This is the correct botanical name to fill in the \"Scientific Name\" column for the orange in the \"Top Fruits Analysis\" spreadsheet.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific name of the orange is *Citrus × sinensis*.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Banana",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "As of February 2025, the average retail price for bananas in the United States is approximately $0.619 per pound. ([fred.stlouisfed.org](https://fred.stlouisfed.org/series/APU0000711211?utm_source=openai)) This price has remained relatively stable over the past few years, with slight fluctuations due to factors such as inflation and supply chain dynamics. ([statista.com](https://www.statista.com/statistics/236880/retail-price-of-bananas-in-the-united-states/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the average price per pound of bananas in USD is 0.62. This value is consistently reported across multiple sources for recent data in 2024 and early 2025[3][4][5]. \n\nTo fill in the \"Average Price per Pound in USD\" cell in the spreadsheet, you should enter:\n\n0.62\n\nThis value represents the current national average retail price for bananas in the United States, as reported by reliable sources such as the U.S. Bureau of Labor Statistics and other market data providers. It's important to note that this price can fluctuate slightly over time and may vary by region, but 0.62 USD per pound is a representative average price for bananas in recent months.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The average price of bananas in the US ranges from $0.43 to $0.86 per pound in March 2025. A reasonable average to use would be $0.62 per pound.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Apple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Apples are a nutritious fruit, offering a variety of essential nutrients per 100 grams:\n\n- **Calories**: Approximately 52 kcal\n- **Carbohydrates**: 13.81 g\n- **Sugars**: 10.39 g\n- **Dietary Fiber**: 2.4 g\n- **Protein**: 0.26 g\n- **Fat**: 0.17 g\n- **Vitamin C**: 4.6 mg\n- **Vitamin A**: 3 µg\n- **Potassium**: 107 mg\n- **Calcium**: 6 mg\n- **Iron**: 0.12 mg\n\nThese values are based on data from the USDA National Nutrient Database. ([lose-weight-with-us.com](https://www.lose-weight-with-us.com/apple-nutrition-facts.html?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here's the nutritional value per 100g of apple to fill in the \"Nutritional Value per 100g\" column:\n\nCalories: 52, Carbohydrates: 13.8g, Fiber: 2.4g, Sugar: 10.4g, Protein: 0.3g, Fat: 0.2g, Vitamin C: 6mg (8% DV), Potassium: 107mg (3% DV), Vitamin K: 2μg (2% DV), Vitamin B6: 0.04mg (3% DV)[1][2][3]",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you fill in the \"Nutritional Value per 100g\" cell for the \"Apple\" row in your \"Top Fruits Analysis\" spreadsheet. I will search for the key nutritional components (calories, vitamins, and minerals) found in 100g of apple.\n\n\nHere's the nutritional information for 100g of apple, compiled from the search results:\n\n**Nutritional Value per 100g (Apple):**\n\n*   **Calories:** Approximately 52-54 kcal\n*   **Carbohydrates:** Around 14g (primarily sugars like fructose, glucose, and sucrose)\n*   **Fiber:** Approximately 2-2.4g\n*   **Fat:** Around 0.2-0.5g\n*   **Protein:** Around 0.3-0.6g\n*   **Vitamins:**\n    *   Vitamin C: Approximately 5-6mg (around 10% of daily needs)\n    *   Vitamin K: 5.6 mcg\n    *   B Vitamins: Small amounts of B1 (Thiamin), B2 (Riboflavin), B3 (Niacin), B6, and Folate (B9)\n    *   Vitamin A\n    *   Vitamin E\n*   **Minerals:**\n    *   Potassium: Approximately 107mg\n    *   Calcium: Approximately 6mg\n    *   Iron: Approximately 0.1mg\n    *   Magnesium\n    *   Phosphorus\n*   **Other:** Water (high content, ~85%), antioxidants (Quercetin, Catechin, Chlorogenic acid)\n\nI will add this to the spreadsheet.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Grape",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Grapes (Vitis vinifera) are native to the Mediterranean region, Central Europe, and southwestern Asia, including areas from Morocco and Portugal north to southern Germany and east to northern Iran. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Vitis_vinifera?utm_source=openai)) They have been cultivated for thousands of years, with evidence of grape cultivation dating back to 6000–8000 years ago in the Middle East. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Grape?utm_source=openai)) Today, grapes are grown worldwide, with significant production in countries such as China, Italy, and the United States. ([grapese.com](https://grapese.com/grapes-history-cultivation-uses?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The geographical origin of grapes (Vitis vinifera) is the Transcaucasian region, which includes areas between the Black Sea and Iran, particularly in present-day Georgia, Armenia, and Azerbaijan[1][2]. Archaeological evidence suggests that grape domestication began 6,000-8,000 years ago in this area[1][4]. From this primary center of domestication, cultivated varieties spread to the Mediterranean region, Europe, and eventually worldwide[1][2]. Today, grapes are grown in many regions globally, including Europe, Asia, North and South America, Africa, and Oceania[3].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you find the origin of grapes for your \"Top Fruits Analysis\" spreadsheet.\n\n\nBased on the search results, here's the information for the \"Origin\" column of your spreadsheet for the fruit \"Grape\":\n\n*   **Primary Origin:** The Transcaucasian region (between the Black Sea and Iran), which corresponds to modern-day Armenia, Georgia, and Azerbaijan, is considered the primary center of domestication for grapes, dating back 6,000-8,000 years.\n*   **Other Regions:** Grapes have spread widely across the northern hemisphere and also have a history in North Africa, the Middle East (Fertile Crescent/Levant), and the Americas.\n\nTherefore, a comprehensive answer for the \"Origin\" column could be: \"Transcaucasian region (Armenia, Georgia, Azerbaijan). Also found across Eurasia, North Africa, and the Americas.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pineapple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The pineapple (*Ananas comosus*) is native to the tropical regions of South America, particularly the areas east of the Andes, from northern South America to northern Argentina. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Ananas?utm_source=openai)) It was domesticated and cultivated by indigenous peoples throughout the continent and the Caribbean before European contact. Today, pineapples are grown in tropical and subtropical regions worldwide, with major producers including Costa Rica, Brazil, China, India, and Thailand. ([britannica.com](https://www.britannica.com/plant/pineapple?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the origin of pineapple can be described as:\n\nSouth America, specifically the region around the Paraná and Paraguay River basins. The pineapple is native to southern Brazil, Paraguay, and northern Argentina. It was cultivated and spread throughout tropical America, including the Caribbean, by indigenous peoples before European contact[1][3][4][5].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the origin of pineapples.\n\n\nBased on the search results, here's the information for the \"Origin\" column of your \"Top Fruits Analysis\" spreadsheet for the Pineapple row:\n\n**Origin:** South America, specifically the region between Southern Brazil and Paraguay is most probable. Some studies suggest Northern Brazil, Colombia, or Venezuela.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Banana",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Bananas are a nutrient-rich fruit offering a variety of essential vitamins and minerals per 100 grams:\n\n- **Calories**: Approximately 89 kcal\n- **Carbohydrates**: 22.8 g\n- **Sugars**: 12.2 g\n- **Dietary Fiber**: 2.6 g\n- **Protein**: 1.1 g\n- **Fat**: 0.3 g\n- **Vitamin C**: 8.7 mg\n- **Vitamin B6 (Pyridoxine)**: 0.367 mg\n- **Potassium**: 358 mg\n- **Magnesium**: 27 mg\n- **Manganese**: 0.27 mg\n- **Folate**: 20 µg\n\nThese nutrients contribute to various health benefits, including supporting heart health, aiding digestion, and providing quick energy. ([healthline.com](https://www.healthline.com/nutrition/foods/bananas?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Calories: 89\nCarbohydrates: 22.8g\nFiber: 2.6g\nProtein: 1.1g\nFat: 0.3g\nVitamin C: 11% DV\nVitamin B6: 25% DV\nPotassium: 12% DV\nMagnesium: 8% DV\nManganese: 14% DV\n\nKey nutrients include potassium, vitamin B6, vitamin C, and dietary fiber. Bananas are low in fat and protein but rich in carbohydrates, making them an excellent energy source[1][2][4].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Nutritional Value per 100g\" for a banana in your \"Top Fruits Analysis\" spreadsheet.\n\n\nHere's the nutritional information for bananas per 100g, which you can use to fill in your spreadsheet:\n\n**Nutritional Value per 100g:**\n\n*   **Calories:** Approximately 89-90 kcal\n*   **Water:** 75%\n*   **Carbohydrates:** 22.8g (comprising mostly sugars like sucrose, glucose, and fructose, and starch, especially in unripe bananas)\n*   **Sugar:** 12.2g\n*   **Fiber:** 2.6g\n*   **Fat:** 0.3g\n*   **Protein:** 1.1g\n*   **Potassium:** 358mg (Good source, contributes to heart health)\n*   **Vitamin B6:** 0.18mg (High content, significant portion of Daily Value)\n*   **Vitamin C:** Good source\n*   **Manganese:** Source of manganese\n\nI would recommend including a disclaimer that these values are approximate and can vary based on the banana's variety, ripeness, and growing conditions.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Watermelon",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "You can use the following image URL for the \"Image\" column in your spreadsheet:\n\n[https://unsplash.com/photos/a-watermelon-is-shown-on-a-white-background-qxHshSm7XQU](https://unsplash.com/photos/a-watermelon-is-shown-on-a-white-background-qxHshSm7XQU)\n\nThis image, captured by Maryam Sicard, features a watermelon on a white background. ([unsplash.com](https://unsplash.com/photos/a-watermelon-is-shown-on-a-white-background-qxHshSm7XQU?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "To fill in the \"Image\" column for the watermelon row in the \"Top Fruits Analysis\" spreadsheet, I can provide a URL to a high-quality image of a watermelon. Based on the search results, here's a suitable option:\n\nhttps://create.vista.com/photos/watermelon/\n\nThis URL leads to a collection of high-quality, royalty-free watermelon images that can be used for commercial purposes[1]. The user can choose a specific image from this collection that best fits their needs for the spreadsheet. This link provides a variety of watermelon images, including whole watermelons, slices, and various presentations, allowing flexibility in selecting the most appropriate visual representation for the analysis.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Here are some image URLs for watermelons you can use:\n\n*   A close-up of fresh watermelon slices: [https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrx-i1c0kE6ZaUkNs4huVtsdLEgUkZp00WWSCi3sCeheAfOd414IxvRI5Ih_jN7kOPhxQbqlxSHtMrCJK0Ugz0jSOGZTFj2zruWJE2hQs0wtXZIGx-AmMcjnwBgt7k-hnOZR5BJIfX0=](https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrx-i1c0kE6ZaUkNs4huVtsdLEgUkZp00WWSCi3sCeheAfOd414IxvRI5Ih_jN7kOPhxQbqlxSHtMrCJK0Ugz0jSOGZTFj2zruWJE2hQs0wtXZIGx-AmMcjnwBgt7k-hnOZR5BJIfX0=)\n*   Watermelons piled high for sale on a Market: [https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrx-i1c0kE6ZaUkNs4huVtsdLEgUkZp00WWSCi3sCeheAfOd414IxvRI5Ih_jN7kOPhxQbqlxSHtMrCJK0Ugz0jSOGZTFj2zruWJE2hQs0wtXZIGx-AmMcjnwBgt7k-hnOZR5BJIfX0=](https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrx-i1c0kE6ZaUkNs4huVtsdLEgUkZp00WWSCi3sCeheAfOd414IxvRI5Ih_jN7kOPhxQbqlxSHtMrCJK0Ugz0jSOGZTFj2zruWJE2hQs0wtXZIGx-AmMcjnwBgt7k-hnOZR5BJIfX0=)\n*   Falling watermelon isolated on white background: [https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrxo0q3cI6VWczN26D-hYF67b3Ytx7O17WsCUi972uryqLQzneFE6H3qJybKwaQ7xivJTCw4hbPJZ3si1a3Wr9VlU3aw8U9ZZZ0IMIJAmvCzrFGZc_FYZnE34yXUiVlrcKCqpHWLktW9iw==](https://vertexaisearch.cloud.google.com/grounding-api-redirect/AQXblrxo0q3cI6VWczN26D-hYF67b3Ytx7O17WsCUi972uryqLQzneFE6H3qJybKwaQ7xivJTCw4hbPJZ3si1a3Wr9VlU3aw8U9ZZZ0IMIJAmvCzrFGZc_FYZnE34yXUiVlrcKCqpHWLktW9iw==)\n\nI hope this helps!\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Orange",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Oranges offer numerous health benefits:\n\n- **Rich in Vitamin C**: Supports immune function, aids in collagen synthesis, and enhances iron absorption. ([healthline.com](https://www.healthline.com/nutrition/oranges?utm_source=openai))\n\n- **High in Fiber**: Promotes digestive health, helps regulate blood sugar levels, and may reduce cholesterol. ([webmd.com](https://www.webmd.com/food-recipes/health-benefits-oranges?utm_source=openai))\n\n- **Contains Antioxidants**: Flavonoids and carotenoids in oranges have anti-inflammatory and antioxidant effects, potentially reducing the risk of chronic diseases. ([healthline.com](https://www.healthline.com/nutrition/oranges?utm_source=openai))\n\n- **Supports Heart Health**: Nutrients like potassium and hesperidin may help lower blood pressure and cholesterol levels. ([webmd.com](https://www.webmd.com/food-recipes/health-benefits-oranges?utm_source=openai))\n\n- **Aids in Iron Absorption**: Vitamin C enhances the body's ability to absorb iron, helping prevent anemia. ([healthline.com](https://www.healthline.com/nutrition/oranges?utm_source=openai))\n\n- **Provides Folate**: Essential for DNA synthesis and cell division, important during pregnancy. ([webmd.com](https://www.webmd.com/food-recipes/health-benefits-oranges?utm_source=openai))\n\n- **Hydrating Properties**: High water content helps maintain hydration. ([healthline.com](https://www.healthline.com/nutrition/oranges?utm_source=openai))\n\n- **Supports Eye Health**: Compounds like zeaxanthin may reduce the risk of age-related macular degeneration. ([medicalnewstoday.com](https://www.medicalnewstoday.com/articles/272782?utm_source=openai))\n\n- **May Reduce Inflammation**: Anti-inflammatory properties can help manage conditions like arthritis. ([webmd.com](https://www.webmd.com/food-recipes/health-benefits-oranges?utm_source=openai))\n\n- **Promotes Skin Health**: Vitamin C aids in collagen production, contributing to healthy skin. ([healthline.com](https://www.healthline.com/nutrition/oranges?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Here's a concise list of health benefits associated with oranges to fill in the \"Health Benefits\" column:\n\nBoosts immune system, rich in vitamin C; supports heart health; aids digestion; promotes skin health; may help prevent kidney stones; contains antioxidants that fight inflammation; supports brain function; helps prevent anemia; maintains healthy blood pressure; provides dietary fiber; supports eye health; may lower risk of certain cancers; helps with weight management; supports bone health through calcium content.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you with that! I will search for the health benefits of oranges to fill in the \"Health Benefits\" column of your \"Top Fruits Analysis\" spreadsheet.\n\n\nBased on my research, here's a comprehensive list of health benefits associated with oranges that you can use for your spreadsheet:\n\n*   **Boosts Immune System:** Rich in vitamin C and antioxidants.\n*   **Supports Heart Health:** May help lower blood pressure and cholesterol. Contains hesperidin, which supports healthy blood vessels.\n*   **Protects Against Chronic Diseases:** Contains flavonoids with antioxidant, anti-inflammatory, antiviral, and antimicrobial properties.\n*   **Aids Digestion:** Good source of fiber.\n*   **Helps Prevent Kidney Stones:** Contains citrates.\n*   **May Prevent Iron-Deficiency Anemia:** Enhances iron absorption.\n*   **Promotes Brain Function:** Contains nutrients that may improve cognitive function.\n*   **Good for Skin Health:** Vitamin C stimulates collagen production and protects skin cells from damage.\n*   **Reduces Risk of Stroke:** Flavanones found in citrus fruits may lower the risk of ischemic stroke.\n*   **Helps with Hydration:** Oranges have high water content.\n*   **Controls Blood Sugar:** Oranges have a low glycemic index.\n\nI suggest you choose the health benefits that you want to include in your spreadsheet based on the depth of information you want to provide.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Strawberry",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Strawberries are low in calories, providing approximately 32 kcal per 100 grams. They are rich in vitamin C, offering about 58.8 mg, which is nearly 98% of the Recommended Daily Intake (RDI). Additionally, they contain 2.0 g of dietary fiber, 153 mg of potassium, and 16 mg of calcium per 100 grams. ([nutrition-and-you.com](https://www.nutrition-and-you.com/strawberries.html?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here is the nutritional value per 100g of strawberries:\n\n32 calories, 0.7g protein, 7.7g carbohydrates (4.9g sugar, 2g fiber), 0.3g fat, 97.6mg vitamin C (98% DV), 0.68mg iron, 27mg calcium, 22mg magnesium, 40mg phosphorus, 254mg potassium, 40μg folate (vitamin B9), 20 IU vitamin A. High in antioxidants like anthocyanins, ellagic acid, and quercetin. Good source of manganese (24% DV)[1][2][3][4].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the nutritional value of strawberries per 100g to fill in your spreadsheet.\n\n\nHere's the nutritional information for 100g of strawberries that you can use for your spreadsheet:\n\n**Nutritional Value per 100g:**\n\n*   **Calories:** 32-39\n*   **Water:** 91%\n*   **Protein:** 0.7g - 1.11g\n*   **Carbohydrates:** 7.7g - 12.7g\n    *   Fiber: 2g - 3.32g\n    *   Sugars: 4.9g - 7g\n*   **Fat:** 0.3g - 0.5g\n*   **Vitamin C:** 54mg - 97.6mg (This is more than 60% of the Daily Value)\n*   **Manganese:** Decent amounts.\n*   **Folate (Vitamin B9):** Present\n*   **Potassium:** Present\n*   **Other Minerals:** Iron, copper, magnesium, phosphorus, and vitamins B6, K, and E in smaller amounts.\n\nI have provided a range for some values as the exact nutritional content can vary slightly depending on the source, variety, and ripeness of the strawberries.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Strawberry",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "You can use the following URL to include an image of a strawberry in your spreadsheet:\n\n[https://unsplash.com/photos/strawberry-fruit-faRxY4JFg7E](https://unsplash.com/photos/strawberry-fruit-faRxY4JFg7E)\n\nThis image is free to use under the Unsplash License. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, I can provide a suitable image URL for the \"Image\" column in the \"Top Fruits Analysis\" spreadsheet for the strawberry row. Here's an appropriate image link:\n\nhttps://pixabay.com/images/id-3359755/\n\nThis image from Pixabay shows a clear, high-quality photograph of fresh strawberries[1]. It's a royalty-free image, which makes it suitable for use in a spreadsheet or other project without copyright concerns. The image displays ripe, red strawberries, giving a good visual representation of the fruit for your analysis.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Here are some image URLs for strawberries you can use:\n\n*   From Unsplash: You can browse and select from a variety of strawberry images [3, 4].\n*   From Getty Images: They offer a wide selection of high-resolution strawberry photos [2].\n*   From iStock: They have a collection of strawberry fair photos and royalty-free images [1].\n*   From Freeimages: They offer a variety of free strawberry photos and pictures [5].\n\nI am unable to pick just one. Please choose one and add it to the spreadsheet.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Mango",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "You can use the following URL for an image of a mango:\n\nhttps://www.pexels.com/photo/close-up-photo-of-mango-fruit-7156058/\n\nThis image is a close-up photo of a mango fruit, which should be suitable for your \"Top Fruits Analysis\" spreadsheet. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the existing row data for the \"Top Fruits Analysis\" spreadsheet, I can help fill in the \"Image\" column for the mango entry. Here's a suitable image URL for a mango:\n\nhttps://unsplash.com/photos/xNKYZmJHZnI\n\nThis image from Unsplash shows a beautiful, ripe mango fruit[4]. It's a high-quality, free-to-use photograph that would be appropriate for the spreadsheet's purpose of analyzing popular and nutritious fruits. The image clearly displays the distinctive yellow-orange color and oval shape of a mango, making it easily recognizable and relevant to the fruit being analyzed in this row.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Here are some image URLs for mangoes you can use:\n\n*   **Option 1 (Getty Images - Fresh sliced mango):** [https://www.gettyimages.com/detail/photo/fresh-sliced-mango-isolated-on-white-background-royalty-free-image/1284491179](https://www.gettyimages.com/detail/photo/fresh-sliced-mango-isolated-on-white-background-royalty-free-image/1284491179)\n*   **Option 2 (iStock - Mango fruit on white background):** [https://www.istockphoto.com/photo/mango-fruit-on-white-background-with-clipping-path-gm1310070643-398549154](https://www.istockphoto.com/photo/mango-fruit-on-white-background-with-clipping-path-gm1310070643-398549154)\n\nI have provided multiple options, choose the one that best suits the visual style of your spreadsheet.",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Scientific Name
+Description: Botanical name of the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Banana",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The scientific name of the banana varies depending on the specific type. Most cultivated bananas are derived from two wild species: *Musa acuminata* and *Musa balbisiana*. Hybrids of these species are often referred to as *Musa × paradisiaca*. For example, the widely consumed Cavendish banana is classified as *Musa acuminata* (AAA Group). ([britannica.com](https://www.britannica.com/plant/banana-plant?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the existing row data for the \"Banana\" fruit, the scientific name to fill in the \"Scientific Name\" column would be:\n\nMusa acuminata\n\nThis is the accepted scientific name for the cultivated banana species that produces most edible dessert bananas, including the common Cavendish variety found in grocery stores[1][2][4]. While some sources may list Musa × paradisiaca as an alternative scientific name for cultivated bananas[6], Musa acuminata is more specifically associated with the common edible banana varieties.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The scientific names for most cultivated bananas are *Musa acuminata*, *Musa balbisiana*, and *Musa × paradisiaca* (for the hybrid of *Musa acuminata* × *M. balbisiana*).\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Banana",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Bananas are believed to have originated in the tropical regions of Southeast Asia, particularly in areas that include present-day Malaysia, Indonesia, the Philippines, and New Guinea. ([bananabuzz.org](https://bananabuzz.org/history-and-origin/?utm_source=openai)) Archaeological evidence suggests that bananas were first domesticated in Papua New Guinea as early as 5000 to 8000 BCE. ([bananabuzz.org](https://bananabuzz.org/history-and-origin/?utm_source=openai)) From there, they spread westward to India and East Africa, and eastward to the Pacific Islands, facilitated by human migration and trade routes. ([bananabuzz.org](https://bananabuzz.org/history-and-origin/?utm_source=openai)) Today, bananas are predominantly produced in Asia, Latin America, and Africa, with India and China being the largest producers. ([fao.org](https://www.fao.org/economic/est/est-commodities/oilcrops/bananas/bananafacts/en?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The geographical origin and primary regions where bananas are grown are Southeast Asia, particularly regions including Malaysia, Indonesia, and the Philippines[1][3][5]. Today, bananas are cultivated in tropical and subtropical areas across Asia, Africa, and the Americas[5][6]. Major producing countries include India, China, Indonesia, Brazil, and Ecuador[2][4][10].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The origin of the Banana is Southeast Asia, specifically the region including the Malaya Peninsula, Indonesia, and the Philippines. Today, bananas are grown in tropical regions of Africa, Latin America, the Caribbean, and the Pacific.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Orange",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Oranges are available year-round in the United States, with peak seasons varying by variety and region. Navel oranges are in season from November through June, while Valencia oranges are available from February through early November. ([foodservice.sunkist.com](https://foodservice.sunkist.com/citrus-info/oranges/?utm_source=openai)) In California and Hawaii, oranges are harvested throughout the year, whereas in Florida, the season spans from January to June and September to December. ([whenistheseason.com](https://www.whenistheseason.com/when-is-orange-season/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the seasonality for oranges can be summarized as:\n\nNovember to May, with peak season from December to April\n\nThis timeframe covers the main orange varieties like Navel, Valencia, and Blood oranges. Navel oranges are typically available from November to March or April, while Valencia oranges peak from April to June[1][2][3]. Blood oranges are usually best from December to February[3]. Overall, winter and early spring (December to April) represent the peak season when oranges are at their sweetest and most abundant[2][4][5].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you with the \"Seasonality\" for oranges. I'll search for the best seasons or months when oranges are available or at their peak.\n\n\nOkay, based on the search results, here's the seasonality information for oranges, keeping in mind that different varieties have slightly different peak times:\n\n*   **General Availability:** Oranges are available nearly year-round due to modern cultivation.\n*   **Peak Season (General):** Many sources indicate the best time for a wide variety of oranges is from **December to April.**\n*   **Navel Oranges:** November to May, with peak sweetness from January to April. Some sources specifically mention November to January for the \"best\" navel oranges.\n*   **Valencia Oranges:** April to December.\n*   **Blood Oranges:** December to April (specifically mid-January to April in some regions).\n\nGiven this information, I recommend the following entry for the \"Seasonality\" column:\n\n**December to April (general peak). Navel (Nov-May), Valencia (Apr-Dec), Blood (Dec-Apr).**\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Apple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Apples (Malus domestica) are believed to have originated in the Tien Shan mountains of Central Asia, particularly in regions that are now part of Kazakhstan, Kyrgyzstan, Tajikistan, and northwestern China. The wild ancestor of the cultivated apple, Malus sieversii, is still found growing in these areas. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Apple?utm_source=openai)) From Central Asia, apples spread along the Silk Road to Europe, where they hybridized with various wild crabapple species, leading to the diverse cultivars known today. ([britannica.com](https://www.britannica.com/plant/apple-fruit-and-tree?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results and existing row data, here's the information to fill in the \"Origin\" cell for apples:\n\nCentral Asia, primarily Kazakhstan\n\nThe modern apple (Malus domestica) originated from the wild apple species Malus sieversii, which is native to the Tian Shan mountains in Kazakhstan[3][5][7]. From there, apples spread westward along trade routes like the Silk Road, hybridizing with other wild apple species along the way[3][5][11]. Today, major apple-producing regions include China, the United States, Turkey, Poland, and India[1][2][4].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The origin of the Apple is Central Asia, specifically Kazakhstan. They were then spread along the Silk Road to Europe and are now cultivated worldwide.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Apple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The average retail price for apples in the United States varies depending on factors such as variety, region, and market conditions. As of March 2025, the retail price range for apples is between $1.55 and $2.93 per pound. ([selinawamucii.com](https://www.selinawamucii.com/insights/prices/united-states-of-america/apples/?utm_source=openai)) Given this range, a reasonable estimate for the average price per pound is approximately $2.24. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results and the current date provided, the average price per pound for apples in the United States is approximately $1.31[2]. This price is for Red Delicious apples, which is a common variety. However, it's important to note that apple prices can vary depending on the specific variety, season, and location. \n\nFor the \"Average Price per Pound in USD\" column in your \"Top Fruits Analysis\" spreadsheet, you can use:\n\n1.31\n\nThis value represents a recent national average price for apples in the United States, which should serve as a good estimate for your analysis. Keep in mind that prices may fluctuate over time and across different regions.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The average price of apples per pound in the US currently ranges from $1.08 to $2.05. Prices can vary depending on the type of apple and the store.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pineapple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Pineapple offers numerous health benefits, including:\n\n- **Rich in Vitamin C**: Supports immune function and acts as an antioxidant. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pineapple?utm_source=openai))\n\n- **Contains Bromelain**: An enzyme that aids digestion and may reduce inflammation. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pineapple?utm_source=openai))\n\n- **High in Manganese**: Essential for bone health and metabolism. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pineapple?utm_source=openai))\n\n- **Provides Dietary Fiber**: Promotes digestive health and regularity. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pineapple?utm_source=openai))\n\n- **Contains Antioxidants**: Helps combat oxidative stress and may reduce chronic disease risk. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pineapple?utm_source=openai))\n\n- **May Aid in Reducing Inflammation**: Bromelain has anti-inflammatory properties that may alleviate symptoms of arthritis. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pineapple?utm_source=openai))\n\n- **Supports Eye Health**: High vitamin C content may reduce the risk of macular degeneration. ([livescience.com](https://www.livescience.com/45487-pineapple-nutrition.html?utm_source=openai))\n\n- **May Enhance Recovery**: Bromelain may reduce inflammation and promote faster recovery after surgery or strenuous exercise. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pineapple?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here is a comprehensive list of health benefits associated with pineapple to fill in the \"Health Benefits\" column:\n\nRich in antioxidants; Boosts immunity; Aids digestion; Reduces inflammation; Supports bone health; May help fight cancer; Improves recovery after surgery/exercise; Promotes skin health; Aids weight loss; Supports heart health; May relieve arthritis pain; Contains bromelain enzyme with various benefits; Good source of manganese and vitamin C; May improve fertility; Potential anti-inflammatory effects; Supports tissue healing; Helps with protein digestion; May relieve sinus infections; Could lower cancer risk; Provides dietary fiber",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you fill in the \"Health Benefits\" column for Pineapple in your \"Top Fruits Analysis\" spreadsheet. I will perform a search to gather the health benefits associated with pineapples.\n\n\nHere's the information for the \"Health Benefits\" column of Pineapple:\n\n*   Rich in nutrients, including Vitamin C, manganese, and several B vitamins.\n*   Contains antioxidants that may protect against chronic diseases.\n*   May aid digestion due to its fiber content and bromelain.\n*   Possesses anti-inflammatory properties, potentially relieving arthritis symptoms.\n*   May boost the immune system.\n*   Could promote healing after surgery or strenuous exercise.\n*   May support cardiovascular health.\n*   May improve iron absorption.\n\nI have summarized the key benefits. Would you like a more detailed description or any other adjustments?\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Mango",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The mango (*Mangifera indica*) is indigenous to southern Asia, particularly Myanmar and the Assam state of India. ([britannica.com](https://www.britannica.com/plant/mango-plant-and-fruit?utm_source=openai)) Over time, mango cultivation has expanded globally, with significant production in countries such as India, China, Thailand, Mexico, and various nations in Central and South America. ([thepacker.com](https://www.thepacker.com/news/produce-crops/whats-mangos-origin-story?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the origin of mangoes can be described as:\n\nSouth and Southeast Asia, particularly India, Myanmar (Burma), and Bangladesh. Mangoes originated in the region between northwestern Myanmar, Bangladesh, and northeastern India over 5,000 years ago[1][3][5]. The mango tree is considered indigenous to this area, with India being a major center of diversity and the world's largest producer[1][3][11].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the origin of mangoes for your \"Top Fruits Analysis\" spreadsheet.\n\n\nFor the \"Origin\" column of your \"Mango\" row, you can input:\n\n**\"The region between northwestern Myanmar, Bangladesh, and northeastern India.\"**\n\nWhile mangoes are now cultivated in many tropical and subtropical regions worldwide, their origin lies in the specified area. You could also include other regions where mangoes are extensively cultivated today, such as South Asia, Southeast Asia, East and West Africa, and the tropical and subtropical Americas, if you want to reflect current cultivation in addition to origin.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Mango",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The average retail price of mangoes in the United States ranges from $0.44 to $1.77 per pound, depending on factors such as seasonality, variety, and quality. ([selinawamucii.com](https://www.selinawamucii.com/insights/prices/united-states-of-america/mangoes/?utm_source=openai)) Therefore, the \"Average Price per Pound in USD\" for mangoes can be estimated at approximately $1.10. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results and current market data, the average price per pound for mangoes in the United States is approximately $2.42. This value falls within the range of prices mentioned in various sources and represents a reasonable estimate for the \"Average Price per Pound in USD\" column in your \"Top Fruits Analysis\" spreadsheet[1][3][5].\n\nTo provide a single, representative number for the spreadsheet cell, I recommend using:\n\n2.42\n\nThis value reflects recent pricing data and accounts for variations in mango types and market conditions. It's important to note that mango prices can fluctuate based on factors such as seasonality, origin, and variety[1][3][5].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Based on the search results, the average price of mangoes per pound in the US in March 2025 ranges from $0.31 to $1.24. However, organic mangoes can cost around $2.81 per pound.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Orange",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The sweet orange (*Citrus ×sinensis*) is believed to have originated in a region encompassing Southern China, Northeast India, and Myanmar. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Orange_%28fruit%29?utm_source=openai)) Today, oranges are cultivated in subtropical and tropical regions worldwide, with major producers including Brazil, the United States, India, and China. ([orangebook.tetrapak.com](https://orangebook.tetrapak.com/chapter/orange-fruit-and-its-products?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the origin of oranges can be traced to Southeast Asia. Specifically:\n\nSoutheast Asia (including southern China, northeastern India, Myanmar, and the Malay Archipelago)\n\nThe orange is believed to have originated in a region encompassing the Himalayan foothills, particularly areas of southern China, northeastern India, northern Myanmar, and western Yunnan province in China. From there, it spread to other parts of Southeast Asia and eventually to other regions of the world[1][3][5].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the origin of oranges to fill in the \"Origin\" column of your \"Top Fruits Analysis\" spreadsheet.\n\n\nBased on my search, here's the information to fill in the \"Origin\" column for oranges:\n\nThe orange originated in a region encompassing Southern China, Northeast India, and Myanmar. From there, its cultivation spread to other tropical and subtropical regions worldwide. Today, oranges are commercially grown in:\n\n*   **Asia:** China, India, Myanmar\n*   **Mediterranean:** Northern and Eastern Mediterranean countries\n*   **Americas:** Subtropical and tropical America (Brazil, Mexico, Florida, California, Texas)\n*   **Africa:** South Africa\n*   **Australia**\n\nI would recommend summarizing this information for your spreadsheet. A concise entry could be: \"Southern China, Northeast India, and Myanmar; now grown in tropical and subtropical regions worldwide.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Strawberry",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "As of March 2025, the average retail price for strawberries in the United States ranges between $2.02 and $3.51 per pound. ([selinawamucii.com](https://www.selinawamucii.com/insights/prices/united-states-of-america/strawberries/?utm_source=openai)) This price can vary based on factors such as seasonality, region, and whether the strawberries are organic or conventionally grown. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, I can provide the average price per pound for strawberries in USD to fill in the \"Average Price per Pound in USD\" column for the Strawberry row in your \"Top Fruits Analysis\" spreadsheet.\n\n3.80\n\nThis value is derived from the most recent and reliable data provided in the search results[2]. According to the USDA Economic Research Service, in 2023, the average retail price for fresh strawberries was $3.80 per pound. This price reflects the most up-to-date information available and represents a national average, making it suitable for your analysis of popular fruits worldwide.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The average price of strawberries can vary quite a bit depending on the store, season, and whether you're buying them retail or wholesale. Based on my search results, here's a general idea:\n\n*   **Retail:** In 2023, the average retail price was around $3.80 per pound.\n*   **Wholesale:** In early 2025, the wholesale price range is approximately $1.41 to $2.46 per pound.\n*   **Online:** Prices can fluctuate, but I saw one listing on Amazon for $1.29 per pound.\n\nGiven this information, a reasonable average price to input for \"Average Price per Pound in USD\" for strawberries would be $3.80.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Banana",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "You can find a suitable image of a banana for your spreadsheet in the following sources:\n\n- **Pixabay**: Offers a wide selection of free banana images.\n- **Pexels**: Provides high-quality, free banana fruit photos.\n- **Getty Images**: Features a vast collection of banana fruit stock photos.\n\nPlease ensure you review the licensing terms on each platform to confirm the image can be used in your spreadsheet. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "To fill in the \"Image\" column for the banana row in the \"Top Fruits Analysis\" spreadsheet, I'll provide a suitable URL to an image of a banana bunch. Based on the search results, here's an appropriate image link:\n\nhttps://unsplash.com/photos/rVkPmh1X4j8\n\nThis link leads to a high-quality, royalty-free image of a bunch of bananas from Unsplash[5]. The image is clear, well-lit, and shows a typical bunch of yellow bananas, which is perfect for representing the fruit in your analysis spreadsheet. Unsplash images are free for commercial use and do not require attribution, making this an ideal choice for your purposes.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find an image URL for a banana to fill in the \"Image\" column of your spreadsheet.\n\n\nOkay, here are a few options for banana image URLs. I'm prioritizing those that seem stable and directly link to an image.\n\n*   **Option 1 (Wikimedia Commons - Single Banana):** [https://commons.wikimedia.org/wiki/File:Banana-Single.jpg](https://commons.wikimedia.org/wiki/File:Banana-Single.jpg) - This links to a page on Wikimedia Commons. While not a direct image link, it provides attribution and licensing information, which is good practice. You could potentially extract a direct image URL from that page if needed.\n*   **Option 2 (Potentially Direct - needs verification):** I am unable to provide a direct URL to a specific image. Many of the links from the search results point to stock photo sites or pages with multiple images.\n\nI recommend using Option 1 and potentially exploring the Wikimedia Commons page to find a direct image URL if that's necessary for your spreadsheet. If not, the link to the Wikimedia page itself is a good, responsible choice.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Apple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "To fill in the \"Image\" column for the \"Apple\" row in your \"Top Fruits Analysis\" spreadsheet, you can use the following URL:\n\n[https://pixabay.com/photos/apple-fruit-red-healthy-256261/](https://pixabay.com/photos/apple-fruit-red-healthy-256261/)\n\nThis link directs to a high-quality image of a red apple, which is free to use under Pixabay's license. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "To fill in the \"Image\" column for the Apple row in the \"Top Fruits Analysis\" spreadsheet, I'll provide a suitable URL to an image of an apple based on the search results.\n\nhttps://unsplash.com/photos/8manzosDSGM\n\nThis URL links to a high-quality, free-to-use image of a red apple on Unsplash[3]. The image is clear, professional, and representative of a typical apple, making it suitable for the spreadsheet's purpose of detailed fruit analysis. Unsplash images are free for commercial use and do not require attribution, which makes this an ideal choice for the spreadsheet.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help with that. I will search for an image of an apple and provide the URL.\n\n\nOkay, here's a URL for an image of an apple that you can use for your spreadsheet.\n\n`https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1600229459425-ef4a4fedc89c%3Fq%3Dtbn%3AANd9GcQfPE8L_UmtjT2l8sTdWjV-Hn_j1-j6e2G-j2fPIm9gZ95dtqC956e2m30&tbnid=KrP34fLKi83sEM&vet=12ahUKEwiK1s-T_IjhAhXF0JQKHS16D2EQMygBegUIARC5AQ..i&imgrefurl=https%3A%2F%2Funsplash.com%2Fimages%2Fapple&docid=Ra9G0Vjlcx15sM&w=4000&h=6000&q=apple%20image%20url&ved=2ahUKEwiK1s-T_IjhAhXF0JQKHS16D2EQMygBegUIARC5AQ`\n\nI hope this helps you populate your \"Top Fruits Analysis\" spreadsheet!\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Peach",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The peach (Prunus persica) is believed to have originated in China, with evidence of its domestication dating back approximately 7,500 years in the Yangtze River valley. ([smithsonianmag.com](https://www.smithsonianmag.com/smart-news/peaches-domesticated-china-7500-years-ago-180952640/?utm_source=openai)) From China, peaches spread westward through Asia to Persia (modern-day Iran), and subsequently to Europe and the Americas. ([britannica.com](https://www.britannica.com/plant/peach?utm_source=openai)) Today, peaches are cultivated in temperate and subtropical regions worldwide, with major production in countries such as China, Italy, Spain, and the United States. ([fruit-crops.com](https://www.fruit-crops.com/peach-prunus-persica/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "China\n\nThe peach originated in China, specifically in the northwestern region. Archaeological evidence suggests that peaches were first domesticated along the Yangzi River valley in China as early as 6000 BCE[11][13]. China remains the world's largest producer of peaches, accounting for approximately 70% of global production[6][8]. The fruit then spread from China to other parts of Asia and eventually to Europe and the Americas through various trade routes and exploration[1][3][13].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you find the origin of peaches for your spreadsheet.\n\n\nFor the \"Origin\" column of the \"Peach\" row, here's the information you can use:\n\n*   **Primary Origin:** China, where peaches have been cultivated since the Neolithic period, with domestication occurring as early as 6000 BCE in Zhejiang Province.\n*   **Secondary regions:** Persia (modern-day Iran) for its widespread cultivation and introduction to Europe. Peaches are now grown in warmer temperate regions of both the Northern and Southern hemispheres, including the United States (major producers include California, South Carolina, and Georgia).\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Watermelon",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "As of March 2025, the average retail price of watermelon in the United States ranges between $0.45 and $0.90 per pound. ([selinawamucii.com](https://www.selinawamucii.com/insights/prices/united-states-of-america/watermelon/?utm_source=openai)) This price can fluctuate based on factors such as seasonality, regional availability, and market demand. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the average price per pound for watermelon in the United States as of March 2025 is approximately $0.76.\n\nThis estimate is derived from the following information:\n\n1. The wholesale price range for US watermelon in 2025 is between US$ 0.31 and US$ 0.63 per pound[1].\n2. The retail price range for US watermelon is between US$ 0.44 and US$ 0.88 per pound[1].\n\nTaking the average of these ranges, we get approximately $0.76 per pound. This value represents a reasonable estimate for the \"Average Price per Pound in USD\" column in the spreadsheet.\n\nIt's important to note that watermelon prices can fluctuate based on factors such as seasonality, supply, and demand. However, this estimate provides a good representation of the average market price for watermelon in the US as of the given date.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The average retail price of watermelon in the United States ranges from $0.45 to $0.90 per pound in March 2025. However, this price can fluctuate based on the region and seasonality.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Mango",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Mangoes are cultivated in various regions worldwide, leading to different peak seasons depending on the location and variety. In the United States, particularly in Florida, the mango season typically runs from May to October. ([axios.com](https://www.axios.com/local/miami/2025/03/24/mango-season-prediction-florida?utm_source=openai)) Globally, mangoes are available year-round due to staggered harvesting periods across different countries. For instance, in Mexico, the peak season extends from March to September, while in Peru, it spans from January to March and November to December. ([noonfoodnetwork.com](https://noonfoodnetwork.com/blog/2024/06/discovering-the-world-of-latin-america-mangoes-variety-and-seasonality/?utm_source=openai)) This global distribution ensures a continuous supply of fresh mangoes throughout the year. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the seasonality for mangoes can be described as follows:\n\nPeak availability: May through September, with a secondary peak from January to March\n\nMangoes are available year-round due to various growing regions and varieties, but the main season runs from spring through summer. Specific varieties have different peak times:\n\n- Ataulfo (Honey) mangoes: Peak from late February to mid-July\n- Tommy Atkins mangoes: Peak from late March through July\n- Kent mangoes: Peak from June through August\n- Keitt mangoes: Peak in August and September\n\nThe season can extend into fall, with some availability continuing through December for certain varieties[1][3][5].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the best seasons or months for Mangoes.\n\n\nMangoes generally have two seasons: Spring/Summer and Fall/Winter. The peak season typically runs from May through September. However, different varieties have different peak times. Because the fruit is imported from different regions, it is available year-round in the United States.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Strawberry",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The cultivated strawberry (Fragaria × ananassa) originated in Europe in the 18th century as a hybrid between two wild species: Fragaria virginiana from eastern North America and Fragaria chiloensis from Chile. ([britannica.com](https://www.britannica.com/plant/strawberry?utm_source=openai)) Today, strawberries are grown worldwide, with major production in countries like China and the United States. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Strawberry?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the geographical origin and primary regions where strawberries are grown are:\n\nNorth America (particularly the United States), Europe (especially Spain, Poland, and Germany), and parts of South America (notably Chile)[1][2][5][11]. The modern cultivated strawberry (Fragaria × ananassa) originated from a cross between two wild species: Fragaria virginiana from North America and Fragaria chiloensis from Chile[11]. Today, major producing countries include China, the United States, Mexico, Turkey, Egypt, and Spain[8][10][12].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The origin of the strawberry is complex, with cultivation and wild varieties found across the globe. Here's a breakdown:\n\n*   **Ancient Rome:** Strawberries are thought to have been cultivated here first.\n*   **Europe:** Originally grown in Northern Europe. France became a front runner in strawberry production.\n*   **North and South America:** Native to North America. A Chilean variety was also discovered.\n*   **Worldwide:** Today, varieties can be grown throughout Chile, Russia, and the United States. China is currently the largest producer of strawberries.\n\nGiven this information, a good answer for the \"Origin\" column would be: \"Europe, North and South America, and widely cultivated globally.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Watermelon",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Watermelon is a hydrating fruit, composed of approximately 91% water, and provides 30 calories per 100 grams. It contains 7.6 grams of carbohydrates, including 6.2 grams of sugars, 0.6 grams of protein, and 0.15 grams of fat. Notably, watermelon is a good source of vitamins A (569 IU) and C (8.1 mg), and minerals such as potassium (112 mg) and magnesium (10 mg). ([nutrition-and-you.com](https://www.nutrition-and-you.com/watermelon.html?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here is the nutritional value per 100g of watermelon:\n\n30 calories, 7.55g carbohydrates (6.2g sugar), 0.61g protein, 0.15g fat, 0.4g fiber, 91% water. Rich in vitamins and minerals: Vitamin C (8.1mg), Vitamin A (28µg), Potassium (112mg), Magnesium (10mg), Vitamin B6 (0.05mg). Contains antioxidants like lycopene (4532µg) and beta-carotene (303µg). Low in sodium (1mg) and provides small amounts of calcium, iron, and phosphorus[1][2][3][4].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the nutritional value of watermelon per 100g.\n\n\nOkay, here's a summary of the nutritional value per 100g of watermelon, compiled from the search results:\n\n**Nutritional Value per 100g (approximately):**\n\n*   **Calories:** 30-39 kcal\n*   **Water:** ~91-92g\n*   **Carbohydrates:** 7.3 - 8.33g\n    *   Sugars: 6.2 - 7.0g (primarily fructose, sucrose, and glucose)\n    *   Fiber: 0.4g\n*   **Fat:** 0.15 - 0.2g\n*   **Protein:** 0.6 - 0.9g\n*   **Vitamin A:** 203.33 µg (source, providing ~25% of Daily Recommended Value)\n*   **Vitamin B9:** 36.90 µg (source, providing ~18% of Daily Recommended Value)\n*   **Vitamin C:** 4-6mg (~15% of Daily Value)\n*   **Potassium:** 112mg\n*   **Sodium:** 1-4.5mg\n*   **Lycopene:** 4530 mcg\n*   **Beta-carotene:** 290-435ug\n\nI will add a detailed response to the spreadsheet.\n\n**Nutritional Value per 100g:** Calories: 30-39 kcal, Water: ~91-92g, Carbohydrates: 7.3 - 8.33g (Sugars: 6.2 - 7.0g, Fiber: 0.4g), Fat: 0.15 - 0.2g, Protein: 0.6 - 0.9g, Vitamin A: 203.33 µg (~25% DV), Vitamin B9: 36.90 µg (~18% DV), Vitamin C: 4-6mg (~15% DV), Potassium: 112mg, Sodium: 1-4.5mg, Lycopene: 4530 mcg, Beta-carotene: 290-435ug\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Image
+Description: URL to an image of the fruit
+Type: link
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pineapple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Based on the existing row data, here is the updated information for the \"Image\" column:\n\n- **Image**: [Pineapple Image](https://pixabay.com/photos/pineapple-fruit-food-healthy-869215/)\n\nThis link directs to a high-resolution image of a pineapple, which can be used to visually represent the fruit in your \"Top Fruits Analysis\" spreadsheet. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the provided search results, I can offer a suitable image URL for the \"Pineapple\" row in the \"Top Fruits Analysis\" spreadsheet. Here's a recommendation for the \"Image\" column:\n\nhttps://unsplash.com/photos/pineapple-fruit-on-white-surface-qWlkCwzfAlI\n\nThis URL links to a high-quality, royalty-free image of a pineapple from Unsplash[5]. The image shows a whole pineapple on a white surface, which would be ideal for a clear visual representation in your fruit analysis spreadsheet. Unsplash images are free for commercial use and don't require attribution, making them suitable for various projects, including spreadsheets and presentations.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Here are a few image URLs for pineapples that you can use for the \"Image\" column in your \"Top Fruits Analysis\" spreadsheet:\n\n*   **From Wikimedia Commons (Public Domain):** [https://commons.wikimedia.org/wiki/File:Pineapple.jpg](https://commons.wikimedia.org/wiki/File:Pineapple.jpg)\n*   **Pineapple Supply Co. - Unsplash:** Provide many different images of pineapples [https://unsplash.com/@pineapple](https://unsplash.com/@pineapple)\n\nI have provided a couple of options, including one that is public domain.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Orange",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The average price per pound of oranges in the United States varies depending on factors such as region, season, and variety. As of recent data, the national average price is approximately $1.71 per pound. ([priceofgoods.com](https://www.priceofgoods.com/oranges/?utm_source=openai)) Prices can range from $1.00 to $2.50 per pound, with premium varieties and organic oranges typically priced higher. ([thepricer.org](https://www.thepricer.org/orange-cost-per-pound/?utm_source=openai)) Regional differences also play a role; for instance, the average price in the Northeast is around $1.12 per pound, while in the West, it's about $1.44 per pound. ([priceofgoods.com](https://www.priceofgoods.com/oranges/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the average price per pound for oranges in the United States is $1.53[2]. This price is for Navel oranges and is the most recent national average price available. Therefore, I would recommend filling in the \"Average Price per Pound in USD\" cell with:\n\n1.53\n\nThis value represents the current national average retail price for Navel oranges per pound in the United States[2][6]. It's important to note that orange prices can fluctuate based on factors such as seasonality, location, and market conditions, but this figure provides a good representative average for the spreadsheet analysis.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "The average price of oranges is about $1.53 per pound in March 2025.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Orange",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Oranges are low in calories and rich in essential nutrients. Per 100 grams, they provide approximately 47 calories, 11.8 grams of carbohydrates (including 9.4 grams of sugars), 2.4 grams of dietary fiber, and 0.9 grams of protein. They are an excellent source of vitamin C, offering about 53.2 mg, which is 59% of the Daily Value. Additionally, oranges contain 40 mg of calcium, 181 mg of potassium, and small amounts of vitamin A, B vitamins, and other minerals. ([healthsomeness.com](https://www.healthsomeness.com/food/oranges/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Calories: 47\nCarbohydrates: 12g\nProtein: 1g\nFat: 0.2g\nFiber: 2.4g\nVitamin C: 53.2mg (59% DV)\nPotassium: 181mg (4% DV)\nCalcium: 40mg (4% DV)\nVitamin A: 225 IU\nFolate: 30μg (8% DV)\nThiamine: 0.1mg (7% DV)\nVitamin B6: 0.1mg (5% DV)\n\nRich in antioxidants, particularly flavonoids like hesperidin and naringenin. Contains small amounts of other vitamins and minerals. Low in calories, high in fiber, and an excellent source of vitamin C[1][2][3].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you fill in the \"Nutritional Value per 100g\" column for the \"Orange\" row in your \"Top Fruits Analysis\" spreadsheet.\n\n\nHere's a comprehensive nutritional breakdown for 100g of orange, suitable for your spreadsheet:\n\n**Nutritional Value per 100g:**\n\n*   **Calories:** Approximately 43-49 kcal\n*   **Water:** ~85-87g\n*   **Protein:** ~1g\n*   **Fat:** ~0.2g\n*   **Carbohydrates:** ~11-13g\n*   **Fiber:** ~2.1-2.8g\n*   **Sugars:** ~8-9g\n\n**Vitamins:**\n\n*   **Vitamin C:** ~45-53mg (High in Vitamin C, providing roughly 50-88% of the Daily Value)\n*   **Vitamin B9 (Folate):** ~20-26µg\n*   **Vitamin B6:** ~0.05-0.06mg\n*   **Vitamin A:** ~0.01mg or 70mcg (depending on source)\n*   Other B vitamins in smaller amounts\n\n**Minerals:**\n\n*   **Potassium:** ~170-181mg\n*   **Calcium:** ~40-43mg\n*   **Magnesium:** ~10mg\n*   **Phosphorus:** ~14-25mg\n*   **Iron:** ~0.1-0.4mg\n*   Small amounts of other minerals\n\nI have included ranges where the sources provided slightly different values, noting that nutritional content can vary based on the specific type of orange, ripeness, and growing conditions.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Mango",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Mangoes offer a variety of health benefits due to their rich nutritional profile:\n\n- **Rich in Vitamins and Minerals**: Mangoes are high in vitamins A and C, which support immune function and skin health. They also provide essential minerals like potassium and magnesium, beneficial for heart health. ([healthline.com](https://www.healthline.com/nutrition/mango?utm_source=openai))\n\n- **Antioxidant Properties**: They contain polyphenols, including mangiferin, which act as antioxidants to protect cells from damage and may reduce the risk of certain cancers. ([healthline.com](https://www.healthline.com/nutrition/mango?utm_source=openai))\n\n- **Digestive Health**: Mangoes are a good source of dietary fiber and contain digestive enzymes like amylases, aiding in digestion and helping prevent constipation. ([healthline.com](https://www.healthline.com/nutrition/mango?utm_source=openai))\n\n- **Eye Health**: The presence of lutein and zeaxanthin, along with vitamin A, supports eye health and may protect against age-related macular degeneration. ([healthline.com](https://www.healthline.com/nutrition/mango?utm_source=openai))\n\n- **Heart Health**: Nutrients in mangoes, such as potassium and mangiferin, support heart health by helping maintain healthy blood pressure levels and reducing inflammation. ([healthline.com](https://www.healthline.com/nutrition/mango?utm_source=openai))\n\n- **Skin Health**: The vitamins A and C in mangoes contribute to healthy skin by promoting collagen production and protecting against oxidative damage. ([livestrong.com](https://www.livestrong.com/article/17742-nutritional-value-mango/?utm_source=openai))\n\n- **Weight Management**: The fiber content in mangoes can promote satiety, potentially aiding in weight management. ([health.clevelandclinic.org](https://health.clevelandclinic.org/mango-benefits?utm_source=openai))\n\nIncorporating mangoes into a balanced diet can contribute to overall health and well-being. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here are the key health benefits associated with mangoes to fill in the \"Health Benefits\" column:\n\nRich in antioxidants (including mangiferin) that may protect against diseases; supports heart health by potentially lowering blood pressure and cholesterol; boosts immune system with vitamins A, C, and E; aids digestion due to fiber content and digestive enzymes; promotes healthy skin and hair; may help regulate blood sugar; supports eye health with carotenoids like lutein and zeaxanthin; provides vitamins and minerals for overall health including potassium, folate, and vitamin B6[1][2][3][4][5][6].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you fill in the \"Health Benefits\" column for Mango in your \"Top Fruits Analysis\" spreadsheet.\n\n\nHere's the information to populate the \"Health Benefits\" column for Mango:\n\nMangoes are rich in vitamins A, C, K, E, B6, and B9 (folate), as well as minerals like copper, magnesium, and potassium. They are a good source of antioxidants like mangiferin and carotenoids (lutein and zeaxanthin). These nutrients may contribute to:\n\n*   **Improved Immunity:** Vitamins A, C, and E, along with other nutrients, support a healthy immune system.\n*   **Heart Health:** Potassium and magnesium may help lower blood pressure and maintain a regular pulse. Mangiferin may reduce heart inflammation. Fiber can help lower cholesterol.\n*   **Digestive Health:** Amylase compounds and dietary fiber can aid digestion and relieve constipation. They may also have anti-inflammatory and antioxidant properties.\n*   **Eye Health:** Carotenoids like lutein and zeaxanthin protect the retina from sunlight and blue light, potentially reducing the risk of age-related macular degeneration.\n*   **Skin and Hair Health:** Vitamins A, C, and E are antioxidants necessary for healthy skin and hair. Vitamin C is involved in collagen production.\n*   **Potential Cancer Prevention:** Antioxidants in mangoes, including mangiferin and beta-carotene, may help protect cells from damage and reduce the risk of certain cancers.\n*   **Healthy Blood Sugar Levels:** Consuming mango in moderation may help promote healthy blood sugar levels.\n*   **Bone Health:** Vitamin K helps with blood clotting and bone strengthening.\n\nI have rephrased the information from the search results and included multiple potential benefits for a thorough and informative answer.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pear",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Pears are low in calories and rich in dietary fiber, vitamins, and minerals. Per 100 grams, they provide approximately 58 calories, 3.1 grams of fiber, 4.2 milligrams of vitamin C, and 119 milligrams of potassium. ([nutrition-and-you.com](https://www.nutrition-and-you.com/pears.html?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Here's a detailed nutritional breakdown for pears per 100g:\n\nCalories: 57\nCarbohydrates: 15.46g\n- Sugars: 9.8g\n- Fiber: 3.1g\nProtein: 0.38g\nFat: 0.12g\n\nKey vitamins and minerals:\n- Vitamin C: 4.8mg (5% DV)\n- Vitamin K: 4.5μg (4% DV)\n- Potassium: 119mg (3% DV)\n- Copper: 0.082mg (9% DV)\n- Vitamin B6: 0.029mg (2% DV)\n\nAlso contains small amounts of calcium, iron, magnesium, folate, and antioxidants like quercetin. Pears are a good source of dietary fiber and are low in calories, making them nutritious and beneficial for digestive health[1][2][3][4].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Pear (per 100g): Calories: 53-57, Fat: 0.1-0.3g, Carbohydrates: 14.8-15g, Fiber: 2.1-5.5g, Sugars: 9.8-17g, Protein: 0.13-0.6g, Vitamin C, Vitamin K, Copper, Potassium: 116-206mg.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pear",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Pears offer numerous health benefits, including:\n\n- **Rich in Nutrients**: Pears are a good source of vitamin C, vitamin K, potassium, and copper, all essential for overall health. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pears?utm_source=openai))\n\n- **Supports Digestive Health**: High in dietary fiber, pears promote regular bowel movements and can help prevent constipation. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pears?utm_source=openai))\n\n- **Anti-Inflammatory Properties**: The flavonoid antioxidants in pears may help reduce inflammation, potentially lowering the risk of chronic diseases. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pears?utm_source=openai))\n\n- **Heart Health**: Antioxidants like anthocyanins and quercetin in pears can improve heart health by reducing blood pressure and cholesterol levels. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pears?utm_source=openai))\n\n- **Weight Management**: Low in calories and high in fiber, pears can promote feelings of fullness, aiding in weight management. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pears?utm_source=openai))\n\n- **Blood Sugar Control**: The fiber in pears slows digestion, helping to regulate blood sugar levels and reduce the risk of type 2 diabetes. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pears?utm_source=openai))\n\n- **Cancer Prevention**: Compounds like anthocyanins and chlorogenic acid in pears have been linked to reduced cancer risk. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pears?utm_source=openai))\n\n- **Immune Support**: Vitamin C and copper in pears boost the immune system, helping the body fight off infections. ([healthline.com](https://www.healthline.com/nutrition/benefits-of-pears?utm_source=openai))\n\n- **Skin Health**: Antioxidants and vitamins in pears contribute to healthy, glowing skin by combating free radicals and supporting skin repair. ([healthshots.com](https://www.healthshots.com/healthy-eating/superfoods/pear-benefits/?utm_source=openai))\n\nIncorporating pears into your diet can provide these health benefits, contributing to overall well-being. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here are the key health benefits associated with pears to fill in the \"Health Benefits\" column:\n\n- High in fiber, supporting digestive health and regularity\n- May help control blood sugar levels and reduce risk of type 2 diabetes\n- Rich in antioxidants like flavonoids that may lower inflammation\n- Potential to improve heart health by lowering blood pressure and cholesterol\n- May aid in weight management due to low calorie and high fiber content\n- Contains vitamin C and other nutrients that support immune function\n- May have anticancer properties due to antioxidant compounds\n- Supports hydration due to high water content\n\nThis comprehensive list covers the major evidence-based health benefits of pears highlighted across the search results, providing a thorough entry for the \"Health Benefits\" column in the fruit analysis spreadsheet.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Health Benefits\" column for the fruit \"Pear\" in your \"Top Fruits Analysis\" spreadsheet. I will perform a search to identify the health benefits associated with pears.\n\n\nBased on the search results, here's a summary of the health benefits of pears for your spreadsheet:\n\nPears are rich in essential nutrients and may offer several health benefits, including:\n\n*   **Good source of fiber:** Promotes bowel regularity, constipation relief, gut health, and feelings of fullness. May also lower cholesterol levels.\n*   **Rich in antioxidants:** Contains vitamin C, vitamin K, and copper, which combat free radicals and reduce inflammation. Includes flavonoids which may protect against certain diseases.\n*   **Promotes heart health:** Procyanidin antioxidants may decrease stiffness in heart tissue, lower LDL (bad) cholesterol, and increase HDL (good) cholesterol. Contains quercetin, which may benefit heart health by decreasing inflammation and reducing heart disease risk factors.\n*   **May reduce the risk of type 2 diabetes:** Contains anthocyanin, which may be linked to a lower risk of type 2 diabetes. Pears are also a low-glycemic food.\n*   **Encourages detoxification:** High water content helps keep stools soft and flushes the digestive system of toxins.\n*   **May aid weight loss:** As part of a balanced, nutritious diet.\n*   **Source of vitamins and minerals:** Including vitamin C, vitamin K, potassium, and copper.\n\nTherefore, I would fill the \"Health Benefits\" column with the following information:\n\n\"Rich in fiber, antioxidants, vitamins C and K, and potassium. Promotes gut and heart health, may reduce the risk of type 2 diabetes, encourages detoxification, and may aid in weight loss.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Peach",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Based on recent data, the average price per pound of fresh peaches in the United States is approximately $1.72. ([pickyourown.org](https://pickyourown.org/prices-growers-farmers-trends.php?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the average price per pound for peaches in the United States ranges from approximately $2.00 to $3.00. Taking into account various sources and considering recent data, a reasonable estimate for the average price per pound of peaches in USD is:\n\n2.38\n\nThis value falls within the range reported by multiple sources and reflects recent price trends for peaches in the U.S. market[1][2][6]. It's important to note that peach prices can fluctuate based on factors such as seasonality, location, and market conditions.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, based on my research, here's the average price per pound for peaches that I've found:\n\n*   **Retail (March 2025):** $2.20 - $9.51 per pound.\n*   **Wholesale (March 2025):** $1.54 - $6.66 per pound.\n*   **June 2023:** $1.70 per pound.\n\nGiven this range, I'll use a more conservative estimate and fill in the cell with **$2.00** as the average price per pound in USD.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Peach",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Peach seasonality varies by region:\n\n- **Northern Hemisphere**: Late spring to early fall, typically from May through September. ([natureword.com](https://www.natureword.com/when-is-peach-season/?utm_source=openai))\n\n- **Southern Hemisphere**: Mid-spring to early fall, generally from October through March. ([natureword.com](https://www.natureword.com/when-is-peach-season/?utm_source=openai))\n\nIn the United States, peak peach season occurs during the summer months, with variations depending on the state. For example, Georgia's peach season runs from May to August, while California's extends from May to October. ([whenistheseason.com](https://www.whenistheseason.com/when-is-peach-season/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the seasonality for peaches can be summarized as follows:\n\nPeaches are typically in season from late spring to early fall, with peak availability occurring between June and August in most regions[1][2]. The exact timing can vary depending on the location:\n\n- In the United States, peach season generally runs from May through September[2].\n- Southern states like Georgia, South Carolina, and Texas often have peaches available from late May to August, with peak ripeness in mid-July[3].\n- Florida has a shorter peach season, usually from late April to early June[3].\n- In the Southern Hemisphere, peach season occurs during December, January, and February[8].\n\nFor the \"Seasonality\" column in the spreadsheet, you could enter:\n\n\"Late spring to early fall (May-September), peak season June-August in most regions. Varies by location.\"",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the best seasons or months for peaches.\n\n\nFor the \"Seasonality\" column of peaches, I would recommend the following:\n\n**June to August** or **Late Spring to Early Fall**.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Apple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Apples offer numerous health benefits, including:\n\n- **Weight Management**: High in fiber and water, apples promote satiety, aiding in weight control. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Heart Health**: Rich in soluble fiber and polyphenols, apples help lower cholesterol and blood pressure, reducing heart disease risk. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Diabetes Prevention**: Regular apple consumption is linked to a reduced risk of type 2 diabetes, possibly due to their polyphenol content. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Gut Health**: The pectin in apples acts as a prebiotic, supporting beneficial gut bacteria and overall digestive health. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Cancer Risk Reduction**: Antioxidants in apples may help lower the risk of certain cancers, including lung, breast, and digestive tract cancers. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Asthma Relief**: Quercetin in apple skins has anti-inflammatory properties that may alleviate asthma symptoms. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Brain Protection**: Quercetin may also protect the brain from oxidative stress, potentially reducing the risk of neurodegenerative diseases. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Mental Health Improvement**: Consuming apples is associated with better mental health and reduced stress. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Digestive Aid**: Apples may help alleviate digestive issues like gastroesophageal reflux disease (GERD) and constipation. ([healthline.com](https://www.healthline.com/nutrition/10-health-benefits-of-apples?utm_source=openai))\n\n- **Dental Health**: Chewing apples can stimulate saliva production, reducing tooth decay risk. ([alive.com](https://www.alive.com/food/10-amazing-health-benefits-of-apples/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here is a comprehensive list of health benefits associated with apples to fill in the \"Health Benefits\" column for the \"Top Fruits Analysis\" spreadsheet:\n\nPromotes heart health; may lower risk of cancer; supports brain function; reduces risk of type 2 diabetes; aids in weight management; improves gut health; boosts immune system; supports lung function and may reduce asthma risk; helps stabilize blood sugar; lowers cholesterol; reduces blood pressure; eases inflammation; improves digestion; provides antioxidants; supports bone health; may contribute to longevity[1][2][3][4][5][6]",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Health Benefits\" column for the \"Apple\" row in your \"Top Fruits Analysis\" spreadsheet.\n\n\nHere's a possible value for the \"Health Benefits\" column of the \"Apple\" row, based on the search results:\n\n\"Apples are a good source of fiber, vitamin C, and antioxidants. Regular consumption may support heart health, improve digestion, aid in weight management, help prevent diabetes, decrease the risk of cancer, and support brain health. They may also help lower cholesterol levels, protect against obesity and chronic disease, improve bone strength, and fight asthma.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pear",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The average price per pound of fresh pears in the United States varies depending on factors such as variety, region, and market conditions. As of March 2025, retail prices range from approximately $0.43 to $1.30 per pound. ([selinawamucii.com](https://www.selinawamucii.com/insights/prices/united-states-of-america/pears/?utm_source=openai)) Wholesale prices during the same period have been reported between $1.04 and $2.49 per pound. ([dir.tridge.com](https://dir.tridge.com/prices/product-country/fresh-pear-united-states?utm_source=openai)) Given these variations, a reasonable estimate for the average retail price per pound of fresh pears is around $1.52. ([frugalanswers.com](https://frugalanswers.com/average-cost-of-pear-in-the-united-states-around-the-world/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, I can provide an average price per pound for pears in USD to fill in the \"Average Price per Pound in USD\" column for the \"Pear\" row in your \"Top Fruits Analysis\" spreadsheet.\n\nThe average price per pound for pears in the United States ranges from approximately $1.55 to $2.42, depending on the variety and source. Taking into account various data points from the search results, a reasonable average price per pound for pears would be:\n\n2.07\n\nThis value is based on the following information:\n\n1. Bartlett pears have a weighted average price of $2.07 per pound[3].\n2. Anjou pears range from $1.55 to $2.31 per pound[3][4].\n3. Bosc pears have a weighted average price of $2.42 per pound[3].\n\nThis average price falls within the range reported by other sources and provides a representative value for the \"Average Price per Pound in USD\" column in your spreadsheet for pears.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Based on my research, the average price of pears per pound in the US ranges from $0.40 to $1.19. However, some specialty varieties or those from local farms can be priced higher, between $1.75 and $3.99 per pound.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Seasonality
+Description: Best seasons or months when the fruit is available or in peak condition
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pear",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Pears are typically in season from August through October in most regions. However, in states like California, the season extends from January to February and August to December. ([whenistheseason.com](https://www.whenistheseason.com/when-is-pear-season/?utm_source=openai)) Due to their excellent storage capabilities, certain pear varieties remain available into the winter months, with December recognized as National Pear Month in the U.S. ([sagefruit.com](https://www.sagefruit.com/winter-fruit-pears/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "The seasonality of pears varies slightly depending on the variety, but generally, pears are in peak season from late summer through fall and early winter. Peak pear season typically runs from August through October[1]. However, due to overlapping seasons for different US varieties and modern storage techniques, pears are commonly available year-round[3].\n\nHere's a breakdown of the seasonality for some popular pear varieties:\n\n- Bartlett Pears: August to December[2][5]\n- D'Anjou Pears: October to January[5]\n- Bosc Pears: September to April[2][5]\n- Comice Pears: October to February[5]\n\nFor the \"Seasonality\" column in the \"Top Fruits Analysis\" spreadsheet, you can enter:\n\n\"Peak season August to October; various varieties available year-round. Bartlett (Aug-Dec), D'Anjou (Oct-Jan), Bosc (Sep-Apr), Comice (Oct-Feb).\"\n\nThis entry provides a comprehensive overview of pear seasonality, including the general peak season and specific timeframes for popular varieties.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I will help you fill in the \"Seasonality\" column for the fruit \"Pear\" in your \"Top Fruits Analysis\" spreadsheet.\n\n\nFor the \"Seasonality\" column of the fruit \"Pear\", here's the information to help you fill it in:\n\n*   **General Season:** Late summer to early winter is the typical pear season in temperate climates. (late August to early October)\n*   **Peak Season:** August through October is often considered the peak pear season.\n*   **Availability:** Thanks to different varieties, pears can be found almost year-round.\n*   **Specific Varieties:**\n\n    *   **Early Season (Summer Pears):** July and August\n    *   **Bartlett Pears:** August to December (some sources say August to February for green Bartlett, August to December for red Bartlett)\n    *   **D'Anjou Pears:** Best harvest in September and October, but available year-round.\n    *   **Bosc Pears:** September through April\n    *   **Late Season (Winter Pears):** Ripening in the fall to early winter\n\nGiven this information, a good entry for the \"Seasonality\" column could be:\n\n**\"Late Summer to Early Winter (August - October), with some varieties available year-round\"**\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Banana",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Bananas offer several health benefits:\n\n- **Heart Health**: High in potassium, bananas help lower blood pressure and reduce the risk of heart disease. ([healthline.com](https://www.healthline.com/nutrition/foods/bananas?utm_source=openai))\n\n- **Digestive Health**: Rich in dietary fiber, including resistant starch and pectin, bananas support healthy digestion and may prevent constipation. ([healthline.com](https://www.healthline.com/nutrition/foods/bananas?utm_source=openai))\n\n- **Weight Management**: Low in calories and high in fiber, bananas can promote feelings of fullness, aiding in weight management. ([healthline.com](https://www.healthline.com/nutrition/11-proven-benefits-of-bananas?utm_source=openai))\n\n- **Antioxidant Properties**: Contain antioxidants like dopamine and catechins, which may reduce the risk of degenerative diseases. ([healthline.com](https://www.healthline.com/nutrition/foods/bananas?utm_source=openai))\n\n- **Exercise Recovery**: Provide easily digestible carbohydrates and essential minerals, supporting muscle recovery and reducing exercise-related cramps. ([healthline.com](https://www.healthline.com/nutrition/11-proven-benefits-of-bananas?utm_source=openai))\n\n- **Kidney Health**: Potassium in bananas supports healthy kidney function and may reduce the risk of kidney disease. ([healthline.com](https://www.healthline.com/nutrition/11-proven-benefits-of-bananas?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here are the key health benefits associated with bananas to fill in the \"Health Benefits\" column:\n\n• Supports heart health by providing potassium and magnesium, which may help lower blood pressure and reduce risk of cardiovascular disease\n• Aids digestive health due to fiber content, including prebiotic resistant starch that feeds beneficial gut bacteria \n• May help regulate blood sugar levels due to fiber content\n• Provides energy and nutrients like vitamin B6, vitamin C, and manganese\n• Contains antioxidants that may help reduce inflammation and oxidative stress\n• May support weight management by promoting feelings of fullness\n• Supports exercise recovery and performance \n• May improve mood and memory due to nutrients like tryptophan and vitamin B6\n• Supports kidney and bone health",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Health Benefits\" column for the \"Banana\" row in your \"Top Fruits Analysis\" spreadsheet. I will perform a search to identify the health benefits associated with bananas.\n\n\nHere's the information for the \"Health Benefits\" column of the \"Banana\" row:\n\n\"Rich in essential nutrients like potassium, vitamin B6, vitamin C, and manganese. Supports heart health and helps maintain healthy blood pressure. Aids digestion and promotes gut health due to its fiber content. Provides energy and supports overall well-being. May reduce the risk of chronic diseases.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Mango",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Mangoes are a rich source of essential nutrients. Per 100 grams, they provide approximately 60 calories, 0.82 grams of protein, 0.38 grams of fat, and 14.98 grams of carbohydrates, including 1.6 grams of dietary fiber. They are particularly high in vitamin C (36.4 mg), vitamin A (1,080 IU), and potassium (168 mg). Additionally, mangoes contain small amounts of calcium (11 mg), iron (0.16 mg), and vitamin E (0.9 mg). ([nutrition-and-you.com](https://www.nutrition-and-you.com/mango-fruit.html?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here's a comprehensive summary of the nutritional value per 100g of mango:\n\nCalories: 60-65 kcal\nCarbohydrates: 14-15g\nSugars: 13-15g\nFiber: 1.5-1.6g\nProtein: 0.6-0.9g\nFat: 0.2-0.4g\nVitamin C: 36-60mg (40-67% DV)\nVitamin A: 54-89µg RAE (6-10% DV)\nPotassium: 168-197mg (4-6% DV)\nVitamin B6: 0.1-0.2mg (6-12% DV)\nFolate: 43-71µg (11-18% DV)\nCopper: 0.11-0.18mg (12-20% DV)\nVitamin E: 1-1.3mg (7-9% DV)\nMagnesium: 10-16mg (2-4% DV)\nBeta-carotene: 640-1056µg",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you find the nutritional value of mangoes per 100g to fill in your spreadsheet.\n\n\nOkay, here's a summary of the nutritional value of mangoes per 100g, which should be helpful for filling in your spreadsheet:\n\n**General Values:**\n\n*   **Calories:** 60-73 kcal\n*   **Energy:** 230-303 kJ\n\n** Macronutrients:**\n\n*   **Carbohydrates:** 11.6 - 15g (primarily sugars: sucrose, fructose, and glucose, also contains starch)\n*   **Fat:** 0.2 - 0.4g\n*   **Protein:** 0.6 - 0.9g\n*   **Fiber:** 1.6g\n\n**Vitamins:**\n\n*   **Vitamin C:** 25-36mg (31-40% of Daily Value) - High in Vitamin C\n*   **Vitamin A:** 54-162 mcg (18-22% of Daily Value) - Source of Vitamin A, rich in beta-carotene\n*   **Vitamin B9 (Folate):** 40-70.2 mcg (32-35% of Daily Value) - High in Vitamin B9\n*   **Vitamin E:** 2.05-2.7mg (17-18% of Daily Value) - Source of Vitamin E\n*   **Vitamin K:** 4.2-13µg\n*   Other vitamins in smaller amounts: B1, B2, B3, B5, B6\n\n**Minerals:**\n\n*   **Potassium:** 168mg (4-5% of Daily Value)\n*   **Calcium:** 9-11mg (1% of Daily Value)\n*   **Magnesium:** 10mg\n*   **Phosphorus:** 14mg\n*   **Iron:** 0.16-0.2mg\n*   **Zinc:** 0.09mg\n*   **Copper:** 0.11mg\n*   **Manganese:** 0.06µg\n\nYou can use this information to populate the \"Nutritional Value per 100g\" column in your \"Top Fruits Analysis\" spreadsheet for Mangoes. I would recommend including ranges where applicable, as the nutritional content can vary based on the specific type of mango, ripeness, and growing conditions.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Health Benefits
+Description: List of health benefits associated with the fruit
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Strawberry",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Strawberries offer numerous health benefits:\n\n- **Rich in Vitamin C**: A single cup provides nearly 100% of the daily recommended intake, supporting immune function and collagen production. ([prevention.com](https://www.prevention.com/food-nutrition/healthy-eating/a26537540/health-benefits-of-strawberries/?utm_source=openai))\n\n- **Heart Health**: High in antioxidants like anthocyanins, strawberries help reduce inflammation and lower LDL cholesterol, promoting cardiovascular well-being. ([californiastrawberries.com](https://www.californiastrawberries.com/8-health-benefits-of-eating-8-strawberries-a-day/?utm_source=openai))\n\n- **Blood Sugar Regulation**: The fiber content aids in stabilizing blood sugar levels, making them beneficial for individuals managing diabetes. ([verywellfit.com](https://www.verywellfit.com/strawberries-carb-counts-and-health-benefits-1087572?utm_source=openai))\n\n- **Anti-Inflammatory Properties**: Compounds in strawberries can reduce inflammation, potentially alleviating symptoms of conditions like osteoarthritis. ([verywellfit.com](https://www.verywellfit.com/strawberries-carb-counts-and-health-benefits-1087572?utm_source=openai))\n\n- **Cognitive Function**: Regular consumption may delay cognitive aging by up to 2.5 years, thanks to their high flavonoid content. ([californiastrawberries.com](https://www.californiastrawberries.com/8-health-benefits-of-eating-8-strawberries-a-day/?utm_source=openai))\n\n- **Digestive Health**: With 3 grams of fiber per cup, strawberries support healthy digestion and regular bowel movements. ([prevention.com](https://www.prevention.com/food-nutrition/healthy-eating/a26537540/health-benefits-of-strawberries/?utm_source=openai))\n\n- **Weight Management**: Low in calories and naturally sweet, they can satisfy cravings without contributing to weight gain. ([prevention.com](https://www.prevention.com/food-nutrition/healthy-eating/a26537540/health-benefits-of-strawberries/?utm_source=openai))\n\n- **Skin Health**: Vitamin C and antioxidants in strawberries promote collagen synthesis, enhancing skin elasticity and reducing signs of aging. ([healthifyme.com](https://www.healthifyme.com/blog/strawberries/?utm_source=openai))\n\n- **Cancer Prevention**: Antioxidants like ellagic acid and anthocyanins may help neutralize free radicals, reducing the risk of certain cancers. ([healthifyme.com](https://www.healthifyme.com/blog/strawberries/?utm_source=openai))\n\n- **Blood Pressure Regulation**: Potassium content helps manage blood pressure levels, supporting overall cardiovascular health. ([healthifyme.com](https://www.healthifyme.com/blog/strawberries/?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here are the key health benefits associated with strawberries for the \"Health Benefits\" column:\n\nHeart health: May lower cholesterol, reduce blood pressure, and decrease risk of cardiovascular disease[3][7].\n\nBrain function: Linked to improved cognitive function and reduced risk of age-related mental decline[4][7].\n\nBlood sugar regulation: May help improve insulin sensitivity and glucose metabolism[3][7].\n\nImmune support: High vitamin C content boosts immune system function[3][4].\n\nAnti-inflammatory: Contains antioxidants that help reduce inflammation in the body[3][4].\n\nCancer prevention: Antioxidants may help inhibit tumor formation and cancer cell growth[7].\n\nDigestive health: Fiber content supports healthy digestion and gut microbiome[3][4].\n\nSkin health: Vitamin C promotes collagen production for healthier skin[2][3].\n\nWeight management: Low in calories and high in fiber, may aid in weight control[2][3].\n\nEye health: Contains compounds that may protect against age-related eye diseases[4].",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you with filling in the \"Health Benefits\" column for Strawberries in your \"Top Fruits Analysis\" spreadsheet. I will search for the health benefits associated with strawberries.\n\n\nHere's a possible value for the \"Health Benefits\" column, incorporating information from the search results:\n\n\"Rich in antioxidants (like Vitamin C and polyphenols) that may reduce the risk of chronic diseases, including heart disease, stroke, cancer, and diabetes. May improve heart health by lowering cholesterol and blood pressure. Contains fiber for digestive health and may support gut health. Good source of folate, important for red blood cell formation and pregnancy. May support brain health and reduce inflammation.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Origin
+Description: Geographical origin or primary regions where the fruit is grown
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Watermelon",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Watermelon (Citrullus lanatus) is native to tropical Africa and has been cultivated worldwide. ([britannica.com](https://www.britannica.com/plant/watermelon?utm_source=openai)) Recent genetic studies indicate that the domesticated watermelon likely originated from wild progenitors in northeast Africa, particularly the Kordofan melon (C. lanatus subsp. cordophanus) from Sudan. ([sciencedaily.com](https://www.sciencedaily.com/releases/2021/05/210524161825.htm?utm_source=openai)) Archaeological evidence, such as Egyptian tomb paintings, suggests that watermelons were consumed in the Nile Valley over 4,000 years ago. ([kew.org](https://www.kew.org/read-and-watch/where-do-watermelons-come-from?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the origin of watermelon can be traced to northeastern Africa, specifically the Kordofan region in modern-day Sudan. The Kordofan melon (Citrullus lanatus subsp. cordophanus) has been identified as the closest relative and likely progenitor of the domesticated watermelon[3][4][6]. \n\nArchaeological evidence suggests that watermelons were cultivated in ancient Egypt over 4,000 years ago, with seeds and paintings found in Egyptian tombs dating back to that period[1][5]. The fruit then spread to other parts of Africa, the Mediterranean, Asia, and eventually to the Americas through trade and colonization[1][2][5].\n\nGiven this information, for the \"Origin\" column in the spreadsheet, an appropriate entry would be:\n\nNortheastern Africa (Sudan/Egypt)\n\nThis entry concisely captures the primary geographical origin of watermelon while also providing specific regional information.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help with that! Based on the fruit \"Watermelon\", I will search for its origin to fill in the \"Origin\" column.\n\n\nBased on the search results, here's the information for the \"Origin\" column for Watermelon:\n\nThe origin of watermelon can be traced back to **northeast Africa**, specifically the deserts of southern Africa. It was domesticated in northeast Africa, with evidence of cultivation in Egypt dating back to 2000 BC.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Grape",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Grapes are a low-calorie fruit, providing approximately 69 calories per 100 grams. They are rich in carbohydrates, mainly sugars, with about 18 grams per 100 grams, and contain minimal fat (0.16 grams) and protein (0.72 grams). Grapes are a good source of vitamin C (10.8 mg), vitamin K (14.6 µg), and B-complex vitamins such as thiamin (0.069 mg), riboflavin (0.070 mg), and vitamin B6 (0.086 mg). They also provide essential minerals like potassium (191 mg), calcium (10 mg), and iron (0.36 mg). ([nutrition-and-you.com](https://www.nutrition-and-you.com/grapes.html?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here is the nutritional value per 100g of grapes:\n\nCalories: 67-69\nTotal Carbohydrates: 16-18g\nSugars: 15-16g\nFiber: 0.9-1g\nProtein: 0.6-0.9g\nFat: 0.2-0.3g\nVitamin C: 3-4mg (4% DV)\nPotassium: 191-229mg\nVitamin K: 14-22% DV\nCopper: 2-13% DV\nThiamine: 4% DV\nRiboflavin: 3% DV\nVitamin B6: 6% DV\nManganese: 3-4% DV\n\nGrapes also contain small amounts of iron, magnesium, phosphorus, and calcium. They are rich in antioxidants like resveratrol and flavonoids, particularly in the skin and seeds.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Nutritional Value per 100g\" column for grapes in your \"Top Fruits Analysis\" spreadsheet. I will search for the key nutritional components (calories, vitamins, and minerals) of grapes per 100g.\n\n\nHere's the nutritional information for grapes per 100g, compiled from the search results:\n\n**Nutritional Value per 100g:**\n\n*   **Calories:** 62-79 kcal (depending on the source and type of grape, white grapes tend to have around 79 calories)\n*   **Water:** ~78-80g\n*   **Protein:** 0.6-1g\n*   **Fat:** 0.2-0.5g (Less than 0.5g is considered fat-free)\n*   **Carbohydrates:** 16-18g\n    *   Sugars: 15-17g (Fructose and Glucose are the main sugars)\n    *   Fiber: ~1g\n*   **Vitamins:**\n    *   Vitamin C: 3-12mg (around 4-5% of Daily Value)\n    *   Vitamin K: 13-15µg (around 12-18% of Daily Value)\n    *   Vitamin A: 3-5µg\n    *   Vitamin B1 (Thiamine): 0.09mg\n    *   Vitamin B2 (Riboflavin): 0.06mg\n    *   Vitamin B6: 0.11mg\n*   **Minerals:**\n    *   Potassium: 191-229mg\n    *   Calcium: 10-14mg\n    *   Iron: 0.29-0.4mg\n    *   Magnesium: 5-7mg\n    *   Phosphorus: 10-20mg\n    *   Sodium: 2mg\n    *   Copper: 0.04-0.13mg\n    *   Manganese: 0.07-0.72mg\n    *   Selenium: 0.1µg\n    *   Zinc: 0.04-0.07mg\n\nI will provide a consolidated entry, keeping in mind the column type is text.\n\n**Nutritional Value per 100g: Textual entry**\n\nCalories: 62-79kcal, Water: ~78-80g, Protein: 0.6-1g, Fat: 0.2-0.5g, Carbs: 16-18g (Sugars: 15-17g, Fiber: ~1g). Vitamins: Vitamin C: 3-12mg, Vitamin K: 13-15µg, Vitamin A: 3-5µg, B Vitamins present. Minerals: Potassium: 191-229mg, Calcium: 10-14mg, Iron: 0.29-0.4mg, Magnesium: 5-7mg, Phosphorus: 10-20mg, Sodium: 2mg, Copper, Manganese, Selenium, Zinc present in smaller amounts.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Peach",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Peaches are low in calories, providing approximately 39 kcal per 100 grams. They are a good source of vitamin C (6.6 mg, 11% of the Recommended Daily Allowance), vitamin A (326 IU, 11% RDA), and potassium (190 mg, 4% RDA). Additionally, they contain dietary fiber (1.5 g, 4% RDA) and small amounts of other vitamins and minerals. ([nutrition-and-you.com](https://www.nutrition-and-you.com/peaches.html?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Calories: 39-47 kcal\nCarbohydrates: 9.5-9.8g\nSugars: 7.6-8.7g\nFiber: 1.5-2.1g\nProtein: 0.7-0.9g\nFat: <0.5g\n\nVitamins:\n- Vitamin C: 6.6mg (7% DV)\n- Vitamin A: 21.7μg (2.7% DV)\n- Vitamin B9 (Folate): 7.9-12μg (4-6% DV)\n\nMinerals:\n- Potassium: 180-190mg (9-9.5% DV)\n- Copper: 0.06mg (6% DV)\n- Magnesium: 6.7-7.1mg (1.8-1.9% DV)\n\nAntioxidants:\n- Beta-carotene: 130-264μg\n- Cryptoxanthin\n\nLow in calories, high in fiber, good source of vitamins and minerals. Contains beneficial antioxidants.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Nutritional Value per 100g\" column for peaches in your \"Top Fruits Analysis\" spreadsheet. I will search for the key nutritional components of peaches per 100g.\n\n\nHere's a summary of the nutritional value of peaches per 100g, compiled from the search results:\n\n*   **Calories:** 39-47 kcal\n*   **Carbohydrates:** 9.48-10g\n    *   Fiber: 1.5-2.1g\n    *   Sugars: 5-8.1g\n*   **Protein:** 0.9-0.91g\n*   **Fat:** 0.25-0.3g\n*   **Vitamins:**\n    *   Vitamin C: 3-8.6mg (3-17% DV)\n    *   Vitamin A: 27-20.8mcg (3-10% DV)\n    *   Vitamin E: 0.5-0.9mg\n    *   Vitamin K: 2-3mcg\n    *   B vitamins (Thiamin, Niacin, Riboflavin, Folate)\n*   **Minerals:**\n    *   Potassium: 99-332.5mg\n    *   Copper: 0.06-0.1mg\n    *   Iron: 0.3-0.4mg\n    *   Magnesium, Phosphorus, Manganese, Zinc, Fluoride\n*   **Water:** approximately 87.6g\n\nI will fill the \"Nutritional Value per 100g\" cell with the following information, summarizing the key points:\n\n\"39-47 calories; 9.48-10g carbohydrates (1.5-2.1g fiber, 5-8.1g sugars); 0.9-0.91g protein; 0.25-0.3g fat; Vitamin C (3-17% DV); Vitamin A (3-10% DV); Potassium (99-332.5mg) and other vitamins & minerals. High water content (approx. 87.6g).\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Nutritional Value per 100g
+Description: Key nutritional components such as calories, vitamins, and minerals per 100 grams
+Type: text
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pineapple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "Pineapple is a low-calorie fruit rich in essential nutrients. Per 100 grams, it provides approximately 50 calories, 13.52 grams of carbohydrates, 0.54 grams of protein, and 0.12 grams of fat. It is an excellent source of vitamin C, offering 47.8 mg (80% of the Recommended Daily Allowance), and contains significant amounts of manganese (0.927 mg, 40% of RDA), copper (0.110 mg, 12% of RDA), and potassium (109 mg, 2.5% of RDA). Additionally, pineapple provides dietary fiber (1.4 g, 4% of RDA) and small amounts of vitamins A, B-complex vitamins, calcium, and magnesium. ([nutrition-and-you.com](https://www.nutrition-and-you.com/pineapple.html?utm_source=openai)) ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, here's a comprehensive summary of the nutritional value per 100g of pineapple:\n\nCalories: 50-54 kcal\nCarbohydrates: 12-14g (mostly sugars)\nProtein: 0.54g\nFat: 0.12g\nFiber: 1.2-2g\nVitamin C: 46-47mg (53-88% DV)\nManganese: 0.84mg (42% DV)\nVitamin B1 (Thiamine): 0.056mg (5% DV)\nVitamin B6: 0.1mg (6-11% DV)\nFolate (B9): 19.6µg (9.8% DV)\nPotassium: 100-180mg (4-5% DV)\nMagnesium: 15-20mg (4-5% DV)\nCopper: 0.06-0.18mg (6-20% DV)\nBeta-carotene: 54-66.9µg\n\nPineapple is particularly rich in vitamin C and manganese, and contains bromelain, an enzyme with anti-inflammatory properties. It's low in calories and fat, making it a nutritious tropical fruit choice.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Okay, I can help you fill in the \"Nutritional Value per 100g\" column for Pineapple in your \"Top Fruits Analysis\" spreadsheet. I will search for the nutritional information of pineapple per 100g.\n\n\nHere's a breakdown of the nutritional value of pineapple per 100g, compiled from the search results:\n\n*   **Calories:** Approximately 50-54 kcal\n*   **Carbohydrates:** Around 11.7-13g (Sugars: 9.9-16.3g, Fiber: 1.4-2.3g)\n*   **Fat:** Approximately 0.1-0.2g\n*   **Protein:** Around 0.5g\n*   **Vitamin C:** 46.10 mg (57.63% of NRV) or covers 53% of the daily need.\n*   **Vitamin B9:** 19.60 µg\n*   **Manganese:** 0.84 mg (42% of NRV)\n*   **Potassium:** 140 mg\n*   **Other Minerals:** Smaller amounts of other minerals and trace elements.\n\nSo, the \"Nutritional Value per 100g\" column for Pineapple can be filled with: \"Approximately 50-54 calories, 11.7-13g carbohydrates (9.9-16.3g sugars, 1.4-2.3g fiber), 0.1-0.2g fat, 0.5g protein, 46.10mg Vitamin C, 19.60µg Vitamin B9, 0.84mg Manganese, and 140mg Potassium.\"\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
+
+Table: Top Fruits Analysis
+Column: Average Price per Pound in USD
+Description: Average market price per pound in USD
+Type: number
+Row Data: [
+  {
+    "data": {
+      "Fruit Name": "Pineapple",
+      "Scientific Name": "Enriching...",
+      "Nutritional Value per 100g": "Enriching...",
+      "Average Price per Pound in USD": "Enriching...",
+      "Seasonality": "Enriching...",
+      "Health Benefits": "Enriching...",
+      "Origin": "Enriching...",
+      "Image": "Enriching..."
+    }
+  }
+]
+Search Responses: [
+  {
+    "response": "The average retail price for pineapples in the United States ranges between $0.44 and $0.87 per pound. ([selinawamucii.com](https://www.selinawamucii.com/insights/prices/united-states-of-america/pineapples/?utm_source=openai)) Therefore, for your \"Top Fruits Analysis\" spreadsheet, you can enter an average price of approximately $0.65 per pound for pineapples. ",
+    "provider": "OpenAI"
+  },
+  {
+    "response": "Based on the search results, the average price per pound for pineapples in the United States varies, but we can calculate an approximate value:\n\n1. According to search result [1], in 2025 the retail price range for US pineapples is between US$ 0.44 and US$ 0.87 per pound.\n\n2. Search result [3] indicates a price of $3.77 for a whole pineapple, but doesn't specify the weight.\n\n3. Search result [4] shows prices ranging from $0.59 to $1.33 per unit, but again doesn't specify weight.\n\n4. Search result [5] mentions that the average advertised retail price for fresh pineapple in 2022 was $1.25 per unit, up from $1.08 in 2021.\n\nTaking the average of the range provided in search result [1], which is the most recent and specific data point for price per pound, we get:\n\n(0.44 + 0.87) / 2 = 0.655\n\nTherefore, for the \"Average Price per Pound in USD\" column in your spreadsheet, I would recommend entering:\n\n0.66\n\nThis value represents a reasonable estimate of the average price per pound for pineapples in USD, based on the most recent and relevant information provided in the search results.",
+    "provider": "Perplexity"
+  },
+  {
+    "response": "Based on the search results, the average price of pineapple per pound in USD during March 2025 ranges from $0.31 to $0.87. I will use the average of this range.\n\nTherefore, the \"Average Price per Pound in USD\" for Pineapple is $0.60.\n",
+    "provider": "Google"
+  }
+]
+---------------------------------------------
+
+
