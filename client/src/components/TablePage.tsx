@@ -29,8 +29,7 @@ import { CustomColumnHeader } from './ui/CustomColumnHeader';
 import { TablePageHeader } from './ui/TablePageHeader';
 
 // Register all enterprise modules (includes ClientSideRowModel)
-// @ts-ignore
-ModuleRegistry.registerModules([AllEnterpriseModule]);
+ModuleRegistry.registerModules([AllEnterpriseModule as any]);
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {

@@ -6,6 +6,7 @@ import {
   Eye,
   EyeOff,
   Hash,
+  Info,
   Link2,
   PinIcon,
   PinOff,
@@ -24,6 +25,7 @@ import {
 } from './context-menu';
 import { Input } from './input';
 import { Label } from './label';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
 
 interface CustomHeaderParams extends IHeaderParams {
   context: {
@@ -201,7 +203,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         </div>
       </ContextMenuTrigger>
       <ContextMenuContent className="w-64">
-        <div className="p-2 flex flex-col gap-2">
+        <div className="p-2 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
             <Label>Name</Label>
             <Input
@@ -215,7 +217,17 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Label>Description/Prompt</Label>
+            <div className="flex flex-row gap-2">
+              <Label>Description/Prompt</Label>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="h-4 w-4 text-secondary-foreground" />
+                  </TooltipTrigger>
+                  <TooltipContent>This will help the AI find the correct content.</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
             <Input
               value={description}
               onChange={handleDescriptionChange}
@@ -226,6 +238,31 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
             />
           </div>
         </div>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <ContextMenuItem
+            onClick={() => handleTypeChange('text')}
+            className="flex items-center gap-2"
+          >
+            <Type className="h-4 w-4" />
+            Text
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => handleTypeChange('number')}
+            className="flex items-center gap-2"
+          >
+            <Hash className="h-4 w-4" />
+            Number
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => handleTypeChange('link')}
+            className="flex items-center gap-2"
+          >
+            <Link2 className="h-4 w-4" />
+            Link
+          </ContextMenuItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
         <ContextMenuGroup>
           <ContextMenuItem onClick={() => handlePin('left')} className="flex items-center gap-2">
             <PinIcon className="h-4 w-4" />
@@ -276,30 +313,6 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
           >
             <Trash2 className="h-4 w-4" />
             Delete Column
-          </ContextMenuItem>
-        </ContextMenuGroup>
-        <ContextMenuSeparator />
-        <ContextMenuGroup>
-          <ContextMenuItem
-            onClick={() => handleTypeChange('text')}
-            className="flex items-center gap-2"
-          >
-            <Type className="h-4 w-4" />
-            Text
-          </ContextMenuItem>
-          <ContextMenuItem
-            onClick={() => handleTypeChange('number')}
-            className="flex items-center gap-2"
-          >
-            <Hash className="h-4 w-4" />
-            Number
-          </ContextMenuItem>
-          <ContextMenuItem
-            onClick={() => handleTypeChange('link')}
-            className="flex items-center gap-2"
-          >
-            <Link2 className="h-4 w-4" />
-            Link
           </ContextMenuItem>
         </ContextMenuGroup>
       </ContextMenuContent>
