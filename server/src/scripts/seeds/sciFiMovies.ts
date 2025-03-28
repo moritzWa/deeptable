@@ -3,23 +3,23 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const sciFiMoviesColumns: Column[] = [
-  { name: 'Movie Name', type: 'text' },
-  { name: 'Director', type: 'text' },
-  { name: 'Imdb link', type: 'link' },
-  { name: 'Release Year', type: 'number' },
-  { name: 'Rotten Tomatoes Score', type: 'text' },
-  { name: 'IMDb Score', type: 'number' },
-  { name: 'Duration (Hours)', type: 'number' },
-  { name: 'Concise Description', type: 'text' },
-  { name: 'Awards', type: 'text' },
-  { name: 'Trailer link', type: 'link' },
+  { name: 'Movie Name', type: 'text', description: 'Name of the sci-fi movie' },
+  { name: 'Director', type: 'text', description: 'Director of the movie' },
+  { name: 'Imdb link', type: 'link', description: 'Link to the movie on IMDB' },
+  { name: 'Release Year', type: 'number', description: 'Year the movie was released' },
+  { name: 'Rotten Tomatoes Score', type: 'text', description: 'Rating on Rotten Tomatoes tomatometer' },
+  { name: 'IMDb Score', type: 'number', description: 'Rating on IMDB' },
+  { name: 'Duration (Hours)', type: 'number', description: 'Movie length in hours' },
+  { name: 'Concise Description', type: 'text', description: 'Brief summary of the movie plot' },
+  { name: 'Awards', type: 'text', description: 'Major awards won by the movie' },
+  { name: 'Trailer link', type: 'link', description: 'Link to the official trailer' },
 ];
 
 export const sciFiMoviesData = [
   {
     'Movie Name': 'Advantageous (2015)',
     Director: 'Jennifer Phang',
-    'Imdb link': 'https://www.imdb.com/title/tt4056636/',
+    'Imdb link': 'https://www.imdb.com/title/tt3090670/',
     'Release Year': 2015,
     'Rotten Tomatoes Score': '88%',
     'IMDb Score': 6.2,
@@ -32,7 +32,7 @@ export const sciFiMoviesData = [
   {
     'Movie Name': 'Upgrade (2018)',
     Director: 'Leigh Whannell',
-    'Imdb link': 'https://www.imdb.com/title/tt6498658/',
+    'Imdb link': 'https://www.imdb.com/title/tt6499752/',
     'Release Year': 2018,
     'Rotten Tomatoes Score': '88%',
     'IMDb Score': 7.5,
@@ -44,9 +44,9 @@ export const sciFiMoviesData = [
   {
     'Movie Name': 'Appleseed (2004)',
     Director: 'Shinji Aramaki',
-    'Imdb link': 'https://www.imdb.com/title/tt0401237/',
+    'Imdb link': 'https://www.imdb.com/title/tt0401233/',
     'Release Year': 2004,
-    'Rotten Tomatoes Score': '60%',
+    'Rotten Tomatoes Score': '26%',
     'IMDb Score': 6.9,
     'Duration (Hours)': 1.7,
     'Concise Description': 'Post-apocalyptic sci-fi with cyborg soldiers and existential themes.',
@@ -68,7 +68,7 @@ export const sciFiMoviesData = [
   {
     'Movie Name': 'Proxima (2019)',
     Director: 'Alice Winocour',
-    'Imdb link': 'https://www.imdb.com/title/tt8917938/',
+    'Imdb link': 'https://www.imdb.com/title/tt7374926/',
     'Release Year': 2019,
     'Rotten Tomatoes Score': '85%',
     'IMDb Score': 6.4,
@@ -117,9 +117,9 @@ export const sciFiMoviesData = [
   {
     'Movie Name': 'Stowaway (2021)',
     Director: 'Joe Penna',
-    'Imdb link': 'https://www.imdb.com/title/tt9253284/',
+    'Imdb link': 'https://www.imdb.com/title/tt9203694/',
     'Release Year': 2021,
-    'Rotten Tomatoes Score': '51%',
+    'Rotten Tomatoes Score': '76%',
     'IMDb Score': 5.6,
     'Duration (Hours)': 1.9,
     'Concise Description': 'Crew discovers stowaway on Mars mission, forcing ethical decisions.',
@@ -153,7 +153,7 @@ export const sciFiMoviesData = [
   {
     'Movie Name': 'Interstellar',
     Director: 'Christopher Nolan',
-    'Imdb link': 'https://www.imdb.com/title/tt0816669/',
+    'Imdb link': 'https://www.imdb.com/title/tt0816692/',
     'Release Year': 2014,
     'Rotten Tomatoes Score': '73%',
     'IMDb Score': 8.7,
@@ -165,7 +165,7 @@ export const sciFiMoviesData = [
   {
     'Movie Name': 'Ad Astra',
     Director: 'James Gray',
-    'Imdb link': 'https://www.imdb.com/title/tt2096673/',
+    'Imdb link': 'https://www.imdb.com/title/tt2935510/',
     'Release Year': 2019,
     'Rotten Tomatoes Score': '83%',
     'IMDb Score': 6.5,

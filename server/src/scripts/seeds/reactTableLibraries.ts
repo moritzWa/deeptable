@@ -3,24 +3,24 @@ import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const reactTableColumns: Column[] = [
-  { name: 'Library', type: 'text' },
-  { name: 'Weekly Downloads', type: 'number' },
-  { name: 'GitHub Stars', type: 'number' },
-  { name: 'Last Updated (days ago)', type: 'number' },
-  { name: 'Size (KB)', type: 'number' },
-  { name: 'Use Case', type: 'text' },
-  { name: 'Homepage', type: 'link' },
-  { name: 'NPM Link', type: 'link' },
-  { name: 'Github Link', type: 'link' },
+  { name: 'Library', type: 'text', description: 'Name of the React table library' },
+  { name: 'Weekly Downloads', type: 'number', description: 'Number of weekly downloads from NPM' },
+  { name: 'GitHub Stars', type: 'number', description: 'Number of stars on GitHub repository' },
+  { name: 'Last Updated (days ago)', type: 'number', description: 'Days since the last update to the library on NPM' },
+  { name: 'Size (KB)', type: 'number', description: 'Size of the library in kilobytes, unpacked' },
+  { name: 'Use Case', type: 'text', description: 'Primary use cases for the library' },
+  { name: 'Homepage', type: 'link', description: 'Link to the library website/documentation, otherwise NPM or Github' },
+  { name: 'NPM Link', type: 'link', description: 'Link to the NPM package page' },
+  { name: 'Github Link', type: 'link', description: 'Link to the GitHub repository' },
 ];
 
 export const reactTableData = [
   {
     Library: 'React Table (TanStack Table)',
-    'Weekly Downloads': 1360265,
-    'GitHub Stars': 25994,
-    'Last Updated (days ago)': 0,
-    'Size (KB)': 940,
+    'Weekly Downloads': 3277189,
+    'GitHub Stars': 26100,
+    'Last Updated (days ago)': 61,
+    'Size (KB)': 761,
     'Use Case':
       'Enterprise applications, large datasets, complex data manipulation, financial dashboards',
     Homepage: 'https://tanstack.com/table/latest',
@@ -29,7 +29,7 @@ export const reactTableData = [
   },
   {
     Library: 'ag-grid-react',
-    'Weekly Downloads': 455384,
+    'Weekly Downloads': 57940,
     'GitHub Stars': 13600,
     'Last Updated (days ago)': 3,
     'Size (KB)': 619,
@@ -43,7 +43,7 @@ export const reactTableData = [
     Library: 'react-data-table-component',
     'Weekly Downloads': 140893,
     'GitHub Stars': 2109,
-    'Last Updated (days ago)': 18,
+    'Last Updated (days ago)': 30,
     'Size (KB)': 629,
     'Use Case': 'Material-UI based projects, responsive tables, filtering, sorting, exporting',
     Homepage: 'https://reactdatatable.com/',
@@ -65,7 +65,7 @@ export const reactTableData = [
     Library: 'mantine-datatable',
     'Weekly Downloads': 27285,
     'GitHub Stars': 1013,
-    'Last Updated (days ago)': 8,
+    'Last Updated (days ago)': 21,
     'Size (KB)': 502,
     'Use Case': 'Bootstrap-based projects, simple tables with basic features',
     Homepage: 'https://icflorescu.github.io/mantine-datatable/',
