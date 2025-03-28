@@ -140,6 +140,7 @@ export const columnsRouter = router({
         const cleanedResponse = responseText
           .replace(/^```json\n/, '') // Remove opening ```json
           .replace(/\n```$/, '') // Remove closing ```
+          .replace(/,(\s*[}\]])/g, '$1') // Remove trailing commas before } or ]
           .trim();
 
         console.log('OpenAI Response:', cleanedResponse);
