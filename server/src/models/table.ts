@@ -9,7 +9,7 @@ export interface IColumn extends Column {}
 
 export interface ITable extends Document {
   name: string;
-  description?: string | null;
+  description: string;
   columns: IColumn[];
   userId: string;
   createdAt: Date;
@@ -59,7 +59,7 @@ const columnSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: false,
+    required: true,
   },
   columnState: {
     type: columnStateSchema,
@@ -75,12 +75,11 @@ const tableSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      required: false,
+      required: true,
     },
     columns: {
       type: [columnSchema],
       required: true,
-      default: [],
     },
     userId: {
       type: String,
