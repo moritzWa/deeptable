@@ -132,8 +132,8 @@ export function AppSidebar() {
                     isActive={currentTableId === table.id}
                     className="group/item relative flex w-full items-center"
                   >
-                    <div>
-                      <span className="flex-1">{table.name}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="block truncate">{table.name}</span>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button
