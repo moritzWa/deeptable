@@ -453,79 +453,102 @@ const TablePage = () => {
   const onGridReady = useCallback(
     (params: GridReadyEvent) => {
       setIsGridReady(true);
-      // If we have column state stored in the table, apply it after grid initialization
-      if (table?.columns && table.columns.some((col) => col.columnState)) {
-        setTimeout(() => {
-          if (!gridRef.current?.api) return;
 
-          isApplyingState.current = true;
+      const hasSavedColumnState = table?.columns && table.columns.some((col) => col.columnState);
 
-          // Collect all column states from the table
-          const savedColumnStates = table.columns
-            .filter((col) => col.columnState)
-            .map((col) => {
-              const colState = col.columnState!;
-              return {
-                colId: col.name,
-                hide: nullToUndefined(colState.hide),
-                pinned: colState.pinned === null ? undefined : colState.pinned,
-                sort: colState.sort === null ? undefined : colState.sort,
-                sortIndex: nullToUndefined(colState.sortIndex),
-                width: colState.width !== null ? colState.width : undefined,
-                flex: colState.width === null ? colState.flex : undefined,
-              };
-            });
-
-          try {
-            // Apply the saved column state directly to AG Grid
-            gridRef.current.api.applyColumnState({
-              state: savedColumnStates,
-              applyOrder: true,
-            });
-
-            gridRef.current.api.refreshHeader();
-          } catch (error) {
-            console.error('Error applying column state:', error);
-          }
-
-          setTimeout(() => {
-            isApplyingState.current = false;
-            hasAppliedInitialState.current = true;
-            setColumnDefs([]); // Force a re-render
-          }, 100);
-        }, 200);
+      if (hasSavedColumnState) {
+        applySavedColumnState();
       } else {
-        // Important: Set hasAppliedInitialState to true immediately if no saved state
-        hasAppliedInitialState.current = true;
-        // Force a refresh of the column definitions
-        if (table?.columns) {
-          const initialColumns = table.columns.map((column) => ({
-            headerName: column.name,
-            field: `data.${column.name}`,
-            sortable: true,
-            filter: true,
-            resizable: true,
-            editable: true,
-            cellRenderer: smartCellRenderer,
-            suppressSizeToFit: true,
-            suppressHeaderMenuButton: true,
-            suppressHeaderContextMenu: true,
-            colId: column.name,
-            type: column.type || 'text',
-            description: column.description,
-            valueParser: (params: any) => {
-              if (column.type === 'number') {
-                return Number(params.newValue);
-              }
-              return params.newValue;
-            },
-          }));
-          setColumnDefs(initialColumns);
-        }
+        applyDefaultColumnState();
       }
     },
     [table?.columns]
   );
+
+  // Extract the saved column state application logic
+  const applySavedColumnState = () => {
+    setTimeout(() => {
+      if (!gridRef.current?.api) return;
+
+      isApplyingState.current = true;
+
+      // Collect all column states from the table
+      const savedColumnStates = buildSavedColumnStates();
+
+      try {
+        // Apply the saved column state directly to AG Grid
+        gridRef.current.api.applyColumnState({
+          state: savedColumnStates,
+          applyOrder: true,
+        });
+
+        gridRef.current.api.refreshHeader();
+      } catch (error) {
+        console.error('Error applying column state:', error);
+      }
+
+      setTimeout(() => {
+        isApplyingState.current = false;
+        hasAppliedInitialState.current = true;
+        setColumnDefs([]); // Force a re-render
+      }, 100);
+    }, 200);
+  };
+
+  // Extract the column state building logic
+  const buildSavedColumnStates = () => {
+    return table?.columns
+      .filter((col) => col.columnState)
+      .map((col) => {
+        const colState = col.columnState!;
+        return {
+          colId: col.name,
+          hide: nullToUndefined(colState.hide),
+          pinned: colState.pinned === null ? undefined : colState.pinned,
+          sort: colState.sort === null ? undefined : colState.sort,
+          sortIndex: nullToUndefined(colState.sortIndex),
+          width: colState.width !== null ? colState.width : undefined,
+          flex: colState.width === null ? colState.flex : undefined,
+        };
+      });
+  };
+
+  // Extract the default column state application logic
+  const applyDefaultColumnState = () => {
+    // Important: Set hasAppliedInitialState to true immediately if no saved state
+    hasAppliedInitialState.current = true;
+
+    // Force a refresh of the column definitions
+    if (table?.columns) {
+      const initialColumns = createInitialColumnDefs(table.columns);
+      setColumnDefs(initialColumns);
+    }
+  };
+
+  // Extract the column definition creation logic
+  const createInitialColumnDefs = (columns: any[]) => {
+    return columns.map((column) => ({
+      headerName: column.name,
+      field: `data.${column.name}`,
+      sortable: true,
+      filter: true,
+      resizable: true,
+      editable: true,
+      cellRenderer: smartCellRenderer,
+      suppressSizeToFit: true,
+      suppressHeaderMenuButton: true,
+      suppressHeaderContextMenu: true,
+      colId: column.name,
+      type: column.type || 'text',
+      description: column.description,
+      valueParser: (params: any) => {
+        if (column.type === 'number') {
+          return Number(params.newValue);
+        }
+        return params.newValue;
+      },
+    }));
+  };
 
   // Handler for column resized event
   const onColumnResized = useCallback(
