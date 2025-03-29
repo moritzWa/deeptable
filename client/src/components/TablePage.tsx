@@ -78,6 +78,7 @@ const TablePage = () => {
   const [rowData, setRowData] = useState<any[]>([]);
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   const [selectedRanges, setSelectedRanges] = useState<CellRange[]>([]);
+  const [isGridReady, setIsGridReady] = useState(false);
 
   // Reference to the AG Grid API
   const gridRef = useRef<AgGridReact>(null);
@@ -451,9 +452,9 @@ const TablePage = () => {
   // Handler for grid ready event
   const onGridReady = useCallback(
     (params: GridReadyEvent) => {
+      setIsGridReady(true);
       // If we have column state stored in the table, apply it after grid initialization
       if (table?.columns && table.columns.some((col) => col.columnState)) {
-        // Wait for the grid to be fully initialized before attempting to apply column state
         setTimeout(() => {
           if (!gridRef.current?.api) return;
 
@@ -487,17 +488,40 @@ const TablePage = () => {
             console.error('Error applying column state:', error);
           }
 
-          // Reset the flags after a short delay to ensure all events have processed
           setTimeout(() => {
             isApplyingState.current = false;
             hasAppliedInitialState.current = true;
-            // Force a re-render to set up columns with the correct order
-            setColumnDefs([]);
+            setColumnDefs([]); // Force a re-render
           }, 100);
         }, 200);
       } else {
-        // If no saved state, mark as ready for column setup
+        // Important: Set hasAppliedInitialState to true immediately if no saved state
         hasAppliedInitialState.current = true;
+        // Force a refresh of the column definitions
+        if (table?.columns) {
+          const initialColumns = table.columns.map((column) => ({
+            headerName: column.name,
+            field: `data.${column.name}`,
+            sortable: true,
+            filter: true,
+            resizable: true,
+            editable: true,
+            cellRenderer: smartCellRenderer,
+            suppressSizeToFit: true,
+            suppressHeaderMenuButton: true,
+            suppressHeaderContextMenu: true,
+            colId: column.name,
+            type: column.type || 'text',
+            description: column.description,
+            valueParser: (params: any) => {
+              if (column.type === 'number') {
+                return Number(params.newValue);
+              }
+              return params.newValue;
+            },
+          }));
+          setColumnDefs(initialColumns);
+        }
       }
     },
     [table?.columns]
@@ -580,7 +604,10 @@ const TablePage = () => {
           gridApi={gridRef.current?.api}
         />
         <div className="flex-1 min-h-0">
-          <div className="ag-theme-alpine h-full w-full">
+          {!isGridReady && (
+            <div className="flex justify-center items-center h-full">Loading table...</div>
+          )}
+          <div className={`ag-theme-alpine h-full w-full ${!isGridReady ? 'invisible' : ''}`}>
             <AgGridReact
               ref={gridRef}
               rowData={rowData}
