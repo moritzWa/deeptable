@@ -16,7 +16,7 @@ export function Navbar() {
         Blog
       </Link> */}
 
-      {/* {isAuthenticated ? (
+      {isAuthenticated ? (
         <Link
           to="/home"
           className={`hover:text-primary transition-colors ${location.pathname === '/home' ? 'text-primary font-medium' : ''}`}
@@ -30,7 +30,7 @@ export function Navbar() {
         >
           Login
         </Link>
-      )} */}
+      )}
     </>
   );
 

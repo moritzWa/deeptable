@@ -53,7 +53,7 @@
   "scripts": {
     "dev": "craco start",
     "start": "serve -s build",
-    "build": "bun install && craco build",
+    "build": "NODE_ENV=production craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -77,7 +77,6 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@craco/craco": "^7.1.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22.10.10",
     "autoprefixer": "^10.4.20",

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Cursor, useTypewriter } from 'react-simple-typewriter';
+import ExampleCardsSection from './ExampleCardsSection';
+import { Button } from './ui/button';
 
 interface LandingPageProps {
   landingPageKeyword?: string;
@@ -46,14 +48,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
         </p>
 
         {/* Try it free now button */}
-        {/* <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8">
           <Button
             className="bg-[#4169E1] hover:bg-[#3a5ecc] text-white px-8 py-6 text-lg"
             onClick={() => navigate('/login')}
           >
             Try it free now
           </Button>
-        </div> */}
+        </div>
 
         {/* Input form - dont delete this */}
         {/* <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto flex flex-col items-center mt-8">
@@ -83,7 +85,9 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
       {/* <Card className="mb-12">
         <div className="flex flex-col md:flex-row items-center justify-between p-6 gap-8">
           <div className="space-y-6">
-            <h3 className="text-2xl font-semibold">Make Better Decisions with Comprehensive Research</h3>
+            <h3 className="text-2xl font-semibold">
+              Make Better Decisions with Comprehensive Research
+            </h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <div className="bg-primary/10 p-2 rounded-full">
@@ -109,7 +113,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
       </Card> */}
 
       {/* Example Cards Section */}
-      {/* <ExampleCardsSection /> */}
+      <ExampleCardsSection />
 
       {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6 px-0 md:px-0">
         <Card>
