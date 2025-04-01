@@ -10,7 +10,29 @@ import { useCallback, useEffect } from 'react';
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const isEnrichmentWall = searchParams.get('reason') === 'enrichment-login-wall';
+  const reason = searchParams.get('reason');
+
+  const getLoginTitle = () => {
+    switch (reason) {
+      case 'enrichment-login-wall':
+        return 'Sign-up to enrich cells for free';
+      case 'add-rows-login-wall':
+        return 'Sign up to Add Rows and Enrich them with data';
+      default:
+        return 'Welcome back';
+    }
+  };
+
+  const getLoginDescription = () => {
+    switch (reason) {
+      case 'enrichment-login-wall':
+        return 'Create an account to start enriching your data';
+      case 'add-rows-login-wall':
+        return 'Create an account to start adding and enriching rows';
+      default:
+        return 'Login with your Google account';
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -48,14 +70,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     <div className={cn('flex flex-col items-center w-full gap-6', className)} {...props}>
       <Card className="w-[90%] max-w-md mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%]">
         <CardHeader className="text-center">
-          <CardTitle className="text-xl sm:text-2xl">
-            {isEnrichmentWall ? 'Sign-up to enrich cells for free' : 'Welcome back'}
-          </CardTitle>
-          <CardDescription>
-            {isEnrichmentWall
-              ? 'Create an account to start enriching your data'
-              : 'Login with your Google account'}
-          </CardDescription>
+          <CardTitle className="text-xl sm:text-2xl">{getLoginTitle()}</CardTitle>
+          <CardDescription>{getLoginDescription()}</CardDescription>
         </CardHeader>
         <CardContent className="px-4 sm:px-6">
           <form>
