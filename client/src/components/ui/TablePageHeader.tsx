@@ -435,18 +435,19 @@ export const TablePageHeader = ({
                 {tableName}
               </span>
             )}
-            {!isSidebarOpen && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="h-4 w-4 text-gray-500" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{tableDescription}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Info className="h-4 w-4 text-gray-500" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{tableDescription}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <div className="text-sm font-normal text-gray-500">
+              Right-click the column header to edit
+            </div>
           </div>
         </div>
         <div className="flex items-center gap-2">

@@ -22,6 +22,7 @@ import { ModuleRegistry } from 'ag-grid-community';
 import 'ag-grid-enterprise'; // This is the correct way to import enterprise features
 import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
 import { TablePageError } from './TablePageError';
@@ -279,6 +280,7 @@ const TablePage = () => {
   const gridContext = useMemo(
     () => ({
       tableId: id,
+      isOwner: tableData?.isOwner ?? false,
       updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => {
         if (!token) return;
 
@@ -383,13 +385,16 @@ const TablePage = () => {
       resizable: true,
       sortable: true,
       filter: true,
-      editable: true,
+      editable: () => {
+        // Only allow editing if user is the owner
+        return tableData?.isOwner ?? false;
+      },
       headerComponent: CustomColumnHeader,
       suppressHeaderMenuButton: true,
       suppressHeaderContextMenu: true,
       suppressSizeToFit: true,
     }),
-    []
+    [tableData?.isOwner]
   );
 
   // Cell selection configuration
@@ -413,6 +418,11 @@ const TablePage = () => {
   const onCellValueChanged = (event: CellValueChangedEvent) => {
     const { data, colDef } = event;
     if (!data.id || !colDef.field) return;
+    // If not owner, redirect to login
+    if (!tableData?.isOwner) {
+      navigate('/login?reason=edit-table-login-wall');
+      return;
+    }
 
     // Extract the field name from the path (e.g., 'data.name' -> 'name')
     const fieldName = colDef.field.replace('data.', '');
@@ -575,20 +585,9 @@ const TablePage = () => {
     [debouncedProcessColumnStateChange]
   );
 
-  console.log('table', table);
-  console.log('tableData', tableData);
-
   if (error) {
     return <TablePageError error={error} />;
   }
-
-  // if (isTableLoading) {
-  //   return (
-  //     <AppLayout>
-  //       <div className="flex justify-center items-center h-64">Loading table data...</div>
-  //     </AppLayout>
-  //   );
-  // }
 
   if (!tableData && !isTableLoading) {
     return <TablePageError error="Table not found" />;
@@ -598,6 +597,12 @@ const TablePage = () => {
 
   return (
     <AppLayout>
+      {tableData && (
+        <Helmet>
+          <title>{`${tableData.name} - Deep Table`}</title>
+          <meta name="description" content={tableData.description || ''} />
+        </Helmet>
+      )}
       <div className="h-full w-full flex flex-col">
         <TablePageHeader
           tableName={tableData.name}
