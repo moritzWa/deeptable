@@ -713,7 +713,7 @@ export const tablesRouter = router({
         };
       } catch (error) {
         console.error('Get table error:', error);
-        throw new Error('Failed to get table');
+        throw new Error('Failed to get table - Are you sure you have access to this table?');
       }
     }),
 });

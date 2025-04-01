@@ -105,20 +105,25 @@ export function AppSidebar() {
 
   const handleShareTable = async (tableId: string) => {
     try {
+      const table = tables.find((t) => t.id === tableId);
+      if (!table) return;
+
+      const newStatus = table.sharingStatus === 'public' ? 'private' : 'public';
       const result = await updateSharingStatusMutation.mutateAsync({
         token: token || '',
         tableId,
-        sharingStatus: 'public',
+        sharingStatus: newStatus,
       });
 
-      // You can show a success message and copy the share link to clipboard
-      const shareUrl = `${window.location.origin}/tables/${tableId}`;
-      await navigator.clipboard.writeText(shareUrl);
-      // You might want to add a toast notification here
-      alert('Share link copied to clipboard!');
+      if (newStatus === 'public') {
+        // Only show the share link and copy to clipboard if making public
+        const shareUrl = `${window.location.origin}/tables/${tableId}`;
+        await navigator.clipboard.writeText(shareUrl);
+        alert('Share link copied to clipboard!');
+      }
     } catch (error) {
-      console.error('Failed to share table:', error);
-      alert('Failed to share table');
+      console.error('Failed to update sharing status:', error);
+      alert('Failed to update sharing status');
     }
   };
 
@@ -174,8 +179,17 @@ export function AppSidebar() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem onClick={() => handleShareTable(table.id)}>
-                            <Share className="mr-2 h-4 w-4" />
-                            <span>Share</span>
+                            {table.sharingStatus === 'public' ? (
+                              <>
+                                <Share className="mr-2 h-4 w-4" />
+                                <span>Make Private</span>
+                              </>
+                            ) : (
+                              <>
+                                <Share className="mr-2 h-4 w-4" />
+                                <span>Share</span>
+                              </>
+                            )}
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="text-destructive focus:text-destructive"
@@ -192,7 +206,24 @@ export function AppSidebar() {
               ))}
               {tables.length === 0 && (
                 <div className="px-2 py-4 text-sm text-muted-foreground">
-                  No tables yet. Create your first table to get started.
+                  {!token ? (
+                    <p>
+                      <Link className="text-blue-500" to="/login">
+                        Login here
+                      </Link>{' '}
+                      to create your own tables.
+                    </p>
+                  ) : (
+                    <>
+                      <p>No tables yet. Create your first table to get started.</p>
+                      <p>
+                        <Link className="text-blue-500" to="/new">
+                          Create a new table
+                        </Link>{' '}
+                        to get started.
+                      </p>
+                    </>
+                  )}
                 </div>
               )}
             </SidebarMenu>
