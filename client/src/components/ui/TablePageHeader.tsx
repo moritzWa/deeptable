@@ -11,8 +11,9 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { useToast } from '@/hooks/use-toast';
 import { trpc } from '@/utils/trpc';
 import { CellRange, GridApi } from 'ag-grid-community';
-import { Info, Plus, Sparkle } from 'lucide-react';
+import { Info, Plus, Share, Sparkle } from 'lucide-react';
 import { KeyboardEvent, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export interface TablePageHeaderProps {
   tableName: string;
@@ -22,6 +23,8 @@ export interface TablePageHeaderProps {
   selectedRanges: CellRange[];
   onRowsAdded: () => void;
   gridApi: GridApi | undefined;
+  sharingStatus: 'private' | 'public';
+  isOwner: boolean;
 }
 
 const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: () => void }) => {
@@ -153,6 +156,8 @@ export const TablePageHeader = ({
   selectedRanges,
   onRowsAdded,
   gridApi,
+  sharingStatus,
+  isOwner,
 }: TablePageHeaderProps) => {
   const token = localStorage.getItem('token');
   const trpcUtils = trpc.useContext();
@@ -160,6 +165,7 @@ export const TablePageHeader = ({
   const [editedName, setEditedName] = useState(tableName);
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const updateTableMutation = trpc.tables.updateTable.useMutation({
     onSuccess: () => {
@@ -224,10 +230,26 @@ export const TablePageHeader = ({
     });
   };
 
+  const updateSharingStatusMutation = trpc.tables.updateSharingStatus.useMutation({
+    onSuccess: () => {
+      trpcUtils.tables.getTables.invalidate();
+      trpcUtils.tables.getTable.invalidate({ id: tableId, token: token || '' });
+      toast({
+        title: 'Success',
+        description:
+          sharingStatus === 'public' ? 'Table is now private' : 'Share link copied to clipboard!',
+      });
+    },
+  });
+
   const handleEnrichCells = async () => {
-    if (!token || !gridApi) return;
+    if (!token) {
+      navigate('/login?reason=enrichment-login-wall');
+      return;
+    }
+
+    if (!gridApi) return;
     if (selectedRanges.length === 0) {
-      console.log('No cells selected for enrichment');
       toast({
         title: 'No cells selected',
         description: 'Please select one or more cells to enrich by clicking (and dragging).',
@@ -334,6 +356,29 @@ export const TablePageHeader = ({
     }
   };
 
+  const handleShareTable = async () => {
+    try {
+      const newStatus = sharingStatus === 'public' ? 'private' : 'public';
+      await updateSharingStatusMutation.mutateAsync({
+        token: token || '',
+        tableId,
+        sharingStatus: newStatus,
+      });
+
+      if (newStatus === 'public') {
+        const shareUrl = `${window.location.origin}/tables/${tableId}`;
+        await navigator.clipboard.writeText(shareUrl);
+      }
+    } catch (error) {
+      console.error('Failed to update sharing status:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update sharing status',
+        variant: 'destructive',
+      });
+    }
+  };
+
   const handleStartEditing = () => {
     setIsEditing(true);
     setEditedName(tableName);
@@ -410,6 +455,17 @@ export const TablePageHeader = ({
             <Sparkle className="h-4 w-4" />
             Enrich Selected Cells
           </Button>
+          {isOwner && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1"
+              onClick={handleShareTable}
+            >
+              <Share className="h-4 w-4" />
+              {sharingStatus === 'public' ? 'Make Private' : 'Share'}
+            </Button>
+          )}
           <AddRowsDropdown tableId={tableId} onSuccess={onRowsAdded} />
         </div>
       </div>

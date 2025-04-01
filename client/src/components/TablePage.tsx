@@ -611,6 +611,8 @@ const TablePage = () => {
             }
           }}
           gridApi={gridRef.current?.api}
+          sharingStatus={tableData.sharingStatus}
+          isOwner={tableData.isOwner}
         />
         <div className="flex-1 min-h-0">
           {!isGridReady && (

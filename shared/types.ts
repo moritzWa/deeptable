@@ -40,7 +40,8 @@ export interface Table {
   createdAt: string;
   updatedAt: string;
   userId: string;
-  sharingStatus: SharingStatus; // Add this field
+  sharingStatus: SharingStatus;
+  isOwner: boolean;
 }
 
 export type LanguageKeys = 'langJS' | 'langTS' | 'langPython' | 'langGo' | 'langRust' | 'langCpp';

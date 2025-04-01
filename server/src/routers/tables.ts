@@ -41,7 +41,8 @@ export const tablesRouter = router({
         const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
           userId: string;
         };
-        const tables = await TableModel.find({ userId: decoded.userId });
+        const userId = decoded.userId;
+        const tables = await TableModel.find({ userId });
 
         return tables.map((table: ITable) => ({
           id: table._id.toString(),
@@ -59,6 +60,7 @@ export const tablesRouter = router({
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId,
           sharingStatus: table.sharingStatus,
+          isOwner: userId === table.userId,
         }));
       } catch (error) {
         console.error('Get tables error:', error);
@@ -81,7 +83,7 @@ export const tablesRouter = router({
         const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
           userId: string;
         };
-
+        const userId = decoded.userId;
         // Convert string columns to proper column objects if needed
         const columns = input.columns || [];
 
@@ -108,6 +110,7 @@ export const tablesRouter = router({
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId,
           sharingStatus: table.sharingStatus,
+          isOwner: userId === table.userId,
         };
       } catch (error) {
         console.error('Create table error:', error);
@@ -131,6 +134,7 @@ export const tablesRouter = router({
         const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
           userId: string;
         };
+        const userId = decoded.userId;
 
         const table = (await TableModel.findOneAndUpdate(
           { _id: input.id, userId: decoded.userId },
@@ -162,6 +166,7 @@ export const tablesRouter = router({
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId,
           sharingStatus: table.sharingStatus,
+          isOwner: userId === table.userId,
         };
       } catch (error) {
         console.error('Update table error:', error);
@@ -613,6 +618,7 @@ export const tablesRouter = router({
         updatedAt: table.updatedAt.toISOString(),
         userId: table.userId,
         sharingStatus: table.sharingStatus,
+        isOwner: true,
       };
     }),
 
@@ -629,6 +635,8 @@ export const tablesRouter = router({
         const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
           userId: string;
         };
+
+        const userId = decoded.userId;
 
         const table = await TableModel.findOneAndUpdate(
           { _id: input.tableId, userId: decoded.userId },
@@ -656,6 +664,7 @@ export const tablesRouter = router({
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId,
           sharingStatus: table.sharingStatus,
+          isOwner: userId === table.userId,
         };
       } catch (error) {
         console.error('Update sharing status error:', error);
@@ -710,6 +719,7 @@ export const tablesRouter = router({
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId,
           sharingStatus: table.sharingStatus,
+          isOwner: userId === table.userId,
         };
       } catch (error) {
         console.error('Get table error:', error);

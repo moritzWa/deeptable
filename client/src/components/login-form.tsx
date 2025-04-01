@@ -1,4 +1,5 @@
 import { defaultPage, LINK_TO_WAITLIST } from '@/App';
+import { useLocation } from 'react-router-dom';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { trpc } from '@/lib/trpc';
@@ -7,6 +8,10 @@ import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useCallback, useEffect } from 'react';
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const isEnrichmentWall = searchParams.get('reason') === 'enrichment-login-wall';
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -43,8 +48,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     <div className={cn('flex flex-col items-center w-full gap-6', className)} {...props}>
       <Card className="w-[90%] max-w-md mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%]">
         <CardHeader className="text-center">
-          <CardTitle className="text-xl sm:text-2xl">Welcome back</CardTitle>
-          <CardDescription>Login with your Google account</CardDescription>
+          <CardTitle className="text-xl sm:text-2xl">
+            {isEnrichmentWall ? 'Sign-up to enrich cells for free' : 'Welcome back'}
+          </CardTitle>
+          <CardDescription>
+            {isEnrichmentWall
+              ? 'Create an account to start enriching your data'
+              : 'Login with your Google account'}
+          </CardDescription>
         </CardHeader>
         <CardContent className="px-4 sm:px-6">
           <form>
