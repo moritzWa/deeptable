@@ -58,6 +58,7 @@ export const tablesRouter = router({
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId,
+          sharingStatus: table.sharingStatus,
         }));
       } catch (error) {
         console.error('Get tables error:', error);
@@ -106,6 +107,7 @@ export const tablesRouter = router({
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId,
+          sharingStatus: table.sharingStatus,
         };
       } catch (error) {
         console.error('Create table error:', error);
@@ -159,6 +161,7 @@ export const tablesRouter = router({
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
           userId: table.userId,
+          sharingStatus: table.sharingStatus,
         };
       } catch (error) {
         console.error('Update table error:', error);
@@ -609,6 +612,108 @@ export const tablesRouter = router({
         createdAt: table.createdAt.toISOString(),
         updatedAt: table.updatedAt.toISOString(),
         userId: table.userId,
+        sharingStatus: table.sharingStatus,
       };
+    }),
+
+  updateSharingStatus: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        sharingStatus: z.enum(['private', 'public']),
+      })
+    )
+    .mutation(async ({ input }): Promise<Table> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        const table = await TableModel.findOneAndUpdate(
+          { _id: input.tableId, userId: decoded.userId },
+          { sharingStatus: input.sharingStatus },
+          { new: true }
+        );
+
+        if (!table) {
+          throw new Error('Table not found');
+        }
+
+        return {
+          id: table._id.toString(),
+          name: table.name,
+          description: table.description,
+          columns: table.columns.map((col) => ({
+            name: col.name,
+            type: col.type,
+            required: col.required || false,
+            defaultValue: col.defaultValue,
+            description: col.description,
+            columnState: col.columnState,
+          })),
+          createdAt: table.createdAt.toISOString(),
+          updatedAt: table.updatedAt.toISOString(),
+          userId: table.userId,
+          sharingStatus: table.sharingStatus,
+        };
+      } catch (error) {
+        console.error('Update sharing status error:', error);
+        throw new Error('Failed to update sharing status');
+      }
+    }),
+
+  // Also update the getTable query to allow public access
+  getTable: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        token: z.string().optional(), // Token is optional for public tables
+      })
+    )
+    .query(async ({ input }): Promise<Table> => {
+      try {
+        let userId: string | undefined;
+
+        if (input.token) {
+          const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+            userId: string;
+          };
+          userId = decoded.userId;
+        }
+
+        const table = await TableModel.findOne({
+          _id: input.id,
+          $or: [
+            { userId }, // Match if user owns the table
+            { sharingStatus: 'public' }, // Match if table is public
+          ].filter(Boolean), // Remove userId condition if not provided
+        });
+
+        if (!table) {
+          throw new Error('Table not found - Are you sure this table is public?');
+        }
+
+        return {
+          id: table._id.toString(),
+          name: table.name,
+          description: table.description,
+          columns: table.columns.map((col) => ({
+            name: col.name,
+            type: col.type,
+            required: col.required || false,
+            defaultValue: col.defaultValue,
+            description: col.description,
+            columnState: col.columnState,
+          })),
+          createdAt: table.createdAt.toISOString(),
+          updatedAt: table.updatedAt.toISOString(),
+          userId: table.userId,
+          sharingStatus: table.sharingStatus,
+        };
+      } catch (error) {
+        console.error('Get table error:', error);
+        throw new Error('Failed to get table');
+      }
     }),
 });

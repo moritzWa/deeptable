@@ -28,6 +28,9 @@ export interface Column {
   columnState?: ColumnState;
 }
 
+// Add this new type
+export type SharingStatus = 'private' | 'public';
+
 // Table interface
 export interface Table {
   id: string;
@@ -37,6 +40,7 @@ export interface Table {
   createdAt: string;
   updatedAt: string;
   userId: string;
+  sharingStatus: SharingStatus; // Add this field
 }
 
 export type LanguageKeys = 'langJS' | 'langTS' | 'langPython' | 'langGo' | 'langRust' | 'langCpp';

@@ -73,7 +73,6 @@ const TablePage = () => {
   const navigate = useNavigate();
   const sidebar = useSidebar();
   const [table, setTable] = useState<Table | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [rowData, setRowData] = useState<any[]>([]);
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
@@ -87,29 +86,24 @@ const TablePage = () => {
   const utils = trpc.useContext();
 
   // FETCH DATA
-  const { data: tablesData, refetch } = trpc.tables.getTables.useQuery(
-    { token: token || '' },
+  const {
+    data: tableData,
+    refetch,
+    isLoading: isTableLoading,
+  } = trpc.tables.getTable.useQuery(
+    { id: id || '', token: token || '' },
     {
-      enabled: !!token,
-      onSuccess: (data) => {
-        const foundTable = data.find((t) => t.id === id);
-        if (foundTable) {
-          setTable(foundTable);
-        } else {
-          setError('Table not found');
-        }
-        setLoading(false);
-      },
+      enabled: !!id,
       onError: (err) => {
         setError(err.message || 'Failed to load table');
-        setLoading(false);
       },
     }
   );
+
   const { data: rowsData } = trpc.rows.getRows.useQuery(
     { token: token || '', tableId: id || '' },
     {
-      enabled: !!token && !!id,
+      enabled: !!id && (!!token || tableData?.sharingStatus === 'public'),
       onError: (err) => {
         console.error('Failed to load rows:', err);
       },
@@ -175,28 +169,20 @@ const TablePage = () => {
   });
 
   // USE EFFECTS
-  // This effect will run whenever the id parameter changes
   useEffect(() => {
-    setLoading(true);
-    setError('');
-
-    if (tablesData) {
-      const foundTable = tablesData.find((t) => t.id === id);
-      if (foundTable) {
-        setTable(foundTable);
-      } else {
-        setError('Table not found');
+    if (!isTableLoading && tableData) {
+      // If table is not public and user is not logged in, redirect to login
+      if (tableData.sharingStatus !== 'public' && !token) {
+        navigate('/login');
+        return;
       }
-      setLoading(false);
-    } else if (token) {
-      refetch();
+      setTable(tableData);
     }
-  }, [id, tablesData, token, refetch]);
+  }, [tableData, isTableLoading, token, navigate]);
 
   // Process row data for AG Grid
   useEffect(() => {
-    if (rowsData && rowsData.rows) {
-      // console.log('Setting row data:', rowsData.rows);
+    if (rowsData?.rows) {
       setRowData(rowsData.rows);
     }
   }, [rowsData]);
@@ -288,12 +274,6 @@ const TablePage = () => {
     // ATTENTION: DO NOT remove hasAppliedInitialState.current (it causes the data to not load)
     // eslint-disable-next-line
   }, [table, hasAppliedInitialState.current]);
-
-  useEffect(() => {
-    if (!token) {
-      navigate('/login');
-    }
-  }, [token, navigate]);
 
   // Create context object for AG Grid
   const gridContext = useMemo(
@@ -595,28 +575,34 @@ const TablePage = () => {
     [debouncedProcessColumnStateChange]
   );
 
-  if (loading) {
-    return (
-      <AppLayout>
-        <div className="flex justify-center items-center h-64">Loading table data...</div>
-      </AppLayout>
-    );
-  }
+  console.log('table', table);
+  console.log('tableData', tableData);
 
   if (error) {
     return <TablePageError error={error} />;
   }
-  if (!table) {
+
+  // if (isTableLoading) {
+  //   return (
+  //     <AppLayout>
+  //       <div className="flex justify-center items-center h-64">Loading table data...</div>
+  //     </AppLayout>
+  //   );
+  // }
+
+  if (!tableData && !isTableLoading) {
     return <TablePageError error="Table not found" />;
   }
+
+  if (!tableData) return null;
 
   return (
     <AppLayout>
       <div className="h-full w-full flex flex-col">
         <TablePageHeader
-          tableName={table.name}
-          tableDescription={table.description || ''}
-          tableId={table.id}
+          tableName={tableData.name}
+          tableDescription={tableData.description || ''}
+          tableId={tableData.id}
           isSidebarOpen={sidebar.open}
           selectedRanges={selectedRanges}
           onRowsAdded={() => {

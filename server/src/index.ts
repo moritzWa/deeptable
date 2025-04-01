@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://githire.io', 'https://deeptable.onrender.com'],
+    origin: ['http://localhost:3000', 'https://deeptable.app', 'https://deeptable.onrender.com'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept', 'stripe-signature'],

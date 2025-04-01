@@ -94,6 +94,34 @@ export function AppSidebar() {
     }
   };
 
+  const updateSharingStatusMutation = trpc.tables.updateSharingStatus.useMutation({
+    onSuccess: () => {
+      // Refetch tables after updating sharing status
+      if (token) {
+        utils.tables.getTables.invalidate();
+      }
+    },
+  });
+
+  const handleShareTable = async (tableId: string) => {
+    try {
+      const result = await updateSharingStatusMutation.mutateAsync({
+        token: token || '',
+        tableId,
+        sharingStatus: 'public',
+      });
+
+      // You can show a success message and copy the share link to clipboard
+      const shareUrl = `${window.location.origin}/tables/${tableId}`;
+      await navigator.clipboard.writeText(shareUrl);
+      // You might want to add a toast notification here
+      alert('Share link copied to clipboard!');
+    } catch (error) {
+      console.error('Failed to share table:', error);
+      alert('Failed to share table');
+    }
+  };
+
   useEffect(() => {
     if (tablesData) {
       setTables(tablesData);
@@ -145,7 +173,7 @@ export function AppSidebar() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => alert('TODO: Implement sharing')}>
+                          <DropdownMenuItem onClick={() => handleShareTable(table.id)}>
                             <Share className="mr-2 h-4 w-4" />
                             <span>Share</span>
                           </DropdownMenuItem>

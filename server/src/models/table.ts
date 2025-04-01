@@ -1,5 +1,5 @@
+import { Column, ColumnState } from '@shared/types';
 import mongoose, { Document } from 'mongoose';
-import { ColumnType, ColumnState, Column } from '@shared/types';
 
 // Column state interface extends from shared type
 export interface IColumnState extends ColumnState {}
@@ -15,6 +15,7 @@ export interface ITable extends Document {
   createdAt: Date;
   updatedAt: Date;
   _id: mongoose.Types.ObjectId;
+  sharingStatus: 'private' | 'public';
 }
 
 // Column state schema
@@ -83,6 +84,12 @@ const tableSchema = new mongoose.Schema(
     },
     userId: {
       type: String,
+      required: true,
+    },
+    sharingStatus: {
+      type: String,
+      enum: ['private', 'public'],
+      default: 'private',
       required: true,
     },
   },
