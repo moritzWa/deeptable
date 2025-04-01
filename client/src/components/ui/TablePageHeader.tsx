@@ -30,6 +30,7 @@ export interface TablePageHeaderProps {
 const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: () => void }) => {
   const token = localStorage.getItem('token');
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const createRowsMutation = trpc.rows.createRows.useMutation({
     onSuccess: () => {
@@ -66,7 +67,10 @@ const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: (
   });
 
   const handleAddRows = (count: number, withEntities: boolean = false) => {
-    if (!token) return;
+    if (!token) {
+      navigate('/login?reason=add-rows-login-wall');
+      return;
+    }
 
     if (withEntities) {
       createRowsWithEntitiesMutation.mutate({ token, tableId, count });
