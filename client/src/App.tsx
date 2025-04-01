@@ -21,7 +21,7 @@ import { trpc } from './utils/trpc';
 export const defaultPage = '/home';
 export const LINK_TO_WAITLIST = process.env.REACT_APP_LINK_TO_WAITLIST === 'true'; // Toggle this to control the flow after login
 
-// Add a new ProtectedRoute component
+// Existing ProtectedRoute component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { data: userData, isLoading } = trpc.auth.getUser.useQuery(
@@ -88,14 +88,7 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/tables/:id"
-            element={
-              <ProtectedRoute>
-                <TablePage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/tables/:id" element={<TablePage />} />
           <Route
             path="/settings"
             element={

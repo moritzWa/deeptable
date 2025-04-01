@@ -21,7 +21,7 @@ export const rowsRouter = router({
   getRows: publicProcedure
     .input(
       z.object({
-        token: z.string(),
+        token: z.string().optional(),
         tableId: z.string(),
         limit: z.number().optional(),
         offset: z.number().optional(),
@@ -29,14 +29,22 @@ export const rowsRouter = router({
     )
     .query(async ({ input }): Promise<{ rows: Row[]; total: number }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        let userId: string | undefined;
 
-        // Verify table exists and belongs to user
+        if (input.token) {
+          const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+            userId: string;
+          };
+          userId = decoded.userId;
+        }
+
+        // Verify table exists and check if it's public or belongs to user
         const table = await TableModel.findOne({
           _id: input.tableId,
-          userId: decoded.userId,
+          $or: [
+            { userId }, // Match if user owns the table
+            { sharingStatus: 'public' }, // Match if table is public
+          ].filter(Boolean), // Remove userId condition if not provided
         });
 
         if (!table) {
@@ -46,13 +54,13 @@ export const rowsRouter = router({
         // Get total count for pagination
         const total = await RowModel.countDocuments({
           tableId: input.tableId,
-          userId: decoded.userId,
+          ...(userId ? { userId } : {}),
         });
 
         // Get rows with pagination
         const rows = await RowModel.find({
           tableId: input.tableId,
-          userId: decoded.userId,
+          ...(userId ? { userId } : {}),
         })
           .sort({ createdAt: -1 })
           .skip(input.offset || 0)
