@@ -14,6 +14,7 @@ import {
   Type,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { CustomColDef } from '../TablePage';
 import {
   ContextMenu,
@@ -30,6 +31,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tool
 interface CustomHeaderParams extends IHeaderParams {
   context: {
     tableId: string;
+    isOwner: boolean;
     updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => void;
     addColumn?: (position: 'left' | 'right', relativeTo: string) => void;
     deleteColumn?: (columnName: string) => void;
@@ -49,6 +51,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     return colDef.description || '';
   });
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   // Update local state when displayName or description changes
   useEffect(() => {
@@ -63,7 +66,16 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     setColumnName(e.target.value);
   };
 
+  const redirectToLogin = () => {
+    navigate('/login?reason=edit-table-login-wall');
+  };
+
   const handleNameSave = () => {
+    if (!props.context.isOwner) {
+      redirectToLogin();
+      return;
+    }
+
     if (columnName === props.displayName) return;
 
     // Get current column state
@@ -110,6 +122,11 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   };
 
   const handleDescriptionSave = () => {
+    if (!props.context.isOwner) {
+      redirectToLogin();
+      return;
+    }
+
     if (description === props.description) return;
     if (props.context.updateColumnDescription) {
       props.context.updateColumnDescription(props.column.getColId(), description);
@@ -170,18 +187,31 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const isSortable = props.enableSorting;
 
   const handleInsertColumn = (position: 'left' | 'right') => {
+    if (!props.context.isOwner) {
+      redirectToLogin();
+      return;
+    }
+
     if (!props.context.addColumn) return;
     props.context.addColumn(position, props.column.getColId());
   };
 
-  // ignore es list errors for next line
-  // eslint-disable-next-line
   const handleDeleteColumn = () => {
+    if (!props.context.isOwner) {
+      redirectToLogin();
+      return;
+    }
+
     if (!props.context.deleteColumn) return;
     props.context.deleteColumn(props.column.getColId());
   };
 
   const handleTypeChange = (newType: string) => {
+    if (!props.context.isOwner) {
+      redirectToLogin();
+      return;
+    }
+
     if (props.context.updateColumnType) {
       props.context.updateColumnType(props.column.getColId(), newType);
     }

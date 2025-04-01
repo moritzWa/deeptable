@@ -18,6 +18,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         return 'Sign-up to enrich cells for free';
       case 'add-rows-login-wall':
         return 'Sign up to Add Rows and Enrich them with data';
+      case 'edit-table-login-wall':
+        return 'Sign up to Edit Tables';
       default:
         return 'Welcome back';
     }
@@ -29,6 +31,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         return 'Create an account to start enriching your data';
       case 'add-rows-login-wall':
         return 'Create an account to start adding and enriching rows';
+      case 'edit-table-login-wall':
+        return 'Create an account to start editing tables';
       default:
         return 'Login with your Google account';
     }
