@@ -573,20 +573,15 @@ export const tablesRouter = router({
       });
 
       try {
-        // Create all rows
+        // Create rows with data using columnId
         await Row.insertMany(
-          rows.map((row) => {
-            // Convert row data to use columnId instead of column name
-            const convertedData = Object.fromEntries(
-              table.columns.map((col) => [col.columnId, row[col.name] || ''])
-            );
-
-            return {
-              tableId: table._id,
-              userId: decoded.userId,
-              data: convertedData,
-            };
-          })
+          rows.map((rowData) => ({
+            tableId: table._id,
+            userId: decoded.userId,
+            data: Object.fromEntries(
+              table.columns.map((col) => [col.columnId, rowData[col.columnId] || ''])
+            ),
+          }))
         );
       } catch (error) {
         console.error('Error creating rows:', error);
@@ -611,7 +606,7 @@ export const tablesRouter = router({
         userId: table.userId,
         sharingStatus: table.sharingStatus,
         isOwner: true,
-        slug: table.slug, // Include slug in response
+        slug: table.slug,
       };
     }),
 
@@ -748,7 +743,13 @@ export const tablesRouter = router({
           name: z.string(),
           description: z.string(),
           columns: z.array(columnSchema),
-          rows: z.array(z.record(z.any())).optional(),
+          rows: z
+            .array(
+              z.object({
+                data: z.record(z.any()),
+              })
+            )
+            .optional(),
           sharingStatus: z.enum(['private', 'public']).optional(),
         }),
       })
@@ -772,18 +773,13 @@ export const tablesRouter = router({
         // Create rows if they exist in the JSON
         if (input.jsonData.rows?.length) {
           await Row.insertMany(
-            input.jsonData.rows.map((row) => {
-              // Convert row data to use columnId instead of column name
-              const convertedData = Object.fromEntries(
+            input.jsonData.rows.map((row) => ({
+              tableId: table._id,
+              userId: decoded.userId,
+              data: Object.fromEntries(
                 table.columns.map((col) => [col.columnId, row.data[col.columnId] || ''])
-              );
-
-              return {
-                tableId: table._id,
-                userId: decoded.userId,
-                data: convertedData,
-              };
-            })
+              ),
+            }))
           );
         }
 
