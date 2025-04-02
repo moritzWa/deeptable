@@ -7,7 +7,7 @@ const router = Router();
 router.get('/sitemap.xml', async (req, res) => {
   try {
     const smStream = new SitemapStream({
-      hostname: 'https://yourdomain.com',
+      hostname: 'https://deeptable.app',
     });
 
     // Get all public tables
