@@ -84,15 +84,35 @@ export const tablesRouter = router({
           userId: string;
         };
         const userId = decoded.userId;
-        // Convert string columns to proper column objects if needed
         const columns = input.columns || [];
 
+        // Create the table
         const table = (await TableModel.create({
           name: input.name,
           description: input.description,
           columns: columns,
           userId: decoded.userId,
         })) as ITable;
+
+        // Create 15 empty rows
+        const emptyRows = Array(15)
+          .fill(null)
+          .map(() => {
+            const rowData: Record<string, any> = {};
+            // Initialize each column with an empty value
+            columns.forEach((col) => {
+              rowData[col.name] = '';
+            });
+
+            return {
+              tableId: table._id,
+              userId: decoded.userId,
+              data: rowData,
+            };
+          });
+
+        // Insert all empty rows
+        await Row.insertMany(emptyRows);
 
         return {
           id: table._id.toString(),
