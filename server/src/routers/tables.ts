@@ -31,7 +31,10 @@ const columnSchema = z.object({
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
   description: z.string(),
-  additionalTypeInformation: z.object({}),
+  additionalTypeInformation: z.object({
+    currency: z.boolean().optional(),
+    decimals: z.number().int().nonnegative().optional(),
+  }),
   columnState: columnStateSchema.optional(),
 });
 
