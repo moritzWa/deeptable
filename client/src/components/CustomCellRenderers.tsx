@@ -43,9 +43,10 @@ export const smartCellRenderer = (params: ICellRendererParams<{ description: str
     return LinkCellRenderer(params);
   }
   const colDef = params.colDef as CustomColDef;
-  if (colDef.type === 'number' && colDef.additionalTypeInformation.currency) {
+  if (colDef.type === 'number') {
+    const isCurrency = colDef.additionalTypeInformation.currency || false;
     const decimals = colDef.additionalTypeInformation.decimals || 2; 
-    return <span className='font-mono w-full text-right'>${value.toFixed(decimals)}</span>;
+    return <span className='font-mono w-full text-right'>{isCurrency ? '$' : ''}{value.toFixed(decimals)}</span>;
   }
 
   // For non-URL values, just return the value directly
