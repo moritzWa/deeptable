@@ -1,4 +1,5 @@
 import { Column } from '@shared/types';
+import slugify from 'slugify';
 import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
@@ -6,10 +7,18 @@ export const reactTableColumns: Column[] = [
   { name: 'Library', type: 'text', description: 'Name of the React table library' },
   { name: 'Weekly Downloads', type: 'number', description: 'Number of weekly downloads from NPM' },
   { name: 'GitHub Stars', type: 'number', description: 'Number of stars on GitHub repository' },
-  { name: 'Last Updated (days ago)', type: 'number', description: 'Days since the last update to the library on NPM' },
+  {
+    name: 'Last Updated (days ago)',
+    type: 'number',
+    description: 'Days since the last update to the library on NPM',
+  },
   { name: 'Size (KB)', type: 'number', description: 'Size of the library in kilobytes, unpacked' },
   { name: 'Use Case', type: 'text', description: 'Primary use cases for the library' },
-  { name: 'Homepage', type: 'link', description: 'Link to the library website/documentation, otherwise NPM or Github' },
+  {
+    name: 'Homepage',
+    type: 'link',
+    description: 'Link to the library website/documentation, otherwise NPM or Github',
+  },
   { name: 'NPM Link', type: 'link', description: 'Link to the NPM package page' },
   { name: 'Github Link', type: 'link', description: 'Link to the GitHub repository' },
 ];
@@ -75,13 +84,14 @@ export const reactTableData = [
 ];
 
 export async function createReactTableLibrariesTable(userId: string) {
+  const name = 'React Table Libraries';
   // Create the table with columns
   const reactTableLibrariesTable = await Table.create({
-    name: 'React Table Libraries Comparison',
-    description:
-      'Compare react libraries for tables - look at weekly downloads number of github stars and when it was last updated',
+    name,
+    description: 'Comparison of popular React table libraries',
     columns: reactTableColumns,
     userId,
+    slug: slugify(name).toLowerCase(),
   });
 
   // Create rows

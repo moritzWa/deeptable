@@ -88,6 +88,7 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+          <Route path="/t/:slug" element={<TablePage />} />
           <Route path="/tables/:id" element={<TablePage />} />
           <Route
             path="/settings"

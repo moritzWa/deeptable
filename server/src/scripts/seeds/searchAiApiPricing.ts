@@ -1,4 +1,5 @@
 import { Column } from '@shared/types';
+import slugify from 'slugify';
 import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
@@ -7,7 +8,11 @@ export const apiPricingColumns: Column[] = [
   { name: 'product name', type: 'text', description: 'Name of the specific API product' },
   { name: 'pricing info link', type: 'link', description: 'Link to official pricing information' },
   { name: 'api docs', type: 'link', description: 'Link to API documentation' },
-  { name: 'USD price per 1k request', type: 'number', description: 'Cost in USD per 1,000 API requests' },
+  {
+    name: 'USD price per 1k request',
+    type: 'number',
+    description: 'Cost in USD per 1,000 API requests',
+  },
   { name: 'Note', type: 'text', description: 'Additional information or special conditions' },
 ];
 
@@ -88,12 +93,14 @@ export const apiPricingData = [
 ];
 
 export async function createApiPricingTable(userId: string) {
+  const name = 'Search AI API Pricing';
   // Create the table with columns
   const apiPricingTable = await Table.create({
-    name: 'Search AI API Pricing',
+    name,
     description: 'Comparison of pricing for various Search AI APIs',
     columns: apiPricingColumns,
     userId,
+    slug: slugify(name).toLowerCase(),
   });
 
   // Create rows

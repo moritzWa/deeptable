@@ -1,22 +1,55 @@
 import { Column } from '@shared/types';
+import slugify from 'slugify';
 import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const hardwareStartupsColumns: Column[] = [
   { name: 'company name', type: 'text', description: 'Name of the hardware startup company' },
-  { name: 'company website or crowdfunding compaign', type: 'link', description: 'URL to company website or crowdfunding page' },
+  {
+    name: 'company website or crowdfunding compaign',
+    type: 'link',
+    description: 'URL to company website or crowdfunding page',
+  },
   { name: 'year founded', type: 'number', description: 'Year the company was established' },
   { name: 'product name', type: 'text', description: 'Name of the main product' },
-  { name: 'extremely concise company description', type: 'text', description: 'Brief description of what the company does' },
-  { name: 'funding raised (usd)', type: 'text', description: 'Total funding raised by the company' },
-  { name: 'outcome', type: 'text', description: 'Current status of the company (acquired, private, bankrupt, etc.)' },
+  {
+    name: 'extremely concise company description',
+    type: 'text',
+    description: 'Brief description of what the company does',
+  },
+  {
+    name: 'funding raised (usd)',
+    type: 'text',
+    description: 'Total funding raised by the company',
+  },
+  {
+    name: 'outcome',
+    type: 'text',
+    description: 'Current status of the company (acquired, private, bankrupt, etc.)',
+  },
   { name: 'investors', type: 'text', description: 'List of investors who funded the company' },
   { name: 'founder name', type: 'text', description: 'Name of the primary founder' },
   { name: 'other co-founders', type: 'text', description: 'Names of additional co-founders' },
-  { name: 'main founder email', type: 'text', description: 'Email contact for the primary founder' },
-  { name: 'main founder x.com account link', type: 'link', description: 'Link to founder\'s X/Twitter profile' },
-  { name: 'main founder linkedin account link', type: 'link', description: 'Link to founder\'s LinkedIn profile' },
-  { name: 'main founder crunchbase account link', type: 'link', description: 'Link to founder\'s Crunchbase profile' },
+  {
+    name: 'main founder email',
+    type: 'text',
+    description: 'Email contact for the primary founder',
+  },
+  {
+    name: 'main founder x.com account link',
+    type: 'link',
+    description: "Link to founder's X/Twitter profile",
+  },
+  {
+    name: 'main founder linkedin account link',
+    type: 'link',
+    description: "Link to founder's LinkedIn profile",
+  },
+  {
+    name: 'main founder crunchbase account link',
+    type: 'link',
+    description: "Link to founder's Crunchbase profile",
+  },
 ];
 
 export const hardwareStartupsData = [
@@ -156,7 +189,7 @@ export const hardwareStartupsData = [
     'founder name': 'Ryan Grepper',
   },
   {
-    'company name': 'Daylight', 
+    'company name': 'Daylight',
     'company website or crowdfunding compaign': 'https://daylightcomputer.com/',
     'product name': 'Daylight DC1',
     'extremely concise company description': 'E-Inc tablet',
@@ -225,12 +258,14 @@ export const hardwareStartupsData = [
 ];
 
 export async function createHardwareStartupsTable(userId: string) {
+  const name = 'Consumer Hardware Startups';
   // Create the table with columns
   const hardwareStartupsTable = await Table.create({
-    name: 'Consumer Hardware Startups',
-    description: 'List of successful consumer hardware startups, their founders, and investors',
+    name,
+    description: 'List of consumer hardware startups and their products',
     columns: hardwareStartupsColumns,
     userId,
+    slug: slugify(name).toLowerCase(),
   });
 
   // Create rows

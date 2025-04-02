@@ -105,7 +105,7 @@ export const tablesRouter = router({
           description: input.description,
           columns: columns,
           userId: decoded.userId,
-          slug: slug, // Add the slug
+          slug: slug,
         })) as ITable;
 
         // Create 15 empty rows
@@ -612,17 +612,18 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       const { name, description, columns, rows } = input;
-
       const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
         userId: string;
       };
 
-      // Create the table
+      // Create the table with slug
+      const slug = slugify(name);
       const table = await TableModel.create({
         name,
         description,
         columns,
         userId: decoded.userId,
+        slug,
       });
 
       try {
@@ -656,6 +657,7 @@ export const tablesRouter = router({
         userId: table.userId,
         sharingStatus: table.sharingStatus,
         isOwner: true,
+        slug: table.slug, // Include slug in response
       };
     }),
 
@@ -710,13 +712,18 @@ export const tablesRouter = router({
       }
     }),
 
-  // Also update the getTable query to allow public access
+  // Update the getTable procedure to handle both ID and slug
   getTable: publicProcedure
     .input(
-      z.object({
-        id: z.string(),
-        token: z.string().optional(), // Token is optional for public tables
-      })
+      z
+        .object({
+          id: z.string().optional(),
+          slug: z.string().optional(),
+          token: z.string().optional(),
+        })
+        .refine((data) => data.id || data.slug, {
+          message: 'Either id or slug must be provided',
+        })
     )
     .query(async ({ input }): Promise<Table> => {
       try {
@@ -729,13 +736,24 @@ export const tablesRouter = router({
           userId = decoded.userId;
         }
 
-        const table = await TableModel.findOne({
-          _id: input.id,
+        // Build the query based on whether we have an ID or slug
+        const query: any = {
           $or: [
             { userId }, // Match if user owns the table
             { sharingStatus: 'public' }, // Match if table is public
           ].filter(Boolean), // Remove userId condition if not provided
-        });
+        };
+
+        // Add either ID or slug to the query
+        if (input.id) {
+          query._id = input.id;
+        } else if (input.slug) {
+          query.slug = input.slug;
+        } else {
+          throw new Error('Either id or slug must be provided');
+        }
+
+        const table = await TableModel.findOne(query);
 
         if (!table) {
           throw new Error('Table not found - Are you sure this table is public?');
