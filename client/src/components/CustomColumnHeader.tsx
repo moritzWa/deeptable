@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CustomColDef } from '../TablePage';
+import { CustomColDef } from './TablePage';
 import {
   ContextMenu,
   ContextMenuContent,
@@ -23,10 +23,10 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from './context-menu';
-import { Input } from './input';
-import { Label } from './label';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
+} from './ui/context-menu';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface CustomHeaderParams extends IHeaderParams {
   context: {

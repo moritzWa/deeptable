@@ -1,4 +1,4 @@
-import { smartCellRenderer } from '@/components/ui/CustomCellRenderers';
+import { smartCellRenderer } from '@/components/CustomCellRenderers';
 import { useSidebar } from '@/components/ui/sidebar';
 import { trpc } from '@/utils/trpc';
 import { ColumnState, ColumnType, Table } from '@shared/types';
@@ -25,9 +25,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
+import { CustomColumnHeader } from './CustomColumnHeader';
 import { TablePageError } from './TablePageError';
-import { CustomColumnHeader } from './ui/CustomColumnHeader';
-import { TablePageHeader } from './ui/TablePageHeader';
+import { TablePageHeader } from './TablePageHeader';
 
 // Register all enterprise modules (includes ClientSideRowModel)
 ModuleRegistry.registerModules([AllEnterpriseModule as any]);
@@ -623,6 +623,8 @@ const TablePage = () => {
           gridApi={gridRef.current?.api}
           sharingStatus={tableData.sharingStatus}
           isOwner={tableData.isOwner}
+          table={tableData}
+          rows={rowData}
         />
         <div className="flex-1 min-h-0">
           {!isGridReady && (

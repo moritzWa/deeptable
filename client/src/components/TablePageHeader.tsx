@@ -10,10 +10,12 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
 import { trpc } from '@/utils/trpc';
+import { Column, Table } from '@shared/types';
 import { CellRange, GridApi } from 'ag-grid-community';
-import { Info, Plus, Share, Sparkle } from 'lucide-react';
+import { Download, Info, Plus, Share, Sparkle } from 'lucide-react';
 import { KeyboardEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { downloadJson, exportTableData } from './TablePageHelpers';
 
 export interface TablePageHeaderProps {
   tableName: string;
@@ -25,6 +27,8 @@ export interface TablePageHeaderProps {
   gridApi: GridApi | undefined;
   sharingStatus: 'private' | 'public';
   isOwner: boolean;
+  table: Table;
+  rows: any[];
 }
 
 const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: () => void }) => {
@@ -162,6 +166,8 @@ export const TablePageHeader = ({
   gridApi,
   sharingStatus,
   isOwner,
+  table,
+  rows,
 }: TablePageHeaderProps) => {
   const token = localStorage.getItem('token');
   const trpcUtils = trpc.useContext();
@@ -383,6 +389,29 @@ export const TablePageHeader = ({
     }
   };
 
+  const handleExportTable = () => {
+    const exportData = {
+      name: table.name,
+      description: table.description,
+      columns: table.columns.map((column: Column) => ({
+        name: column.name,
+        type: column.type,
+        required: column.required || false,
+        defaultValue: column.defaultValue,
+        description: column.description,
+        columnState: column.columnState,
+      })),
+      rows: rows.map((row) => ({
+        id: row.id,
+        data: row.data as Record<string, any>,
+      })),
+      sharingStatus: table.sharingStatus,
+    };
+
+    const jsonString = exportTableData(exportData);
+    downloadJson(jsonString, `${tableName.toLowerCase()}-deeptable.json`);
+  };
+
   const handleStartEditing = () => {
     setIsEditing(true);
     setEditedName(tableName);
@@ -461,15 +490,26 @@ export const TablePageHeader = ({
             Enrich Selected Cells
           </Button>
           {isOwner && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex items-center gap-1"
-              onClick={handleShareTable}
-            >
-              <Share className="h-4 w-4" />
-              {sharingStatus === 'public' ? 'Make Private' : 'Share'}
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1"
+                onClick={handleShareTable}
+              >
+                <Share className="h-4 w-4" />
+                {sharingStatus === 'public' ? 'Make Private' : 'Share'}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-1"
+                onClick={handleExportTable}
+              >
+                <Download className="h-4 w-4" />
+                Export
+              </Button>
+            </>
           )}
           <AddRowsDropdown tableId={tableId} onSuccess={onRowsAdded} />
         </div>
