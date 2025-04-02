@@ -4,6 +4,7 @@ import { Column, IHeaderParams } from 'ag-grid-community';
 import {
   ArrowLeftToLine,
   ArrowRightToLine,
+  DollarSign,
   Eye,
   EyeOff,
   Hash,
@@ -38,6 +39,7 @@ interface CustomHeaderParams extends IHeaderParams {
     deleteColumn?: (columnName: string) => void;
     updateColumnType?: (columnName: string, newType: string) => void;
     updateColumnDescription?: (columnName: string, description: string) => void;
+    setColumnCurrency?: (columnId: string, currency: boolean) => void;
   };
   enableSorting: boolean;
   column: Column;
@@ -163,6 +165,12 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
 
   const handleDescriptionBlur = () => {
     handleDescriptionSave();
+  };
+
+  const handleSetColumnCurrency = () => {
+    if (!props.context.setColumnCurrency) return;
+    const colDef = props.column.getColDef() as CustomColDef;
+    props.context.setColumnCurrency(props.column.getColId(), !colDef.additionalTypeInformation.currency);
   };
 
   const handlePin = (direction: 'left' | 'right' | null) => {
@@ -312,6 +320,18 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
           </ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
+        {props.column.getColDef().type === 'number' && (
+          <>
+        <ContextMenuGroup>
+          <Label className='p-2'>Formatting</Label>
+          <ContextMenuItem onClick={() => handleSetColumnCurrency()} className="flex items-center gap-2">
+            <DollarSign className="h-4 w-4" />
+            Currency
+          </ContextMenuItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+          </>
+        )}
         <ContextMenuGroup>
           <ContextMenuItem onClick={() => handlePin('left')} className="flex items-center gap-2">
             <PinIcon className="h-4 w-4" />
