@@ -25,6 +25,7 @@ const columnStateSchema = z.object({
 
 // Define a Zod schema for column validation
 const columnSchema = z.object({
+  columnId: z.string().default(() => randomUUID()),
   name: z.string(),
   type: z.enum(['text', 'number', 'link', 'string', 'boolean', 'date', 'array', 'object']),
   required: z.boolean().optional(),
@@ -577,7 +578,7 @@ export const tablesRouter = router({
           rows.map((row) => {
             // Convert row data to use columnId instead of column name
             const convertedData = Object.fromEntries(
-              table.columns.map((col) => [col.columnId, row[col.name]])
+              table.columns.map((col) => [col.columnId, row[col.name] || ''])
             );
 
             return {
@@ -774,7 +775,7 @@ export const tablesRouter = router({
             input.jsonData.rows.map((row) => {
               // Convert row data to use columnId instead of column name
               const convertedData = Object.fromEntries(
-                table.columns.map((col) => [col.columnId, row.data[col.name]])
+                table.columns.map((col) => [col.columnId, row.data[col.columnId] || ''])
               );
 
               return {
