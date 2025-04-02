@@ -24,12 +24,7 @@ export const truncateUrl = (url: any): string => {
   }
 
   // Remove protocol and www
-  let displayUrl = url.replace(/^(https?:\/\/)?(www\.)?/, '');
-  // Truncate if too long
-  if (displayUrl.length > 25) {
-    displayUrl = displayUrl.substring(0, 22) + '...';
-  }
-  return displayUrl;
+  return url.replace(/^(https?:\/\/)?(www\.)?/, '');
 };
 
 // Function to check if a value should be rendered as a URL
@@ -42,7 +37,8 @@ export const smartCellRenderer = (params: ICellRendererParams) => {
   const value = params.value;
 
   // Check if the value is a URL
-  if (shouldUseUrlRenderer(value)) {
+  const useUrlRenderer = shouldUseUrlRenderer(value) || params.colDef?.type === 'link';
+  if (useUrlRenderer) {
     return LinkCellRenderer(params);
   }
 
