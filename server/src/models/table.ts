@@ -56,6 +56,10 @@ const columnSchema = new mongoose.Schema({
     default: 'text',
     required: true,
   },
+  additionalTypeInformation: {
+    type: mongoose.Schema.Types.Mixed,
+    required: true,
+  },
   required: {
     type: Boolean,
     default: false,

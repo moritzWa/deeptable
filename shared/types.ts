@@ -23,6 +23,7 @@ export interface Column {
   columnId: string;
   name: string;
   type: ColumnType;
+  additionalTypeInformation: object;
   required?: boolean;
   defaultValue?: any;
   description: string;

@@ -18,6 +18,7 @@ export const parseCSVFile = (file: File): Promise<CSVParseResult> => {
           columnId: crypto.randomUUID(), // Use browser's crypto
           name: header,
           type: 'text', // Default to text, can be enhanced with type detection
+          additionalTypeInformation: {},
           description: `Data from column: ${header}`,
           required: false,
         }));
