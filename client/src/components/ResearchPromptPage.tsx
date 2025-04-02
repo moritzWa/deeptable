@@ -1,14 +1,14 @@
+import { TableStructureEditor } from '@/components/TableStructureEditor';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { parseCSVFile } from '@/utils/csvParser';
 import { trpc } from '@/utils/trpc';
 import { Column, Table } from '@shared/types';
-import { FileImage, TableProperties } from 'lucide-react';
 import React, { KeyboardEvent, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AppLayout } from './AppLayout';
+import { TableImport } from './TableImport';
 
 // Define the expected response types to match the server
 interface SuccessResponse {
@@ -247,134 +247,24 @@ const ResearchPromptPage: React.FC = () => {
         </Card>
 
         {!prompt && (
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Import Existing Data</CardTitle>
-              <CardDescription>
-                Upload a CSV/Excel file or paste a screenshot to generate your table structure
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-1">
-                    <Card className="border-2 border-dashed">
-                      <CardContent className="p-6">
-                        <div className="text-center">
-                          <Input
-                            type="file"
-                            accept=".csv,.xlsx,.xls"
-                            onChange={handleFileUpload}
-                            className="hidden"
-                            id="file-upload"
-                          />
-                          <label htmlFor="file-upload" className="cursor-pointer">
-                            <div className="space-y-2">
-                              <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                                <TableProperties className="w-6 h-6 text-primary" />
-                              </div>
-                              <h3 className="text-sm font-medium">Upload CSV/Excel</h3>
-                              <p className="text-xs text-muted-foreground">
-                                Drag & drop or click to upload
-                              </p>
-                            </div>
-                          </label>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-
-                  <div className="col-span-1">
-                    <Card
-                      className="border-2 border-dashed"
-                      onPaste={handlePasteImage}
-                      tabIndex={0}
-                      role="button"
-                    >
-                      <CardContent className="p-6">
-                        <div className="text-center">
-                          <div className="space-y-2">
-                            <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                              <FileImage className="w-6 h-6 text-primary" />
-                            </div>
-                            <h3 className="text-sm font-medium">Paste Screenshot</h3>
-                            <p className="text-xs text-muted-foreground">
-                              Ctrl+V or Cmd+V to paste image
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </div>
-
-                {selectedFile && (
-                  <p className="text-sm text-muted-foreground">
-                    Selected file: {selectedFile.name}
-                  </p>
-                )}
-                {pastedImage && (
-                  <p className="text-sm text-muted-foreground">
-                    Screenshot received! Ready to process.
-                  </p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+          <TableImport
+            onFileUpload={handleFileUpload}
+            onPasteImage={handlePasteImage}
+            selectedFile={selectedFile}
+            pastedImage={pastedImage}
+          />
         )}
 
         {columns.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Generated Table Structure</CardTitle>
-              <CardDescription>
-                Review and edit the generated table structure below.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Table Name</label>
-                  <Input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Description</label>
-                  <Textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="w-full"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Columns</label>
-                  <div className="grid grid-cols-1 gap-2">
-                    {columns.map((column, index) => (
-                      <div key={index} className="bg-muted p-3 rounded flex flex-col">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-medium">{column.name}</span>
-                          <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                            {column.type}
-                          </span>
-                        </div>
-                        {column.description && (
-                          <span className="text-sm text-muted-foreground">
-                            {column.description}
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <Button variant="default" className="w-full mt-4" onClick={handleCreateTable}>
-                    Create Research Table
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <TableStructureEditor
+            name={name}
+            description={description}
+            columns={columns}
+            onNameChange={setName}
+            onDescriptionChange={setDescription}
+            onColumnsChange={setColumns}
+            onCreateTable={handleCreateTable}
+          />
         )}
       </div>
     </AppLayout>
