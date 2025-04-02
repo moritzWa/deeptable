@@ -62,7 +62,7 @@ export const rowsRouter = router({
           tableId: input.tableId,
           ...(userId ? { userId } : {}),
         })
-          .sort({ createdAt: -1 })
+          .sort({ index: 1 })
           .skip(input.offset || 0)
           .limit(input.limit || 50);
 
@@ -71,6 +71,7 @@ export const rowsRouter = router({
             id: row._id.toString(),
             tableId: row.tableId.toString(),
             data: row.data,
+            index: row.index,
             createdAt: row.createdAt.toISOString(),
             updatedAt: row.updatedAt.toISOString(),
             userId: row.userId,
@@ -108,6 +109,12 @@ export const rowsRouter = router({
           throw new Error('Table not found');
         }
 
+        // Get the current count of rows for the table to determine the next index
+        const rowCount = await RowModel.countDocuments({
+          tableId: input.tableId,
+          userId: decoded.userId,
+        });
+
         // Validate data against column definitions
         const validatedData: Record<string, any> = {};
 
@@ -122,6 +129,7 @@ export const rowsRouter = router({
           tableId: new mongoose.Types.ObjectId(input.tableId),
           data: validatedData,
           userId: decoded.userId,
+          index: rowCount, // Set the index to the current count
         })) as IRow;
 
         return {
@@ -163,6 +171,12 @@ export const rowsRouter = router({
           throw new Error('Table not found');
         }
 
+        // Get the current count of rows for the table to determine the starting index
+        const startIndex = await RowModel.countDocuments({
+          tableId: input.tableId,
+          userId: decoded.userId,
+        });
+
         // Create empty data object based on table columns
         const emptyData: Record<string, any> = {};
         table.columns.forEach((column) => {
@@ -172,10 +186,11 @@ export const rowsRouter = router({
         // Create array of row objects
         const rows = Array(input.count)
           .fill(null)
-          .map(() => ({
+          .map((_, i) => ({
             tableId: new mongoose.Types.ObjectId(input.tableId),
             data: { ...emptyData },
             userId: decoded.userId,
+            index: startIndex + i, // Set incremental index
           }));
 
         // Insert all rows at once
@@ -213,6 +228,12 @@ export const rowsRouter = router({
           throw new Error('Table not found');
         }
 
+        // Get the current count of rows for the table to determine the starting index
+        const startIndex = await RowModel.countDocuments({
+          tableId: input.tableId,
+          userId: decoded.userId,
+        });
+
         const entityColumn = table.columns[0];
         const entityColumnDescription = entityColumn.description!;
 
@@ -237,6 +258,7 @@ export const rowsRouter = router({
               ])
             ),
             userId: decoded.userId,
+            index: startIndex + i, // Set incremental index
           }));
 
         // Insert all rows at once
