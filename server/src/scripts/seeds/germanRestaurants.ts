@@ -112,17 +112,6 @@ export const restaurantData = [
   },
 ];
 
-// Helper function to transform old data format to new format using column IDs
-function transformDataToColumnIds(oldData: any) {
-  const newData: any = {};
-  Object.entries(oldData).forEach(([key, value]) => {
-    if (columnNameToId[key]) {
-      newData[columnNameToId[key]] = value;
-    }
-  });
-  return newData;
-}
-
 export async function createRestaurantTable(userId: string) {
   const name = 'German Restaurants in SF';
   // Create the table with columns
@@ -134,12 +123,11 @@ export async function createRestaurantTable(userId: string) {
     slug: slugify(name).toLowerCase(),
   });
 
-  // Create rows with transformed data
-  const rowPromises = restaurantData.map((oldData) => {
-    const transformedData = transformDataToColumnIds(oldData);
+  // Create rows with the data (already using column IDs)
+  const rowPromises = restaurantData.map((data) => {
     return Row.create({
       tableId: restaurantTable._id,
-      data: transformedData,
+      data: data, // Data is already using column IDs, no need to transform
       userId,
     });
   });
