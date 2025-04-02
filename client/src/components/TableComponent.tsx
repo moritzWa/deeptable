@@ -17,15 +17,16 @@ import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from '../utils/tableComponentHelpers';
 
 // Finally our custom overrides
+import { useToast } from '@/hooks/use-toast';
 import '@/styles/ag-grid-theme.css';
 import { ModuleRegistry } from 'ag-grid-community';
 import 'ag-grid-enterprise'; // This is the correct way to import enterprise features
 import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import ReactMarkdown from 'react-markdown';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CustomColumnHeader } from './CustomColumnHeader';
+import { EditableMarkdown } from './EditableMarkdown';
 import { TableComponentError } from './TableComponentError';
 import { TableComponentHeader } from './TableComponentHeader';
 
@@ -83,8 +84,9 @@ export const TableComponent = () => {
   // Reference to the AG Grid API
   const gridRef = useRef<AgGridReact>(null);
 
-  const token = localStorage.getItem('token');
+  const { toast } = useToast();
   const utils = trpc.useContext();
+  const token = localStorage.getItem('token');
 
   // FETCH DATA
   const {
@@ -170,6 +172,23 @@ export const TableComponent = () => {
     },
     onError: (error) => {
       console.error('Failed to update column description:', error);
+    },
+  });
+
+  const updateTableText = trpc.tables.updateTableText.useMutation({
+    onSuccess: () => {
+      utils.tables.getTable.invalidate();
+      toast({
+        title: 'Success',
+        description: 'Table text updated successfully',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 
@@ -597,6 +616,23 @@ export const TableComponent = () => {
     [debouncedProcessColumnStateChange]
   );
 
+  const handleUpdateText = async (type: 'before' | 'after', content: string) => {
+    if (!token) {
+      toast({
+        title: 'Error',
+        description: 'You must be logged in to edit the table text',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    await updateTableText.mutateAsync({
+      token,
+      tableId: tableData?.id || '',
+      [type === 'before' ? 'beforeTableText' : 'afterTableText']: content,
+    });
+  };
+
   if (error) {
     return <TableComponentError error={error} />;
   }
@@ -624,8 +660,14 @@ export const TableComponent = () => {
         </Helmet>
       )}
       {tableData.sharingStatus === 'public' && tableData.beforeTableText && (
-        <div className="prose max-w-none mb-8">
-          <ReactMarkdown>{tableData.beforeTableText}</ReactMarkdown>
+        <div className="m-auto prose max-w-4xl mb-8">
+          <EditableMarkdown
+            content={tableData.beforeTableText}
+            onSave={(content) => handleUpdateText('before', content)}
+            isEditable={tableData.isOwner}
+            className="mb-8"
+            placeholder="Add description above the table (supports markdown)..."
+          />
         </div>
       )}
       <div className="w-full flex flex-col">
@@ -675,13 +717,18 @@ export const TableComponent = () => {
             />
           </div>
         </div>
-
-        {tableData.sharingStatus === 'public' && tableData.afterTableText && (
-          <div className="prose max-w-none mt-8">
-            <ReactMarkdown>{tableData.afterTableText}</ReactMarkdown>
-          </div>
-        )}
       </div>
+      {tableData.sharingStatus === 'public' && tableData.afterTableText && (
+        <div className="m-auto prose max-w-4xl mb-8">
+          <EditableMarkdown
+            content={tableData.afterTableText}
+            onSave={(content) => handleUpdateText('after', content)}
+            isEditable={tableData.isOwner}
+            className="mt-8"
+            placeholder="Add description below the table (supports markdown)..."
+          />
+        </div>
+      )}
     </>
   );
 };
