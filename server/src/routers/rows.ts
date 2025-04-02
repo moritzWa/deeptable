@@ -113,9 +113,8 @@ export const rowsRouter = router({
 
         // Only include data for columns that exist in the table
         table.columns.forEach((column) => {
-          const columnName = typeof column === 'string' ? column : column.name;
-          if (input.data.hasOwnProperty(columnName)) {
-            validatedData[columnName] = input.data[columnName];
+          if (input.data.hasOwnProperty(column.columnId)) {
+            validatedData[column.columnId] = input.data[column.columnId];
           }
         });
 
@@ -167,8 +166,7 @@ export const rowsRouter = router({
         // Create empty data object based on table columns
         const emptyData: Record<string, any> = {};
         table.columns.forEach((column) => {
-          const columnName = typeof column === 'string' ? column : column.name;
-          emptyData[columnName] = null;
+          emptyData[column.columnId] = null;
         });
 
         // Create array of row objects
@@ -215,13 +213,13 @@ export const rowsRouter = router({
           throw new Error('Table not found');
         }
 
-        const entityColumnName = table.columns[0].name;
-        const entityColumnDescription = table.columns[0].description!;
+        const entityColumn = table.columns[0];
+        const entityColumnDescription = entityColumn.description!;
 
         const generatedRows = await generateRows(
           table.name,
           table.description!,
-          entityColumnName,
+          entityColumn.name,
           entityColumnDescription
         );
 
@@ -232,8 +230,10 @@ export const rowsRouter = router({
             tableId: new mongoose.Types.ObjectId(input.tableId),
             data: Object.fromEntries(
               table.columns.map((column) => [
-                column.name,
-                column.name === entityColumnName ? generatedRows[i % generatedRows.length] : null,
+                column.columnId,
+                column.columnId === entityColumn.columnId
+                  ? generatedRows[i % generatedRows.length]
+                  : null,
               ])
             ),
             userId: decoded.userId,

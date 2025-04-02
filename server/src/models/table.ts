@@ -42,6 +42,10 @@ const columnStateSchema = new mongoose.Schema(
 
 // Column schema for better type support
 const columnSchema = new mongoose.Schema({
+  columnId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -121,6 +125,15 @@ tableSchema.pre('save', async function (next) {
 
     this.slug = slug;
   }
+
+  // Check for duplicate column IDs within the same table
+  const columnIds = this.columns.map((col) => col.columnId);
+  const uniqueColumnIds = new Set(columnIds);
+  if (columnIds.length !== uniqueColumnIds.size) {
+    next(new Error('Duplicate column IDs are not allowed within the same table'));
+    return;
+  }
+
   next();
 });
 

@@ -394,6 +394,7 @@ export const TablePageHeader = ({
       name: table.name,
       description: table.description,
       columns: table.columns.map((column: Column) => ({
+        columnId: column.columnId,
         name: column.name,
         type: column.type,
         required: column.required || false,

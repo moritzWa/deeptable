@@ -204,7 +204,7 @@ const TablePage = () => {
 
     // Map the column state to our data structure
     const columnStates = columnState.map((state: AgGridColumnState, index: number) => ({
-      name: state.colId,
+      columnId: state.colId,
       columnState: {
         colId: state.colId,
         hide: state.hide,
@@ -250,7 +250,7 @@ const TablePage = () => {
 
         const colDef: CustomColDef = {
           headerName: column.name,
-          field: `data.${column.name}`,
+          field: `data.${column.columnId}`,
           sortable: true,
           filter: true,
           resizable: true,
@@ -262,7 +262,7 @@ const TablePage = () => {
           suppressHeaderMenuButton: true,
           suppressHeaderContextMenu: true,
           ...columnStateProps,
-          colId: column.name,
+          colId: column.columnId,
           type: column.type || 'text',
           description: column.description,
           valueParser: (params) => {
@@ -287,12 +287,12 @@ const TablePage = () => {
     () => ({
       tableId: id,
       isOwner: tableData?.isOwner ?? false,
-      updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => {
+      updateColumnState: (columnStates: { columnId: string; columnState: ColumnState }[]) => {
         if (!token) return;
 
-        // Check if any column names are being changed
-        const hasNameChanges = columnStates.some(
-          (cs) => cs.columnState.colId && cs.columnState.colId !== cs.name
+        // Check if any column IDs are being changed
+        const hasIdChanges = columnStates.some(
+          (cs) => cs.columnState.colId && cs.columnState.colId !== cs.columnId
         );
 
         updateColumnStateMutation.mutate(
@@ -303,8 +303,7 @@ const TablePage = () => {
           },
           {
             onSuccess: () => {
-              if (hasNameChanges) {
-                // Refetch both table and row data when column names change
+              if (hasIdChanges) {
                 refetch();
                 utils.rows.getRows.invalidate({ token, tableId: id });
               }
@@ -341,32 +340,32 @@ const TablePage = () => {
           description: `Column for ${newColumnName}`,
         });
       },
-      deleteColumn: (columnName: string) => {
+      deleteColumn: (columnId: string) => {
         if (!token || !id) return;
 
         deleteColumnMutation.mutate({
           token,
           tableId: id,
-          columnName,
+          columnId,
         });
       },
-      updateColumnType: (columnName: string, newType: ColumnType) => {
+      updateColumnType: (columnId: string, newType: ColumnType) => {
         if (!token || !id) return;
 
         updateColumnTypeMutation.mutate({
           token,
           tableId: id,
-          columnName,
+          columnId,
           type: newType,
         });
       },
-      updateColumnDescription: (columnName: string, description: string) => {
+      updateColumnDescription: (columnId: string, description: string) => {
         if (!token || !id) return;
 
         updateColumnDescriptionMutation.mutate({
           token,
           tableId: id,
-          columnName,
+          columnId,
           description,
         });
       },
@@ -431,14 +430,12 @@ const TablePage = () => {
       return;
     }
 
-    // Extract the field name from the path (e.g., 'data.name' -> 'name')
-    const fieldName = colDef.field.replace('data.', '');
+    // Extract the columnId from the path (e.g., 'data.columnId' -> 'columnId')
+    const columnId = colDef.field.replace('data.', '');
 
-    // Create updated data object
     const updatedData = { ...data.data };
-    updatedData[fieldName] = event.newValue;
+    updatedData[columnId] = event.newValue;
 
-    // Call the update mutation
     updateRowMutation.mutate({
       token: token || '',
       id: data.id,
@@ -499,7 +496,7 @@ const TablePage = () => {
       .map((col) => {
         const colState = col.columnState!;
         return {
-          colId: col.name,
+          colId: col.columnId,
           hide: nullToUndefined(colState.hide),
           pinned: colState.pinned === null ? undefined : colState.pinned,
           sort: colState.sort === null ? undefined : colState.sort,
@@ -526,7 +523,7 @@ const TablePage = () => {
   const createInitialColumnDefs = (columns: any[]) => {
     return columns.map((column) => ({
       headerName: column.name,
-      field: `data.${column.name}`,
+      field: `data.${column.columnId}`,
       sortable: true,
       filter: true,
       resizable: true,
@@ -535,7 +532,7 @@ const TablePage = () => {
       suppressSizeToFit: true,
       suppressHeaderMenuButton: true,
       suppressHeaderContextMenu: true,
-      colId: column.name,
+      colId: column.columnId,
       type: column.type || 'text',
       description: column.description,
       valueParser: (params: any) => {
