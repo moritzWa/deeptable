@@ -620,7 +620,7 @@ export const TableComponent = () => {
           <link rel="canonical" href={`${window.location.origin}/t/${tableData.slug}`} />
         </Helmet>
       )}
-      <div className="h-full w-full flex flex-col">
+      <div className="w-full flex flex-col">
         <TableComponentHeader
           tableName={tableData.name}
           tableDescription={tableData.description || ''}
@@ -638,11 +638,11 @@ export const TableComponent = () => {
           table={tableData}
           rows={rowData}
         />
-        <div className="flex-1 h-full min-h-0">
+        <div className="min-h-0">
           {!isGridReady && (
             <div className="flex justify-center items-center h-full">Loading table...</div>
           )}
-          <div className={`ag-theme-alpine h-full w-full ${!isGridReady ? 'invisible' : ''}`}>
+          <div className={`ag-theme-alpine w-full ${!isGridReady ? 'invisible' : ''}`}>
             <AgGridReact
               ref={gridRef}
               rowData={rowData}
@@ -662,6 +662,7 @@ export const TableComponent = () => {
               context={gridContext}
               cellSelection={cellSelection}
               onRangeSelectionChanged={onRangeSelectionChanged}
+              domLayout="autoHeight"
             />
           </div>
         </div>
