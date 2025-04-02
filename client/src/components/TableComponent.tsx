@@ -277,6 +277,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
                   return a - b;
                 }
               : undefined,
+          headerClass: 'py-1',
           filter: true,
           resizable: true,
           editable: true,
@@ -555,6 +556,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       editable: true,
       wrapHeaderText: true,
       autoHeaderHeight: true,
+      headerClass: 'py-1',
       cellRenderer: smartCellRenderer,
       suppressSizeToFit: true,
       suppressHeaderMenuButton: true,
