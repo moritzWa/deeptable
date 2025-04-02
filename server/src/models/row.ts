@@ -2,6 +2,7 @@ import mongoose, { Document } from 'mongoose';
 
 export interface IRow extends Document {
   tableId: mongoose.Types.ObjectId;
+  index: number;
   data: Record<string, any>; // Flexible schema to store any column data
   userId: string;
   createdAt: Date;
@@ -16,6 +17,10 @@ const rowSchema = new mongoose.Schema(
       ref: 'Table',
       required: true,
       index: true, // Index for faster queries by tableId
+    },
+    index: {
+      type: Number,
+      required: true,
     },
     data: {
       type: mongoose.Schema.Types.Mixed,
