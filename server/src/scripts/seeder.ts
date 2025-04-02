@@ -2,10 +2,9 @@ import mongoose from 'mongoose';
 import { User } from '../models/user';
 import { createHardwareStartupsTable } from './seeds/consumerHardwareStartups';
 import { createRestaurantTable } from './seeds/germanRestaurants';
+import { createReactTableLibrariesTable } from './seeds/reactTableLibraries';
+import { createSciFiMoviesTable } from './seeds/sciFiMovies';
 import { createApiPricingTable } from './seeds/searchAiApiPricing';
-// import { createReactTableLibrariesTable } from './seeds/reactTableLibraries';
-// import { createSciFiMoviesTable } from './seeds/sciFiMovies';
-// import { createApiPricingTable } from './seeds/searchAiApiPricing';
 
 // Connect to MongoDB
 const connectDB = async () => {
@@ -36,14 +35,14 @@ const seedDatabase = async () => {
     const searchAiApiPricingTable = await createApiPricingTable(userId);
     const consumerHardwareStartupsTable = await createHardwareStartupsTable(userId);
 
-    // const sciFiMoviesTable = await createSciFiMoviesTable(userId);
-    // const reactTableLibrariesTable = await createReactTableLibrariesTable(userId);
+    const sciFiMoviesTable = await createSciFiMoviesTable(userId);
+    const reactTableLibrariesTable = await createReactTableLibrariesTable(userId);
 
     console.log(`Created ${restaurantTable.name}`);
     console.log(`Created ${searchAiApiPricingTable.name}`);
     console.log(`Created ${consumerHardwareStartupsTable.name}`);
-    // console.log(`Created ${sciFiMoviesTable.name}`);
-    // console.log(`Created ${reactTableLibrariesTable.name}`);
+    console.log(`Created ${sciFiMoviesTable.name}`);
+    console.log(`Created ${reactTableLibrariesTable.name}`);
 
     console.log('Database seeded successfully!');
   } catch (error: any) {
