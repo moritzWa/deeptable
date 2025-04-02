@@ -783,4 +783,69 @@ export const tablesRouter = router({
         throw new Error('Failed to get table - Are you sure you have access to this table?');
       }
     }),
+
+  createTableFromJSON: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        jsonData: z.object({
+          name: z.string(),
+          description: z.string(),
+          columns: z.array(columnSchema),
+          rows: z.array(z.record(z.any())).optional(),
+          sharingStatus: z.enum(['private', 'public']).optional(),
+        }),
+      })
+    )
+    .mutation(async ({ input }): Promise<Table> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        const slug = slugify(input.jsonData.name);
+        const table = await TableModel.create({
+          name: input.jsonData.name,
+          description: input.jsonData.description,
+          columns: input.jsonData.columns,
+          userId: decoded.userId,
+          slug,
+          sharingStatus: input.jsonData.sharingStatus || 'private',
+        });
+
+        // Create rows if they exist in the JSON
+        if (input.jsonData.rows?.length) {
+          await Row.insertMany(
+            input.jsonData.rows.map((row) => ({
+              tableId: table._id,
+              userId: decoded.userId,
+              data: row.data,
+            }))
+          );
+        }
+
+        return {
+          id: table._id.toString(),
+          name: table.name,
+          description: table.description,
+          columns: table.columns.map((col) => ({
+            name: col.name,
+            type: col.type,
+            required: col.required || false,
+            defaultValue: col.defaultValue,
+            description: col.description,
+            columnState: col.columnState,
+          })),
+          createdAt: table.createdAt.toISOString(),
+          updatedAt: table.updatedAt.toISOString(),
+          userId: table.userId,
+          sharingStatus: table.sharingStatus,
+          isOwner: true,
+          slug: table.slug,
+        };
+      } catch (error) {
+        console.error('Create table from JSON error:', error);
+        throw new Error('Failed to create table from JSON');
+      }
+    }),
 });

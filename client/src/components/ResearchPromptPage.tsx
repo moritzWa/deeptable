@@ -76,6 +76,15 @@ const ResearchPromptPage: React.FC = () => {
     },
   });
 
+  const createTableFromJSONMutation = trpc.tables.createTableFromJSON.useMutation({
+    onSuccess: (data: Table) => {
+      navigate(`/tables/${data.id}`);
+    },
+    onError: (error: any) => {
+      setError(error.message || 'Failed to create table from JSON. Please try again.');
+    },
+  });
+
   // Parse query parameter and set prompt
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -211,6 +220,24 @@ const ResearchPromptPage: React.FC = () => {
     }
   };
 
+  const handleJSONUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !token) return;
+
+    try {
+      const jsonContent = await file.text();
+      const jsonData = JSON.parse(jsonContent);
+
+      await createTableFromJSONMutation.mutateAsync({
+        token,
+        jsonData,
+      });
+    } catch (error) {
+      setError("Failed to process JSON file. Please ensure it's a valid DeepTable export.");
+      console.error('JSON processing error:', error);
+    }
+  };
+
   return (
     <AppLayout>
       <div className="max-w-4xl mx-auto p-6">
@@ -250,6 +277,7 @@ const ResearchPromptPage: React.FC = () => {
           <TableImport
             onFileUpload={handleFileUpload}
             onPasteImage={handlePasteImage}
+            onJSONUpload={handleJSONUpload}
             selectedFile={selectedFile}
             pastedImage={pastedImage}
           />

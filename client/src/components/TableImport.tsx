@@ -1,10 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { FileImage, TableProperties } from 'lucide-react';
+import { FileImage, FileJson, TableProperties } from 'lucide-react';
 
 interface TableImportProps {
   onFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onPasteImage: (e: React.ClipboardEvent) => void;
+  onJSONUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   selectedFile: File | null;
   pastedImage: string | null;
 }
@@ -12,6 +13,7 @@ interface TableImportProps {
 export const TableImport: React.FC<TableImportProps> = ({
   onFileUpload,
   onPasteImage,
+  onJSONUpload,
   selectedFile,
   pastedImage,
 }) => {
@@ -20,12 +22,12 @@ export const TableImport: React.FC<TableImportProps> = ({
       <CardHeader>
         <CardTitle>Import Existing Data</CardTitle>
         <CardDescription>
-          Upload a CSV/Excel file or paste a screenshot to generate your table structure
+          Upload a CSV/Excel file, paste a screenshot, or import a DeepTable JSON file
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div className="col-span-1">
               <Card className="border-2 border-dashed">
                 <CardContent className="p-6">
@@ -71,6 +73,31 @@ export const TableImport: React.FC<TableImportProps> = ({
                         Ctrl+V or Cmd+V to paste image
                       </p>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="col-span-1">
+              <Card className="border-2 border-dashed">
+                <CardContent className="p-6">
+                  <div className="text-center">
+                    <Input
+                      type="file"
+                      accept=".json"
+                      onChange={onJSONUpload}
+                      className="hidden"
+                      id="json-upload"
+                    />
+                    <label htmlFor="json-upload" className="cursor-pointer">
+                      <div className="space-y-2">
+                        <div className="mx-auto w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <FileJson className="w-6 h-6 text-primary" />
+                        </div>
+                        <h3 className="text-sm font-medium">Import JSON</h3>
+                        <p className="text-xs text-muted-foreground">Upload DeepTable JSON file</p>
+                      </div>
+                    </label>
                   </div>
                 </CardContent>
               </Card>
