@@ -31,6 +31,10 @@ const columnSchema = z.object({
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
   description: z.string(),
+  additionalTypeInformation: z.object({
+    currency: z.boolean().optional(),
+    decimals: z.number().int().nonnegative().optional(),
+  }),
   columnState: columnStateSchema.optional(),
 });
 
@@ -65,6 +69,7 @@ export const tablesRouter = router({
             columnId: col.columnId,
             name: col.name,
             type: col.type,
+            additionalTypeInformation: col.additionalTypeInformation,
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
@@ -140,6 +145,7 @@ export const tablesRouter = router({
             columnId: col.columnId,
             name: col.name,
             type: col.type,
+            additionalTypeInformation: col.additionalTypeInformation,
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
@@ -201,6 +207,7 @@ export const tablesRouter = router({
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
+            additionalTypeInformation: col.additionalTypeInformation,
             columnState: col.columnState,
           })),
           createdAt: table.createdAt.toISOString(),
@@ -345,6 +352,7 @@ export const tablesRouter = router({
           type: 'text' as ColumnType,
           required: false,
           description: input.description,
+          additionalTypeInformation: {},
           columnState: {
             colId: randomUUID(),
             sortIndex: input.position === 'left' ? refSortIndex : refSortIndex + 1,
@@ -468,6 +476,44 @@ export const tablesRouter = router({
         throw new Error('Failed to update column type');
       }
     }),
+
+  setColumnCurrency: publicProcedure
+  .input(
+    z.object({
+      token: z.string(),
+      tableId: z.string(),
+      columnId: z.string(),
+      currency: z.boolean(),
+    })
+  ).mutation(async ({ input }): Promise<{ success: boolean }> => {
+    try {
+      const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+        userId: string;
+      };
+
+      const result = await TableModel.updateOne(
+        {
+          _id: input.tableId,
+          userId: decoded.userId,
+          'columns.columnId': input.columnId,
+        },
+        {
+          $set: {
+            'columns.$.additionalTypeInformation.currency': input.currency,
+          }
+        }
+      );
+
+      if (result.matchedCount === 0) {
+        throw new Error('Table or column not found');
+      }
+
+      return { success: true };
+    } catch (error) {
+      console.error('Set column currency error:', error);
+      throw new Error('Failed to set column currency');
+    }
+  }),
 
   updateColumnDescription: publicProcedure
     .input(
@@ -601,6 +647,7 @@ export const tablesRouter = router({
           required: col.required || false,
           defaultValue: col.defaultValue,
           description: col.description,
+          additionalTypeInformation: col.additionalTypeInformation,
           columnState: col.columnState,
         })),
         createdAt: table.createdAt.toISOString(),
@@ -646,6 +693,7 @@ export const tablesRouter = router({
             columnId: col.columnId,
             name: col.name,
             type: col.type,
+            additionalTypeInformation: col.additionalTypeInformation,
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
@@ -719,6 +767,7 @@ export const tablesRouter = router({
             columnId: col.columnId,
             name: col.name,
             type: col.type,
+            additionalTypeInformation: col.additionalTypeInformation,
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
@@ -795,6 +844,7 @@ export const tablesRouter = router({
             columnId: col.columnId,
             name: col.name,
             type: col.type,
+            additionalTypeInformation: col.additionalTypeInformation,
             required: col.required || false,
             defaultValue: col.defaultValue,
             description: col.description,
