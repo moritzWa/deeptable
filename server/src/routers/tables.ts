@@ -116,7 +116,7 @@ export const tablesRouter = router({
         // Create 15 empty rows
         const emptyRows = Array(15)
           .fill(null)
-          .map(() => {
+          .map((_, index) => {
             const rowData: Record<string, any> = {};
             // Initialize each column with an empty value
             table.columns.forEach((col) => {
@@ -126,6 +126,7 @@ export const tablesRouter = router({
             return {
               tableId: table._id,
               userId: decoded.userId,
+              index,
               data: rowData,
             };
           });
@@ -577,9 +578,10 @@ export const tablesRouter = router({
       try {
         // Create rows with data using columnId
         await Row.insertMany(
-          rows.map((rowData) => ({
+          rows.map((rowData, index) => ({
             tableId: table._id,
             userId: decoded.userId,
+            index,
             data: Object.fromEntries(
               table.columns.map((col) => [col.columnId, rowData[col.columnId] || ''])
             ),
@@ -751,6 +753,7 @@ export const tablesRouter = router({
             .array(
               z.object({
                 data: z.record(z.any()),
+                index: z.number(),
               })
             )
             .optional(),
@@ -780,6 +783,7 @@ export const tablesRouter = router({
             input.jsonData.rows.map((row) => ({
               tableId: table._id,
               userId: decoded.userId,
+              index: row.index,
               data: Object.fromEntries(
                 table.columns.map((col) => [col.columnId, row.data[col.columnId] || ''])
               ),
