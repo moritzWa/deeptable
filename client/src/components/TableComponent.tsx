@@ -70,6 +70,18 @@ function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
 
+// Add this button component at the top of the file
+function AddTextButton({ onClick, text }: { onClick: () => void; text: string }) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full py-4 border-2 border-dashed border-muted-foreground/20 rounded-lg text-muted-foreground hover:border-muted-foreground/40 hover:text-muted-foreground/80 transition-colors"
+    >
+      + {text}
+    </button>
+  );
+}
+
 export const TableComponent = () => {
   const { id, slug } = useParams<{ id?: string; slug?: string }>();
   const navigate = useNavigate();
@@ -659,15 +671,24 @@ export const TableComponent = () => {
           <link rel="canonical" href={`${window.location.origin}/t/${tableData.slug}`} />
         </Helmet>
       )}
-      {tableData.sharingStatus === 'public' && tableData.beforeTableText && (
+      {tableData.sharingStatus === 'public' && (
         <div className="m-auto prose max-w-4xl mb-8">
-          <EditableMarkdown
-            content={tableData.beforeTableText}
-            onSave={(content) => handleUpdateText('before', content)}
-            isEditable={tableData.isOwner}
-            className="mb-8"
-            placeholder="Add description above the table (supports markdown)..."
-          />
+          {tableData.beforeTableText ? (
+            <EditableMarkdown
+              content={tableData.beforeTableText}
+              onSave={(content) => handleUpdateText('before', content)}
+              isEditable={tableData.isOwner}
+              className="mb-8"
+              placeholder="Add description above the table (supports markdown)..."
+            />
+          ) : (
+            tableData.isOwner && (
+              <AddTextButton
+                onClick={() => handleUpdateText('before', 'Add your text here')}
+                text="Add text above table"
+              />
+            )
+          )}
         </div>
       )}
       <div className="w-full flex flex-col">
@@ -718,15 +739,24 @@ export const TableComponent = () => {
           </div>
         </div>
       </div>
-      {tableData.sharingStatus === 'public' && tableData.afterTableText && (
+      {tableData.sharingStatus === 'public' && (
         <div className="m-auto prose max-w-4xl mb-8">
-          <EditableMarkdown
-            content={tableData.afterTableText}
-            onSave={(content) => handleUpdateText('after', content)}
-            isEditable={tableData.isOwner}
-            className="mt-8"
-            placeholder="Add description below the table (supports markdown)..."
-          />
+          {tableData.afterTableText ? (
+            <EditableMarkdown
+              content={tableData.afterTableText}
+              onSave={(content) => handleUpdateText('after', content)}
+              isEditable={tableData.isOwner}
+              className="mt-8"
+              placeholder="Add description below the table (supports markdown)..."
+            />
+          ) : (
+            tableData.isOwner && (
+              <AddTextButton
+                onClick={() => handleUpdateText('after', 'Add your text here')}
+                text="Add text below table"
+              />
+            )
+          )}
         </div>
       )}
     </>
