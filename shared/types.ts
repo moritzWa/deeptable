@@ -3,7 +3,7 @@ export type ColumnType = 'text' | 'number' | 'link';
 
 // Column state interface for AG Grid state persistence
 export interface ColumnState {
-  colId?: string;
+  colId: string;
   width?: number;
   hide?: boolean;
   pinned?: 'left' | 'right' | null;

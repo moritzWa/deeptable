@@ -201,7 +201,7 @@ export const columnsRouter = router({
       z
         .object({
           tableId: z.string(),
-          columnNames: z.array(z.string()),
+          columnIds: z.array(z.string()),
           startRowId: z.string(),
           endRowId: z.string(),
         })
@@ -247,10 +247,10 @@ export const columnsRouter = router({
           const updatedData = { ...row.data };
 
           // Process each selected column for this row
-          for (const columnName of input.columnNames) {
-            const column = table.columns.find((col) => col.name === columnName);
+          for (const columnId of input.columnIds) {
+            const column = table.columns.find((col) => col.columnId === columnId);
             if (!column) {
-              console.warn(`Column ${columnName} not found, skipping`);
+              console.warn(`Column ${columnId} not found, skipping`);
               continue;
             }
 
@@ -270,8 +270,8 @@ export const columnsRouter = router({
               llmResults
             );
 
-            // Update the cell value in our data object
-            updatedData[column.name] = llmResults;
+            // Update the cell value in our data object using columnId
+            updatedData[column.columnId] = llmResults;
           }
 
           // Update the entire row data object at once
@@ -293,7 +293,7 @@ export const columnsRouter = router({
     .input(
       z.object({
         tableId: z.string(),
-        columnName: z.string(),
+        columnId: z.string(),
         rowId: z.string(),
       })
     )
@@ -307,7 +307,7 @@ export const columnsRouter = router({
         }
 
         // Find the column
-        const column = table.columns.find((col) => col.name === input.columnName);
+        const column = table.columns.find((col) => col.columnId === input.columnId);
         if (!column) {
           throw new Error('Column not found');
         }
@@ -338,9 +338,9 @@ export const columnsRouter = router({
           llmResults
         );
 
-        // Update just this cell in the row
+        // Update just this cell in the row using columnId
         await Row.findByIdAndUpdate(row._id, {
-          $set: { [`data.${column.name}`]: llmResults },
+          $set: { [`data.${column.columnId}`]: llmResults },
         });
 
         return llmResults;

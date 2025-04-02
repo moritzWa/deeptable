@@ -1,3 +1,4 @@
+import { trpc } from '@/utils/trpc';
 import { ColumnState } from '@shared/types';
 import { Column, IHeaderParams } from 'ag-grid-community';
 import {
@@ -32,7 +33,7 @@ interface CustomHeaderParams extends IHeaderParams {
   context: {
     tableId: string;
     isOwner: boolean;
-    updateColumnState: (columnStates: { name: string; columnState: ColumnState }[]) => void;
+    updateColumnState: (columnStates: { columnId: string; columnState: ColumnState }[]) => void;
     addColumn?: (position: 'left' | 'right', relativeTo: string) => void;
     deleteColumn?: (columnName: string) => void;
     updateColumnType?: (columnName: string, newType: string) => void;
@@ -52,6 +53,14 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   });
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  const utils = trpc.useContext();
+
+  const updateColumnNameMutation = trpc.tables.updateColumnName.useMutation({
+    onSuccess: () => {
+      utils.tables.getTable.invalidate();
+    },
+  });
 
   // Update local state when displayName or description changes
   useEffect(() => {
@@ -78,6 +87,16 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
 
     if (columnName === props.displayName) return;
 
+    // Update the column name in the database
+    if (token) {
+      updateColumnNameMutation.mutate({
+        token,
+        tableId: props.context.tableId,
+        columnId: props.column.getColId(),
+        name: columnName,
+      });
+    }
+
     // Get current column state
     const column = props.column;
     if (!column) return;
@@ -93,10 +112,10 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     // Update column state with new name
     props.context.updateColumnState([
       {
-        name: props.column.getColId(),
+        columnId: props.column.getColId(),
         columnState: {
           ...currentState,
-          colId: columnName,
+          colId: props.column.getColId(), // Keep the original colId
         },
       },
     ]);

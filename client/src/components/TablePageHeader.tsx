@@ -234,7 +234,7 @@ export const TablePageHeader = ({
 
     fillCellMutation.mutate({
       tableId,
-      columnNames: columnNames.filter((name) => name !== undefined) as string[],
+      columnIds: columnNames.filter((name) => name !== undefined) as string[],
       startRowId,
       endRowId,
     });
@@ -328,7 +328,7 @@ export const TablePageHeader = ({
         const promise = fillSingleCellMutation
           .mutateAsync({
             tableId,
-            columnName,
+            columnId: columnName,
             rowId,
           })
           .catch((error) => {

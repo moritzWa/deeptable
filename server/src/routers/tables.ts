@@ -344,6 +344,7 @@ export const tablesRouter = router({
           required: false,
           description: input.description,
           columnState: {
+            colId: randomUUID(),
             sortIndex: input.position === 'left' ? refSortIndex : refSortIndex + 1,
           },
         };
@@ -355,7 +356,9 @@ export const tablesRouter = router({
         // Update sortIndexes for all columns after the insertion point
         table.columns.forEach((col, index) => {
           if (!col.columnState) {
-            col.columnState = {};
+            col.columnState = {
+              colId: col.columnId,
+            };
           }
 
           // For columns after the insertion point, increment their sortIndex
@@ -363,10 +366,12 @@ export const tablesRouter = router({
             index !== insertIndex &&
             (input.position === 'left' ? index >= refColumnIndex : index > refColumnIndex)
           ) {
-            col.columnState.sortIndex = (col.columnState.sortIndex ?? index) + 1;
+            if (col.columnState) {
+              col.columnState.sortIndex = (col.columnState.sortIndex ?? index) + 1;
+            }
           }
           // For columns before the insertion point, keep their current sortIndex or use their array index
-          else if (index !== insertIndex) {
+          else if (index !== insertIndex && col.columnState) {
             col.columnState.sortIndex = col.columnState.sortIndex ?? index;
           }
         });
@@ -498,6 +503,45 @@ export const tablesRouter = router({
       } catch (error) {
         console.error('Update column description error:', error);
         throw new Error('Failed to update column description');
+      }
+    }),
+
+  updateColumnName: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnId: z.string(),
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        const result = await TableModel.updateOne(
+          {
+            _id: input.tableId,
+            userId: decoded.userId,
+            'columns.columnId': input.columnId,
+          },
+          {
+            $set: {
+              'columns.$.name': input.name,
+            },
+          }
+        );
+
+        if (result.matchedCount === 0) {
+          throw new Error('Table or column not found');
+        }
+
+        return { success: true };
+      } catch (error) {
+        console.error('Update column name error:', error);
+        throw new Error('Failed to update column name');
       }
     }),
 
