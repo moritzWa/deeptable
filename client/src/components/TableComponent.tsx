@@ -14,7 +14,7 @@ import {
   SortChangedEvent,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { convertColumnStateToAgGridProps } from './TablePageHelpers';
+import { convertColumnStateToAgGridProps } from '../utils/tableComponentHelpers';
 
 // Finally our custom overrides
 import '@/styles/ag-grid-theme.css';
@@ -24,10 +24,9 @@ import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AppLayout } from './AppLayout';
 import { CustomColumnHeader } from './CustomColumnHeader';
-import { TablePageError } from './TablePageError';
-import { TablePageHeader } from './TablePageHeader';
+import { TableComponentError } from './TableComponentError';
+import { TableComponentHeader } from './TableComponentHeader';
 
 // Register all enterprise modules (includes ClientSideRowModel)
 ModuleRegistry.registerModules([AllEnterpriseModule as any]);
@@ -69,7 +68,7 @@ function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
 
-const TablePage = () => {
+export const TableComponent = () => {
   const { id, slug } = useParams<{ id?: string; slug?: string }>();
   const navigate = useNavigate();
   const sidebar = useSidebar();
@@ -598,25 +597,31 @@ const TablePage = () => {
   );
 
   if (error) {
-    return <TablePageError error={error} />;
+    return <TableComponentError error={error} />;
   }
 
   if (!tableData && !isTableLoading) {
-    return <TablePageError error="Table not found" />;
+    return <TableComponentError error="Table not found" />;
   }
 
   if (!tableData) return null;
 
   return (
-    <AppLayout>
+    <>
       {tableData && (
         <Helmet>
           <title>{`${tableData.name} - Deep Table`}</title>
           <meta name="description" content={tableData.description || ''} />
+          <meta property="og:title" content={`${tableData.name} - Deep Table`} />
+          <meta property="og:description" content={tableData.description || ''} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={window.location.href} />
+          {tableData.sharingStatus !== 'public' && <meta name="robots" content="noindex" />}
+          <link rel="canonical" href={`${window.location.origin}/t/${tableData.slug}`} />
         </Helmet>
       )}
       <div className="h-full w-full flex flex-col">
-        <TablePageHeader
+        <TableComponentHeader
           tableName={tableData.name}
           tableDescription={tableData.description || ''}
           tableId={tableData.id}
@@ -633,7 +638,7 @@ const TablePage = () => {
           table={tableData}
           rows={rowData}
         />
-        <div className="flex-1 min-h-0">
+        <div className="flex-1 h-full min-h-0">
           {!isGridReady && (
             <div className="flex justify-center items-center h-full">Loading table...</div>
           )}
@@ -661,8 +666,6 @@ const TablePage = () => {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </>
   );
 };
-
-export default TablePage;

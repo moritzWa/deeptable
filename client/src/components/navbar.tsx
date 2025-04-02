@@ -15,6 +15,12 @@ export function Navbar() {
       >
         Blog
       </Link> */}
+      <Link
+        to="/tables"
+        className={`hover:text-primary transition-colors ${location.pathname === '/tables' ? 'text-primary font-medium' : ''}`}
+      >
+        Public Tables
+      </Link>
 
       {isAuthenticated ? (
         <Link

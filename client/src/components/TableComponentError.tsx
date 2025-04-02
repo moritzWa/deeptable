@@ -3,7 +3,7 @@ import { AppLayout } from './AppLayout';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
-export const TablePageError = ({ error }: { error: string }) => {
+export const TableComponentError = ({ error }: { error: string }) => {
   const navigate = useNavigate();
   return (
     <AppLayout>

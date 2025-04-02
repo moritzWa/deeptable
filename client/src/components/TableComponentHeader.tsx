@@ -15,9 +15,9 @@ import { CellRange, GridApi } from 'ag-grid-community';
 import { Download, Info, Plus, Share, Sparkle } from 'lucide-react';
 import { KeyboardEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { downloadJson, exportTableData } from './TablePageHelpers';
+import { downloadJson, exportTableData } from '../utils/tableComponentHelpers';
 
-export interface TablePageHeaderProps {
+export interface TableComponentHeaderProps {
   tableName: string;
   tableDescription: string;
   tableId: string;
@@ -156,7 +156,7 @@ const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: (
   );
 };
 
-export const TablePageHeader = ({
+export const TableComponentHeader = ({
   tableName,
   tableDescription,
   tableId,
@@ -168,7 +168,7 @@ export const TablePageHeader = ({
   isOwner,
   table,
   rows,
-}: TablePageHeaderProps) => {
+}: TableComponentHeaderProps) => {
   const token = localStorage.getItem('token');
   const trpcUtils = trpc.useContext();
   const [isEditing, setIsEditing] = useState(false);
