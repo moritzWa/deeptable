@@ -23,6 +23,7 @@ import 'ag-grid-enterprise'; // This is the correct way to import enterprise fea
 import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import ReactMarkdown from 'react-markdown';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CustomColumnHeader } from './CustomColumnHeader';
 import { TableComponentError } from './TableComponentError';
@@ -606,6 +607,8 @@ export const TableComponent = () => {
 
   if (!tableData) return null;
 
+  console.log(tableData);
+
   return (
     <>
       {tableData && (
@@ -619,6 +622,11 @@ export const TableComponent = () => {
           {tableData.sharingStatus !== 'public' && <meta name="robots" content="noindex" />}
           <link rel="canonical" href={`${window.location.origin}/t/${tableData.slug}`} />
         </Helmet>
+      )}
+      {tableData.sharingStatus === 'public' && tableData.beforeTableText && (
+        <div className="prose max-w-none mb-8">
+          <ReactMarkdown>{tableData.beforeTableText}</ReactMarkdown>
+        </div>
       )}
       <div className="w-full flex flex-col">
         <TableComponentHeader
@@ -638,6 +646,7 @@ export const TableComponent = () => {
           table={tableData}
           rows={rowData}
         />
+
         <div className="min-h-0">
           {!isGridReady && (
             <div className="flex justify-center items-center h-full">Loading table...</div>
@@ -666,6 +675,12 @@ export const TableComponent = () => {
             />
           </div>
         </div>
+
+        {tableData.sharingStatus === 'public' && tableData.afterTableText && (
+          <div className="prose max-w-none mt-8">
+            <ReactMarkdown>{tableData.afterTableText}</ReactMarkdown>
+          </div>
+        )}
       </div>
     </>
   );
