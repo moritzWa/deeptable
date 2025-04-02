@@ -61,7 +61,11 @@ interface AgGridColumnState {
 }
 
 export interface CustomColDef extends ColDef {
-  description?: string;
+  description: string;
+  additionalTypeInformation: {
+    currency?: boolean;
+    decimals?: number;
+  };
 }
 
 // Helper function to convert null to undefined for AG Grid compatibility
@@ -278,7 +282,8 @@ const TablePage = () => {
           suppressHeaderContextMenu: true,
           ...columnStateProps,
           colId: column.columnId,
-          type: column.type || 'text',
+          type: column.type,
+          additionalTypeInformation: column.additionalTypeInformation,
           description: column.description,
           valueParser: (params) => {
             if (column.type === 'number') {

@@ -1,6 +1,7 @@
 import { ICellRendererParams } from 'ag-grid-community';
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
+import { CustomColDef } from './TablePage';
 
 // Helper functions
 export const isUrl = (str: string | undefined | null): boolean => {
@@ -33,13 +34,18 @@ export const shouldUseUrlRenderer = (value: any): boolean => {
 };
 
 // Custom cell renderer factory - decides whether to use link renderer or default
-export const smartCellRenderer = (params: ICellRendererParams) => {
+export const smartCellRenderer = (params: ICellRendererParams<{ description: string}>) => {
   const value = params.value;
 
   // Check if the value is a URL
   const useUrlRenderer = shouldUseUrlRenderer(value) || params.colDef?.type === 'link';
   if (useUrlRenderer) {
     return LinkCellRenderer(params);
+  }
+  const colDef = params.colDef as CustomColDef;
+  if (colDef.type === 'number' && colDef.additionalTypeInformation.currency) {
+    const decimals = colDef.additionalTypeInformation.decimals || 2; 
+    return <span className='font-mono w-full text-right'>${value.toFixed(decimals)}</span>;
   }
 
   // For non-URL values, just return the value directly

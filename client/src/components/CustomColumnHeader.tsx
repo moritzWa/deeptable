@@ -169,8 +169,9 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
 
   const handleSetColumnCurrency = () => {
     if (!props.context.setColumnCurrency) return;
-    console.log('props.column', props.column);
-    // props.context.setColumnCurrency(props.column.getColId(), !props.column.additionalTypeInformation.currency);
+    const colDef = props.column.getColDef() as CustomColDef;
+    // @ts-ignore
+    props.context.setColumnCurrency(props.column.getColId(), !colDef.additionalTypeInformation.currency);
   };
 
   const handlePin = (direction: 'left' | 'right' | null) => {
