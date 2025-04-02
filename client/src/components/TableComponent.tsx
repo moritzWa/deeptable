@@ -673,7 +673,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
             tableData.isOwner && (
               <AddTextButton
                 onClick={() => handleUpdateText('before', 'Add your text here')}
-                text="Add text above table"
+                text="Add text above table (only visible to you)"
               />
             )
           )}
@@ -741,7 +741,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
             tableData.isOwner && (
               <AddTextButton
                 onClick={() => handleUpdateText('after', 'Add your text here')}
-                text="Add text below table"
+                text="Add text below table (only visible to you)"
               />
             )
           )}
