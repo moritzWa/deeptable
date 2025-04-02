@@ -3,3 +3,5 @@ User-agent: *
 Allow: /
 Allow: /tables
 Allow: /t/
+
+Sitemap: https://deeptable.app/sitemap.xml
