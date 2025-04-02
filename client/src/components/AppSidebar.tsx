@@ -215,7 +215,6 @@ export function AppSidebar() {
                     </p>
                   ) : (
                     <>
-                      <p>No tables yet. Create your first table to get started.</p>
                       <p>
                         <Link className="text-blue-500" to="/new">
                           Create a new table
