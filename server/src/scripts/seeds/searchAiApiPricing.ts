@@ -1,94 +1,127 @@
 import { Column } from '@shared/types';
+import { randomUUID } from 'crypto';
 import slugify from 'slugify';
 import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const apiPricingColumns: Column[] = [
-  { name: 'company', type: 'text', description: 'Company providing the API service' },
-  { name: 'product name', type: 'text', description: 'Name of the specific API product' },
-  { name: 'pricing info link', type: 'link', description: 'Link to official pricing information' },
-  { name: 'api docs', type: 'link', description: 'Link to API documentation' },
   {
+    columnId: randomUUID(),
+    name: 'company',
+    type: 'text',
+    description: 'Company providing the API service',
+  },
+  {
+    columnId: randomUUID(),
+    name: 'product name',
+    type: 'text',
+    description: 'Name of the specific API product',
+  },
+  {
+    columnId: randomUUID(),
+    name: 'pricing info link',
+    type: 'link',
+    description: 'Link to official pricing information',
+  },
+  {
+    columnId: randomUUID(),
+    name: 'api docs',
+    type: 'link',
+    description: 'Link to API documentation',
+  },
+  {
+    columnId: randomUUID(),
     name: 'USD price per 1k request',
     type: 'number',
     description: 'Cost in USD per 1,000 API requests',
   },
-  { name: 'Note', type: 'text', description: 'Additional information or special conditions' },
+  {
+    columnId: randomUUID(),
+    name: 'Note',
+    type: 'text',
+    description: 'Additional information or special conditions',
+  },
 ];
 
+// Create a mapping of column names to column IDs for data transformation
+const columnNameToId = Object.fromEntries(apiPricingColumns.map((col) => [col.name, col.columnId]));
+
+// Transform the API pricing data to use column IDs instead of names
 export const apiPricingData = [
   {
-    company: 'Exa.AI',
-    'product name': 'Exa AI API',
-    'pricing info link': 'https://exa.ai/pricing?tab=api',
-    'api docs': 'https://docs.exa.ai/reference/getting-started',
-    'USD price per 1k request': 2.5,
-    Note: 'AI auto decides search type, higher latency. Get started with $10 in free credits. Discounts for startups and education are available - contact them.',
+    [columnNameToId['company']]: 'Exa.AI',
+    [columnNameToId['product name']]: 'Exa AI API',
+    [columnNameToId['pricing info link']]: 'https://exa.ai/pricing?tab=api',
+    [columnNameToId['api docs']]: 'https://docs.exa.ai/reference/getting-started',
+    [columnNameToId['USD price per 1k request']]: 2.5,
+    [columnNameToId['Note']]:
+      'AI auto decides search type, higher latency. Get started with $10 in free credits. Discounts for startups and education are available - contact them.',
   },
   {
-    company: 'Google',
-    'product name': 'Google Gemini API',
-    'pricing info link': 'https://ai.google.dev/gemini-api/docs/pricing',
-    'api docs': 'https://ai.google.dev/gemini-api/docs',
-    'USD price per 1k request': 35,
-    Note: 'For "Grounding with Google Search" functionality.',
+    [columnNameToId['company']]: 'Google',
+    [columnNameToId['product name']]: 'Google Gemini API',
+    [columnNameToId['pricing info link']]: 'https://ai.google.dev/gemini-api/docs/pricing',
+    [columnNameToId['api docs']]: 'https://ai.google.dev/gemini-api/docs',
+    [columnNameToId['USD price per 1k request']]: 35,
+    [columnNameToId['Note']]: 'For "Grounding with Google Search" functionality.',
   },
   {
-    company: 'Google',
-    'product name': 'Google Vertex AI Search (Standard)',
-    'pricing info link':
+    [columnNameToId['company']]: 'Google',
+    [columnNameToId['product name']]: 'Google Vertex AI Search (Standard)',
+    [columnNameToId['pricing info link']]:
       'https://cloud.google.com/generative-ai-app-builder/pricing#enterprise_pricing',
-    'api docs': 'Google Vertex AI Docs',
-    'USD price per 1k request': 2,
-    Note: '$4 per 1k with LLM Add-On and $10 per 1k with Advanced',
+    [columnNameToId['api docs']]: 'Google Vertex AI Docs',
+    [columnNameToId['USD price per 1k request']]: 2,
+    [columnNameToId['Note']]: '$4 per 1k with LLM Add-On and $10 per 1k with Advanced',
   },
   {
-    company: 'Perplexity',
-    'product name': 'Sonar',
-    'pricing info link': 'https://docs.perplexity.ai/guides/pricing',
-    'api docs': 'Perplexity API Docs',
-    'USD price per 1k request': 8,
-    Note: '',
+    [columnNameToId['company']]: 'Perplexity',
+    [columnNameToId['product name']]: 'Sonar',
+    [columnNameToId['pricing info link']]: 'https://docs.perplexity.ai/guides/pricing',
+    [columnNameToId['api docs']]: 'Perplexity API Docs',
+    [columnNameToId['USD price per 1k request']]: 8,
+    [columnNameToId['Note']]: '',
   },
   {
-    company: 'Perplexity',
-    'product name': 'Sonar Pro',
-    'pricing info link': 'https://docs.perplexity.ai/guides/pricing',
-    'api docs': 'Perplexity API Docs',
-    'USD price per 1k request': 10,
-    Note: '',
+    [columnNameToId['company']]: 'Perplexity',
+    [columnNameToId['product name']]: 'Sonar Pro',
+    [columnNameToId['pricing info link']]: 'https://docs.perplexity.ai/guides/pricing',
+    [columnNameToId['api docs']]: 'Perplexity API Docs',
+    [columnNameToId['USD price per 1k request']]: 10,
+    [columnNameToId['Note']]: '',
   },
   {
-    company: 'Perplexity',
-    'product name': 'Sonar Reasoning',
-    'pricing info link': 'https://docs.perplexity.ai/guides/pricing',
-    'api docs': 'Perplexity API Docs',
-    'USD price per 1k request': 8,
-    Note: '',
+    [columnNameToId['company']]: 'Perplexity',
+    [columnNameToId['product name']]: 'Sonar Reasoning',
+    [columnNameToId['pricing info link']]: 'https://docs.perplexity.ai/guides/pricing',
+    [columnNameToId['api docs']]: 'Perplexity API Docs',
+    [columnNameToId['USD price per 1k request']]: 8,
+    [columnNameToId['Note']]: '',
   },
   {
-    company: 'Perplexity',
-    'product name': 'Sonar Reasoning Pro',
-    'pricing info link': 'https://docs.perplexity.ai/guides/pricing',
-    'api docs': 'Perplexity API Docs',
-    'USD price per 1k request': 10,
-    Note: '',
+    [columnNameToId['company']]: 'Perplexity',
+    [columnNameToId['product name']]: 'Sonar Reasoning Pro',
+    [columnNameToId['pricing info link']]: 'https://docs.perplexity.ai/guides/pricing',
+    [columnNameToId['api docs']]: 'Perplexity API Docs',
+    [columnNameToId['USD price per 1k request']]: 10,
+    [columnNameToId['Note']]: '',
   },
   {
-    company: 'OpenAI',
-    'product name': 'Open AI Agents',
-    'pricing info link': 'https://platform.openai.com/docs/pricing',
-    'api docs': 'OpenAI API Docs',
-    'USD price per 1k request': 2.5,
-    Note: '$2.50 per million tokens, each query + response is ~1k tokens',
+    [columnNameToId['company']]: 'OpenAI',
+    [columnNameToId['product name']]: 'Open AI Agents',
+    [columnNameToId['pricing info link']]: 'https://platform.openai.com/docs/pricing',
+    [columnNameToId['api docs']]: 'OpenAI API Docs',
+    [columnNameToId['USD price per 1k request']]: 2.5,
+    [columnNameToId['Note']]: '$2.50 per million tokens, each query + response is ~1k tokens',
   },
   {
-    company: 'Bing Search',
-    'product name': 'Bing Search API',
-    'pricing info link': 'https://www.microsoft.com/en-us/bing/apis/pricing',
-    'api docs': 'https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/',
-    'USD price per 1k request': 1,
-    Note: 'not ai answering engine',
+    [columnNameToId['company']]: 'Bing Search',
+    [columnNameToId['product name']]: 'Bing Search API',
+    [columnNameToId['pricing info link']]: 'https://www.microsoft.com/en-us/bing/apis/pricing',
+    [columnNameToId['api docs']]:
+      'https://learn.microsoft.com/en-us/bing/search-apis/bing-web-search/',
+    [columnNameToId['USD price per 1k request']]: 1,
+    [columnNameToId['Note']]: 'not ai answering engine',
   },
 ];
 
@@ -103,7 +136,6 @@ export async function createApiPricingTable(userId: string) {
     slug: slugify(name).toLowerCase(),
   });
 
-  // Create rows
   const rowPromises = apiPricingData.map((data) => {
     return Row.create({
       tableId: apiPricingTable._id,

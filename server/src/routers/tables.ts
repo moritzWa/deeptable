@@ -306,7 +306,7 @@ export const tablesRouter = router({
         tableId: z.string(),
         columnName: z.string(),
         position: z.enum(['left', 'right']),
-        relativeTo: z.string(),
+        relativeTo: z.string().describe('The columnId of the reference column'),
         description: z.string(),
       })
     )
@@ -326,8 +326,8 @@ export const tablesRouter = router({
           throw new Error('Table not found');
         }
 
-        // Find the index of the reference column
-        const refColumnIndex = table.columns.findIndex((col) => col.name === input.relativeTo);
+        // Find the index of the reference column using columnId instead of name
+        const refColumnIndex = table.columns.findIndex((col) => col.columnId === input.relativeTo);
         if (refColumnIndex === -1) {
           throw new Error('Reference column not found');
         }
