@@ -172,6 +172,14 @@ const TablePage = () => {
       console.error('Failed to update column description:', error);
     },
   });
+  const setColumnCurrencyMutation = trpc.tables.setColumnCurrency.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error('Failed to toggle column currency:', error);
+    },
+  });
 
   // USE EFFECTS
   useEffect(() => {
@@ -376,6 +384,16 @@ const TablePage = () => {
           description,
         });
       },
+      setColumnCurrency: (columnId: string, currency: boolean) => {
+        if (!token || !id) return;
+
+        setColumnCurrencyMutation.mutate({
+          token,
+          tableId: id,
+          columnId,
+          currency,
+        });
+      },
     }),
     [
       id,
@@ -388,6 +406,7 @@ const TablePage = () => {
       deleteColumnMutation,
       updateColumnTypeMutation,
       updateColumnDescriptionMutation,
+      setColumnCurrencyMutation,
     ]
   );
 
