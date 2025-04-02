@@ -323,6 +323,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         {props.column.getColDef().type === 'number' && (
           <>
         <ContextMenuGroup>
+          <Label className='p-2'>Formatting</Label>
           <ContextMenuItem onClick={() => handleSetColumnCurrency()} className="flex items-center gap-2">
             <DollarSign className="h-4 w-4" />
             Currency
