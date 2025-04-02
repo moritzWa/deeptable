@@ -1,4 +1,5 @@
 import { ColumnType, Table } from '@shared/types';
+import { randomUUID } from 'crypto';
 import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { Row } from '../models/row';
@@ -60,6 +61,7 @@ export const tablesRouter = router({
           name: table.name,
           description: table.description,
           columns: table.columns.map((col) => ({
+            columnId: col.columnId,
             name: col.name,
             type: col.type,
             required: col.required || false,
@@ -114,8 +116,8 @@ export const tablesRouter = router({
           .map(() => {
             const rowData: Record<string, any> = {};
             // Initialize each column with an empty value
-            columns.forEach((col) => {
-              rowData[col.name] = '';
+            table.columns.forEach((col) => {
+              rowData[col.columnId] = '';
             });
 
             return {
@@ -133,6 +135,7 @@ export const tablesRouter = router({
           name: table.name,
           description: table.description,
           columns: table.columns.map((col) => ({
+            columnId: col.columnId,
             name: col.name,
             type: col.type,
             required: col.required || false,
@@ -190,6 +193,7 @@ export const tablesRouter = router({
           name: table.name,
           description: table.description,
           columns: table.columns.map((col) => ({
+            columnId: col.columnId,
             name: col.name,
             type: col.type,
             required: col.required || false,
@@ -218,7 +222,7 @@ export const tablesRouter = router({
         tableId: z.string(),
         columnStates: z.array(
           z.object({
-            name: z.string(),
+            columnId: z.string(),
             columnState: columnStateSchema,
           })
         ),
@@ -230,94 +234,32 @@ export const tablesRouter = router({
           userId: string;
         };
 
-        // Get the table
-        const table = (await TableModel.findOne({
+        const table = await TableModel.findOne({
           _id: input.tableId,
           userId: decoded.userId,
-        })) as ITable | null;
+        });
 
         if (!table) {
           throw new Error('Table not found');
         }
 
-        // First, handle any column name changes in the row data
-        const nameChanges = input.columnStates.filter(
-          (cs) => cs.columnState.colId && cs.columnState.colId !== cs.name
-        );
-        if (nameChanges.length > 0) {
-          for (const change of nameChanges) {
-            await Row.updateMany({ tableId: input.tableId }, [
-              {
-                $set: {
-                  data: {
-                    $mergeObjects: [
-                      '$$REMOVE',
-                      {
-                        $arrayToObject: {
-                          $map: {
-                            input: { $objectToArray: '$data' },
-                            in: {
-                              k: {
-                                $cond: [
-                                  { $eq: ['$$this.k', change.name] },
-                                  change.columnState.colId,
-                                  '$$this.k',
-                                ],
-                              },
-                              v: '$$this.v',
-                            },
-                          },
-                        },
-                      },
-                    ],
-                  },
-                },
+        // Update column states using columnId instead of name
+        const bulkOps = input.columnStates.map((cs) => ({
+          updateOne: {
+            filter: {
+              _id: input.tableId,
+              userId: decoded.userId,
+              'columns.columnId': cs.columnId,
+            },
+            update: {
+              $set: {
+                'columns.$.columnState': cs.columnState,
               },
-            ]);
-          }
-        }
+            },
+          },
+        }));
 
-        // Build update operations for all columns at once
-        const bulkOps = input.columnStates.map((cs) => {
-          const isNameChange = cs.columnState.colId && cs.columnState.colId !== cs.name;
-
-          if (isNameChange) {
-            return {
-              updateOne: {
-                filter: {
-                  _id: input.tableId,
-                  userId: decoded.userId,
-                  'columns.name': cs.name,
-                },
-                update: {
-                  $set: {
-                    'columns.$.name': cs.columnState.colId,
-                    'columns.$.columnState': cs.columnState,
-                  },
-                },
-              },
-            };
-          } else {
-            return {
-              updateOne: {
-                filter: {
-                  _id: input.tableId,
-                  userId: decoded.userId,
-                  'columns.name': cs.name,
-                },
-                update: {
-                  $set: {
-                    'columns.$.columnState': cs.columnState,
-                  },
-                },
-              },
-            };
-          }
-        });
-
-        // Execute all updates in a single operation
         await TableModel.bulkWrite(bulkOps);
-
         return { success: true };
       } catch (error) {
         console.error('Update column state error:', error);
@@ -396,6 +338,7 @@ export const tablesRouter = router({
 
         // Create the new column with description
         const newColumn = {
+          columnId: randomUUID(),
           name: input.columnName,
           type: 'text' as ColumnType,
           required: false,
@@ -444,7 +387,7 @@ export const tablesRouter = router({
       z.object({
         token: z.string(),
         tableId: z.string(),
-        columnName: z.string(),
+        columnId: z.string(),
       })
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
@@ -453,46 +396,23 @@ export const tablesRouter = router({
           userId: string;
         };
 
-        // Get the table
-        const table = (await TableModel.findOne({
+        const table = await TableModel.findOne({
           _id: input.tableId,
           userId: decoded.userId,
-        })) as ITable | null;
+        });
 
         if (!table) {
           throw new Error('Table not found');
         }
 
-        // Find the index of the column to delete
-        const columnIndex = table.columns.findIndex((col) => col.name === input.columnName);
+        // Find the index of the column to delete using columnId
+        const columnIndex = table.columns.findIndex((col) => col.columnId === input.columnId);
         if (columnIndex === -1) {
           throw new Error('Column not found');
         }
 
-        // Get the column's current sortIndex
-        const deletedColumnSortIndex =
-          table.columns[columnIndex].columnState?.sortIndex ?? columnIndex;
-
         // Remove the column
         table.columns.splice(columnIndex, 1);
-
-        // Update sortIndexes for remaining columns
-        table.columns.forEach((col, index) => {
-          if (!col.columnState) {
-            col.columnState = {};
-          }
-
-          // For columns that were after the deleted column, decrement their sortIndex
-          if (col.columnState.sortIndex && col.columnState.sortIndex > deletedColumnSortIndex) {
-            col.columnState.sortIndex -= 1;
-          }
-          // For columns that were before, keep their current sortIndex or use array index
-          else {
-            col.columnState.sortIndex = col.columnState.sortIndex ?? index;
-          }
-        });
-
-        // Save the updated table
         await table.save();
 
         return { success: true };
@@ -508,7 +428,7 @@ export const tablesRouter = router({
       z.object({
         token: z.string(),
         tableId: z.string(),
-        columnName: z.string(),
+        columnId: z.string(),
         type: z.enum(['text', 'number', 'link']),
       })
     )
@@ -518,12 +438,11 @@ export const tablesRouter = router({
           userId: string;
         };
 
-        // Update the column type in the table
         const result = await TableModel.updateOne(
           {
             _id: input.tableId,
             userId: decoded.userId,
-            'columns.name': input.columnName,
+            'columns.columnId': input.columnId,
           },
           {
             $set: {
@@ -535,23 +454,6 @@ export const tablesRouter = router({
         if (result.matchedCount === 0) {
           throw new Error('Table or column not found');
         }
-
-        // Convert existing data to the new type
-        await Row.updateMany({ tableId: input.tableId }, [
-          {
-            $set: {
-              [`data.${input.columnName}`]: {
-                $cond: {
-                  if: { $eq: [input.type, 'number'] },
-                  then: {
-                    $convert: { input: `$data.${input.columnName}`, to: 'double', onError: null },
-                  },
-                  else: { $toString: `$data.${input.columnName}` }, // Convert to string for 'text' and 'link'
-                },
-              },
-            },
-          },
-        ]);
 
         return { success: true };
       } catch (error) {
@@ -565,7 +467,7 @@ export const tablesRouter = router({
       z.object({
         token: z.string(),
         tableId: z.string(),
-        columnName: z.string(),
+        columnId: z.string(),
         description: z.string(),
       })
     )
@@ -575,12 +477,11 @@ export const tablesRouter = router({
           userId: string;
         };
 
-        // Update the column description in the table
         const result = await TableModel.updateOne(
           {
             _id: input.tableId,
             userId: decoded.userId,
-            'columns.name': input.columnName,
+            'columns.columnId': input.columnId,
           },
           {
             $set: {
@@ -629,11 +530,18 @@ export const tablesRouter = router({
       try {
         // Create all rows
         await Row.insertMany(
-          rows.map((row) => ({
-            tableId: table._id,
-            userId: decoded.userId,
-            data: row,
-          }))
+          rows.map((row) => {
+            // Convert row data to use columnId instead of column name
+            const convertedData = Object.fromEntries(
+              table.columns.map((col) => [col.columnId, row[col.name]])
+            );
+
+            return {
+              tableId: table._id,
+              userId: decoded.userId,
+              data: convertedData,
+            };
+          })
         );
       } catch (error) {
         console.error('Error creating rows:', error);
@@ -645,6 +553,7 @@ export const tablesRouter = router({
         name: table.name,
         description: table.description,
         columns: table.columns.map((col) => ({
+          columnId: col.columnId,
           name: col.name,
           type: col.type,
           required: col.required || false,
@@ -692,6 +601,7 @@ export const tablesRouter = router({
           name: table.name,
           description: table.description,
           columns: table.columns.map((col) => ({
+            columnId: col.columnId,
             name: col.name,
             type: col.type,
             required: col.required || false,
@@ -764,6 +674,7 @@ export const tablesRouter = router({
           name: table.name,
           description: table.description,
           columns: table.columns.map((col) => ({
+            columnId: col.columnId,
             name: col.name,
             type: col.type,
             required: col.required || false,
@@ -816,11 +727,18 @@ export const tablesRouter = router({
         // Create rows if they exist in the JSON
         if (input.jsonData.rows?.length) {
           await Row.insertMany(
-            input.jsonData.rows.map((row) => ({
-              tableId: table._id,
-              userId: decoded.userId,
-              data: row.data,
-            }))
+            input.jsonData.rows.map((row) => {
+              // Convert row data to use columnId instead of column name
+              const convertedData = Object.fromEntries(
+                table.columns.map((col) => [col.columnId, row.data[col.name]])
+              );
+
+              return {
+                tableId: table._id,
+                userId: decoded.userId,
+                data: convertedData,
+              };
+            })
           );
         }
 
@@ -829,6 +747,7 @@ export const tablesRouter = router({
           name: table.name,
           description: table.description,
           columns: table.columns.map((col) => ({
+            columnId: col.columnId,
             name: col.name,
             type: col.type,
             required: col.required || false,
@@ -844,8 +763,8 @@ export const tablesRouter = router({
           slug: table.slug,
         };
       } catch (error) {
-        console.error('Create table from JSON error:', error);
-        throw new Error('Failed to create table from JSON');
+        console.error('Create table error:', error);
+        throw new Error('Failed to create table');
       }
     }),
 });

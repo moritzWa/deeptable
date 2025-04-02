@@ -20,6 +20,7 @@ export interface ColumnState {
 
 // Column interface for client-side use
 export interface Column {
+  columnId: string;
   name: string;
   type: ColumnType;
   required?: boolean;

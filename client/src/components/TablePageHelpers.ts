@@ -49,6 +49,7 @@ export const exportTableData = (data: ExportData): string => {
     name: data.name,
     description: data.description,
     columns: data.columns.map((column) => ({
+      columnId: column.columnId,
       name: column.name,
       type: column.type,
       required: column.required || false,

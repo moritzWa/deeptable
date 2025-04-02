@@ -15,6 +15,7 @@ export const parseCSVFile = (file: File): Promise<CSVParseResult> => {
       complete: (results: ParseResult<Record<string, any>>) => {
         // Generate columns from headers
         const columns: Column[] = Object.keys(results.data[0] || {}).map((header) => ({
+          columnId: crypto.randomUUID(), // Use browser's crypto
           name: header,
           type: 'text', // Default to text, can be enhanced with type detection
           description: `Data from column: ${header}`,

@@ -1,83 +1,127 @@
 import { Column } from '@shared/types';
+import { randomUUID } from 'crypto';
 import slugify from 'slugify';
 import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const restaurantColumns: Column[] = [
-  { name: 'Restaurant Name', type: 'text', description: 'Name of the German restaurant' },
-  { name: 'Address', type: 'text', description: 'Street address of the restaurant' },
   {
+    columnId: randomUUID(),
+    name: 'Restaurant Name',
+    type: 'text',
+    description: 'Name of the German restaurant',
+  },
+  {
+    columnId: randomUUID(),
+    name: 'Address',
+    type: 'text',
+    description: 'Street address of the restaurant',
+  },
+  {
+    columnId: randomUUID(),
     name: 'Average Price (in USD)',
     type: 'number',
     description:
       'Average cost per person in USD. Google might give a range like $10-$20, take the average.',
   },
-  { name: 'Ratings', type: 'number', description: 'Average customer rating out of 5' },
-  { name: 'Review Count', type: 'number', description: 'Number of reviews on Google Maps' },
   {
+    columnId: randomUUID(),
+    name: 'Ratings',
+    type: 'number',
+    description: 'Average customer rating out of 5',
+  },
+  {
+    columnId: randomUUID(),
+    name: 'Review Count',
+    type: 'number',
+    description: 'Number of reviews on Google Maps',
+  },
+  {
+    columnId: randomUUID(),
     name: 'Special Features',
     type: 'text',
     description: 'Unique features or specialties of the restaurant',
   },
-  { name: 'Website', type: 'link', description: "Link to the restaurant's official website" },
+  {
+    columnId: randomUUID(),
+    name: 'Website',
+    type: 'link',
+    description: "Link to the restaurant's official website",
+  },
 ];
 
+// Create a mapping of column names to column IDs for data transformation
+const columnNameToId = Object.fromEntries(restaurantColumns.map((col) => [col.name, col.columnId]));
+
+// Transform the restaurant data to use column IDs instead of names
 export const restaurantData = [
   {
-    'Restaurant Name': 'Suppenküche',
-    Address: '525 Laguna St, SF 94102',
-    'Average Price (in USD)': 40,
-    Ratings: 4.5,
-    'Google Maps Review Count': 1837,
-    'Special Features': 'Traditional Bavarian, Great Beer Selection, Cozy Atmosphere',
-    Website: 'https://www.suppenkuche.com/',
+    [columnNameToId['Restaurant Name']]: 'Suppenküche',
+    [columnNameToId['Address']]: '525 Laguna St, SF 94102',
+    [columnNameToId['Average Price (in USD)']]: 40,
+    [columnNameToId['Ratings']]: 4.5,
+    [columnNameToId['Review Count']]: 1837,
+    [columnNameToId['Special Features']]:
+      'Traditional Bavarian, Great Beer Selection, Cozy Atmosphere',
+    [columnNameToId['Website']]: 'https://www.suppenkuche.com/',
   },
   {
-    'Restaurant Name': 'Rosamunde Sausage Grill',
-    Address: '2832 Mission St, SF 94110',
-    'Average Price (in USD)': 15,
-    Ratings: 4.5,
-    'Google Maps Review Count': 1107,
-    'Special Features': 'Gourmet Sausages, Craft Beers, Trendy',
-    Website: 'https://www.rosamundesausagegrill.com/',
+    [columnNameToId['Restaurant Name']]: 'Rosamunde Sausage Grill',
+    [columnNameToId['Address']]: '2832 Mission St, SF 94110',
+    [columnNameToId['Average Price (in USD)']]: 15,
+    [columnNameToId['Ratings']]: 4.5,
+    [columnNameToId['Review Count']]: 1107,
+    [columnNameToId['Special Features']]: 'Gourmet Sausages, Craft Beers, Trendy',
+    [columnNameToId['Website']]: 'https://www.rosamundesausagegrill.com/',
   },
   {
-    'Restaurant Name': 'Radhaus',
-    Address: '2 Marina Blvd, SF 94123',
-    'Average Price (in USD)': 40,
-    Ratings: 4.4,
-    'Google Maps Review Count': 1308,
-    'Special Features': 'Panoramic Bay Views, Live Music',
-    Website: 'https://radhaussf.com/',
+    [columnNameToId['Restaurant Name']]: 'Radhaus',
+    [columnNameToId['Address']]: '2 Marina Blvd, SF 94123',
+    [columnNameToId['Average Price (in USD)']]: 40,
+    [columnNameToId['Ratings']]: 4.4,
+    [columnNameToId['Review Count']]: 1308,
+    [columnNameToId['Special Features']]: 'Panoramic Bay Views, Live Music',
+    [columnNameToId['Website']]: 'https://radhaussf.com/',
   },
   {
-    'Restaurant Name': 'Biergarten',
-    Address: '424 Octavia St, SF 94102',
-    'Average Price (in USD)': 15,
-    Ratings: 4.4,
-    'Google Maps Review Count': 1105,
-    'Special Features': 'Outdoor Seating, Communal Tables',
-    Website: 'https://www.biergartensf.com/',
+    [columnNameToId['Restaurant Name']]: 'Biergarten',
+    [columnNameToId['Address']]: '424 Octavia St, SF 94102',
+    [columnNameToId['Average Price (in USD)']]: 15,
+    [columnNameToId['Ratings']]: 4.4,
+    [columnNameToId['Review Count']]: 1105,
+    [columnNameToId['Special Features']]: 'Outdoor Seating, Communal Tables',
+    [columnNameToId['Website']]: 'https://www.biergartensf.com/',
   },
   {
-    'Restaurant Name': "Schroeder's",
-    Address: '240 Front St, SF 94111',
-    'Average Price (in USD)': 40,
-    Ratings: 4.2,
-    'Google Maps Review Count': 1214,
-    'Special Features': 'Historic Beer Hall, Oktoberfest Parties',
-    Website: 'https://www.schroederssf.com/',
+    [columnNameToId['Restaurant Name']]: "Schroeder's",
+    [columnNameToId['Address']]: '240 Front St, SF 94111',
+    [columnNameToId['Average Price (in USD)']]: 40,
+    [columnNameToId['Ratings']]: 4.2,
+    [columnNameToId['Review Count']]: 1214,
+    [columnNameToId['Special Features']]: 'Historic Beer Hall, Oktoberfest Parties',
+    [columnNameToId['Website']]: 'https://www.schroederssf.com/',
   },
   {
-    'Restaurant Name': "Leopold's",
-    Address: '2400 Polk St, SF 94109',
-    'Average Price (in USD)': 40,
-    Ratings: 4.6,
-    'Google Maps Review Count': 665,
-    'Special Features': 'Austrian Fare, Alpine-Lodge Decor',
-    Website: 'https://www.gasthausleopolds.com/',
+    [columnNameToId['Restaurant Name']]: "Leopold's",
+    [columnNameToId['Address']]: '2400 Polk St, SF 94109',
+    [columnNameToId['Average Price (in USD)']]: 40,
+    [columnNameToId['Ratings']]: 4.6,
+    [columnNameToId['Review Count']]: 665,
+    [columnNameToId['Special Features']]: 'Austrian Fare, Alpine-Lodge Decor',
+    [columnNameToId['Website']]: 'https://www.gasthausleopolds.com/',
   },
 ];
+
+// Helper function to transform old data format to new format using column IDs
+function transformDataToColumnIds(oldData: any) {
+  const newData: any = {};
+  Object.entries(oldData).forEach(([key, value]) => {
+    if (columnNameToId[key]) {
+      newData[columnNameToId[key]] = value;
+    }
+  });
+  return newData;
+}
 
 export async function createRestaurantTable(userId: string) {
   const name = 'German Restaurants in SF';
@@ -90,11 +134,12 @@ export async function createRestaurantTable(userId: string) {
     slug: slugify(name).toLowerCase(),
   });
 
-  // Create rows
-  const rowPromises = restaurantData.map((data) => {
+  // Create rows with transformed data
+  const rowPromises = restaurantData.map((oldData) => {
+    const transformedData = transformDataToColumnIds(oldData);
     return Row.create({
       tableId: restaurantTable._id,
-      data,
+      data: transformedData,
       userId,
     });
   });
