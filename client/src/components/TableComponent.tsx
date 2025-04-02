@@ -643,6 +643,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
 
   if (!tableData) return null;
 
+  console.log(tableData.afterTableText, tableData.beforeTableText);
+
   return (
     <>
       {tableData && (
@@ -726,7 +728,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         </div>
       </div>
       {isPublicView && tableData.sharingStatus === 'public' && (
-        <div className="m-auto prose max-w-4xl mb-8">
+        <div className="m-auto prose max-w-4xl mt-8">
           {tableData.afterTableText ? (
             <EditableMarkdown
               content={tableData.afterTableText}
