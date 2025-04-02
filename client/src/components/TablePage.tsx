@@ -258,6 +258,7 @@ const TablePage = () => {
                   return a - b;
                 }
               : undefined,
+          headerClass: 'py-1',
           filter: true,
           resizable: true,
           editable: true,
@@ -536,6 +537,7 @@ const TablePage = () => {
       editable: true,
       wrapHeaderText: true,
       autoHeaderHeight: true,
+      headerClass: 'py-1',
       cellRenderer: smartCellRenderer,
       suppressSizeToFit: true,
       suppressHeaderMenuButton: true,
