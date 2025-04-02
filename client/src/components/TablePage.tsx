@@ -534,6 +534,8 @@ const TablePage = () => {
       filter: true,
       resizable: true,
       editable: true,
+      wrapHeaderText: true,
+      autoHeaderHeight: true,
       cellRenderer: smartCellRenderer,
       suppressSizeToFit: true,
       suppressHeaderMenuButton: true,
