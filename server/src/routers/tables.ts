@@ -349,6 +349,7 @@ export const tablesRouter = router({
         columnName: z.string(),
         position: z.enum(['left', 'right']),
         relativeTo: z.string(),
+        description: z.string(),
       })
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
@@ -377,12 +378,12 @@ export const tablesRouter = router({
         const refColumn = table.columns[refColumnIndex];
         const refSortIndex = refColumn.columnState?.sortIndex ?? refColumnIndex;
 
-        // Create the new column with the appropriate sortIndex
+        // Create the new column with description
         const newColumn = {
           name: input.columnName,
           type: 'text' as ColumnType,
           required: false,
-          description: '',
+          description: input.description,
           columnState: {
             sortIndex: input.position === 'left' ? refSortIndex : refSortIndex + 1,
           },
