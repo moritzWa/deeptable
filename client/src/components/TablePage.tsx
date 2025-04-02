@@ -70,7 +70,7 @@ function nullToUndefined<T>(value: T | null): T | undefined {
 }
 
 const TablePage = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id, slug } = useParams<{ id?: string; slug?: string }>();
   const navigate = useNavigate();
   const sidebar = useSidebar();
   const [table, setTable] = useState<Table | null>(null);
@@ -92,9 +92,13 @@ const TablePage = () => {
     refetch,
     isLoading: isTableLoading,
   } = trpc.tables.getTable.useQuery(
-    { id: id || '', token: token || '' },
     {
-      enabled: !!id,
+      id: id || undefined,
+      slug: slug || undefined,
+      token: token || '',
+    },
+    {
+      enabled: !!(id || slug),
       onError: (err) => {
         setError(err.message || 'Failed to load table');
       },
@@ -102,9 +106,9 @@ const TablePage = () => {
   );
 
   const { data: rowsData } = trpc.rows.getRows.useQuery(
-    { token: token || '', tableId: id || '' },
+    { token: token || '', tableId: tableData?.id || '' },
     {
-      enabled: !!id && (!!token || tableData?.sharingStatus === 'public'),
+      enabled: !!tableData?.id && (!!token || tableData?.sharingStatus === 'public'),
       onError: (err) => {
         console.error('Failed to load rows:', err);
       },

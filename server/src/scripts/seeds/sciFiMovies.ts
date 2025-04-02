@@ -1,4 +1,5 @@
 import { Column } from '@shared/types';
+import slugify from 'slugify';
 import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
@@ -7,7 +8,11 @@ export const sciFiMoviesColumns: Column[] = [
   { name: 'Director', type: 'text', description: 'Director of the movie' },
   { name: 'Imdb link', type: 'link', description: 'Link to the movie on IMDB' },
   { name: 'Release Year', type: 'number', description: 'Year the movie was released' },
-  { name: 'Rotten Tomatoes Score', type: 'text', description: 'Rating on Rotten Tomatoes tomatometer' },
+  {
+    name: 'Rotten Tomatoes Score',
+    type: 'text',
+    description: 'Rating on Rotten Tomatoes tomatometer',
+  },
   { name: 'IMDb Score', type: 'number', description: 'Rating on IMDB' },
   { name: 'Duration (Hours)', type: 'number', description: 'Movie length in hours' },
   { name: 'Concise Description', type: 'text', description: 'Brief summary of the movie plot' },
@@ -178,12 +183,14 @@ export const sciFiMoviesData = [
 ];
 
 export async function createSciFiMoviesTable(userId: string) {
+  const name = 'Best Sci-Fi Movies';
   // Create the table with columns
   const sciFiMoviesTable = await Table.create({
-    name: 'Sci-Fi Movies Collection',
-    description: 'Sci-fi movies like the Martian or Ghost in the Shell',
+    name,
+    description: 'A curated list of the best science fiction movies',
     columns: sciFiMoviesColumns,
     userId,
+    slug: slugify(name).toLowerCase(),
   });
 
   // Create rows

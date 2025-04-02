@@ -1,15 +1,25 @@
 import { Column } from '@shared/types';
+import slugify from 'slugify';
 import { Row } from '../../models/row';
 import { Table } from '../../models/table';
 
 export const restaurantColumns: Column[] = [
   { name: 'Restaurant Name', type: 'text', description: 'Name of the German restaurant' },
   { name: 'Address', type: 'text', description: 'Street address of the restaurant' },
-  { name: 'Average Price (in USD)', type: 'number', description: 'Average cost per person in USD. Google might give a range like $10-$20, take the average.' },
+  {
+    name: 'Average Price (in USD)',
+    type: 'number',
+    description:
+      'Average cost per person in USD. Google might give a range like $10-$20, take the average.',
+  },
   { name: 'Ratings', type: 'number', description: 'Average customer rating out of 5' },
   { name: 'Review Count', type: 'number', description: 'Number of reviews on Google Maps' },
-  { name: 'Special Features', type: 'text', description: 'Unique features or specialties of the restaurant' },
-  { name: 'Website', type: 'link', description: 'Link to the restaurant\'s official website' },
+  {
+    name: 'Special Features',
+    type: 'text',
+    description: 'Unique features or specialties of the restaurant',
+  },
+  { name: 'Website', type: 'link', description: "Link to the restaurant's official website" },
 ];
 
 export const restaurantData = [
@@ -70,12 +80,14 @@ export const restaurantData = [
 ];
 
 export async function createRestaurantTable(userId: string) {
+  const name = 'German Restaurants in SF';
   // Create the table with columns
   const restaurantTable = await Table.create({
-    name: 'SF German Restaurants',
-    description: 'A collection of German restaurants in San Francisco',
+    name,
+    description: 'List of German restaurants in San Francisco',
     columns: restaurantColumns,
     userId,
+    slug: slugify(name).toLowerCase(),
   });
 
   // Create rows
