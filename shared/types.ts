@@ -42,6 +42,7 @@ export interface Table {
   userId: string;
   sharingStatus: SharingStatus;
   isOwner: boolean;
+  slug: string;
 }
 
 export type LanguageKeys = 'langJS' | 'langTS' | 'langPython' | 'langGo' | 'langRust' | 'langCpp';

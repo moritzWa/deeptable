@@ -1,5 +1,6 @@
 import { Column, ColumnState } from '@shared/types';
 import mongoose, { Document } from 'mongoose';
+import slugify from 'slugify';
 
 // Column state interface extends from shared type
 export interface IColumnState extends ColumnState {}
@@ -16,6 +17,7 @@ export interface ITable extends Document {
   updatedAt: Date;
   _id: mongoose.Types.ObjectId;
   sharingStatus: 'private' | 'public';
+  slug: string;
 }
 
 // Column state schema
@@ -92,10 +94,34 @@ const tableSchema = new mongoose.Schema(
       default: 'private',
       required: true,
     },
+    slug: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
   },
   {
     timestamps: true,
   }
 );
+
+// Add a pre-save hook to ensure slug uniqueness
+tableSchema.pre('save', async function (next) {
+  if (this.isModified('name')) {
+    let baseSlug = slugify(this.name);
+    let slug = baseSlug;
+    let counter = 1;
+
+    // Keep checking until we find a unique slug
+    while (await Table.findOne({ slug, _id: { $ne: this._id } })) {
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+
+    this.slug = slug;
+  }
+  next();
+});
 
 export const Table = mongoose.model<ITable>('Table', tableSchema);

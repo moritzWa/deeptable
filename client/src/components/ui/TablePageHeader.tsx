@@ -446,7 +446,7 @@ export const TablePageHeader = ({
               </Tooltip>
             </TooltipProvider>
             <div className="text-sm font-normal text-gray-500">
-              Right-click the column header to edit
+              Right-click the column header below to edit
             </div>
           </div>
         </div>

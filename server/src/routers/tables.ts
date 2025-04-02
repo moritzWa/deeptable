@@ -32,6 +32,17 @@ const columnSchema = z.object({
   columnState: columnStateSchema.optional(),
 });
 
+// Add this helper function at the top of the file
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, '-') // Replace spaces with -
+    .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+    .replace(/\-\-+/g, '-') // Replace multiple - with single -
+    .replace(/^-+/, '') // Trim - from start of text
+    .replace(/-+$/, ''); // Trim - from end of text
+}
+
 export const tablesRouter = router({
   // Get all tables for the current user
   getTables: publicProcedure
@@ -61,6 +72,7 @@ export const tablesRouter = router({
           userId: table.userId,
           sharingStatus: table.sharingStatus,
           isOwner: userId === table.userId,
+          slug: table.slug,
         }));
       } catch (error) {
         console.error('Get tables error:', error);
@@ -85,13 +97,15 @@ export const tablesRouter = router({
         };
         const userId = decoded.userId;
         const columns = input.columns || [];
+        const slug = slugify(input.name); // Generate the slug
 
-        // Create the table
+        // Create the table with slug
         const table = (await TableModel.create({
           name: input.name,
           description: input.description,
           columns: columns,
           userId: decoded.userId,
+          slug: slug, // Add the slug
         })) as ITable;
 
         // Create 15 empty rows
@@ -131,6 +145,7 @@ export const tablesRouter = router({
           userId: table.userId,
           sharingStatus: table.sharingStatus,
           isOwner: userId === table.userId,
+          slug: table.slug, // Include the slug in the response
         };
       } catch (error) {
         console.error('Create table error:', error);
@@ -187,6 +202,7 @@ export const tablesRouter = router({
           userId: table.userId,
           sharingStatus: table.sharingStatus,
           isOwner: userId === table.userId,
+          slug: table.slug,
         };
       } catch (error) {
         console.error('Update table error:', error);
@@ -686,6 +702,7 @@ export const tablesRouter = router({
           userId: table.userId,
           sharingStatus: table.sharingStatus,
           isOwner: userId === table.userId,
+          slug: table.slug,
         };
       } catch (error) {
         console.error('Update sharing status error:', error);
@@ -741,6 +758,7 @@ export const tablesRouter = router({
           userId: table.userId,
           sharingStatus: table.sharingStatus,
           isOwner: userId === table.userId,
+          slug: table.slug,
         };
       } catch (error) {
         console.error('Get table error:', error);
