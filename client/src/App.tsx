@@ -7,13 +7,15 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom';
 import BlogPostPage from './app/blog/[slug]/page';
 import BlogPage from './app/blog/page';
+import DashboardTablePage from './app/dashboard/tables/[id]/page';
+import PublicTablePage from './app/tables/[slug]/page';
+import TablesListPage from './app/tables/page';
 import HomePage from './components/HomePage';
 import LandingPage from './components/LandingPage';
 import LoginPage from './components/LoginPage';
 import { Navbar } from './components/navbar';
 import ResearchPromptPage from './components/ResearchPromptPage';
 import SettingsPage from './components/SettingsPage';
-import TablePage from './components/TablePage';
 import { ThemeProvider } from './components/theme-provider';
 import WaitlistFormPage from './components/WaitlistFormPage';
 import { trpc } from './utils/trpc';
@@ -57,8 +59,14 @@ function AppContent() {
         <meta name="description" content="Generate tables of valuable data." />
         <meta property="og:title" content="Deep Table" />
         <meta property="og:description" content="Generate tables of valuable data." />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://deeptable.app/linkpreview.png" />
+        <meta property="og:url" content="https://deeptable.app" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Deep Table" />
         <meta name="twitter:description" content="Generate tables of valuable data." />
+        <meta name="twitter:image" content="https://deeptable.app/linkpreview.png" />
+        <link rel="canonical" href="https://deeptable.app" />
       </Helmet>
       <div className="min-h-screen bg-background text-foreground w-full">
         <Routes>
@@ -88,8 +96,15 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-          <Route path="/t/:slug" element={<TablePage />} />
-          <Route path="/tables/:id" element={<TablePage />} />
+          <Route path="/t/:slug" element={<PublicTablePage />} />
+          <Route
+            path="/tables/:id"
+            element={
+              <ProtectedRoute>
+                <DashboardTablePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/settings"
             element={
@@ -139,6 +154,17 @@ function AppContent() {
                 <Navbar />
                 <div className="container mx-auto px-4 py-8 pt-24">
                   <BlogPostPage />
+                </div>
+              </>
+            }
+          />
+          <Route
+            path="/tables"
+            element={
+              <>
+                <Navbar />
+                <div className="container mx-auto px-4 py-8 pt-24">
+                  <TablesListPage />
                 </div>
               </>
             }

@@ -808,4 +808,34 @@ export const tablesRouter = router({
         throw new Error('Failed to create table');
       }
     }),
+
+  getPublicTables: publicProcedure.query(async (): Promise<Table[]> => {
+    try {
+      const tables = await TableModel.find({ sharingStatus: 'public' });
+
+      return tables.map((table) => ({
+        id: table._id.toString(),
+        name: table.name,
+        description: table.description,
+        columns: table.columns.map((col) => ({
+          columnId: col.columnId,
+          name: col.name,
+          type: col.type,
+          required: col.required || false,
+          defaultValue: col.defaultValue,
+          description: col.description,
+          columnState: col.columnState,
+        })),
+        createdAt: table.createdAt.toISOString(),
+        updatedAt: table.updatedAt.toISOString(),
+        userId: table.userId,
+        sharingStatus: table.sharingStatus,
+        isOwner: false,
+        slug: table.slug,
+      }));
+    } catch (error) {
+      console.error('Get public tables error:', error);
+      throw new Error('Failed to get public tables');
+    }
+  }),
 });
