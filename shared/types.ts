@@ -44,6 +44,8 @@ export interface Table {
   sharingStatus: SharingStatus;
   isOwner: boolean;
   slug: string;
+  beforeTableText?: string;
+  afterTableText?: string;
 }
 
 export type LanguageKeys = 'langJS' | 'langTS' | 'langPython' | 'langGo' | 'langRust' | 'langCpp';
