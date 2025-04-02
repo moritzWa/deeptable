@@ -34,7 +34,7 @@ export const shouldUseUrlRenderer = (value: any): boolean => {
 };
 
 // Custom cell renderer factory - decides whether to use link renderer or default
-export const smartCellRenderer = (params: ICellRendererParams<{ description: string}>) => {
+export const smartCellRenderer = (params: ICellRendererParams) => {
   const value = params.value;
 
   // Check if the value is a URL
