@@ -26,7 +26,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CustomColumnHeader } from './CustomColumnHeader';
-import { EditableMarkdown } from './EditableMarkdown';
+import { AddTextButton, EditableMarkdown } from './EditableMarkdown';
 import { TableComponentError } from './TableComponentError';
 import { TableComponentHeader } from './TableComponentHeader';
 
@@ -70,19 +70,7 @@ function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
 
-// Add this button component at the top of the file
-function AddTextButton({ onClick, text }: { onClick: () => void; text: string }) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full py-4 border-2 border-dashed border-muted-foreground/20 rounded-lg text-muted-foreground hover:border-muted-foreground/40 hover:text-muted-foreground/80 transition-colors"
-    >
-      + {text}
-    </button>
-  );
-}
-
-export const TableComponent = () => {
+export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolean }) => {
   const { id, slug } = useParams<{ id?: string; slug?: string }>();
   const navigate = useNavigate();
   const sidebar = useSidebar();
@@ -655,8 +643,6 @@ export const TableComponent = () => {
 
   if (!tableData) return null;
 
-  console.log(tableData);
-
   return (
     <>
       {tableData && (
@@ -671,7 +657,7 @@ export const TableComponent = () => {
           <link rel="canonical" href={`${window.location.origin}/t/${tableData.slug}`} />
         </Helmet>
       )}
-      {tableData.sharingStatus === 'public' && (
+      {isPublicView && tableData.sharingStatus === 'public' && (
         <div className="m-auto prose max-w-4xl mb-8">
           {tableData.beforeTableText ? (
             <EditableMarkdown
@@ -739,7 +725,7 @@ export const TableComponent = () => {
           </div>
         </div>
       </div>
-      {tableData.sharingStatus === 'public' && (
+      {isPublicView && tableData.sharingStatus === 'public' && (
         <div className="m-auto prose max-w-4xl mb-8">
           {tableData.afterTableText ? (
             <EditableMarkdown

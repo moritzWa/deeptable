@@ -6,7 +6,7 @@ export default function PublicTablePage() {
     <div className="h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 container mx-auto px-4 py-8 pt-24 h-0">
-        <TableComponent />
+        <TableComponent isPublicView={true} />
       </main>
     </div>
   );

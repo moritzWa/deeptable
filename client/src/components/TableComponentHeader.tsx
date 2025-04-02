@@ -376,7 +376,7 @@ export const TableComponentHeader = ({
       });
 
       if (newStatus === 'public') {
-        const shareUrl = `${window.location.origin}/tables/${tableId}`;
+        const shareUrl = `${window.location.origin}/t/${table.slug}`;
         await navigator.clipboard.writeText(shareUrl);
       }
     } catch (error) {

@@ -80,3 +80,15 @@ export function EditableMarkdown({
     />
   );
 }
+
+// Add this button component at the top of the file
+export function AddTextButton({ onClick, text }: { onClick: () => void; text: string }) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full py-4 border-2 border-dashed border-muted-foreground/20 rounded-lg text-muted-foreground hover:border-muted-foreground/40 hover:text-muted-foreground/80 transition-colors"
+    >
+      + {text}
+    </button>
+  );
+}
