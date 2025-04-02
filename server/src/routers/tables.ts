@@ -477,7 +477,6 @@ export const tablesRouter = router({
       }
     }),
 
-  // Replace with setColumnCurrency
   setColumnCurrency: publicProcedure
   .input(
     z.object({

@@ -170,7 +170,6 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const handleSetColumnCurrency = () => {
     if (!props.context.setColumnCurrency) return;
     const colDef = props.column.getColDef() as CustomColDef;
-    // @ts-ignore
     props.context.setColumnCurrency(props.column.getColId(), !colDef.additionalTypeInformation.currency);
   };
 
