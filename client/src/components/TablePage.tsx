@@ -252,6 +252,9 @@ const TablePage = () => {
           headerName: column.name,
           field: `data.${column.columnId}`,
           sortable: true,
+          comparator: column.type === 'number' ? (a: number, b: number) => {
+            return a - b;
+          } : undefined,
           filter: true,
           resizable: true,
           editable: true,
@@ -528,6 +531,8 @@ const TablePage = () => {
       filter: true,
       resizable: true,
       editable: true,
+      wrapHeaderText: true,
+      autoHeaderHeight: true,
       cellRenderer: smartCellRenderer,
       suppressSizeToFit: true,
       suppressHeaderMenuButton: true,
