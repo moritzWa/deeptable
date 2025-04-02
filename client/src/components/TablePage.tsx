@@ -332,6 +332,7 @@ const TablePage = () => {
           columnName: newColumnName,
           position,
           relativeTo,
+          description: `Column for ${newColumnName}`,
         });
       },
       deleteColumn: (columnName: string) => {
