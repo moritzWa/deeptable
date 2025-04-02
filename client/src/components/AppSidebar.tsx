@@ -163,7 +163,7 @@ export function AppSidebar() {
                     asChild
                     onClick={() => navigate(`/tables/${table.id}`)}
                     isActive={currentTableId === table.id}
-                    className="group relative flex w-full items-center"
+                    className="relative group/item flex w-full items-center"
                   >
                     <div className="flex-1 min-w-0">
                       <span className="block truncate">{table.name}</span>
@@ -172,7 +172,7 @@ export function AppSidebar() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-6 w-6 opacity-0 group-hover:opacity-100 absolute right-1"
+                            className="h-6 w-6 opacity-0 group-hover/item:opacity-100 group-hover/item:bg-background absolute right-1"
                           >
                             <MoreVertical className="h-4 w-4" />
                           </Button>
