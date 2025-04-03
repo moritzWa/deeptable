@@ -302,7 +302,10 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           ...columnStateProps,
           colId: column.columnId,
           type: column.type,
-          additionalTypeInformation: column.additionalTypeInformation,
+          additionalTypeInformation: {
+            currency: column.additionalTypeInformation?.currency || false,
+            decimals: column.additionalTypeInformation?.decimals,
+          },
           description: column.description,
           valueParser: (params) => {
             if (column.type === 'number') {
