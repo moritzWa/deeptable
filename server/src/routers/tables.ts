@@ -81,6 +81,8 @@ export const tablesRouter = router({
           sharingStatus: table.sharingStatus,
           isOwner: userId === table.userId,
           slug: table.slug,
+          beforeTableText: table.beforeTableText,
+          afterTableText: table.afterTableText,
         }));
       } catch (error) {
         console.error('Get tables error:', error);
@@ -478,42 +480,43 @@ export const tablesRouter = router({
     }),
 
   setColumnCurrency: publicProcedure
-  .input(
-    z.object({
-      token: z.string(),
-      tableId: z.string(),
-      columnId: z.string(),
-      currency: z.boolean(),
-    })
-  ).mutation(async ({ input }): Promise<{ success: boolean }> => {
-    try {
-      const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-        userId: string;
-      };
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnId: z.string(),
+        currency: z.boolean(),
+      })
+    )
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
 
-      const result = await TableModel.updateOne(
-        {
-          _id: input.tableId,
-          userId: decoded.userId,
-          'columns.columnId': input.columnId,
-        },
-        {
-          $set: {
-            'columns.$.additionalTypeInformation.currency': input.currency,
+        const result = await TableModel.updateOne(
+          {
+            _id: input.tableId,
+            userId: decoded.userId,
+            'columns.columnId': input.columnId,
+          },
+          {
+            $set: {
+              'columns.$.additionalTypeInformation.currency': input.currency,
+            },
           }
+        );
+
+        if (result.matchedCount === 0) {
+          throw new Error('Table or column not found');
         }
-      );
 
-      if (result.matchedCount === 0) {
-        throw new Error('Table or column not found');
+        return { success: true };
+      } catch (error) {
+        console.error('Set column currency error:', error);
+        throw new Error('Failed to set column currency');
       }
-
-      return { success: true };
-    } catch (error) {
-      console.error('Set column currency error:', error);
-      throw new Error('Failed to set column currency');
-    }
-  }),
+    }),
 
   updateColumnDescription: publicProcedure
     .input(
@@ -779,6 +782,8 @@ export const tablesRouter = router({
           sharingStatus: table.sharingStatus,
           isOwner: userId === table.userId,
           slug: table.slug,
+          beforeTableText: table.beforeTableText,
+          afterTableText: table.afterTableText,
         };
       } catch (error) {
         console.error('Get table error:', error);
@@ -860,6 +865,101 @@ export const tablesRouter = router({
       } catch (error) {
         console.error('Create table error:', error);
         throw new Error('Failed to create table');
+      }
+    }),
+
+  getPublicTables: publicProcedure.query(async (): Promise<Table[]> => {
+    try {
+      const tables = await TableModel.find({ sharingStatus: 'public' });
+
+      return tables.map((table) => ({
+        id: table._id.toString(),
+        name: table.name,
+        description: table.description,
+        columns: table.columns.map((col) => ({
+          columnId: col.columnId,
+          name: col.name,
+          type: col.type,
+          required: col.required || false,
+          defaultValue: col.defaultValue,
+          description: col.description,
+          columnState: col.columnState,
+          additionalTypeInformation: col.additionalTypeInformation,
+        })),
+        createdAt: table.createdAt.toISOString(),
+        updatedAt: table.updatedAt.toISOString(),
+        userId: table.userId,
+        sharingStatus: table.sharingStatus,
+        isOwner: false,
+        slug: table.slug,
+        beforeTableText: table.beforeTableText,
+        afterTableText: table.afterTableText,
+      }));
+    } catch (error) {
+      console.error('Get public tables error:', error);
+      throw new Error('Failed to get public tables');
+    }
+  }),
+
+  updateTableText: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        beforeTableText: z.string().optional(),
+        afterTableText: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }): Promise<Table> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        const updateData: any = {};
+        if (input.beforeTableText !== undefined) {
+          updateData.beforeTableText = input.beforeTableText;
+        }
+        if (input.afterTableText !== undefined) {
+          updateData.afterTableText = input.afterTableText;
+        }
+
+        const table = await TableModel.findOneAndUpdate(
+          { _id: input.tableId, userId: decoded.userId },
+          updateData,
+          { new: true }
+        );
+
+        if (!table) {
+          throw new Error('Table not found');
+        }
+
+        return {
+          id: table._id.toString(),
+          name: table.name,
+          description: table.description,
+          columns: table.columns.map((col) => ({
+            columnId: col.columnId,
+            name: col.name,
+            type: col.type,
+            required: col.required || false,
+            defaultValue: col.defaultValue,
+            description: col.description,
+            columnState: col.columnState,
+            additionalTypeInformation: col.additionalTypeInformation,
+          })),
+          createdAt: table.createdAt.toISOString(),
+          updatedAt: table.updatedAt.toISOString(),
+          userId: table.userId,
+          sharingStatus: table.sharingStatus,
+          isOwner: true,
+          slug: table.slug,
+          beforeTableText: table.beforeTableText,
+          afterTableText: table.afterTableText,
+        };
+      } catch (error) {
+        console.error('Update table text error:', error);
+        throw new Error('Failed to update table text');
       }
     }),
 });

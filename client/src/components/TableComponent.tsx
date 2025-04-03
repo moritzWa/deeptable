@@ -14,9 +14,10 @@ import {
   SortChangedEvent,
 } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
-import { convertColumnStateToAgGridProps } from './TablePageHelpers';
+import { convertColumnStateToAgGridProps } from '../utils/tableComponentHelpers';
 
 // Finally our custom overrides
+import { useToast } from '@/hooks/use-toast';
 import '@/styles/ag-grid-theme.css';
 import { ModuleRegistry } from 'ag-grid-community';
 import 'ag-grid-enterprise'; // This is the correct way to import enterprise features
@@ -24,10 +25,10 @@ import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
-import { AppLayout } from './AppLayout';
 import { CustomColumnHeader } from './CustomColumnHeader';
-import { TablePageError } from './TablePageError';
-import { TablePageHeader } from './TablePageHeader';
+import { AddTextButton, EditableMarkdown } from './EditableMarkdown';
+import { TableComponentError } from './TableComponentError';
+import { TableComponentHeader } from './TableComponentHeader';
 
 // Register all enterprise modules (includes ClientSideRowModel)
 ModuleRegistry.registerModules([AllEnterpriseModule as any]);
@@ -73,7 +74,7 @@ function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
 
-const TablePage = () => {
+export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolean }) => {
   const { id, slug } = useParams<{ id?: string; slug?: string }>();
   const navigate = useNavigate();
   const sidebar = useSidebar();
@@ -87,8 +88,9 @@ const TablePage = () => {
   // Reference to the AG Grid API
   const gridRef = useRef<AgGridReact>(null);
 
-  const token = localStorage.getItem('token');
+  const { toast } = useToast();
   const utils = trpc.useContext();
+  const token = localStorage.getItem('token');
 
   // FETCH DATA
   const {
@@ -182,6 +184,23 @@ const TablePage = () => {
     },
     onError: (error) => {
       console.error('Failed to toggle column currency:', error);
+    },
+  });
+
+  const updateTableText = trpc.tables.updateTableText.useMutation({
+    onSuccess: () => {
+      utils.tables.getTable.invalidate();
+      toast({
+        title: 'Success',
+        description: 'Table text updated successfully',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+      });
     },
   });
 
@@ -283,7 +302,10 @@ const TablePage = () => {
           ...columnStateProps,
           colId: column.columnId,
           type: column.type,
-          additionalTypeInformation: column.additionalTypeInformation,
+          additionalTypeInformation: {
+            currency: column.additionalTypeInformation?.currency || false,
+            decimals: column.additionalTypeInformation?.decimals,
+          },
           description: column.description,
           valueParser: (params) => {
             if (column.type === 'number') {
@@ -623,26 +645,71 @@ const TablePage = () => {
     [debouncedProcessColumnStateChange]
   );
 
+  const handleUpdateText = async (type: 'before' | 'after', content: string) => {
+    if (!token) {
+      toast({
+        title: 'Error',
+        description: 'You must be logged in to edit the table text',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    await updateTableText.mutateAsync({
+      token,
+      tableId: tableData?.id || '',
+      [type === 'before' ? 'beforeTableText' : 'afterTableText']: content,
+    });
+  };
+
   if (error) {
-    return <TablePageError error={error} />;
+    return <TableComponentError error={error} />;
   }
 
   if (!tableData && !isTableLoading) {
-    return <TablePageError error="Table not found" />;
+    return <TableComponentError error="Table not found" />;
   }
 
   if (!tableData) return null;
 
+  console.log(tableData.afterTableText, tableData.beforeTableText);
+
   return (
-    <AppLayout>
+    <>
       {tableData && (
         <Helmet>
           <title>{`${tableData.name} - Deep Table`}</title>
           <meta name="description" content={tableData.description || ''} />
+          <meta property="og:title" content={`${tableData.name} - Deep Table`} />
+          <meta property="og:description" content={tableData.description || ''} />
+          <meta property="og:type" content="article" />
+          <meta property="og:url" content={window.location.href} />
+          {tableData.sharingStatus !== 'public' && <meta name="robots" content="noindex" />}
+          <link rel="canonical" href={`${window.location.origin}/t/${tableData.slug}`} />
         </Helmet>
       )}
-      <div className="h-full w-full flex flex-col">
-        <TablePageHeader
+      {isPublicView && tableData.sharingStatus === 'public' && (
+        <div className="m-auto prose max-w-4xl mb-8">
+          {tableData.beforeTableText ? (
+            <EditableMarkdown
+              content={tableData.beforeTableText}
+              onSave={(content) => handleUpdateText('before', content)}
+              isEditable={tableData.isOwner}
+              className="mb-8"
+              placeholder="Add description above the table (supports markdown)..."
+            />
+          ) : (
+            tableData.isOwner && (
+              <AddTextButton
+                onClick={() => handleUpdateText('before', 'Add your text here')}
+                text="Add text above table (only visible to you)"
+              />
+            )
+          )}
+        </div>
+      )}
+      <div className="w-full flex flex-col">
+        <TableComponentHeader
           tableName={tableData.name}
           tableDescription={tableData.description || ''}
           tableId={tableData.id}
@@ -659,11 +726,12 @@ const TablePage = () => {
           table={tableData}
           rows={rowData}
         />
-        <div className="flex-1 min-h-0">
+
+        <div className="min-h-0">
           {!isGridReady && (
             <div className="flex justify-center items-center h-full">Loading table...</div>
           )}
-          <div className={`ag-theme-alpine h-full w-full ${!isGridReady ? 'invisible' : ''}`}>
+          <div className={`ag-theme-alpine w-full ${!isGridReady ? 'invisible' : ''}`}>
             <AgGridReact
               ref={gridRef}
               rowData={rowData}
@@ -683,12 +751,31 @@ const TablePage = () => {
               context={gridContext}
               cellSelection={cellSelection}
               onRangeSelectionChanged={onRangeSelectionChanged}
+              domLayout="autoHeight"
             />
           </div>
         </div>
       </div>
-    </AppLayout>
+      {isPublicView && tableData.sharingStatus === 'public' && (
+        <div className="m-auto prose max-w-4xl mt-8">
+          {tableData.afterTableText ? (
+            <EditableMarkdown
+              content={tableData.afterTableText}
+              onSave={(content) => handleUpdateText('after', content)}
+              isEditable={tableData.isOwner}
+              className="mt-8"
+              placeholder="Add description below the table (supports markdown)..."
+            />
+          ) : (
+            tableData.isOwner && (
+              <AddTextButton
+                onClick={() => handleUpdateText('after', 'Add your text here')}
+                text="Add text below table (only visible to you)"
+              />
+            )
+          )}
+        </div>
+      )}
+    </>
   );
 };
-
-export default TablePage;

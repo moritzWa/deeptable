@@ -1,7 +1,7 @@
 import { ICellRendererParams } from 'ag-grid-community';
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
-import { CustomColDef } from './TablePage';
+import { CustomColDef } from './TableComponent';
 
 // Helper functions
 export const isUrl = (str: string | undefined | null): boolean => {
@@ -42,11 +42,31 @@ export const smartCellRenderer = (params: ICellRendererParams) => {
   if (useUrlRenderer) {
     return LinkCellRenderer(params);
   }
+
   const colDef = params.colDef as CustomColDef;
   if (colDef.type === 'number') {
-    const isCurrency = colDef.additionalTypeInformation.currency || false;
-    const decimals = colDef.additionalTypeInformation.decimals || 2; 
-    return <span className='font-mono w-full text-right'>{isCurrency ? '$' : ''}{value.toFixed(decimals)}</span>;
+    // Add null/undefined check for the value
+    if (value === null || value === undefined) {
+      return <span className="font-mono w-full text-right"></span>;
+    }
+
+    // Convert to number if it's a string
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+
+    // Check if it's a valid number
+    if (isNaN(numValue)) {
+      return <span className="font-mono w-full text-right"></span>;
+    }
+
+    const isCurrency = colDef.additionalTypeInformation?.currency || false;
+    const decimals = colDef.additionalTypeInformation?.decimals ?? 2;
+
+    return (
+      <span className="font-mono w-full text-right">
+        {isCurrency ? '$' : ''}
+        {numValue.toFixed(decimals)}
+      </span>
+    );
   }
 
   // For non-URL values, just return the value directly

@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CustomColDef } from './TablePage';
+import { CustomColDef } from './TableComponent';
 import {
   ContextMenu,
   ContextMenuContent,
