@@ -18,6 +18,8 @@ export interface ITable extends Document {
   _id: mongoose.Types.ObjectId;
   sharingStatus: 'private' | 'public';
   slug: string;
+  beforeTableText?: string;
+  afterTableText?: string;
 }
 
 // Column state schema
@@ -87,6 +89,14 @@ const tableSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+    },
+    beforeTableText: {
+      type: String,
+      required: false,
+    },
+    afterTableText: {
+      type: String,
+      required: false,
     },
     columns: {
       type: [columnSchema],

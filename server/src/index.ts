@@ -4,6 +4,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import Stripe from 'stripe';
 import { User as UserModel } from './models/user';
+import sitemapRouter from './routes/sitemap';
 import { publicProcedure, router } from './trpc';
 
 // Export tRPC utilities
@@ -103,6 +104,9 @@ app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), asyn
     res.status(400).send(`Webhook Error: ${err.message}`);
   }
 });
+
+// Add the sitemap router before the tRPC middleware
+app.use('/', sitemapRouter);
 
 // tRPC middleware
 app.use(
