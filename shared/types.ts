@@ -23,6 +23,10 @@ export interface Column {
   columnId: string;
   name: string;
   type: ColumnType;
+  additionalTypeInformation: {
+    currency?: boolean;
+    decimals?: number;
+  };
   required?: boolean;
   defaultValue?: any;
   description: string;

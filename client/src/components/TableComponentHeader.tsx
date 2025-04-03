@@ -397,6 +397,7 @@ export const TableComponentHeader = ({
         columnId: column.columnId,
         name: column.name,
         type: column.type,
+        additionalTypeInformation: column.additionalTypeInformation,
         required: column.required || false,
         defaultValue: column.defaultValue,
         description: column.description,
