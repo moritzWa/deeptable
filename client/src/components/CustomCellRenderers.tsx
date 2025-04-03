@@ -62,7 +62,7 @@ export const smartCellRenderer = (params: ICellRendererParams) => {
     const decimals = colDef.additionalTypeInformation?.decimals ?? 2;
 
     return (
-      <span className="font-mono w-full text-right">
+      <span className="w-full text-right">
         {isCurrency ? '$' : ''}
         {numValue.toFixed(decimals)}
       </span>
