@@ -480,42 +480,43 @@ export const tablesRouter = router({
     }),
 
   setColumnCurrency: publicProcedure
-  .input(
-    z.object({
-      token: z.string(),
-      tableId: z.string(),
-      columnId: z.string(),
-      currency: z.boolean(),
-    })
-  ).mutation(async ({ input }): Promise<{ success: boolean }> => {
-    try {
-      const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-        userId: string;
-      };
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnId: z.string(),
+        currency: z.boolean(),
+      })
+    )
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
 
-      const result = await TableModel.updateOne(
-        {
-          _id: input.tableId,
-          userId: decoded.userId,
-          'columns.columnId': input.columnId,
-        },
-        {
-          $set: {
-            'columns.$.additionalTypeInformation.currency': input.currency,
+        const result = await TableModel.updateOne(
+          {
+            _id: input.tableId,
+            userId: decoded.userId,
+            'columns.columnId': input.columnId,
+          },
+          {
+            $set: {
+              'columns.$.additionalTypeInformation.currency': input.currency,
+            },
           }
+        );
+
+        if (result.matchedCount === 0) {
+          throw new Error('Table or column not found');
         }
-      );
 
-      if (result.matchedCount === 0) {
-        throw new Error('Table or column not found');
+        return { success: true };
+      } catch (error) {
+        console.error('Set column currency error:', error);
+        throw new Error('Failed to set column currency');
       }
-
-      return { success: true };
-    } catch (error) {
-      console.error('Set column currency error:', error);
-      throw new Error('Failed to set column currency');
-    }
-  }),
+    }),
 
   updateColumnDescription: publicProcedure
     .input(
@@ -883,6 +884,7 @@ export const tablesRouter = router({
           defaultValue: col.defaultValue,
           description: col.description,
           columnState: col.columnState,
+          additionalTypeInformation: col.additionalTypeInformation,
         })),
         createdAt: table.createdAt.toISOString(),
         updatedAt: table.updatedAt.toISOString(),
@@ -944,6 +946,7 @@ export const tablesRouter = router({
             defaultValue: col.defaultValue,
             description: col.description,
             columnState: col.columnState,
+            additionalTypeInformation: col.additionalTypeInformation,
           })),
           createdAt: table.createdAt.toISOString(),
           updatedAt: table.updatedAt.toISOString(),
