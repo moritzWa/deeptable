@@ -27,13 +27,22 @@ const columnStateSchema = z.object({
 const columnSchema = z.object({
   columnId: z.string().default(() => randomUUID()),
   name: z.string(),
-  type: z.enum(['text', 'number', 'link', 'string', 'boolean', 'date', 'array', 'object']),
+  type: z.enum(['text', 'number', 'link', 'select', 'multiSelect']),
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
   description: z.string(),
   additionalTypeInformation: z.object({
     currency: z.boolean().optional(),
     decimals: z.number().int().nonnegative().optional(),
+    selectItems: z
+      .array(
+        z.object({
+          id: z.string(),
+          name: z.string(),
+          color: z.string(),
+        })
+      )
+      .optional(),
   }),
   columnState: columnStateSchema.optional(),
 });
@@ -446,7 +455,7 @@ export const tablesRouter = router({
         token: z.string(),
         tableId: z.string(),
         columnId: z.string(),
-        type: z.enum(['text', 'number', 'link']),
+        type: z.enum(['text', 'number', 'link', 'select', 'multiSelect']),
       })
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
@@ -960,6 +969,52 @@ export const tablesRouter = router({
       } catch (error) {
         console.error('Update table text error:', error);
         throw new Error('Failed to update table text');
+      }
+    }),
+
+  // Add a new procedure to update select items
+  updateSelectItems: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnId: z.string(),
+        selectItems: z.array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            color: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
+          userId: string;
+        };
+
+        const result = await TableModel.updateOne(
+          {
+            _id: input.tableId,
+            userId: decoded.userId,
+            'columns.columnId': input.columnId,
+          },
+          {
+            $set: {
+              'columns.$.additionalTypeInformation.selectItems': input.selectItems,
+            },
+          }
+        );
+
+        if (result.matchedCount === 0) {
+          throw new Error('Table or column not found');
+        }
+
+        return { success: true };
+      } catch (error) {
+        console.error('Update select items error:', error);
+        throw new Error('Failed to update select items');
       }
     }),
 });

@@ -10,6 +10,8 @@ import {
   Hash,
   Info,
   Link2,
+  ListChecks,
+  ListFilter,
   PinIcon,
   PinOff,
   Trash2,
@@ -170,7 +172,10 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const handleSetColumnCurrency = () => {
     if (!props.context.setColumnCurrency) return;
     const colDef = props.column.getColDef() as CustomColDef;
-    props.context.setColumnCurrency(props.column.getColId(), !colDef.additionalTypeInformation.currency);
+    props.context.setColumnCurrency(
+      props.column.getColId(),
+      !colDef.additionalTypeInformation.currency
+    );
   };
 
   const handlePin = (direction: 'left' | 'right' | null) => {
@@ -318,18 +323,35 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
             <Link2 className="h-4 w-4" />
             Link
           </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => handleTypeChange('select')}
+            className="flex items-center gap-2"
+          >
+            <ListChecks className="h-4 w-4" />
+            Select
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={() => handleTypeChange('multiSelect')}
+            className="flex items-center gap-2"
+          >
+            <ListFilter className="h-4 w-4" />
+            Multi-Select
+          </ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
         {props.column.getColDef().type === 'number' && (
           <>
-        <ContextMenuGroup>
-          <Label className='p-2'>Formatting</Label>
-          <ContextMenuItem onClick={() => handleSetColumnCurrency()} className="flex items-center gap-2">
-            <DollarSign className="h-4 w-4" />
-            Currency
-          </ContextMenuItem>
-        </ContextMenuGroup>
-        <ContextMenuSeparator />
+            <ContextMenuGroup>
+              <Label className="p-2">Formatting</Label>
+              <ContextMenuItem
+                onClick={() => handleSetColumnCurrency()}
+                className="flex items-center gap-2"
+              >
+                <DollarSign className="h-4 w-4" />
+                Currency
+              </ContextMenuItem>
+            </ContextMenuGroup>
+            <ContextMenuSeparator />
           </>
         )}
         <ContextMenuGroup>
