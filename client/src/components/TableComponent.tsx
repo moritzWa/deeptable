@@ -62,7 +62,11 @@ interface AgGridColumnState {
 }
 
 export interface CustomColDef extends ColDef {
-  description?: string;
+  description: string;
+  additionalTypeInformation: {
+    currency?: boolean;
+    decimals?: number;
+  };
 }
 
 // Helper function to convert null to undefined for AG Grid compatibility
@@ -172,6 +176,14 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     },
     onError: (error) => {
       console.error('Failed to update column description:', error);
+    },
+  });
+  const setColumnCurrencyMutation = trpc.tables.setColumnCurrency.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error('Failed to toggle column currency:', error);
     },
   });
 
@@ -289,7 +301,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           suppressHeaderContextMenu: true,
           ...columnStateProps,
           colId: column.columnId,
-          type: column.type || 'text',
+          type: column.type,
+          additionalTypeInformation: column.additionalTypeInformation,
           description: column.description,
           valueParser: (params) => {
             if (column.type === 'number') {
@@ -395,6 +408,16 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           description,
         });
       },
+      setColumnCurrency: (columnId: string, currency: boolean) => {
+        if (!token || !id) return;
+
+        setColumnCurrencyMutation.mutate({
+          token,
+          tableId: id,
+          columnId,
+          currency,
+        });
+      },
     }),
     [
       id,
@@ -407,6 +430,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       deleteColumnMutation,
       updateColumnTypeMutation,
       updateColumnDescriptionMutation,
+      setColumnCurrencyMutation,
     ]
   );
 
