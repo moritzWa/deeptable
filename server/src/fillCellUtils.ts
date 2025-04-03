@@ -58,7 +58,7 @@ async function askPerplexity(question: string): Promise<string> {
   const SYSTEM_PROMPT = `You are an assitant helping fill out a spreadsheet. You can search the web for information.`;
 
   // https://docs.perplexity.ai/reference/post_chat_completions
-  const completion = (await fetch('https://api.perplexity.ai/chat/completions', {
+  const completion = await fetch('https://api.perplexity.ai/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`,
@@ -81,7 +81,7 @@ async function askPerplexity(question: string): Promise<string> {
     const txt = await res.text();
     // console.log('txt', txt);
     return JSON.parse(txt) as PerplexityResponse;
-  }));
+  });
 
   if (!completion.choices?.[0]?.message?.content) {
     throw new Error('Invalid response from Perplexity API');
@@ -145,6 +145,12 @@ function columnTypeToJsonSchema(columnType: ColumnType): Record<string, unknown>
       break;
     case 'link':
       resultSchema = { type: 'string' }; // TODO: add format: 'uri'
+      break;
+    case 'select':
+      resultSchema = { type: 'string' };
+      break;
+    case 'multiSelect':
+      resultSchema = { type: 'array', items: { type: 'string' } };
       break;
   }
 
@@ -273,8 +279,11 @@ export async function fillCell(
       }))
   );
   const searchResponses = await Promise.all(searchPromises);
-  console.log('Search results collected from all providers', JSON.stringify(searchResponses, null, 2));
-  
+  console.log(
+    'Search results collected from all providers',
+    JSON.stringify(searchResponses, null, 2)
+  );
+
   // Append search results to test.txt
   const logData = `
 Table: ${tableName}
