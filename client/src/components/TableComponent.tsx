@@ -1,7 +1,7 @@
 import { smartCellRenderer } from '@/components/CustomCellRenderers';
 import { useSidebar } from '@/components/ui/sidebar';
 import { trpc } from '@/utils/trpc';
-import { ColumnState, ColumnType, Table } from '@shared/types';
+import { ColumnState, ColumnType, SelectItem, Table } from '@shared/types';
 import {
   CellRange,
   CellValueChangedEvent,
@@ -66,6 +66,7 @@ export interface CustomColDef extends ColDef {
   additionalTypeInformation: {
     currency?: boolean;
     decimals?: number;
+    selectItems?: SelectItem[];
   };
 }
 
@@ -305,6 +306,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           additionalTypeInformation: {
             currency: column.additionalTypeInformation?.currency || false,
             decimals: column.additionalTypeInformation?.decimals,
+            selectItems: column.additionalTypeInformation?.selectItems,
           },
           description: column.description,
           valueParser: (params) => {

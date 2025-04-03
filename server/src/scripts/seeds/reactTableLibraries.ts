@@ -138,11 +138,12 @@ export async function createReactTableLibrariesTable(userId: string) {
   });
 
   // Create rows with the data (already using column IDs)
-  const rowPromises = reactTableData.map((data) => {
+  const rowPromises = reactTableData.map((data, index) => {
     return Row.create({
       tableId: reactTableLibrariesTable._id,
       data,
       userId,
+      index,
     });
   });
 

@@ -1,5 +1,5 @@
 import { trpc } from '@/utils/trpc';
-import { ColumnState } from '@shared/types';
+import { ColumnState, SelectItem } from '@shared/types';
 import { Column, IHeaderParams } from 'ag-grid-community';
 import {
   ArrowLeftToLine,
@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SelectTypeItemForm } from './SelectTypeItemForm';
 import { CustomColDef } from './TableComponent';
 import {
   ContextMenu,
@@ -61,6 +62,12 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const utils = trpc.useContext();
 
   const updateColumnNameMutation = trpc.tables.updateColumnName.useMutation({
+    onSuccess: () => {
+      utils.tables.getTable.invalidate();
+    },
+  });
+
+  const updateSelectItemsMutation = trpc.tables.updateSelectItems.useMutation({
     onSuccess: () => {
       utils.tables.getTable.invalidate();
     },
@@ -304,41 +311,76 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         <ContextMenuGroup>
           <ContextMenuItem
             onClick={() => handleTypeChange('text')}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'text' ? 'bg-secondary' : ''
+            }`}
           >
             <Type className="h-4 w-4" />
             Text
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => handleTypeChange('number')}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'number' ? 'bg-secondary' : ''
+            }`}
           >
             <Hash className="h-4 w-4" />
             Number
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => handleTypeChange('link')}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'link' ? 'bg-secondary' : ''
+            }`}
           >
             <Link2 className="h-4 w-4" />
             Link
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => handleTypeChange('select')}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'select' ? 'bg-secondary' : ''
+            }`}
           >
             <ListChecks className="h-4 w-4" />
             Select
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => handleTypeChange('multiSelect')}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'multiSelect' ? 'bg-secondary' : ''
+            }`}
           >
             <ListFilter className="h-4 w-4" />
             Multi-Select
           </ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
+        {(props.column.getColDef().type === 'select' ||
+          props.column.getColDef().type === 'multiSelect') && (
+          <>
+            <SelectTypeItemForm
+              selectItems={
+                (props.column.getColDef() as CustomColDef).additionalTypeInformation?.selectItems
+              }
+              onUpdateItems={(items: SelectItem[]) => {
+                if (!props.context.isOwner) {
+                  redirectToLogin();
+                  return;
+                }
+
+                updateSelectItemsMutation.mutate({
+                  token: token || '',
+                  tableId: props.context.tableId,
+                  columnId: props.column.getColId(),
+                  selectItems: items,
+                });
+              }}
+              isMultiSelect={props.column.getColDef().type === 'multiSelect'}
+            />
+            <ContextMenuSeparator />
+          </>
+        )}
         {props.column.getColDef().type === 'number' && (
           <>
             <ContextMenuGroup>

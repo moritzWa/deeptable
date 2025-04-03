@@ -340,11 +340,12 @@ export async function createHardwareStartupsTable(userId: string) {
   });
 
   // Create rows with the data (already using column IDs)
-  const rowPromises = hardwareStartupsData.map((data) => {
+  const rowPromises = hardwareStartupsData.map((data, index) => {
     return Row.create({
       tableId: hardwareStartupsTable._id,
       data,
       userId,
+      index,
     });
   });
 

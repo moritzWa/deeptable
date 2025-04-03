@@ -31,19 +31,21 @@ const columnSchema = z.object({
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
   description: z.string(),
-  additionalTypeInformation: z.object({
-    currency: z.boolean().optional(),
-    decimals: z.number().int().nonnegative().optional(),
-    selectItems: z
-      .array(
-        z.object({
-          id: z.string(),
-          name: z.string(),
-          color: z.string(),
-        })
-      )
-      .optional(),
-  }),
+  additionalTypeInformation: z
+    .object({
+      currency: z.boolean().optional(),
+      decimals: z.number().int().nonnegative().optional(),
+      selectItems: z
+        .array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            color: z.string(),
+          })
+        )
+        .optional(),
+    })
+    .optional(),
   columnState: columnStateSchema.optional(),
 });
 
