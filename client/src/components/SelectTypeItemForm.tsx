@@ -1,3 +1,4 @@
+import { generateRandomColor } from '@/utils/selectUtils';
 import { SelectItem } from '@shared/types';
 import { Plus, X } from 'lucide-react';
 import { useState } from 'react';
@@ -87,20 +88,3 @@ export const SelectTypeItemForm = ({
     </div>
   );
 };
-
-// Helper function to generate random colors
-function generateRandomColor(): string {
-  const colors = [
-    '#373530', // Light Gray
-    '#787774', // Gray
-    '#976D57', // Brown
-    '#CC772F', // Orange
-    '#C29243', // Yellow
-    '#548064', // Green
-    '#477DA5', // Blue
-    '#A48BBE', // Purple
-    '#B35588', // Pink
-    '#C4554D', // Red
-  ];
-  return colors[Math.floor(Math.random() * colors.length)];
-}

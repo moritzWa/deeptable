@@ -1,8 +1,17 @@
+import { generateRandomColor } from '@/utils/selectUtils';
 import { SelectItem } from '@shared/types';
 import { CustomCellEditorProps } from 'ag-grid-react';
+import { Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { SelectPill } from './CellRendererSelect';
-import { Command, CommandGroup, CommandItem } from './ui/command';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from './ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
 interface SelectCellEditorProps extends CustomCellEditorProps {
@@ -12,6 +21,9 @@ interface SelectCellEditorProps extends CustomCellEditorProps {
       selectItems?: SelectItem[];
     };
   };
+  context: {
+    updateSelectItems?: (items: SelectItem[]) => void;
+  };
 }
 
 export const SelectCellEditor = ({
@@ -19,11 +31,14 @@ export const SelectCellEditor = ({
   onValueChange,
   colDef,
   stopEditing,
+  context,
 }: SelectCellEditorProps) => {
   const isMultiSelect = colDef.type === 'multiSelect';
   const selectItems = colDef.additionalTypeInformation?.selectItems || [];
   const [isOpen, setIsOpen] = useState(true);
+  const [inputValue, setInputValue] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
+  const commandRef = useRef<HTMLDivElement>(null);
 
   // For multiSelect, split by comma and trim
   const initialValues = isMultiSelect
@@ -39,6 +54,34 @@ export const SelectCellEditor = ({
   useEffect(() => {
     containerRef.current?.focus();
   }, []);
+
+  const handleAddNewItem = () => {
+    console.log('in handleAddNewItem - inputValue:', inputValue);
+
+    if (!inputValue.trim() || !context.updateSelectItems) return;
+
+    const newItem: SelectItem = {
+      id: crypto.randomUUID(),
+      name: inputValue.trim(),
+      color: generateRandomColor(),
+    };
+
+    // Update available select items
+    const newSelectItems = [...selectItems, newItem];
+    context.updateSelectItems(newSelectItems);
+
+    // Update selected values
+    const newValues = isMultiSelect ? [...selectedValues, newItem.name] : [newItem.name];
+
+    setSelectedValues(newValues);
+    onValueChange(newValues.join(', '));
+    setInputValue('');
+
+    if (!isMultiSelect) {
+      setIsOpen(false);
+      stopEditing();
+    }
+  };
 
   const handleSelect = (itemName: string) => {
     let newValues: string[];
@@ -69,8 +112,13 @@ export const SelectCellEditor = ({
     if (e.key === 'Escape') {
       setIsOpen(false);
       stopEditing();
-    } else if (e.key === 'Enter' && !isMultiSelect) {
-      stopEditing();
+    } else if (e.key === 'Enter') {
+      if (inputValue) {
+        e.preventDefault();
+        handleAddNewItem();
+      } else if (!isMultiSelect) {
+        stopEditing();
+      }
     }
   };
 
@@ -79,39 +127,69 @@ export const SelectCellEditor = ({
     e.stopPropagation(); // Prevent AG Grid from handling the event
   };
 
+  console.log('in SelectCellEditor - inputValue:', inputValue);
+
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <div
           ref={containerRef}
-          className="w-full h-full flex flex-wrap gap-1 focus:outline-none"
+          className="w-[200px] min-h-[32px] bg-popover border rounded-md p-1 flex flex-wrap gap-1 focus:outline-none shadow-sm"
           onKeyDown={onKeyDown}
           onMouseDown={handleMouseDown}
           tabIndex={0}
         >
-          {selectedValues.map((val) => {
-            const item = selectItems.find((i) => i.name === val);
-            if (!item) return null;
-            return <SelectPill key={item.id} value={item.name} color={item.color} />;
-          })}
+          {selectedValues.length > 0 ? (
+            selectedValues.map((val) => {
+              const item = selectItems.find((i) => i.name === val);
+              if (!item) return null;
+              return <SelectPill key={item.id} value={item.name} color={item.color} />;
+            })
+          ) : (
+            <span className="text-muted-foreground text-sm px-2 py-1">Select...</span>
+          )}
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
-          <CommandGroup>
-            {selectItems.map((item) => (
-              <CommandItem
-                key={item.id}
-                onSelect={() => handleSelect(item.name)}
-                className="flex items-center gap-2"
-                onMouseDown={(e) => e.stopPropagation()} // Prevent AG Grid from handling the event
-              >
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                <span>{item.name}</span>
-                {selectedValues.includes(item.name) && <span className="ml-auto">✓</span>}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+      <PopoverContent className="w-[200px] p-0" align="start" sideOffset={-1}>
+        <Command ref={commandRef} shouldFilter={true}>
+          <CommandInput
+            placeholder="Search or add new..."
+            value={inputValue}
+            onValueChange={setInputValue}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && inputValue.trim()) {
+                e.preventDefault();
+                handleAddNewItem();
+              }
+            }}
+          />
+          <CommandList>
+            <CommandEmpty className="py-2 px-2">
+              {inputValue.trim() && (
+                <CommandItem
+                  onSelect={handleAddNewItem}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Press Enter to add "{inputValue.trim()}"</span>
+                </CommandItem>
+              )}
+            </CommandEmpty>
+            <CommandGroup>
+              {selectItems.map((item) => (
+                <CommandItem
+                  key={item.id}
+                  value={item.name}
+                  onSelect={() => handleSelect(item.name)}
+                  className="flex items-center gap-2"
+                >
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                  <span>{item.name}</span>
+                  {selectedValues.includes(item.name) && <span className="ml-auto">✓</span>}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>
