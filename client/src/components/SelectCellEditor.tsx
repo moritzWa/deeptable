@@ -176,8 +176,12 @@ export const SelectCellEditor = ({
                 <CommandItem
                   key={item.id}
                   value={item.name}
-                  onSelect={() => handleSelect(item.name)}
                   className="flex items-center gap-2"
+                  onMouseDown={(e) => {
+                    console.log('in onMouseDown - item.name:', item.name);
+                    e.preventDefault();
+                    handleSelect(item.name);
+                  }}
                 >
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
                   <span>{item.name}</span>
