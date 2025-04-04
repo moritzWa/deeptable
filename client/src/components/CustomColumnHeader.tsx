@@ -245,6 +245,28 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     props.context.deleteColumn(props.column.getColId());
   };
 
+  function getUnusedColor(usedColors: Set<string>): string {
+    const colors = [
+      '#373530', // Light Gray
+      '#787774', // Gray
+      '#976D57', // Brown
+      '#CC772F', // Orange
+      '#C29243', // Yellow
+      '#548064', // Green
+      '#477DA5', // Blue
+      '#A48BBE', // Purple
+      '#B35588', // Pink
+      '#C4554D', // Red
+    ];
+
+    // First try to find an unused color
+    const unusedColor = colors.find((color) => !usedColors.has(color));
+    if (unusedColor) return unusedColor;
+
+    // If all colors are used, return a random one
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
   const handleTypeChange = (newType: string, e?: React.MouseEvent) => {
     if (!props.context.isOwner) {
       redirectToLogin();
@@ -258,6 +280,45 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     }
 
     if (props.context.updateColumnType) {
+      // Get all unique values from the column
+      if (newType === 'multiSelect') {
+        const allValues = new Set<string>();
+        props.api?.forEachNode((node) => {
+          const value = node.data?.data?.[props.column.getColId()];
+          if (typeof value === 'string') {
+            // Split by commas and trim whitespace
+            value.split(',').forEach((item) => {
+              const trimmed = item.trim();
+              if (trimmed) allValues.add(trimmed);
+            });
+          }
+        });
+
+        // Keep track of used colors
+        const usedColors = new Set<string>();
+
+        // Convert unique values to SelectItems
+        const selectItems: SelectItem[] = Array.from(allValues).map((value) => {
+          const color = getUnusedColor(usedColors);
+          usedColors.add(color);
+          return {
+            id: crypto.randomUUID(),
+            name: value,
+            color,
+          };
+        });
+
+        // Update the column type and its select items
+        if (selectItems.length > 0) {
+          updateSelectItemsMutation.mutate({
+            token: token || '',
+            tableId: props.context.tableId,
+            columnId: props.column.getColId(),
+            selectItems,
+          });
+        }
+      }
+
       props.context.updateColumnType(props.column.getColId(), newType);
     }
   };
