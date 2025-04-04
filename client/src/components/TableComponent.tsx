@@ -328,8 +328,9 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
             column.type === 'select' || column.type === 'multiSelect'
               ? SelectCellEditor
               : undefined,
-          cellEditorPopup: true,
-          cellEditorPopupPosition: 'under',
+          cellEditorPopup: column.type === 'select' || column.type === 'multiSelect' ? true : false,
+          cellEditorPopupPosition:
+            column.type === 'select' || column.type === 'multiSelect' ? 'under' : undefined,
           // stopEditingWhenCellsLoseFocus: false,
         };
 
@@ -628,8 +629,9 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       },
       cellEditor:
         column.type === 'select' || column.type === 'multiSelect' ? SelectCellEditor : undefined,
-      cellEditorPopup: true,
-      cellEditorPopupPosition: 'under',
+      cellEditorPopup: column.type === 'select' || column.type === 'multiSelect' ? true : false,
+      cellEditorPopupPosition:
+        column.type === 'select' || column.type === 'multiSelect' ? 'under' : undefined,
       stopEditingWhenCellsLoseFocus: false,
     }));
   };
