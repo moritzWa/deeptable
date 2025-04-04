@@ -247,16 +247,13 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
 
   function getUnusedColor(usedColors: Set<string>): string {
     const colors = [
-      '#373530', // Light Gray
-      '#787774', // Gray
-      '#976D57', // Brown
-      '#CC772F', // Orange
-      '#C29243', // Yellow
-      '#548064', // Green
-      '#477DA5', // Blue
-      '#A48BBE', // Purple
-      '#B35588', // Pink
-      '#C4554D', // Red
+      '#FF8F37', // Orange
+      '#FFB347', // Yellow
+      '#4CAF50', // Green
+      '#2196F3', // Blue
+      '#9C27B0', // Purple
+      '#E91E63', // Pink
+      '#F44336', // Red
     ];
 
     // First try to find an unused color
