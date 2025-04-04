@@ -127,8 +127,6 @@ export const SelectCellEditor = ({
     e.stopPropagation(); // Prevent AG Grid from handling the event
   };
 
-  console.log('in SelectCellEditor - inputValue:', inputValue);
-
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
@@ -164,16 +162,14 @@ export const SelectCellEditor = ({
             }}
           />
           <CommandList>
-            <CommandEmpty className="py-2 px-2">
-              {inputValue.trim() && (
-                <CommandItem
-                  onSelect={handleAddNewItem}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" />
-                  <span>Press Enter to add "{inputValue.trim()}"</span>
-                </CommandItem>
-              )}
+            <CommandEmpty className="py-2 px-2 cursor-pointer">
+              <div
+                onSelect={handleAddNewItem}
+                className="text-sm text-muted-foreground flex items-center h-full w-full gap-2"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Press Enter to add "{inputValue.trim()}"</span>
+              </div>
             </CommandEmpty>
             <CommandGroup>
               {selectItems.map((item) => (
