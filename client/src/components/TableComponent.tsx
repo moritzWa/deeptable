@@ -712,6 +712,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       )}
       <div className="w-full flex flex-col">
         <TableComponentHeader
+          isPublicView={isPublicView}
           tableName={tableData.name}
           tableDescription={tableData.description || ''}
           tableId={tableData.id}

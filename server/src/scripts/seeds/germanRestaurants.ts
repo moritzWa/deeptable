@@ -120,6 +120,7 @@ export async function createRestaurantTable(userId: string) {
     description: 'List of German restaurants in San Francisco',
     columns: restaurantColumns,
     userId,
+    sharingStatus: 'public',
     slug: slugify(name).toLowerCase(),
   });
 
