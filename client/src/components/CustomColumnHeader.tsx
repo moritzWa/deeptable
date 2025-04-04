@@ -245,10 +245,16 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     props.context.deleteColumn(props.column.getColId());
   };
 
-  const handleTypeChange = (newType: string) => {
+  const handleTypeChange = (newType: string, e?: React.MouseEvent) => {
     if (!props.context.isOwner) {
       redirectToLogin();
       return;
+    }
+
+    // For select and multiSelect, prevent menu from closing
+    if ((newType === 'select' || newType === 'multiSelect') && e) {
+      e.preventDefault();
+      e.stopPropagation();
     }
 
     if (props.context.updateColumnType) {
@@ -337,7 +343,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
             Link
           </ContextMenuItem>
           <ContextMenuItem
-            onClick={() => handleTypeChange('select')}
+            onClick={(e) => handleTypeChange('select', e)}
             className={`flex items-center gap-2 ${
               props.column.getColDef().type === 'select' ? 'bg-secondary' : ''
             }`}
@@ -346,7 +352,7 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
             Select
           </ContextMenuItem>
           <ContextMenuItem
-            onClick={() => handleTypeChange('multiSelect')}
+            onClick={(e) => handleTypeChange('multiSelect', e)}
             className={`flex items-center gap-2 ${
               props.column.getColDef().type === 'multiSelect' ? 'bg-secondary' : ''
             }`}
