@@ -63,6 +63,15 @@ export default function HomePage() {
                   <p className="text-xs text-muted-foreground">
                     Created: {new Date(table.createdAt).toLocaleDateString()}
                   </p>
+                  {table.sharingStatus === 'public' && (
+                    <a
+                      href={`/t/${table.slug}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-xs text-blue-500 hover:text-blue-700 ml-auto"
+                    >
+                      Public Link ↗
+                    </a>
+                  )}
                 </CardFooter>
               </Card>
             ))}
