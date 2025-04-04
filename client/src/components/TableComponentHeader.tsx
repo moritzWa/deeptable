@@ -29,6 +29,7 @@ export interface TableComponentHeaderProps {
   isOwner: boolean;
   table: Table;
   rows: any[];
+  isPublicView: boolean;
 }
 
 const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: () => void }) => {
@@ -168,6 +169,7 @@ export const TableComponentHeader = ({
   isOwner,
   table,
   rows,
+  isPublicView,
 }: TableComponentHeaderProps) => {
   const token = localStorage.getItem('token');
   const trpcUtils = trpc.useContext();
@@ -445,10 +447,12 @@ export const TableComponentHeader = ({
 
   return (
     <div className="sticky top-0 z-10 bg-background border-b">
-      <div className="p-2 pl-3 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+      <div
+        className={`${!isPublicView && 'p-2 pl-3'} pb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2`}
+      >
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           {!isSidebarOpen && <SidebarTrigger className="h-8 w-8" />}
-          <div className="font-semibold flex items-center gap-2">
+          <div className="font-semibold flex flex-col sm:flex-row items-start sm:items-center gap-2">
             {isEditing ? (
               <Input
                 ref={inputRef}
@@ -466,22 +470,24 @@ export const TableComponentHeader = ({
                 {tableName}
               </span>
             )}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="h-4 w-4 text-gray-500" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{tableDescription}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <div className="text-sm font-normal text-gray-500">
-              Right-click the column header below to edit
+            <div className="flex items-center gap-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="hidden xl:block h-4 w-4 text-gray-500" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{tableDescription}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <div className="text-sm font-normal text-gray-500 hidden xl:block">
+                Right-click the column header below to edit
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <Button
             variant="outline"
             size="sm"
@@ -489,7 +495,8 @@ export const TableComponentHeader = ({
             onClick={handleEnrichCells}
           >
             <Sparkle className="h-4 w-4" />
-            Enrich Selected Cells
+            <span className="hidden sm:inline">Enrich Selected Cells</span>
+            <span className="sm:hidden">Enrich</span>
           </Button>
           {isOwner && (
             <>
@@ -500,7 +507,7 @@ export const TableComponentHeader = ({
                 onClick={handleShareTable}
               >
                 <Share className="h-4 w-4" />
-                {sharingStatus === 'public' ? 'Make Private' : 'Share'}
+                {sharingStatus === 'public' ? 'Private' : 'Share'}
               </Button>
               <Button
                 variant="outline"
