@@ -182,6 +182,10 @@ export const SelectCellEditor = ({
                     e.preventDefault();
                     handleSelect(item.name);
                   }}
+                  onClick={() => {
+                    console.log('in onClick - item.name:', item.name);
+                    handleSelect(item.name);
+                  }}
                 >
                   <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
                   <span>{item.name}</span>
