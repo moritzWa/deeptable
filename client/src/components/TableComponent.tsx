@@ -27,6 +27,7 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ColumnHeader } from './ColumnHeader';
 import { AddTextButton, EditableMarkdown } from './EditableMarkdown';
+import { SelectCellEditor } from './SelectCellEditor';
 import { TableError } from './TableError';
 import { TableHeader } from './TableHeader';
 
@@ -315,6 +316,13 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
             }
             return params.newValue;
           },
+          cellEditor:
+            column.type === 'select' || column.type === 'multiSelect'
+              ? SelectCellEditor
+              : undefined,
+          cellEditorPopup: true,
+          cellEditorPopupPosition: 'under',
+          // stopEditingWhenCellsLoseFocus: false,
         };
 
         return colDef;
@@ -570,7 +578,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     // Force a refresh of the column definitions
     if (table?.columns) {
       const initialColumns = createInitialColumnDefs(table.columns);
-      setColumnDefs(initialColumns);
+      setColumnDefs(initialColumns as ColDef[]);
     }
   };
 
@@ -599,6 +607,11 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         }
         return params.newValue;
       },
+      cellEditor:
+        column.type === 'select' || column.type === 'multiSelect' ? SelectCellEditor : undefined,
+      cellEditorPopup: true,
+      cellEditorPopupPosition: 'under',
+      stopEditingWhenCellsLoseFocus: false,
     }));
   };
 
@@ -673,8 +686,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   }
 
   if (!tableData) return null;
-
-  console.log(tableData.afterTableText, tableData.beforeTableText);
 
   return (
     <>
