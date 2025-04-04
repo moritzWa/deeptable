@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { downloadJson, exportTableData } from '../utils/tableComponentHelpers';
 import { AddRowsDropdown } from './AddRowsDropdown';
 
-export interface TableComponentHeaderProps {
+export interface TableHeaderProps {
   tableName: string;
   tableDescription: string;
   tableId: string;
@@ -24,10 +24,10 @@ export interface TableComponentHeaderProps {
   isOwner: boolean;
   table: Table;
   rows: any[];
-  isPublicView: boolean;
+  isPublicView?: boolean;
 }
 
-export const TableComponentHeader = ({
+export const TableHeader = ({
   tableName,
   tableDescription,
   tableId,
@@ -40,7 +40,7 @@ export const TableComponentHeader = ({
   table,
   rows,
   isPublicView,
-}: TableComponentHeaderProps) => {
+}: TableHeaderProps) => {
   const token = localStorage.getItem('token');
   const trpcUtils = trpc.useContext();
   const [isEditing, setIsEditing] = useState(false);

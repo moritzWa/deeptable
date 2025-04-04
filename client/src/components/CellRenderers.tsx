@@ -1,7 +1,7 @@
+import { Column, SelectItem } from '@shared/types';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
-import { CustomColDef } from './TableComponent';
 
 // Helper functions
 export const isUrl = (str: string | undefined | null): boolean => {
@@ -33,17 +33,77 @@ export const shouldUseUrlRenderer = (value: any): boolean => {
   return typeof value === 'string' && isUrl(value);
 };
 
-// Custom cell renderer factory - decides whether to use link renderer or default
+// New component for rendering individual select items as pills
+const SelectPill = ({ value, color }: { value: string; color: string }) => {
+  return (
+    <span
+      className="px-2 py-0.5 rounded-full text-sm inline-flex items-center"
+      style={{
+        backgroundColor: `${color}20`, // Using 20% opacity version of the color
+        color: color,
+        border: `1px solid ${color}40`, // Using 40% opacity for border
+      }}
+    >
+      {value}
+    </span>
+  );
+};
+
+// Renderer for select/multiSelect cells
+interface SelectCellRendererParams extends ICellRendererParams {
+  colDef: Column;
+  value: string;
+}
+
+const SelectCellRenderer = (props: SelectCellRendererParams) => {
+  const selectItems = props.colDef.additionalTypeInformation?.selectItems || [];
+  const value = props.value;
+
+  if (!value) return <span></span>;
+
+  // For multiSelect, value might be comma-separated
+  const values: string[] =
+    props.colDef.type === 'multiSelect'
+      ? value
+          .split(',')
+          .map((v: string) => v.trim())
+          .filter(Boolean)
+      : [value];
+
+  return (
+    <div className="flex flex-wrap gap-1">
+      {values.map((val: string, index: number) => {
+        const selectItem = selectItems.find((item: SelectItem) => item.name === val);
+        if (!selectItem) {
+          // Fallback for values that don't have a matching select item
+          return (
+            <span key={index} className="text-gray-500">
+              {val}
+            </span>
+          );
+        }
+        return <SelectPill key={selectItem.id} value={selectItem.name} color={selectItem.color} />;
+      })}
+    </div>
+  );
+};
+
+// Update the smartCellRenderer to handle select types
 export const smartCellRenderer = (params: ICellRendererParams) => {
+  const colDef = params.colDef as Column;
   const value = params.value;
 
+  // Handle select/multiSelect types
+  if (colDef.type === 'select' || colDef.type === 'multiSelect') {
+    return SelectCellRenderer(params as SelectCellRendererParams);
+  }
+
   // Check if the value is a URL
-  const useUrlRenderer = shouldUseUrlRenderer(value) || params.colDef?.type === 'link';
+  const useUrlRenderer = shouldUseUrlRenderer(value) || colDef.type === 'link';
   if (useUrlRenderer) {
     return LinkCellRenderer(params);
   }
 
-  const colDef = params.colDef as CustomColDef;
   if (colDef.type === 'number') {
     // Add null/undefined check for the value
     if (value === null || value === undefined) {
@@ -69,7 +129,7 @@ export const smartCellRenderer = (params: ICellRendererParams) => {
     );
   }
 
-  // For non-URL values, just return the value directly
+  // For non-special values, just return the value directly
   return <span>{value !== undefined && value !== null ? value : ''}</span>;
 };
 

@@ -17,7 +17,7 @@ export const AddRowsDropdown = ({
 }: {
   tableId: string;
   onSuccess: () => void;
-  isPublicView: boolean;
+  isPublicView?: boolean;
 }) => {
   const token = localStorage.getItem('token');
   const { toast } = useToast();

@@ -17,7 +17,6 @@ import { AgGridReact } from 'ag-grid-react';
 import { convertColumnStateToAgGridProps } from '../utils/tableComponentHelpers';
 
 // Finally our custom overrides
-import { useToast } from '@/hooks/use-toast';
 import '@/styles/ag-grid-theme.css';
 import { ModuleRegistry } from 'ag-grid-community';
 import 'ag-grid-enterprise'; // This is the correct way to import enterprise features
@@ -25,8 +24,8 @@ import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
+import { AppLayout } from './AppLayout';
 import { ColumnHeader } from './ColumnHeader';
-import { AddTextButton, EditableMarkdown } from './EditableMarkdown';
 import { TableError } from './TableError';
 import { TableHeader } from './TableHeader';
 
@@ -63,7 +62,7 @@ interface AgGridColumnState {
 
 export interface CustomColDef extends ColDef {
   description: string;
-  additionalTypeInformation: {
+  additionalTypeInformation?: {
     currency?: boolean;
     decimals?: number;
     selectItems?: SelectItem[];
@@ -75,7 +74,7 @@ function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
 
-export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolean }) => {
+const TablePage = () => {
   const { id, slug } = useParams<{ id?: string; slug?: string }>();
   const navigate = useNavigate();
   const sidebar = useSidebar();
@@ -89,9 +88,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   // Reference to the AG Grid API
   const gridRef = useRef<AgGridReact>(null);
 
-  const { toast } = useToast();
-  const utils = trpc.useContext();
   const token = localStorage.getItem('token');
+  const utils = trpc.useContext();
 
   // FETCH DATA
   const {
@@ -185,23 +183,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     },
     onError: (error) => {
       console.error('Failed to toggle column currency:', error);
-    },
-  });
-
-  const updateTableText = trpc.tables.updateTableText.useMutation({
-    onSuccess: () => {
-      utils.tables.getTable.invalidate();
-      toast({
-        title: 'Success',
-        description: 'Table text updated successfully',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error',
-        description: error.message,
-        variant: 'destructive',
-      });
     },
   });
 
@@ -303,11 +284,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           ...columnStateProps,
           colId: column.columnId,
           type: column.type,
-          additionalTypeInformation: {
-            currency: column.additionalTypeInformation?.currency || false,
-            decimals: column.additionalTypeInformation?.decimals,
-            selectItems: column.additionalTypeInformation?.selectItems,
-          },
+          additionalTypeInformation: column.additionalTypeInformation,
           description: column.description,
           valueParser: (params) => {
             if (column.type === 'number') {
@@ -647,23 +624,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     [debouncedProcessColumnStateChange]
   );
 
-  const handleUpdateText = async (type: 'before' | 'after', content: string) => {
-    if (!token) {
-      toast({
-        title: 'Error',
-        description: 'You must be logged in to edit the table text',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    await updateTableText.mutateAsync({
-      token,
-      tableId: tableData?.id || '',
-      [type === 'before' ? 'beforeTableText' : 'afterTableText']: content,
-    });
-  };
-
   if (error) {
     return <TableError error={error} />;
   }
@@ -674,45 +634,16 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
 
   if (!tableData) return null;
 
-  console.log(tableData.afterTableText, tableData.beforeTableText);
-
   return (
-    <>
+    <AppLayout>
       {tableData && (
         <Helmet>
           <title>{`${tableData.name} - Deep Table`}</title>
           <meta name="description" content={tableData.description || ''} />
-          <meta property="og:title" content={`${tableData.name} - Deep Table`} />
-          <meta property="og:description" content={tableData.description || ''} />
-          <meta property="og:type" content="article" />
-          <meta property="og:url" content={window.location.href} />
-          {tableData.sharingStatus !== 'public' && <meta name="robots" content="noindex" />}
-          <link rel="canonical" href={`${window.location.origin}/t/${tableData.slug}`} />
         </Helmet>
       )}
-      {isPublicView && tableData.sharingStatus === 'public' && (
-        <div className="m-auto prose max-w-4xl mb-8">
-          {tableData.beforeTableText ? (
-            <EditableMarkdown
-              content={tableData.beforeTableText}
-              onSave={(content) => handleUpdateText('before', content)}
-              isEditable={tableData.isOwner}
-              className="mb-8"
-              placeholder="Add description above the table (supports markdown)..."
-            />
-          ) : (
-            tableData.isOwner && (
-              <AddTextButton
-                onClick={() => handleUpdateText('before', 'Add your text here')}
-                text="Add text above table (only visible to you)"
-              />
-            )
-          )}
-        </div>
-      )}
-      <div className="w-full flex flex-col">
+      <div className="h-full w-full flex flex-col">
         <TableHeader
-          isPublicView={isPublicView}
           tableName={tableData.name}
           tableDescription={tableData.description || ''}
           tableId={tableData.id}
@@ -729,12 +660,11 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           table={tableData}
           rows={rowData}
         />
-
-        <div className="min-h-0">
+        <div className="flex-1 min-h-0">
           {!isGridReady && (
             <div className="flex justify-center items-center h-full">Loading table...</div>
           )}
-          <div className={`ag-theme-alpine w-full ${!isGridReady ? 'invisible' : ''}`}>
+          <div className={`ag-theme-alpine h-full w-full ${!isGridReady ? 'invisible' : ''}`}>
             <AgGridReact
               ref={gridRef}
               rowData={rowData}
@@ -754,31 +684,12 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
               context={gridContext}
               cellSelection={cellSelection}
               onRangeSelectionChanged={onRangeSelectionChanged}
-              domLayout="autoHeight"
             />
           </div>
         </div>
       </div>
-      {isPublicView && tableData.sharingStatus === 'public' && (
-        <div className="m-auto prose max-w-4xl mt-8">
-          {tableData.afterTableText ? (
-            <EditableMarkdown
-              content={tableData.afterTableText}
-              onSave={(content) => handleUpdateText('after', content)}
-              isEditable={tableData.isOwner}
-              className="mt-8"
-              placeholder="Add description below the table (supports markdown)..."
-            />
-          ) : (
-            tableData.isOwner && (
-              <AddTextButton
-                onClick={() => handleUpdateText('after', 'Add your text here')}
-                text="Add text below table (only visible to you)"
-              />
-            )
-          )}
-        </div>
-      )}
-    </>
+    </AppLayout>
   );
 };
+
+export default TablePage;

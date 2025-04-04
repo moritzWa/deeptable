@@ -33,7 +33,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
-interface CustomHeaderParams extends IHeaderParams {
+interface ColumnHeaderParams extends IHeaderParams {
   context: {
     tableId: string;
     isOwner: boolean;
@@ -49,7 +49,7 @@ interface CustomHeaderParams extends IHeaderParams {
   description?: string;
 }
 
-export const CustomColumnHeader = (props: CustomHeaderParams) => {
+export const ColumnHeader = (props: ColumnHeaderParams) => {
   const [columnName, setColumnName] = useState(props.displayName);
   const [description, setDescription] = useState(() => {
     const colDef = props.column.getColDef() as CustomColDef;
