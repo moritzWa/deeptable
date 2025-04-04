@@ -188,6 +188,14 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       console.error('Failed to toggle column currency:', error);
     },
   });
+  const updateSelectItemsMutation = trpc.tables.updateSelectItems.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error('Failed to update select items:', error);
+    },
+  });
 
   const updateTableText = trpc.tables.updateTableText.useMutation({
     onSuccess: () => {
@@ -363,6 +371,16 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           }
         );
       },
+      updateSelectItems: (selectItems: SelectItem[], columnId: string) => {
+        if (!token || !id) return;
+
+        updateSelectItemsMutation.mutate({
+          token,
+          tableId: id,
+          columnId,
+          selectItems,
+        });
+      },
       addColumn: (position: 'left' | 'right', relativeTo: string) => {
         if (!token || !id) return;
 
@@ -444,6 +462,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       updateColumnTypeMutation,
       updateColumnDescriptionMutation,
       setColumnCurrencyMutation,
+      updateSelectItemsMutation,
     ]
   );
 
