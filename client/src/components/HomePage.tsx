@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 export default function HomePage() {
   const navigate = useNavigate();
   const [tables, setTables] = useState<Table[]>([]);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
 
   const { data: tablesData } = trpc.tables.getTables.useQuery(
     { token: token || '' },

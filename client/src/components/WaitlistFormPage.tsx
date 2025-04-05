@@ -26,15 +26,15 @@ const WaitlistFormPage: React.FC = () => {
 
   // Get user data to check waitlist status
   const { data: userData } = trpc.auth.getUser.useQuery(
-    { token: localStorage.getItem('token') || '' },
+    { token: localStorage.getItem('accessToken') || '' },
     {
-      enabled: !!localStorage.getItem('token'),
+      enabled: !!localStorage.getItem('accessToken'),
     }
   );
 
   useEffect(() => {
     // Get the token from localStorage
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem('accessToken');
     if (storedToken) {
       setToken(storedToken);
     } else {

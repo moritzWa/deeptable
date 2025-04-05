@@ -30,7 +30,7 @@ export function AppSidebar() {
   const location = useLocation();
   const { id: currentTableId } = useParams<{ id?: string }>();
   const [tables, setTables] = useState<Table[]>([]);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
   const utils = trpc.useContext();
   const [theme, setTheme] = useState<'light' | 'dark' | 'system'>(() => {
     const stored = localStorage.getItem('theme') as 'light' | 'dark' | 'system' | null;

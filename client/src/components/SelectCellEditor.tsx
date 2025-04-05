@@ -20,9 +20,10 @@ interface SelectCellEditorProps extends CustomCellEditorProps {
     additionalTypeInformation?: {
       selectItems?: SelectItem[];
     };
+    field?: string;
   };
   context: {
-    updateSelectItems?: (items: SelectItem[]) => void;
+    updateSelectItems?: (items: SelectItem[], columnId: string) => void;
   };
 }
 
@@ -58,7 +59,7 @@ export const SelectCellEditor = ({
   const handleAddNewItem = () => {
     console.log('in handleAddNewItem - inputValue:', inputValue);
 
-    if (!inputValue.trim() || !context.updateSelectItems) return;
+    if (!inputValue.trim() || !context.updateSelectItems || !colDef.field) return;
 
     const newItem: SelectItem = {
       id: crypto.randomUUID(),
@@ -66,9 +67,12 @@ export const SelectCellEditor = ({
       color: generateRandomColor(),
     };
 
+    // Get columnId from the field name (e.g., 'data.columnId' -> 'columnId')
+    const columnId = colDef.field.replace('data.', '');
+
     // Update available select items
     const newSelectItems = [...selectItems, newItem];
-    context.updateSelectItems(newSelectItems);
+    context.updateSelectItems(newSelectItems, columnId);
 
     // Update selected values
     const newValues = isMultiSelect ? [...selectedValues, newItem.name] : [newItem.name];
