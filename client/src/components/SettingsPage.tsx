@@ -54,9 +54,9 @@ const SettingsPage: React.FC = () => {
     data: userData,
     error: queryError,
   } = trpc.auth.getUser.useQuery(
-    { token: localStorage.getItem('token') || '' },
+    { token: localStorage.getItem('accessToken') || '' },
     {
-      enabled: !!localStorage.getItem('token'),
+      enabled: !!localStorage.getItem('accessToken'),
     }
   );
 
@@ -82,7 +82,7 @@ const SettingsPage: React.FC = () => {
     try {
       setIsLoading(true);
       const { url } = await createCheckoutSession.mutateAsync({
-        token: localStorage.getItem('token') || '',
+        token: localStorage.getItem('accessToken') || '',
       });
       if (url) {
         window.location.href = url;
@@ -98,7 +98,7 @@ const SettingsPage: React.FC = () => {
     try {
       setIsLoading(true);
       const { url } = await createPortalSession.mutateAsync({
-        token: localStorage.getItem('token') || '',
+        token: localStorage.getItem('accessToken') || '',
       });
       if (url) {
         window.location.href = url;

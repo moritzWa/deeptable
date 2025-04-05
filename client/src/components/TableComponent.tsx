@@ -92,7 +92,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
 
   const { toast } = useToast();
   const utils = trpc.useContext();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
 
   // FETCH DATA
   const {

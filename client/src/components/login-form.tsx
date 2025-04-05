@@ -2,7 +2,7 @@ import { defaultPage, LINK_TO_WAITLIST } from '@/App';
 import { useLocation } from 'react-router-dom';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { trpc } from '@/lib/trpc';
+import { trpc } from '@/utils/trpc';
 import { cn } from '@/lib/utils';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useCallback, useEffect } from 'react';
@@ -39,27 +39,29 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('accessToken');
     if (token) {
       window.location.href = defaultPage;
     }
   }, []);
 
+  const googleLoginMutation = trpc.auth.googleLogin.useMutation();
+
   const handleGoogleSuccess = useCallback(async (credentialResponse: CredentialResponse) => {
     if (!credentialResponse.credential) return;
 
     try {
-      const response = await trpc.auth.googleLogin.mutate({
+      const response = await googleLoginMutation.mutateAsync({
         credential: credentialResponse.credential,
       });
 
-      // Store the token in localStorage
-      localStorage.setItem('token', response.token);
+      // Store tokens with both the new and old keys
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+      localStorage.setItem('token', response.accessToken); // For backward compatibility
 
-      // You can also store user data or redirect
-      console.log('Logged in user:', response.user);
+      console.log('Successfully stored tokens');
 
-      // Check if we should redirect to waitlist or home page
       if (LINK_TO_WAITLIST) {
         window.location.href = '/waitlist-form';
       } else {

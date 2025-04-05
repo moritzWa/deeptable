@@ -41,7 +41,7 @@ export const TableHeader = ({
   rows,
   isPublicView,
 }: TableHeaderProps) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
   const trpcUtils = trpc.useContext();
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(tableName);

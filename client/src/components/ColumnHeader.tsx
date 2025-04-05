@@ -58,7 +58,7 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
   });
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
   const utils = trpc.useContext();
 
   const updateColumnNameMutation = trpc.tables.updateColumnName.useMutation({
