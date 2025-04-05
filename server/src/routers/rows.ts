@@ -5,6 +5,7 @@ import { generateRows } from '../generateRowUtils';
 import { IRow, Row as RowModel } from '../models/row';
 import { Table as TableModel } from '../models/table';
 import { publicProcedure, router } from '../trpc';
+import { verifyToken } from './auth';
 
 // Define the Row type for client-side use
 export interface Row {
@@ -95,9 +96,7 @@ export const rowsRouter = router({
     )
     .mutation(async ({ input }): Promise<Row> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         // Verify table exists and belongs to user
         const table = await TableModel.findOne({
@@ -157,9 +156,7 @@ export const rowsRouter = router({
     )
     .mutation(async ({ input }): Promise<{ count: number }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         // Verify table exists and belongs to user
         const table = await TableModel.findOne({
@@ -214,9 +211,7 @@ export const rowsRouter = router({
     )
     .mutation(async ({ input }): Promise<{ count: number }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         // Verify table exists and belongs to user
         const table = await TableModel.findOne({
@@ -282,9 +277,7 @@ export const rowsRouter = router({
     )
     .mutation(async ({ input }): Promise<Row> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const row = (await RowModel.findOneAndUpdate(
           { _id: input.id, userId: decoded.userId },
@@ -320,9 +313,7 @@ export const rowsRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await RowModel.deleteOne({
           _id: input.id,

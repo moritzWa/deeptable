@@ -202,6 +202,7 @@ export const TableHeader = ({
             tableId,
             columnId: columnName,
             rowId,
+            token,
           })
           .catch((error) => {
             console.error(`Error processing cell at row ${rowIndex}, column ${columnName}:`, error);

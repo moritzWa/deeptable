@@ -1,8 +1,8 @@
-import jwt from 'jsonwebtoken';
 import Stripe from 'stripe';
 import { z } from 'zod';
 import { User as UserModel } from '../models/user';
 import { publicProcedure, router } from '../trpc';
+import { verifyToken } from './auth';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2025-02-24.acacia',
@@ -24,9 +24,7 @@ export const paymentsRouter = router({
     .input(z.object({ token: z.string() }))
     .mutation(async ({ input }): Promise<CheckoutSessionResponse> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const user = await UserModel.findById(decoded.userId);
 
         if (!user) {
@@ -74,9 +72,7 @@ export const paymentsRouter = router({
     .input(z.object({ token: z.string() }))
     .mutation(async ({ input }): Promise<PortalSessionResponse> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const user = await UserModel.findById(decoded.userId);
 
         if (!user || !user.stripeCustomerId) {

@@ -68,4 +68,5 @@ export interface User {
   hasSubscription?: boolean;
   stripeCustomerId?: string;
   isWaitlisted?: boolean;
+  tokenVersion?: number;
 }
