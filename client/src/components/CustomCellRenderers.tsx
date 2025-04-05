@@ -88,10 +88,25 @@ const SelectCellRenderer = (props: SelectCellRendererParams) => {
   );
 };
 
-// Update the smartCellRenderer to handle select types
+// Add this near the top with other helper functions
+const EnrichingIndicator = () => (
+  <div className="flex items-center gap-2">
+    <div className="h-2 w-2 rounded-full bg-green-500 animate-[pulse_1.5s_ease-in-out_infinite]" />
+    <span className="text-gray-500">Enriching...</span>
+  </div>
+);
+
+// Update the smartCellRenderer function
 export const smartCellRenderer = (params: ICellRendererParams) => {
   const colDef = params.colDef as Column;
   const value = params.value;
+
+  console.log('value in smartCellRenderer', value);
+
+  // Add check for enriching state
+  if (value === 'Enriching...') {
+    return <EnrichingIndicator />;
+  }
 
   // Handle select/multiSelect types
   if (colDef.type === 'select' || colDef.type === 'multiSelect') {
