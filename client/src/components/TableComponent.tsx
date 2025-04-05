@@ -1,7 +1,7 @@
-import { smartCellRenderer } from '@/components/CustomCellRenderers';
+import { smartCellRenderer } from '@/components/CellRenderers';
 import { useSidebar } from '@/components/ui/sidebar';
 import { trpc } from '@/utils/trpc';
-import { ColumnState, ColumnType, Table } from '@shared/types';
+import { ColumnState, ColumnType, SelectItem, Table } from '@shared/types';
 import {
   CellRange,
   CellValueChangedEvent,
@@ -25,10 +25,11 @@ import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
-import { CustomColumnHeader } from './CustomColumnHeader';
+import { ColumnHeader } from './ColumnHeader';
 import { AddTextButton, EditableMarkdown } from './EditableMarkdown';
-import { TableComponentError } from './TableComponentError';
-import { TableComponentHeader } from './TableComponentHeader';
+import { SelectCellEditor } from './SelectCellEditor';
+import { TableError } from './TableError';
+import { TableHeader } from './TableHeader';
 
 // Register all enterprise modules (includes ClientSideRowModel)
 ModuleRegistry.registerModules([AllEnterpriseModule as any]);
@@ -66,6 +67,7 @@ export interface CustomColDef extends ColDef {
   additionalTypeInformation: {
     currency?: boolean;
     decimals?: number;
+    selectItems?: SelectItem[];
   };
 }
 
@@ -90,7 +92,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
 
   const { toast } = useToast();
   const utils = trpc.useContext();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
 
   // FETCH DATA
   const {
@@ -184,6 +186,14 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     },
     onError: (error) => {
       console.error('Failed to toggle column currency:', error);
+    },
+  });
+  const updateSelectItemsMutation = trpc.tables.updateSelectItems.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: (error) => {
+      console.error('Failed to update select items:', error);
     },
   });
 
@@ -305,6 +315,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           additionalTypeInformation: {
             currency: column.additionalTypeInformation?.currency || false,
             decimals: column.additionalTypeInformation?.decimals,
+            selectItems: column.additionalTypeInformation?.selectItems,
           },
           description: column.description,
           valueParser: (params) => {
@@ -313,6 +324,14 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
             }
             return params.newValue;
           },
+          cellEditor:
+            column.type === 'select' || column.type === 'multiSelect'
+              ? SelectCellEditor
+              : undefined,
+          cellEditorPopup: column.type === 'select' || column.type === 'multiSelect' ? true : false,
+          cellEditorPopupPosition:
+            column.type === 'select' || column.type === 'multiSelect' ? 'under' : undefined,
+          // stopEditingWhenCellsLoseFocus: false,
         };
 
         return colDef;
@@ -352,6 +371,16 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
             },
           }
         );
+      },
+      updateSelectItems: (selectItems: SelectItem[], columnId: string) => {
+        if (!token || !id) return;
+
+        updateSelectItemsMutation.mutate({
+          token,
+          tableId: id,
+          columnId,
+          selectItems,
+        });
       },
       addColumn: (position: 'left' | 'right', relativeTo: string) => {
         if (!token || !id) return;
@@ -434,6 +463,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       updateColumnTypeMutation,
       updateColumnDescriptionMutation,
       setColumnCurrencyMutation,
+      updateSelectItemsMutation,
     ]
   );
 
@@ -448,7 +478,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         // Only allow editing if user is the owner
         return tableData?.isOwner ?? false;
       },
-      headerComponent: CustomColumnHeader,
+      headerComponent: ColumnHeader,
       suppressHeaderMenuButton: true,
       suppressHeaderContextMenu: true,
       suppressSizeToFit: true,
@@ -568,7 +598,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     // Force a refresh of the column definitions
     if (table?.columns) {
       const initialColumns = createInitialColumnDefs(table.columns);
-      setColumnDefs(initialColumns);
+      setColumnDefs(initialColumns as ColDef[]);
     }
   };
 
@@ -597,6 +627,12 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         }
         return params.newValue;
       },
+      cellEditor:
+        column.type === 'select' || column.type === 'multiSelect' ? SelectCellEditor : undefined,
+      cellEditorPopup: column.type === 'select' || column.type === 'multiSelect' ? true : false,
+      cellEditorPopupPosition:
+        column.type === 'select' || column.type === 'multiSelect' ? 'under' : undefined,
+      stopEditingWhenCellsLoseFocus: false,
     }));
   };
 
@@ -663,16 +699,14 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   };
 
   if (error) {
-    return <TableComponentError error={error} />;
+    return <TableError error={error} />;
   }
 
   if (!tableData && !isTableLoading) {
-    return <TableComponentError error="Table not found" />;
+    return <TableError error="Table not found" />;
   }
 
   if (!tableData) return null;
-
-  console.log(tableData.afterTableText, tableData.beforeTableText);
 
   return (
     <>
@@ -709,7 +743,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         </div>
       )}
       <div className="w-full flex flex-col">
-        <TableComponentHeader
+        <TableHeader
+          isPublicView={isPublicView}
           tableName={tableData.name}
           tableDescription={tableData.description || ''}
           tableId={tableData.id}

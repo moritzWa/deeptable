@@ -136,11 +136,12 @@ export async function createApiPricingTable(userId: string) {
     slug: slugify(name).toLowerCase(),
   });
 
-  const rowPromises = apiPricingData.map((data) => {
+  const rowPromises = apiPricingData.map((data, index) => {
     return Row.create({
       tableId: apiPricingTable._id,
       data,
       userId,
+      index,
     });
   });
 

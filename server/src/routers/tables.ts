@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { Row } from '../models/row';
 import { ITable, Table as TableModel } from '../models/table';
 import { publicProcedure, router } from '../trpc';
+import { verifyToken } from './auth';
 
 // Define a Zod schema for column state validation
 const columnStateSchema = z.object({
@@ -27,14 +28,25 @@ const columnStateSchema = z.object({
 const columnSchema = z.object({
   columnId: z.string().default(() => randomUUID()),
   name: z.string(),
-  type: z.enum(['text', 'number', 'link', 'string', 'boolean', 'date', 'array', 'object']),
+  type: z.enum(['text', 'number', 'link', 'select', 'multiSelect']),
   required: z.boolean().optional(),
   defaultValue: z.any().optional(),
   description: z.string(),
-  additionalTypeInformation: z.object({
-    currency: z.boolean().optional(),
-    decimals: z.number().int().nonnegative().optional(),
-  }),
+  additionalTypeInformation: z
+    .object({
+      currency: z.boolean().optional(),
+      decimals: z.number().int().nonnegative().optional(),
+      selectItems: z
+        .array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            color: z.string(),
+          })
+        )
+        .optional(),
+    })
+    .optional(),
   columnState: columnStateSchema.optional(),
 });
 
@@ -55,9 +67,7 @@ export const tablesRouter = router({
     .input(z.object({ token: z.string() }))
     .query(async ({ input }): Promise<Table[]> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const userId = decoded.userId;
         const tables = await TableModel.find({ userId });
 
@@ -102,9 +112,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const userId = decoded.userId;
         const columns = input.columns || [];
         const slug = slugify(input.name); // Generate the slug
@@ -179,9 +187,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const userId = decoded.userId;
 
         const table = (await TableModel.findOneAndUpdate(
@@ -241,9 +247,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const table = await TableModel.findOne({
           _id: input.tableId,
@@ -288,9 +292,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         // Delete the table
         const tableResult = await TableModel.deleteOne({ _id: input.id, userId: decoded.userId });
@@ -323,9 +325,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         // Get the table
         const table = (await TableModel.findOne({
@@ -409,9 +409,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const table = await TableModel.findOne({
           _id: input.tableId,
@@ -446,14 +444,12 @@ export const tablesRouter = router({
         token: z.string(),
         tableId: z.string(),
         columnId: z.string(),
-        type: z.enum(['text', 'number', 'link']),
+        type: z.enum(['text', 'number', 'link', 'select', 'multiSelect']),
       })
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {
@@ -490,9 +486,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {
@@ -529,9 +523,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {
@@ -568,9 +560,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {
@@ -672,9 +662,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const userId = decoded.userId;
 
@@ -813,9 +801,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const slug = slugify(input.jsonData.name);
         const table = await TableModel.create({
@@ -912,9 +898,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const updateData: any = {};
         if (input.beforeTableText !== undefined) {
@@ -960,6 +944,50 @@ export const tablesRouter = router({
       } catch (error) {
         console.error('Update table text error:', error);
         throw new Error('Failed to update table text');
+      }
+    }),
+
+  // Add a new procedure to update select items
+  updateSelectItems: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        tableId: z.string(),
+        columnId: z.string(),
+        selectItems: z.array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            color: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ input }): Promise<{ success: boolean }> => {
+      try {
+        const decoded = verifyToken(input.token);
+
+        const result = await TableModel.updateOne(
+          {
+            _id: input.tableId,
+            userId: decoded.userId,
+            'columns.columnId': input.columnId,
+          },
+          {
+            $set: {
+              'columns.$.additionalTypeInformation.selectItems': input.selectItems,
+            },
+          }
+        );
+
+        if (result.matchedCount === 0) {
+          throw new Error('Table or column not found');
+        }
+
+        return { success: true };
+      } catch (error) {
+        console.error('Update select items error:', error);
+        throw new Error('Failed to update select items');
       }
     }),
 });

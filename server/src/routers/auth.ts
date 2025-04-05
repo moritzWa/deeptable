@@ -17,6 +17,23 @@ export interface ExportUsageResponse {
   limit?: number;
 }
 
+// Helper function to verify token and return user ID
+export function verifyToken(token: string): { userId: string } {
+  try {
+    const decoded = jwt.verify(token, process.env.AUTH_SECRET || 'fallback-secret') as {
+      userId: string;
+    };
+    return decoded;
+  } catch (error) {
+    console.error('Token verification error:', error);
+    // Make sure to throw a specific error that can be handled in the middleware
+    const authError = new Error('Invalid or expired token');
+    // @ts-ignore - Adding custom property to Error
+    authError.code = 'UNAUTHORIZED';
+    throw authError;
+  }
+}
+
 export const authRouter = router({
   googleLogin: publicProcedure
     .input(z.object({ credential: z.string() }))
@@ -43,13 +60,23 @@ export const authRouter = router({
           });
         }
 
-        // Generate JWT
-        const token = jwt.sign({ userId: user._id }, process.env.AUTH_SECRET || 'fallback-secret', {
-          expiresIn: '7d',
-        });
+        // Generate access token (short-lived)
+        const accessToken = jwt.sign(
+          { userId: user._id },
+          process.env.AUTH_SECRET || 'fallback-secret',
+          { expiresIn: '1d' }
+        );
+
+        // Generate refresh token (long-lived)
+        const refreshToken = jwt.sign(
+          { userId: user._id, version: user.tokenVersion }, // add tokenVersion to user model
+          process.env.REFRESH_SECRET || 'refresh-secret',
+          { expiresIn: '7d' }
+        );
 
         return {
-          token,
+          accessToken,
+          refreshToken,
           user: {
             id: user._id.toString(),
             email: user.email,
@@ -116,9 +143,7 @@ export const authRouter = router({
 
   getUser: publicProcedure.input(z.object({ token: z.string() })).query(async ({ input }) => {
     try {
-      const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-        userId: string;
-      };
+      const decoded = verifyToken(input.token);
       const user = await UserModel.findById(decoded.userId);
 
       if (!user) {
@@ -135,7 +160,7 @@ export const authRouter = router({
       } satisfies User;
     } catch (error) {
       console.error('Get user error:', error);
-      throw new Error('Failed to get user information');
+      throw error; // Use the original error to preserve code/status
     }
   }),
 
@@ -143,9 +168,7 @@ export const authRouter = router({
     .input(z.object({ token: z.string() }))
     .mutation(async ({ input }): Promise<ExportUsageResponse> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const user = await UserModel.findById(decoded.userId);
 
         if (!user) {
@@ -180,6 +203,43 @@ export const authRouter = router({
       } catch (error) {
         console.error('Check export usage error:', error);
         throw new Error('Failed to check export usage');
+      }
+    }),
+
+  // Add new refresh token endpoint
+  refreshToken: publicProcedure
+    .input(z.object({ refreshToken: z.string() }))
+    .mutation(async ({ input }) => {
+      try {
+        console.log('auth.ts 🔑 Verifying refresh token:', input.refreshToken);
+
+        const decoded = jwt.verify(
+          input.refreshToken,
+          process.env.REFRESH_SECRET || 'refresh-secret'
+        ) as {
+          userId: string;
+          version: number;
+        };
+
+        const user = await UserModel.findById(decoded.userId);
+        if (!user || user.tokenVersion !== decoded.version) {
+          const error = new Error('Invalid refresh token');
+          // @ts-ignore - Adding custom property to Error
+          error.code = 'UNAUTHORIZED';
+          throw error;
+        }
+
+        // Generate new access token
+        const accessToken = jwt.sign(
+          { userId: user._id },
+          process.env.AUTH_SECRET || 'fallback-secret',
+          { expiresIn: '30m' }
+        );
+
+        return { accessToken };
+      } catch (error) {
+        console.error('Refresh token error:', error);
+        throw error; // Use the original error to preserve code/status
       }
     }),
 });

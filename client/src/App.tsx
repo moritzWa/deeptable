@@ -1,7 +1,6 @@
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { httpBatchLink } from '@trpc/client';
 import React, { useEffect } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Route, BrowserRouter as Router, Routes, useNavigate } from 'react-router-dom';
@@ -18,7 +17,7 @@ import ResearchPromptPage from './components/ResearchPromptPage';
 import SettingsPage from './components/SettingsPage';
 import { ThemeProvider } from './components/theme-provider';
 import WaitlistFormPage from './components/WaitlistFormPage';
-import { trpc } from './utils/trpc';
+import { createTrpcClient, trpc } from './utils/trpc';
 
 export const defaultPage = '/home';
 export const LINK_TO_WAITLIST = process.env.REACT_APP_LINK_TO_WAITLIST === 'true'; // Toggle this to control the flow after login
@@ -27,14 +26,14 @@ export const LINK_TO_WAITLIST = process.env.REACT_APP_LINK_TO_WAITLIST === 'true
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const { data: userData, isLoading } = trpc.auth.getUser.useQuery(
-    { token: localStorage.getItem('token') || '' },
+    { token: localStorage.getItem('accessToken') || '' },
     {
-      enabled: !!localStorage.getItem('token'),
+      enabled: !!localStorage.getItem('accessToken'),
     }
   );
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('accessToken')) {
       navigate('/login');
       return;
     }
@@ -177,15 +176,7 @@ function AppContent() {
 
 function App() {
   const [queryClient] = React.useState(() => new QueryClient());
-  const [trpcClient] = React.useState(() =>
-    trpc.createClient({
-      links: [
-        httpBatchLink({
-          url: `${process.env.REACT_APP_SERVER_URL || 'http://localhost:3001'}/trpc`,
-        }),
-      ],
-    })
-  );
+  const [trpcClient] = React.useState(() => createTrpcClient());
 
   return (
     <TooltipProvider>
