@@ -23,7 +23,7 @@ export interface Column {
   columnId: string;
   name: string;
   type: ColumnType;
-  additionalTypeInformation: {
+  additionalTypeInformation?: {
     currency?: boolean;
     decimals?: number;
   };
