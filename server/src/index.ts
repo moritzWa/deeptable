@@ -36,7 +36,8 @@ const app = express();
 
 // Add security headers and CORS first
 app.use((req, res, next) => {
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  // Either remove this line entirely, or try a different value
+  // res.setHeader('Cross-Origin-Opener-Policy', 'unsafe-none');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
   next();
@@ -113,6 +114,14 @@ app.use(
   '/trpc',
   trpcExpress.createExpressMiddleware({
     router: appRouter,
+    onError({ error, path }) {
+      console.error(`Error in tRPC path ${path}:`, error);
+      // Convert auth errors to 401 responses
+      if (error.code === 'UNAUTHORIZED' || error.message?.includes('token')) {
+        // @ts-expect-error - httpStatus is not in the type but is used by the adapter
+        error.httpStatus = 401;
+      }
+    },
   })
 );
 

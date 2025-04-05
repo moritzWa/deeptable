@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { Row } from '../models/row';
 import { ITable, Table as TableModel } from '../models/table';
 import { publicProcedure, router } from '../trpc';
+import { verifyToken } from './auth';
 
 // Define a Zod schema for column state validation
 const columnStateSchema = z.object({
@@ -66,9 +67,7 @@ export const tablesRouter = router({
     .input(z.object({ token: z.string() }))
     .query(async ({ input }): Promise<Table[]> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const userId = decoded.userId;
         const tables = await TableModel.find({ userId });
 
@@ -113,9 +112,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const userId = decoded.userId;
         const columns = input.columns || [];
         const slug = slugify(input.name); // Generate the slug
@@ -190,9 +187,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
         const userId = decoded.userId;
 
         const table = (await TableModel.findOneAndUpdate(
@@ -252,9 +247,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const table = await TableModel.findOne({
           _id: input.tableId,
@@ -299,9 +292,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         // Delete the table
         const tableResult = await TableModel.deleteOne({ _id: input.id, userId: decoded.userId });
@@ -334,9 +325,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         // Get the table
         const table = (await TableModel.findOne({
@@ -420,9 +409,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const table = await TableModel.findOne({
           _id: input.tableId,
@@ -462,9 +449,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {
@@ -501,9 +486,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {
@@ -540,9 +523,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {
@@ -579,9 +560,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {
@@ -683,9 +662,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const userId = decoded.userId;
 
@@ -824,9 +801,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const slug = slugify(input.jsonData.name);
         const table = await TableModel.create({
@@ -923,9 +898,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<Table> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const updateData: any = {};
         if (input.beforeTableText !== undefined) {
@@ -992,9 +965,7 @@ export const tablesRouter = router({
     )
     .mutation(async ({ input }): Promise<{ success: boolean }> => {
       try {
-        const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-          userId: string;
-        };
+        const decoded = verifyToken(input.token);
 
         const result = await TableModel.updateOne(
           {

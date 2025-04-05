@@ -6,6 +6,7 @@ import { fillCell } from '../fillCellUtils';
 import { Row } from '../models/row';
 import { Table } from '../models/table';
 import { publicProcedure, router } from '../trpc';
+import { verifyToken } from './auth';
 
 // Initialize OpenAI client
 const openai = new OpenAI({
@@ -292,6 +293,7 @@ export const columnsRouter = router({
   fillSingleCell: publicProcedure
     .input(
       z.object({
+        token: z.string(),
         tableId: z.string(),
         columnId: z.string(),
         rowId: z.string(),
@@ -299,11 +301,20 @@ export const columnsRouter = router({
     )
     .mutation(async ({ input }) => {
       try {
+        // Verify the token and get the userId
+        const decoded = verifyToken(input.token);
+        const userId = decoded.userId;
+
         // Get table
         const tableObjectId = new mongoose.Types.ObjectId(input.tableId);
         const table = await Table.findById(tableObjectId);
         if (!table) {
           throw new Error('Table not found');
+        }
+
+        // Check if user owns this table
+        if (table.userId !== userId) {
+          throw new Error('Unauthorized: You do not own this table');
         }
 
         // Find the column
