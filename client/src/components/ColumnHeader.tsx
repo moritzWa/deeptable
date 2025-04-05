@@ -1,5 +1,5 @@
 import { trpc } from '@/utils/trpc';
-import { ColumnState } from '@shared/types';
+import { ColumnState, SelectItem } from '@shared/types';
 import { Column, IHeaderParams } from 'ag-grid-community';
 import {
   ArrowLeftToLine,
@@ -10,6 +10,8 @@ import {
   Hash,
   Info,
   Link2,
+  ListChecks,
+  ListFilter,
   PinIcon,
   PinOff,
   Trash2,
@@ -17,6 +19,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SelectTypeItemForm } from './SelectTypeItemForm';
 import { CustomColDef } from './TableComponent';
 import {
   ContextMenu,
@@ -30,7 +33,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
-interface CustomHeaderParams extends IHeaderParams {
+interface ColumnHeaderParams extends IHeaderParams {
   context: {
     tableId: string;
     isOwner: boolean;
@@ -46,7 +49,7 @@ interface CustomHeaderParams extends IHeaderParams {
   description?: string;
 }
 
-export const CustomColumnHeader = (props: CustomHeaderParams) => {
+export const ColumnHeader = (props: ColumnHeaderParams) => {
   const [columnName, setColumnName] = useState(props.displayName);
   const [description, setDescription] = useState(() => {
     const colDef = props.column.getColDef() as CustomColDef;
@@ -55,10 +58,16 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   });
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
   const utils = trpc.useContext();
 
   const updateColumnNameMutation = trpc.tables.updateColumnName.useMutation({
+    onSuccess: () => {
+      utils.tables.getTable.invalidate();
+    },
+  });
+
+  const updateSelectItemsMutation = trpc.tables.updateSelectItems.useMutation({
     onSuccess: () => {
       utils.tables.getTable.invalidate();
     },
@@ -170,7 +179,10 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
   const handleSetColumnCurrency = () => {
     if (!props.context.setColumnCurrency) return;
     const colDef = props.column.getColDef() as CustomColDef;
-    props.context.setColumnCurrency(props.column.getColId(), !colDef.additionalTypeInformation.currency);
+    props.context.setColumnCurrency(
+      props.column.getColId(),
+      !colDef.additionalTypeInformation.currency
+    );
   };
 
   const handlePin = (direction: 'left' | 'right' | null) => {
@@ -233,13 +245,77 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
     props.context.deleteColumn(props.column.getColId());
   };
 
-  const handleTypeChange = (newType: string) => {
+  function getUnusedColor(usedColors: Set<string>): string {
+    const colors = [
+      '#FF8F37', // Orange
+      '#FFB347', // Yellow
+      '#4CAF50', // Green
+      '#2196F3', // Blue
+      '#9C27B0', // Purple
+      '#E91E63', // Pink
+      '#F44336', // Red
+    ];
+
+    // First try to find an unused color
+    const unusedColor = colors.find((color) => !usedColors.has(color));
+    if (unusedColor) return unusedColor;
+
+    // If all colors are used, return a random one
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  const handleTypeChange = (newType: string, e?: React.MouseEvent) => {
     if (!props.context.isOwner) {
       redirectToLogin();
       return;
     }
 
+    // For select and multiSelect, prevent menu from closing
+    if ((newType === 'select' || newType === 'multiSelect') && e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
     if (props.context.updateColumnType) {
+      // Get all unique values from the column
+      if (newType === 'multiSelect') {
+        const allValues = new Set<string>();
+        props.api?.forEachNode((node) => {
+          const value = node.data?.data?.[props.column.getColId()];
+          if (typeof value === 'string') {
+            // Split by commas and trim whitespace
+            value.split(',').forEach((item) => {
+              const trimmed = item.trim();
+              if (trimmed) allValues.add(trimmed);
+            });
+          }
+        });
+
+        // Keep track of used colors
+        const usedColors = new Set<string>();
+
+        // Convert unique values to SelectItems
+        const selectItems: SelectItem[] = Array.from(allValues).map((value) => {
+          const color = getUnusedColor(usedColors);
+          usedColors.add(color);
+          return {
+            id: crypto.randomUUID(),
+            name: value,
+            color,
+          };
+        });
+
+        // Update the column type and its select items
+        if (selectItems.length > 0) {
+          updateSelectItemsMutation.mutate({
+            token: token || '',
+            tableId: props.context.tableId,
+            columnId: props.column.getColId(),
+            selectItems,
+          });
+        }
+      }
+
       props.context.updateColumnType(props.column.getColId(), newType);
     }
   };
@@ -299,37 +375,89 @@ export const CustomColumnHeader = (props: CustomHeaderParams) => {
         <ContextMenuGroup>
           <ContextMenuItem
             onClick={() => handleTypeChange('text')}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'text' ? 'bg-secondary' : ''
+            }`}
           >
             <Type className="h-4 w-4" />
             Text
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => handleTypeChange('number')}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'number' ? 'bg-secondary' : ''
+            }`}
           >
             <Hash className="h-4 w-4" />
             Number
           </ContextMenuItem>
           <ContextMenuItem
             onClick={() => handleTypeChange('link')}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'link' ? 'bg-secondary' : ''
+            }`}
           >
             <Link2 className="h-4 w-4" />
             Link
           </ContextMenuItem>
-        </ContextMenuGroup>
-        <ContextMenuSeparator />
-        {props.column.getColDef().type === 'number' && (
-          <>
-        <ContextMenuGroup>
-          <Label className='p-2'>Formatting</Label>
-          <ContextMenuItem onClick={() => handleSetColumnCurrency()} className="flex items-center gap-2">
-            <DollarSign className="h-4 w-4" />
-            Currency
+          <ContextMenuItem
+            onClick={(e) => handleTypeChange('select', e)}
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'select' ? 'bg-secondary' : ''
+            }`}
+          >
+            <ListChecks className="h-4 w-4" />
+            Select
+          </ContextMenuItem>
+          <ContextMenuItem
+            onClick={(e) => handleTypeChange('multiSelect', e)}
+            className={`flex items-center gap-2 ${
+              props.column.getColDef().type === 'multiSelect' ? 'bg-secondary' : ''
+            }`}
+          >
+            <ListFilter className="h-4 w-4" />
+            Multi-Select
           </ContextMenuItem>
         </ContextMenuGroup>
         <ContextMenuSeparator />
+        {(props.column.getColDef().type === 'select' ||
+          props.column.getColDef().type === 'multiSelect') && (
+          <>
+            <SelectTypeItemForm
+              selectItems={
+                (props.column.getColDef() as CustomColDef).additionalTypeInformation?.selectItems
+              }
+              onUpdateItems={(items: SelectItem[]) => {
+                if (!props.context.isOwner) {
+                  redirectToLogin();
+                  return;
+                }
+
+                updateSelectItemsMutation.mutate({
+                  token: token || '',
+                  tableId: props.context.tableId,
+                  columnId: props.column.getColId(),
+                  selectItems: items,
+                });
+              }}
+              isMultiSelect={props.column.getColDef().type === 'multiSelect'}
+            />
+            <ContextMenuSeparator />
+          </>
+        )}
+        {props.column.getColDef().type === 'number' && (
+          <>
+            <ContextMenuGroup>
+              <Label className="p-2">Formatting</Label>
+              <ContextMenuItem
+                onClick={() => handleSetColumnCurrency()}
+                className="flex items-center gap-2"
+              >
+                <DollarSign className="h-4 w-4" />
+                Currency
+              </ContextMenuItem>
+            </ContextMenuGroup>
+            <ContextMenuSeparator />
           </>
         )}
         <ContextMenuGroup>

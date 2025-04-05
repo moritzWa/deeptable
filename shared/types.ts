@@ -1,5 +1,5 @@
 // Column type definition
-export type ColumnType = 'text' | 'number' | 'link';
+export type ColumnType = 'text' | 'number' | 'link' | 'multiSelect' | 'select';
 
 // Column state interface for AG Grid state persistence
 export interface ColumnState {
@@ -18,6 +18,11 @@ export interface ColumnState {
   orderIndex?: number;
 }
 
+export interface SelectItem {
+  id: string;
+  name: string;
+  color: string;
+}
 // Column interface for client-side use
 export interface Column {
   columnId: string;
@@ -26,6 +31,7 @@ export interface Column {
   additionalTypeInformation?: {
     currency?: boolean;
     decimals?: number;
+    selectItems?: SelectItem[];
   };
   required?: boolean;
   defaultValue?: any;
@@ -62,4 +68,5 @@ export interface User {
   hasSubscription?: boolean;
   stripeCustomerId?: string;
   isWaitlisted?: boolean;
+  tokenVersion?: number;
 }

@@ -1,6 +1,7 @@
 import { ColumnType } from '@shared/types';
-import OpenAI from 'openai';
+import { randomUUID } from 'crypto';
 import fs from 'fs';
+import OpenAI from 'openai';
 
 // Type definitions for API responses
 interface PerplexityResponse {
@@ -21,6 +22,17 @@ interface GoogleResponse {
       parts: GooglePart[];
     };
   }>;
+}
+
+interface SelectItem {
+  id: string;
+  name: string;
+  color: string;
+}
+
+interface ProcessSelectValueResult {
+  finalValues: string | string[];
+  updatedSelectItems?: SelectItem[];
 }
 
 async function askOpenAI(question: string): Promise<string> {
@@ -58,7 +70,7 @@ async function askPerplexity(question: string): Promise<string> {
   const SYSTEM_PROMPT = `You are an assitant helping fill out a spreadsheet. You can search the web for information.`;
 
   // https://docs.perplexity.ai/reference/post_chat_completions
-  const completion = (await fetch('https://api.perplexity.ai/chat/completions', {
+  const completion = await fetch('https://api.perplexity.ai/chat/completions', {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`,
@@ -81,7 +93,7 @@ async function askPerplexity(question: string): Promise<string> {
     const txt = await res.text();
     // console.log('txt', txt);
     return JSON.parse(txt) as PerplexityResponse;
-  }));
+  });
 
   if (!completion.choices?.[0]?.message?.content) {
     throw new Error('Invalid response from Perplexity API');
@@ -133,7 +145,10 @@ async function askGoogle(question: string): Promise<string> {
  * Converts a ColumnType string to a JSON schema for OpenAI API
  * Always creates an object schema with a 'result' field of the requested type
  */
-function columnTypeToJsonSchema(columnType: ColumnType): Record<string, unknown> {
+function columnTypeToJsonSchema(
+  columnType: ColumnType,
+  additionalTypeInformation?: { selectItems?: Array<{ id: string; name: string; color: string }> }
+): Record<string, unknown> {
   let resultSchema: Record<string, unknown>;
 
   switch (columnType) {
@@ -145,6 +160,27 @@ function columnTypeToJsonSchema(columnType: ColumnType): Record<string, unknown>
       break;
     case 'link':
       resultSchema = { type: 'string' }; // TODO: add format: 'uri'
+      break;
+    case 'select':
+      resultSchema = {
+        type: 'string',
+        description: additionalTypeInformation?.selectItems
+          ? `Choose from existing options: ${additionalTypeInformation.selectItems
+              .map((item) => item.name)
+              .join(', ')}. If none match, suggest a new one.`
+          : 'Suggest a category',
+      };
+      break;
+    case 'multiSelect':
+      resultSchema = {
+        type: 'array',
+        items: { type: 'string' },
+        description: additionalTypeInformation?.selectItems
+          ? `Choose from existing options: ${additionalTypeInformation.selectItems
+              .map((item) => item.name)
+              .join(', ')}. If none match, suggest new ones.`
+          : 'Suggest one or more categories',
+      };
       break;
   }
 
@@ -230,19 +266,89 @@ function appendToTestFile(data: string) {
   fs.appendFileSync('test.txt', data + '\n\n', 'utf8');
 }
 
+export async function processSelectTypeValue(
+  llmResults: string | string[],
+  columnType: 'select' | 'multiSelect',
+  existingSelectItems: SelectItem[] = []
+): Promise<ProcessSelectValueResult> {
+  // Convert single value to array for consistent handling
+  const llmSuggestedValues = Array.isArray(llmResults) ? llmResults : [llmResults];
+
+  // Find which values from LLM don't exist in our current options
+  const valuesToAddAsNewSelectOptions = llmSuggestedValues.filter(
+    (suggestedValue) =>
+      !existingSelectItems.some(
+        (existingOption) => existingOption.name.toLowerCase() === suggestedValue.toLowerCase()
+      )
+  );
+
+  if (valuesToAddAsNewSelectOptions.length > 0) {
+    // Create updated select options list with both old and new items
+    const updatedSelectItems = [
+      ...existingSelectItems,
+      ...valuesToAddAsNewSelectOptions.map((newOptionName) => ({
+        id: randomUUID(), // You'll need to import randomUUID from 'crypto'
+        name: newOptionName,
+        color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+      })),
+    ];
+
+    // For each LLM suggested value, find its exact match in our select options
+    const cellValuesWithCorrectCasing = llmSuggestedValues.map(
+      (suggestedValue) =>
+        updatedSelectItems.find(
+          (option) => option.name.toLowerCase() === suggestedValue.toLowerCase()
+        )?.name || suggestedValue
+    );
+
+    return {
+      finalValues:
+        columnType === 'select' ? cellValuesWithCorrectCasing[0] : cellValuesWithCorrectCasing,
+      updatedSelectItems,
+    };
+  }
+
+  // If no new items needed, just return the existing values with correct casing
+  const cellValuesWithCorrectCasing = llmSuggestedValues.map(
+    (suggestedValue) =>
+      existingSelectItems.find(
+        (option) => option.name.toLowerCase() === suggestedValue.toLowerCase()
+      )?.name || suggestedValue
+  );
+
+  return {
+    finalValues:
+      columnType === 'select' ? cellValuesWithCorrectCasing[0] : cellValuesWithCorrectCasing,
+  };
+}
+
 export async function fillCell(
   tableName: string,
   tableDescription: string,
   columnName: string,
   columnDescription: string,
   outputType: ColumnType,
-  rows: Array<{ data: Record<string, any> }>
+  rows: Array<{ data: Record<string, any> }>,
+  additionalTypeInformation?: {
+    selectItems?: Array<{ id: string; name: string; color: string }>;
+  }
 ) {
   const question = `The user is making a spreadsheet called "${tableName}". ${
     tableDescription ? `Purpose of the table: ${tableDescription}. ` : ''
   }They want to fill out the "${columnName}" column${
     columnDescription ? ` (${columnDescription})` : ''
   }. The column type is ${outputType}.
+  
+  ${
+    (outputType === 'select' || outputType === 'multiSelect') &&
+    additionalTypeInformation?.selectItems
+      ? `Available options are: ${additionalTypeInformation.selectItems
+          .map((item) => item.name)
+          .join(
+            ', '
+          )}. Consider these existing options (your desired output might already exist). If none match, output a new option.`
+      : ''
+  }
   
   Here is the existing row data: ${rows.map((row) => JSON.stringify(row.data)).join('\n')}
   
@@ -273,8 +379,11 @@ export async function fillCell(
       }))
   );
   const searchResponses = await Promise.all(searchPromises);
-  console.log('Search results collected from all providers', JSON.stringify(searchResponses, null, 2));
-  
+  console.log(
+    'Search results collected from all providers',
+    JSON.stringify(searchResponses, null, 2)
+  );
+
   // Append search results to test.txt
   const logData = `
 Table: ${tableName}

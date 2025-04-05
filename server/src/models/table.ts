@@ -54,13 +54,14 @@ const columnSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['text', 'number', 'link'],
+    enum: ['text', 'number', 'link', 'select', 'multiSelect'],
     default: 'text',
     required: true,
   },
   additionalTypeInformation: {
     type: mongoose.Schema.Types.Mixed,
-    required: true,
+    required: false,
+    default: {},
   },
   required: {
     type: Boolean,

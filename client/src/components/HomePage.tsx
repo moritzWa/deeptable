@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 export default function HomePage() {
   const navigate = useNavigate();
   const [tables, setTables] = useState<Table[]>([]);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
 
   const { data: tablesData } = trpc.tables.getTables.useQuery(
     { token: token || '' },
@@ -63,6 +63,15 @@ export default function HomePage() {
                   <p className="text-xs text-muted-foreground">
                     Created: {new Date(table.createdAt).toLocaleDateString()}
                   </p>
+                  {table.sharingStatus === 'public' && (
+                    <a
+                      href={`/t/${table.slug}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-xs text-blue-500 hover:text-blue-700 ml-auto"
+                    >
+                      Public Link ↗
+                    </a>
+                  )}
                 </CardFooter>
               </Card>
             ))}

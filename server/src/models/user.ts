@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
     submittedAt: { type: Date },
   },
   isWaitlisted: { type: Boolean, default: false },
+  tokenVersion: {
+    type: Number,
+    default: 0,
+  },
 });
 
 export const User = mongoose.model('User', userSchema);

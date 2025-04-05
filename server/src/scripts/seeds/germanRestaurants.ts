@@ -120,15 +120,17 @@ export async function createRestaurantTable(userId: string) {
     description: 'List of German restaurants in San Francisco',
     columns: restaurantColumns,
     userId,
+    sharingStatus: 'public',
     slug: slugify(name).toLowerCase(),
   });
 
   // Create rows with the data (already using column IDs)
-  const rowPromises = restaurantData.map((data) => {
+  const rowPromises = restaurantData.map((data, index) => {
     return Row.create({
       tableId: restaurantTable._id,
       data: data, // Data is already using column IDs, no need to transform
       userId,
+      index,
     });
   });
 

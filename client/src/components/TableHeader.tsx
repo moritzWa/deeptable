@@ -1,10 +1,4 @@
 import { Button } from '@/components/ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -12,12 +6,13 @@ import { useToast } from '@/hooks/use-toast';
 import { trpc } from '@/utils/trpc';
 import { Column, Table } from '@shared/types';
 import { CellRange, GridApi } from 'ag-grid-community';
-import { Download, Info, Plus, Share, Sparkle } from 'lucide-react';
+import { Download, Info, Share, Sparkle } from 'lucide-react';
 import { KeyboardEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { downloadJson, exportTableData } from '../utils/tableComponentHelpers';
+import { AddRowsDropdown } from './AddRowsDropdown';
 
-export interface TableComponentHeaderProps {
+export interface TableHeaderProps {
   tableName: string;
   tableDescription: string;
   tableId: string;
@@ -29,134 +24,10 @@ export interface TableComponentHeaderProps {
   isOwner: boolean;
   table: Table;
   rows: any[];
+  isPublicView?: boolean;
 }
 
-const AddRowsDropdown = ({ tableId, onSuccess }: { tableId: string; onSuccess: () => void }) => {
-  const token = localStorage.getItem('token');
-  const { toast } = useToast();
-  const navigate = useNavigate();
-
-  const createRowsMutation = trpc.rows.createRows.useMutation({
-    onSuccess: () => {
-      onSuccess();
-      toast({
-        title: 'Success',
-        description: 'Rows added successfully',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to add rows',
-        variant: 'destructive',
-      });
-    },
-  });
-
-  const createRowsWithEntitiesMutation = trpc.rows.createRowsWithEntities.useMutation({
-    onSuccess: () => {
-      onSuccess();
-      toast({
-        title: 'Success',
-        description: 'Rows with entities added successfully',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to add rows with entities',
-        variant: 'destructive',
-      });
-    },
-  });
-
-  const handleAddRows = (count: number, withEntities: boolean = false) => {
-    if (!token) {
-      navigate('/login?reason=add-rows-login-wall');
-      return;
-    }
-
-    if (withEntities) {
-      createRowsWithEntitiesMutation.mutate({ token, tableId, count });
-    } else {
-      createRowsMutation.mutate({ token, tableId, count });
-    }
-  };
-
-  const isLoadingRegular = createRowsMutation.isLoading;
-  const isLoadingEntities = createRowsWithEntitiesMutation.isLoading;
-  const isLoading = isLoadingRegular || isLoadingEntities;
-
-  const rowCounts = [10, 25, 50];
-
-  interface AddRowMenuItemProps {
-    count: number;
-    withEntities?: boolean;
-    isLoadingRegular: boolean;
-    isLoadingEntities: boolean;
-    onAdd: (count: number, withEntities: boolean) => void;
-  }
-
-  const AddRowMenuItem = ({
-    count,
-    withEntities = false,
-    isLoadingRegular,
-    isLoadingEntities,
-    onAdd,
-  }: AddRowMenuItemProps) => {
-    const isLoading = isLoadingRegular || isLoadingEntities;
-    const isCurrentTypeLoading = withEntities ? isLoadingEntities : isLoadingRegular;
-
-    return (
-      <DropdownMenuItem
-        onClick={() => onAdd(count, withEntities)}
-        disabled={isLoading}
-        className={isLoading ? 'cursor-wait' : 'cursor-pointer'}
-      >
-        {isCurrentTypeLoading
-          ? `Adding ${count} rows${withEntities ? ' with entities' : ''}...`
-          : `Add ${count} rows${withEntities ? ' with entities' : ''}`}
-      </DropdownMenuItem>
-    );
-  };
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={`flex items-center gap-1 ${isLoading ? 'cursor-wait' : 'cursor-pointer'}`}
-          disabled={isLoading}
-        >
-          <Plus className="h-4 w-4" />
-          {isLoading ? 'Adding Rows...' : 'Add Rows'}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        {rowCounts.map((count) => (
-          <div key={count}>
-            <AddRowMenuItem
-              count={count}
-              isLoadingRegular={isLoadingRegular}
-              isLoadingEntities={isLoadingEntities}
-              onAdd={handleAddRows}
-            />
-            <AddRowMenuItem
-              count={count}
-              withEntities={true}
-              isLoadingRegular={isLoadingRegular}
-              isLoadingEntities={isLoadingEntities}
-              onAdd={handleAddRows}
-            />
-          </div>
-        ))}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
-
-export const TableComponentHeader = ({
+export const TableHeader = ({
   tableName,
   tableDescription,
   tableId,
@@ -168,8 +39,9 @@ export const TableComponentHeader = ({
   isOwner,
   table,
   rows,
-}: TableComponentHeaderProps) => {
-  const token = localStorage.getItem('token');
+  isPublicView,
+}: TableHeaderProps) => {
+  const token = localStorage.getItem('accessToken');
   const trpcUtils = trpc.useContext();
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(tableName);
@@ -272,8 +144,11 @@ export const TableComponentHeader = ({
     const startRowIndex = range.startRow?.rowIndex || 0;
     const endRowIndex = range.endRow?.rowIndex || 0;
     const selectedColumns = range.columns
-      .map((col) => col.getColDef().headerName)
-      .filter((name): name is string => name !== undefined);
+      .map((col) => ({
+        columnId: col.getColDef().field?.replace('data.', '') || '',
+        name: col.getColDef().headerName || '',
+      }))
+      .filter((col) => col.columnId !== '');
 
     console.log('Starting update for range:', { startRowIndex, endRowIndex, selectedColumns });
 
@@ -288,31 +163,20 @@ export const TableComponentHeader = ({
         continue;
       }
 
-      console.log('Row node data structure:', {
-        rowIndex,
-        data: rowNode.data,
-        // Log the actual structure to see how the data is organized
-      });
-
-      for (const columnName of selectedColumns) {
+      for (const column of selectedColumns) {
         // Store which cells we're updating so we can track them
-        updatedCells.push({ rowIndex, columnName });
+        updatedCells.push({ rowIndex, columnName: column.name });
 
-        // Try both with and without the 'data.' prefix
         try {
-          rowNode.setDataValue(columnName, 'Enriching...');
-          console.log(
-            `Attempted to set loading state without data. prefix for row ${rowIndex}, column ${columnName}`
-          );
-
-          // Log the value right after setting to see if it took effect
-          console.log('Current cell value after update:', {
-            withPrefix: rowNode.data[`data.${columnName}`],
-            withoutPrefix: rowNode.data[columnName],
-            rawData: rowNode.data,
-          });
+          const colId = column.columnId;
+          rowNode.setDataValue(colId, 'Enriching...');
         } catch (error) {
-          console.error('Error updating cell value:', error);
+          console.error('Error updating cell value:', {
+            error,
+            rowIndex,
+            column: column,
+            rowNodeData: rowNode.data,
+          });
         }
       }
     }
@@ -324,19 +188,23 @@ export const TableComponentHeader = ({
 
       const rowId = rowNode.data.id;
 
-      for (const columnName of selectedColumns) {
+      for (const column of selectedColumns) {
         const promise = fillSingleCellMutation
           .mutateAsync({
+            token,
             tableId,
-            columnId: columnName,
+            columnId: column.columnId,
             rowId,
           })
           .catch((error) => {
-            console.error(`Error processing cell at row ${rowIndex}, column ${columnName}:`, error);
+            console.error(
+              `Error processing cell at row ${rowIndex}, column ${column.name}:`,
+              error
+            );
             // If there's an error, update the cell to show the error
             const errorRowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
             if (errorRowNode) {
-              errorRowNode.setDataValue(`data.${columnName}`, 'Error enriching cell');
+              errorRowNode.setDataValue(column.name, 'Error enriching cell');
             }
             return null;
           });
@@ -360,7 +228,7 @@ export const TableComponentHeader = ({
       updatedCells.forEach(({ rowIndex, columnName }) => {
         const rowNode = gridApi.getDisplayedRowAtIndex(rowIndex);
         if (rowNode) {
-          rowNode.setDataValue(`data.${columnName}`, 'Error enriching cell');
+          rowNode.setDataValue(columnName, 'Error enriching cell');
         }
       });
     }
@@ -445,10 +313,12 @@ export const TableComponentHeader = ({
 
   return (
     <div className="sticky top-0 z-10 bg-background border-b">
-      <div className="p-2 pl-3 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
+      <div
+        className={`${!isPublicView && 'p-2 pl-3'} pb-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2`}
+      >
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           {!isSidebarOpen && <SidebarTrigger className="h-8 w-8" />}
-          <div className="font-semibold flex items-center gap-2">
+          <div className="font-semibold flex flex-col sm:flex-row items-start sm:items-center gap-2">
             {isEditing ? (
               <Input
                 ref={inputRef}
@@ -466,22 +336,24 @@ export const TableComponentHeader = ({
                 {tableName}
               </span>
             )}
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Info className="h-4 w-4 text-gray-500" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{tableDescription}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <div className="text-sm font-normal text-gray-500">
-              Right-click the column header below to edit
+            <div className="flex items-center gap-2">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="hidden xl:block h-4 w-4 text-gray-500" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{tableDescription}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <div className="text-sm font-normal text-gray-500 hidden xl:block">
+                Right-click the column header below to edit
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <Button
             variant="outline"
             size="sm"
@@ -489,9 +361,10 @@ export const TableComponentHeader = ({
             onClick={handleEnrichCells}
           >
             <Sparkle className="h-4 w-4" />
-            Enrich Selected Cells
+            <span className="hidden sm:inline">Enrich Selected Cells</span>
+            <span className="sm:hidden">Enrich</span>
           </Button>
-          {isOwner && (
+          {isOwner && !isPublicView && (
             <>
               <Button
                 variant="outline"
@@ -500,7 +373,7 @@ export const TableComponentHeader = ({
                 onClick={handleShareTable}
               >
                 <Share className="h-4 w-4" />
-                {sharingStatus === 'public' ? 'Make Private' : 'Share'}
+                {sharingStatus === 'public' ? 'Private' : 'Share'}
               </Button>
               <Button
                 variant="outline"
@@ -513,7 +386,7 @@ export const TableComponentHeader = ({
               </Button>
             </>
           )}
-          <AddRowsDropdown tableId={tableId} onSuccess={onRowsAdded} />
+          <AddRowsDropdown isPublicView={isPublicView} tableId={tableId} onSuccess={onRowsAdded} />
         </div>
       </div>
     </div>

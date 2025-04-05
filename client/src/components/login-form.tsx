@@ -2,7 +2,7 @@ import { defaultPage, LINK_TO_WAITLIST } from '@/App';
 import { useLocation } from 'react-router-dom';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { trpc } from '@/lib/trpc';
+import { trpc } from '@/utils/trpc';
 import { cn } from '@/lib/utils';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { useCallback, useEffect } from 'react';
@@ -11,7 +11,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const reason = searchParams.get('reason');
-
   const getLoginTitle = () => {
     switch (reason) {
       case 'enrichment-login-wall':
@@ -39,27 +38,29 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('accessToken');
     if (token) {
       window.location.href = defaultPage;
     }
   }, []);
 
+  const googleLoginMutation = trpc.auth.googleLogin.useMutation();
+
   const handleGoogleSuccess = useCallback(async (credentialResponse: CredentialResponse) => {
     if (!credentialResponse.credential) return;
 
     try {
-      const response = await trpc.auth.googleLogin.mutate({
+      const response = await googleLoginMutation.mutateAsync({
         credential: credentialResponse.credential,
       });
 
-      // Store the token in localStorage
-      localStorage.setItem('token', response.token);
+      // Store tokens with both the new and old keys
+      localStorage.setItem('accessToken', response.accessToken);
+      localStorage.setItem('refreshToken', response.refreshToken);
+      localStorage.setItem('token', response.accessToken); // For backward compatibility
 
-      // You can also store user data or redirect
-      console.log('Logged in user:', response.user);
+      console.log('Successfully stored tokens');
 
-      // Check if we should redirect to waitlist or home page
       if (LINK_TO_WAITLIST) {
         window.location.href = '/waitlist-form';
       } else {
@@ -71,7 +72,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   }, []);
 
   return (
-    <div className={cn('flex flex-col items-center w-full gap-6', className)} {...props}>
+    <div className={cn('flex flex-col gap-6 items-center w-full', className)} {...props}>
       <Card className="w-[90%] max-w-md mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%]">
         <CardHeader className="text-center">
           <CardTitle className="text-xl sm:text-2xl">{getLoginTitle()}</CardTitle>
@@ -88,7 +89,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                   />
                 </div>
               </div>
-              <div className="text-center text-sm">
+              <div className="text-sm text-center">
                 Don&apos;t have an account?{' '}
                 <button
                   onClick={() => (window.location.href = '/signup')}

@@ -5,7 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
 export function Navbar() {
   const location = useLocation();
-  const isAuthenticated = !!localStorage.getItem('token');
+  const isAuthenticated = !!localStorage.getItem('accessToken');
 
   const NavLinks = () => (
     <>

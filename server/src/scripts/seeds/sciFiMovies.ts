@@ -257,11 +257,12 @@ export async function createSciFiMoviesTable(userId: string) {
   });
 
   // Create rows with the data (already using column IDs)
-  const rowPromises = sciFiMoviesData.map((data) => {
+  const rowPromises = sciFiMoviesData.map((data, index) => {
     return Row.create({
       tableId: sciFiMoviesTable._id,
       data,
       userId,
+      index,
     });
   });
 

@@ -35,7 +35,7 @@ const ResearchPromptPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isFromUrl, setIsFromUrl] = useState(false);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [pastedImage, setPastedImage] = useState<string | null>(null);
 
