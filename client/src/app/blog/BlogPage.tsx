@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { blogPosts } from './posts';
+import { blogPosts } from './BlogData';
 
 export default function BlogPage() {
   return (

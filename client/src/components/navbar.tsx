@@ -9,12 +9,12 @@ export function Navbar() {
 
   const NavLinks = () => (
     <>
-      {/* <Link
+      <Link
         to="/blog"
         className={`hover:text-primary transition-colors ${location.pathname === '/blog' || location.pathname.startsWith('/blog/') ? 'text-primary font-medium' : ''}`}
       >
         Blog
-      </Link> */}
+      </Link>
       <Link
         to="/tables"
         className={`hover:text-primary transition-colors ${location.pathname === '/tables' ? 'text-primary font-medium' : ''}`}
