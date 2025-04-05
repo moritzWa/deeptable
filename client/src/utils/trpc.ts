@@ -18,16 +18,16 @@ export const createTrpcClient = () =>
         url: `${serverUrl}/trpc`,
         async headers() {
           const token = localStorage.getItem('accessToken');
-          console.log(
-            '🔑 Using token for request:',
-            token ? `${token.substring(0, 15)}...` : 'none'
-          );
+          // console.log(
+          //   '🔑 Using token for request:',
+          //   token ? `${token.substring(0, 15)}...` : 'none'
+          // );
           return {
             Authorization: token ? `Bearer ${token}` : '',
           };
         },
         fetch: async (url, options = {}) => {
-          console.log('🔍 Making request with token:', localStorage.getItem('accessToken'));
+          // console.log('🔍 Making request with token:', localStorage.getItem('accessToken'));
           const response = await fetch(url, options);
 
           // Check for 401 Unauthorized or token-related errors
