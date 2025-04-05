@@ -30,12 +30,13 @@ export const createTrpcClient = () =>
           console.log('🔍 Making request with token:', localStorage.getItem('accessToken'));
           const response = await fetch(url, options);
 
-          // Check for 401 Unauthorized or 500 Internal Server Error with JWT error message
+          // Check for 401 Unauthorized or token-related errors
           if (
             response.status === 401 ||
             (response.status === 500 &&
-              url.toString().includes('token') &&
-              url.toString().includes('invalid-token'))
+              (url.toString().includes('token') ||
+                url.toString().includes('jwt expired') || // Add check for jwt expired
+                url.toString().includes('TokenExpiredError'))) // Add check for TokenExpiredError
           ) {
             console.log(`⚠️ Received ${response.status} error - Token likely expired or invalid`);
             if (!isRefreshing) {

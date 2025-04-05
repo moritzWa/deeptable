@@ -5,10 +5,32 @@ import { SelectCellRenderer, SelectCellRendererParams } from './CellRendererSele
 
 // Renderer for select/multiSelect cells
 
+// Add this near the top with other components
+const EnrichingIndicator = () => (
+  <div className="flex items-center gap-2">
+    <span className="text-muted-foreground flex items-center">
+      Enriching
+      <span className="inline-flex ml-1">
+        <span className="animate-[pulse_1s_ease-in-out_0s_infinite]">.</span>
+        <span className="animate-[pulse_1s_ease-in-out_0.3s_infinite]">.</span>
+        <span className="animate-[pulse_1s_ease-in-out_0.6s_infinite]">.</span>
+      </span>
+    </span>
+    <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse transition-transform duration-1000 hover:scale-110" />
+  </div>
+);
+
 // Update the smartCellRenderer to handle select types
 export const smartCellRenderer = (params: ICellRendererParams) => {
   const colDef = params.colDef as Column;
   const value = params.value;
+
+  // Add check for enriching state
+  if (value === 'Enriching...') {
+    console.log('value in smartCellRenderer', value);
+
+    return <EnrichingIndicator />;
+  }
 
   // Handle select/multiSelect types
   if (colDef.type === 'select' || colDef.type === 'multiSelect') {

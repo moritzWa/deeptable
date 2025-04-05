@@ -117,7 +117,12 @@ app.use(
     onError({ error, path }) {
       console.error(`Error in tRPC path ${path}:`, error);
       // Convert auth errors to 401 responses
-      if (error.code === 'UNAUTHORIZED' || error.message?.includes('token')) {
+      if (
+        error.code === 'UNAUTHORIZED' ||
+        error.message?.includes('token') ||
+        error.message?.includes('jwt expired') || // Add explicit check for jwt expired
+        error.name === 'TokenExpiredError' // Add check for TokenExpiredError
+      ) {
         // @ts-expect-error - httpStatus is not in the type but is used by the adapter
         error.httpStatus = 401;
       }

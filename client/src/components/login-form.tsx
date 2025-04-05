@@ -11,7 +11,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const reason = searchParams.get('reason');
-
   const getLoginTitle = () => {
     switch (reason) {
       case 'enrichment-login-wall':
@@ -73,7 +72,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   }, []);
 
   return (
-    <div className={cn('flex flex-col items-center w-full gap-6', className)} {...props}>
+    <div className={cn('flex flex-col gap-6 items-center w-full', className)} {...props}>
       <Card className="w-[90%] max-w-md mx-auto sm:w-[80%] md:w-[60%] lg:w-[40%]">
         <CardHeader className="text-center">
           <CardTitle className="text-xl sm:text-2xl">{getLoginTitle()}</CardTitle>
@@ -90,7 +89,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                   />
                 </div>
               </div>
-              <div className="text-center text-sm">
+              <div className="text-sm text-center">
                 Don&apos;t have an account?{' '}
                 <button
                   onClick={() => (window.location.href = '/signup')}
