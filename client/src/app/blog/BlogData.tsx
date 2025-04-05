@@ -1,4 +1,5 @@
 import { EndOfBlogPostCTASection } from '@/components/EndOfBlogPostCTASection';
+
 import { JSX } from 'react';
 
 export interface BlogPostMetadata {
@@ -55,6 +56,9 @@ export const blogPosts: BlogPostMetadata[] = [
         </p>
 
         <h2>Numerous.ai: The Excel Native</h2>
+
+        <img src="/blog/numerous.png" alt="Numerous.ai" width={1000} height={1000} />
+
         <p>
           For those deeply embedded in the Excel ecosystem, Numerous.ai offers an interesting
           proposition. It brings AI capabilities directly into your spreadsheet environment, which
@@ -66,6 +70,22 @@ export const blogPosts: BlogPostMetadata[] = [
           limitations when it comes to gathering new information. Users need to provide their own
           data and craft specific prompts for analysis. Think of it as having a powerful calculator
           without the ability to gather the numbers you need to crunch.
+        </p>
+
+        <h2>Talonic: The Data Structure Specialist</h2>
+        <p>
+          Talonic takes a specialized approach to data management, focusing on transforming
+          unstructured documents into clean, organized datasets. With powerful AI-driven extraction
+          capabilities and enterprise-grade security options, it excels at processing internal
+          documents like PDFs and Excel files.
+        </p>
+
+        <p>
+          However, like Numerous.ai, Talonic's focus is on processing existing data rather than
+          gathering new information. While it's excellent for organizing internal documents and
+          streamlining data workflows, it's not designed for web research or real-time data
+          gathering. Think of it as an efficient data librarian that can organize your existing
+          information but can't help you discover new sources.
         </p>
 
         <h2>Perplexity and Other Research Platforms</h2>
