@@ -2,7 +2,7 @@ import { BlogPost } from '@/components/BlogPost';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { getBlogPostBySlug } from '../posts';
+import { getBlogPostBySlug } from './BlogData';
 
 export default function BlogPostPage() {
   const { slug } = useParams<{ slug: string }>();
