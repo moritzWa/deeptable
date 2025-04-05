@@ -64,7 +64,7 @@ export const authRouter = router({
         const accessToken = jwt.sign(
           { userId: user._id },
           process.env.AUTH_SECRET || 'fallback-secret',
-          { expiresIn: '15m' } // shorter expiration
+          { expiresIn: '1d' }
         );
 
         // Generate refresh token (long-lived)

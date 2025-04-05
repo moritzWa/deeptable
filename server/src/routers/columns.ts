@@ -2,7 +2,7 @@ import { Column, ColumnType } from '@shared/types';
 import mongoose from 'mongoose';
 import OpenAI from 'openai';
 import { z } from 'zod';
-import { fillCell } from '../fillCellUtils';
+import { fillCell, processSelectTypeValue } from '../fillCellUtils';
 import { Row } from '../models/row';
 import { Table } from '../models/table';
 import { publicProcedure, router } from '../trpc';
@@ -339,17 +339,42 @@ export const columnsRouter = router({
           column.name,
           column.description,
           column.type,
-          [{ data: row.data }]
+          [{ data: row.data }],
+          column.additionalTypeInformation
         );
 
-        // Get the first property value from row.data object
-        const firstPropertyValue = Object.values(row.data)[0];
-        console.log(
-          `llmResults for Row "${firstPropertyValue}", Column ${column.name}:`,
-          llmResults
-        );
+        // Handle select/multi-select types
+        if ((column.type === 'select' || column.type === 'multiSelect') && llmResults) {
+          const { finalValues, updatedSelectItems } = await processSelectTypeValue(
+            llmResults,
+            column.type,
+            column.additionalTypeInformation?.selectItems
+          );
 
-        // Update just this cell in the row using columnId
+          // If we have new select items, update the column schema
+          if (updatedSelectItems) {
+            await Table.findOneAndUpdate(
+              {
+                _id: tableObjectId,
+                'columns.columnId': column.columnId,
+              },
+              {
+                $set: {
+                  'columns.$.additionalTypeInformation.selectItems': updatedSelectItems,
+                },
+              }
+            );
+          }
+
+          // Update the cell value
+          await Row.findByIdAndUpdate(row._id, {
+            $set: { [`data.${column.columnId}`]: finalValues },
+          });
+
+          return finalValues;
+        }
+
+        // For non-select types
         await Row.findByIdAndUpdate(row._id, {
           $set: { [`data.${column.columnId}`]: llmResults },
         });
