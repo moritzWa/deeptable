@@ -48,6 +48,15 @@ export const blogPosts: BlogPostMetadata[] = [
           DeepTable transforms complex research tasks into streamlined processes.
         </p>
 
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full rounded-lg"
+          src="/blog/deeptable.mp4"
+        />
+
         <p>
           What sets DeepTable apart is its ability to handle diverse research scenarios. Need to
           find the best beach cities for digital nomads? Looking for technical leaders from top AI
@@ -80,6 +89,8 @@ export const blogPosts: BlogPostMetadata[] = [
           documents like PDFs and Excel files.
         </p>
 
+        <img src="/blog/talonic.png" alt="Talonic" width={1000} height={1000} />
+
         <p>
           However, like Numerous.ai, Talonic's focus is on processing existing data rather than
           gathering new information. While it's excellent for organizing internal documents and
@@ -97,11 +108,13 @@ export const blogPosts: BlogPostMetadata[] = [
         </p>
 
         <p>
-          With limits of 10-30 web searches per query, these platforms often struggle to provide the
-          comprehensive data needed for serious research tasks. It's like having a brilliant analyst
-          who can only access the first few pages of Google - the insights might be valuable, but
-          they're inherently limited.
+          With limits of 12-200 web searches per query, these platforms often struggle to provide
+          the comprehensive data needed for serious research tasks. It's like having a brilliant
+          analyst who can only access the first few pages of Google - the insights might be
+          valuable, but they're inherently limited.
         </p>
+
+        <img src="/blog/perplexity.png" alt="Perplexity" width={1000} height={1000} />
 
         <h2>Why DeepTable Stands Out</h2>
         <p>
