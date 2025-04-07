@@ -118,7 +118,7 @@ export const blogPosts: BlogPostMetadata[] = [
         </p>
 
         <p>
-          With limits of a few dozen web searches per query, these platforms can't provide the data
+          With a limit of a few dozen web searches per query, these platforms can't provide the data
           for comprehensive research tasks. It's like having a smart analyst who can only access the
           first few pages of Google - the insights might be valuable, but they're inherently
           limited. As you can see in the screenshot below many cells of the table are blank.
