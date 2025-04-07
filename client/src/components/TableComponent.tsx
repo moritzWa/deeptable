@@ -21,7 +21,7 @@ import { useToast } from '@/hooks/use-toast';
 import '@/styles/ag-grid-theme.css';
 import { ModuleRegistry } from 'ag-grid-community';
 import 'ag-grid-enterprise'; // This is the correct way to import enterprise features
-import { AllEnterpriseModule } from 'ag-grid-enterprise';
+import { AllEnterpriseModule, LicenseManager } from 'ag-grid-enterprise';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -33,6 +33,7 @@ import { TableHeader } from './TableHeader';
 
 // Register all enterprise modules (includes ClientSideRowModel)
 ModuleRegistry.registerModules([AllEnterpriseModule as any]);
+LicenseManager.setLicenseKey('[v3][01]_MzgwMzM4ODgxNDk1OV8172839ed1eed656ea99e6dbc2b66fc2');
 
 // Debounce function to limit the frequency of calls
 const debounce = (func: Function, delay: number) => {
