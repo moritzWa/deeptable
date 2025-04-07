@@ -21,7 +21,7 @@ export const blogPosts: BlogPostMetadata[] = [
     title: 'The Best AI Spreadsheet and Research Tools in 2025',
     description:
       'Discover how AI-powered research tools are revolutionizing data gathering and analysis - from spreadsheet automation to comprehensive web research.',
-    date: '2024-03-21',
+    date: '2025-04-08',
     author: 'Team',
     content: (
       <>
@@ -44,7 +44,7 @@ export const blogPosts: BlogPostMetadata[] = [
           Imagine having a research assistant that never sleeps, consistently delivers accurate
           results, and organizes everything perfectly. That's what DeepTable brings to the table.
           Whether you're a venture capitalist researching potential investments, a real estate
-          professional analyzing market trends, or a talent recruiter tracking industry movements,
+          professional analyzing market trends, or just a curious person comparing products,
           DeepTable transforms complex research tasks into streamlined processes.
         </p>
 
@@ -64,12 +64,22 @@ export const blogPosts: BlogPostMetadata[] = [
           handles it all with remarkable precision.
         </p>
 
+        <h3>Features</h3>
+        <p>
+          With DeepTable you can go from a prompt to full table with extreme accuracy. I.e. it will
+          not only fill out the cells for you but also help you come up with good column names and
+          items to compare. Alternatively you can start with a blank sheet or import an existing
+          spreadsheet.
+        </p>
+
+        <p>Then simply select the cells you want to fill out and let DeepTable research for you.</p>
+
         <h2>2. Numerous.ai: The GPT-Formula Extension</h2>
 
         <img src="/blog/numerous.png" alt="Numerous.ai" width={1000} height={1000} />
 
         <p>
-          For those deeply embedded in the Excel ecosystem, Numerous.ai offers an interesting
+          For those locked into the Excel/Google Sheets ecosystem, Numerous.ai offers an interesting
           proposition. It brings AI capabilities directly into your spreadsheet environment, which
           sounds perfect on paper. However, there's more to consider.
         </p>
@@ -108,10 +118,10 @@ export const blogPosts: BlogPostMetadata[] = [
         </p>
 
         <p>
-          With limits of 12-200 web searches per query, these platforms often struggle to provide
-          the comprehensive data needed for serious research tasks. It's like having a brilliant
-          analyst who can only access the first few pages of Google - the insights might be
-          valuable, but they're inherently limited.
+          With limits of a few dozen web searches per query, these platforms can't provide the data
+          for comprehensive research tasks. It's like having a smart analyst who can only access the
+          first few pages of Google - the insights might be valuable, but they're inherently
+          limited. As you can see in the screenshot below many cells of the table are blank.
         </p>
 
         <img src="/blog/perplexity.png" alt="Perplexity" width={1000} height={1000} />
