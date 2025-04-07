@@ -228,6 +228,14 @@ const ResearchPromptPage: React.FC = () => {
       const jsonContent = await file.text();
       const jsonData = JSON.parse(jsonContent);
 
+      // Add index to each row based on its position in the array
+      if (jsonData.rows) {
+        jsonData.rows = jsonData.rows.map((row: any, index: number) => ({
+          ...row,
+          index,
+        }));
+      }
+
       await createTableFromJSONMutation.mutateAsync({
         token,
         jsonData,
