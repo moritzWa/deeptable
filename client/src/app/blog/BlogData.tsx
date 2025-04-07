@@ -18,7 +18,7 @@ export interface BlogPostMetadata {
 export const blogPosts: BlogPostMetadata[] = [
   {
     slug: 'best-ai-spreadsheet-research-tools',
-    title: 'The Best AI Spreadsheet and Research Tools in 2024',
+    title: 'The Best AI Spreadsheet and Research Tools in 2025',
     description:
       'Discover how AI-powered research tools are revolutionizing data gathering and analysis - from spreadsheet automation to comprehensive web research.',
     date: '2024-03-21',
@@ -39,7 +39,7 @@ export const blogPosts: BlogPostMetadata[] = [
           can automate these processes, but choosing the right solution for your needs is crucial.
         </p>
 
-        <h2>DeepTable: Redefining Research Automation</h2>
+        <h2>1. DeepTable: Redefining Research Automation</h2>
         <p>
           Imagine having a research assistant that never sleeps, consistently delivers accurate
           results, and organizes everything perfectly. That's what DeepTable brings to the table.
@@ -64,7 +64,7 @@ export const blogPosts: BlogPostMetadata[] = [
           handles it all with remarkable precision.
         </p>
 
-        <h2>Numerous.ai: The Excel Native</h2>
+        <h2>2. Numerous.ai: The GPT-Formula Extension</h2>
 
         <img src="/blog/numerous.png" alt="Numerous.ai" width={1000} height={1000} />
 
@@ -81,7 +81,7 @@ export const blogPosts: BlogPostMetadata[] = [
           without the ability to gather the numbers you need to crunch.
         </p>
 
-        <h2>Talonic: The Data Structure Specialist</h2>
+        <h2>3. Talonic: The Data Structure Specialist</h2>
         <p>
           Talonic takes a specialized approach to data management, focusing on transforming
           unstructured documents into clean, organized datasets. With powerful AI-driven extraction
@@ -99,7 +99,7 @@ export const blogPosts: BlogPostMetadata[] = [
           information but can't help you discover new sources.
         </p>
 
-        <h2>Perplexity and Other Research Platforms</h2>
+        <h2>4. Perplexity and Other Research Platforms</h2>
         <p>
           The latest generation of AI research platforms, like Perplexity, offers an intriguing
           approach to data gathering and presentation. They excel at creating well-formatted reports
@@ -115,6 +115,35 @@ export const blogPosts: BlogPostMetadata[] = [
         </p>
 
         <img src="/blog/perplexity.png" alt="Perplexity" width={1000} height={1000} />
+
+        <h2>5. Google Sheets: The Gemini Integration</h2>
+        <p>
+          Google's integration of Gemini AI into Sheets presents an interesting addition to the
+          spreadsheet landscape. While it excels at formula generation and basic table creation, the
+          implementation has notable limitations.
+        </p>
+
+        <p>
+          The strengths lie in its ability to handle complex formulas effortlessly and create basic
+          tables on demand. However, when it comes to comprehensive data analysis or filling out
+          large data tables, the functionality falls short. The pricing model also raises eyebrows -
+          requiring a Google One AI Premium subscription at $20/month makes it one of the more
+          expensive options for spreadsheet automation.
+        </p>
+
+        <img
+          src="/blog/googlesheets.gif"
+          alt="Google Sheets Gemini Integration Demo"
+          width={1000}
+          height={1000}
+          className="w-full rounded-lg"
+        />
+
+        <p>
+          While the integration shows promise, its current state feels more like a helpful add-on
+          rather than a complete research solution. Users looking for comprehensive data gathering
+          and analysis capabilities might find the limitations frustrating.
+        </p>
 
         <h2>Why DeepTable Stands Out</h2>
         <p>
