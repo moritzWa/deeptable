@@ -16,6 +16,10 @@ export interface ColumnState {
   pivotIndex?: number;
   flex?: number | null;
   orderIndex?: number;
+  wrapText?: boolean;
+  autoHeight?: boolean;
+  wrapHeaderText?: boolean;
+  autoHeaderHeight?: boolean;
 }
 
 export interface SelectItem {

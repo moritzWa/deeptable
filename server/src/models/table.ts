@@ -38,6 +38,10 @@ const columnStateSchema = new mongoose.Schema(
     pivotIndex: { type: Number, required: false },
     flex: { type: Number, required: false },
     orderIndex: { type: Number, required: false },
+    wrapText: { type: Boolean, required: false },
+    autoHeight: { type: Boolean, required: false },
+    wrapHeaderText: { type: Boolean, required: false },
+    autoHeaderHeight: { type: Boolean, required: false },
   },
   { _id: false, strict: false }
 );

@@ -20,6 +20,11 @@ export const convertColumnStateToAgGridProps = (
     sort: columnState.sort !== null ? columnState.sort : undefined,
     sortIndex: columnState.sortIndex,
     flex: columnState.flex,
+    // Add text wrapping properties
+    wrapText: columnState.wrapText,
+    autoHeight: columnState.autoHeight,
+    wrapHeaderText: columnState.wrapHeaderText,
+    autoHeaderHeight: columnState.autoHeaderHeight,
   };
 
   // Only add properties that have valid values
