@@ -65,7 +65,7 @@ export const TableStructureEditor: React.FC<TableStructureEditorProps> = ({
             <label className="text-sm font-medium">Columns</label>
             <div className="grid grid-cols-1 gap-2">
               {columns.map((column, index) => (
-                <div key={index} className="p-3 rounded">
+                <div key={index} className="pb-4">
                   <div className="flex items-start gap-2">
                     <div className="flex-1 space-y-2">
                       <div className="flex items-center gap-2">
