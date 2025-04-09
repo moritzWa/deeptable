@@ -10,7 +10,7 @@ import { Download, Info, Share, Sparkle, Trash2 } from 'lucide-react';
 import { KeyboardEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { downloadJson, exportTableData } from '../utils/tableComponentHelpers';
-import { AddRowsDropdown } from './AddRowsDropdown';
+import { AddRowsDropdown, useAddRows } from './AddRowsDropdown';
 
 export interface TableHeaderProps {
   tableName: string;
@@ -27,6 +27,7 @@ export interface TableHeaderProps {
   isPublicView?: boolean;
   selectedRows?: number;
   onDeleteRows?: () => Promise<void>;
+  isTableEmpty: boolean;
 }
 
 export const TableHeader = ({
@@ -44,6 +45,7 @@ export const TableHeader = ({
   isPublicView,
   selectedRows = 0,
   onDeleteRows,
+  isTableEmpty,
 }: TableHeaderProps) => {
   const token = localStorage.getItem('accessToken');
   const trpcUtils = trpc.useContext();
@@ -327,6 +329,8 @@ export const TableHeader = ({
     console.log('Deleting rows:', selectedIds);
   };
 
+  const { handleAddRowsWithEntities, isLoadingEntities } = useAddRows(tableId, onRowsAdded);
+
   return (
     <div className="sticky top-0 z-10 bg-background border-b">
       <div
@@ -384,6 +388,25 @@ export const TableHeader = ({
                 Delete {selectedRows} Row{selectedRows > 1 ? 's' : ''}
               </span>
               <span className="sm:hidden">Delete</span>
+            </Button>
+          )}
+          {isTableEmpty && isOwner && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1"
+              onClick={() => handleAddRowsWithEntities(10)}
+              disabled={isLoadingEntities}
+            >
+              <Sparkle className="h-4 w-4" />
+              {isLoadingEntities ? (
+                'Adding Sample Data...'
+              ) : (
+                <>
+                  <span className="hidden sm:inline">Add Sample Data</span>
+                  <span className="sm:hidden">Sample</span>
+                </>
+              )}
             </Button>
           )}
           <Button

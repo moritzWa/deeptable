@@ -817,6 +817,10 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     []
   );
 
+  const isTableEmpty = (rows: any[]) => {
+    return rows.every((row) => Object.values(row.data).every((value) => value === ''));
+  };
+
   if (error) {
     return <TableError error={error} />;
   }
@@ -886,6 +890,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           rows={rowData}
           selectedRows={selectedRows}
           onDeleteRows={handleDeleteRows}
+          isTableEmpty={isTableEmpty(rowData)}
         />
 
         <div className="min-h-0">

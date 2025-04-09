@@ -10,35 +10,10 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 
-export const AddRowsDropdown = ({
-  tableId,
-  onSuccess,
-  isPublicView,
-}: {
-  tableId: string;
-  onSuccess: () => void;
-  isPublicView?: boolean;
-}) => {
+export const useAddRows = (tableId: string, onSuccess: () => void) => {
   const token = localStorage.getItem('accessToken');
   const { toast } = useToast();
   const navigate = useNavigate();
-
-  const createRowsMutation = trpc.rows.createRows.useMutation({
-    onSuccess: () => {
-      onSuccess();
-      toast({
-        title: 'Success',
-        description: 'Rows added successfully',
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to add rows',
-        variant: 'destructive',
-      });
-    },
-  });
 
   const createRowsWithEntitiesMutation = trpc.rows.createRowsWithEntities.useMutation({
     onSuccess: () => {
@@ -57,6 +32,52 @@ export const AddRowsDropdown = ({
     },
   });
 
+  const handleAddRowsWithEntities = (count: number) => {
+    if (!token) {
+      navigate('/login?reason=add-rows-login-wall');
+      return;
+    }
+
+    createRowsWithEntitiesMutation.mutate({ token, tableId, count });
+  };
+
+  return {
+    handleAddRowsWithEntities,
+    isLoadingEntities: createRowsWithEntitiesMutation.isLoading,
+  };
+};
+
+export const AddRowsDropdown = ({
+  tableId,
+  onSuccess,
+  isPublicView,
+}: {
+  tableId: string;
+  onSuccess: () => void;
+  isPublicView?: boolean;
+}) => {
+  const token = localStorage.getItem('accessToken');
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { handleAddRowsWithEntities, isLoadingEntities } = useAddRows(tableId, onSuccess);
+
+  const createRowsMutation = trpc.rows.createRows.useMutation({
+    onSuccess: () => {
+      onSuccess();
+      toast({
+        title: 'Success',
+        description: 'Rows added successfully',
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to add rows',
+        variant: 'destructive',
+      });
+    },
+  });
+
   const handleAddRows = (count: number, withEntities: boolean = false) => {
     if (!token) {
       navigate('/login?reason=add-rows-login-wall');
@@ -64,14 +85,13 @@ export const AddRowsDropdown = ({
     }
 
     if (withEntities) {
-      createRowsWithEntitiesMutation.mutate({ token, tableId, count });
+      handleAddRowsWithEntities(count);
     } else {
       createRowsMutation.mutate({ token, tableId, count });
     }
   };
 
   const isLoadingRegular = createRowsMutation.isLoading;
-  const isLoadingEntities = createRowsWithEntitiesMutation.isLoading;
   const isLoading = isLoadingRegular || isLoadingEntities;
 
   const rowCounts = [10, 25, 50];

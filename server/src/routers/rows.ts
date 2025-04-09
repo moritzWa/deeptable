@@ -223,7 +223,25 @@ export const rowsRouter = router({
           throw new Error('Table not found');
         }
 
-        // Get the current count of rows for the table to determine the starting index
+        // Find and delete empty rows
+        // A row is considered empty if all its data values are empty strings or null
+        const emptyRows = await RowModel.find({
+          tableId: input.tableId,
+          userId: decoded.userId,
+        });
+
+        const emptyRowIds = emptyRows
+          .filter((row) => Object.values(row.data).every((value) => value === '' || value === null))
+          .map((row) => row._id);
+
+        if (emptyRowIds.length > 0) {
+          await RowModel.deleteMany({
+            _id: { $in: emptyRowIds },
+            userId: decoded.userId,
+          });
+        }
+
+        // Get the new count of rows for the table to determine the starting index
         const startIndex = await RowModel.countDocuments({
           tableId: input.tableId,
           userId: decoded.userId,
