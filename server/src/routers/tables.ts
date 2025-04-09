@@ -721,27 +721,34 @@ export const tablesRouter = router({
         let userId: string | undefined;
 
         if (input.token) {
-          const decoded = jwt.verify(input.token, process.env.AUTH_SECRET || 'fallback-secret') as {
-            userId: string;
-          };
-          userId = decoded.userId;
+          try {
+            // Use the verifyToken helper instead of direct jwt.verify
+            const decoded = verifyToken(input.token);
+            userId = decoded.userId;
+          } catch (error) {
+            // If token verification fails but we have a slug/id, continue without userId
+            // This allows public access to continue working
+            console.log('Token verification failed, continuing with public access');
+          }
         }
 
         // Build the query based on whether we have an ID or slug
-        const query: any = {
-          $or: [
+        const query: any = {};
+
+        if (userId) {
+          query.$or = [
             { userId }, // Match if user owns the table
             { sharingStatus: 'public' }, // Match if table is public
-          ].filter(Boolean), // Remove userId condition if not provided
-        };
+          ];
+        } else {
+          query.sharingStatus = 'public'; // Only match public tables if no valid token
+        }
 
         // Add either ID or slug to the query
         if (input.id) {
           query._id = input.id;
         } else if (input.slug) {
           query.slug = input.slug;
-        } else {
-          throw new Error('Either id or slug must be provided');
         }
 
         const table = await TableModel.findOne(query);
