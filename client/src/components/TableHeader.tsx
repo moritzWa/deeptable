@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { trpc } from '@/utils/trpc';
 import { Column, Table } from '@shared/types';
 import { CellRange, GridApi } from 'ag-grid-community';
-import { Download, Info, Share, Sparkle } from 'lucide-react';
+import { Download, Info, Share, Sparkle, Trash2 } from 'lucide-react';
 import { KeyboardEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { downloadJson, exportTableData } from '../utils/tableComponentHelpers';
@@ -25,6 +25,8 @@ export interface TableHeaderProps {
   table: Table;
   rows: any[];
   isPublicView?: boolean;
+  selectedRows?: number;
+  onDeleteRows?: () => Promise<void>;
 }
 
 export const TableHeader = ({
@@ -40,6 +42,8 @@ export const TableHeader = ({
   table,
   rows,
   isPublicView,
+  selectedRows = 0,
+  onDeleteRows,
 }: TableHeaderProps) => {
   const token = localStorage.getItem('accessToken');
   const trpcUtils = trpc.useContext();
@@ -311,6 +315,18 @@ export const TableHeader = ({
     }
   };
 
+  const handleDeleteRows = () => {
+    if (!gridApi) return;
+    const selectedNodes = gridApi.getSelectedNodes();
+    if (selectedNodes.length === 0) return;
+
+    // Get the IDs of selected rows
+    const selectedIds = selectedNodes.map((node) => node.data.id);
+
+    // TODO: Add your delete mutation here
+    console.log('Deleting rows:', selectedIds);
+  };
+
   return (
     <div className="sticky top-0 z-10 bg-background border-b">
       <div
@@ -347,13 +363,29 @@ export const TableHeader = ({
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-              <div className="text-sm font-normal text-gray-500 hidden xl:block">
-                Right-click the column header below to edit
-              </div>
+              {!selectedRows && isOwner && (
+                <div className="text-sm font-normal text-gray-500 hidden xl:block">
+                  Right-click the column header below to edit
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          {selectedRows > 0 && isOwner && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-1 text-destructive hover:text-destructive"
+              onClick={onDeleteRows}
+            >
+              <Trash2 className="h-4 w-4" />
+              <span className="hidden sm:inline">
+                Delete {selectedRows} Row{selectedRows > 1 ? 's' : ''}
+              </span>
+              <span className="sm:hidden">Delete</span>
+            </Button>
+          )}
           <Button
             variant="outline"
             size="sm"

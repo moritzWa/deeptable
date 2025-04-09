@@ -87,6 +87,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   const [selectedRanges, setSelectedRanges] = useState<CellRange[]>([]);
   const [isGridReady, setIsGridReady] = useState(false);
+  const [selectedRows, setSelectedRows] = useState(0);
 
   // Reference to the AG Grid API
   const gridRef = useRef<AgGridReact>(null);
@@ -212,6 +213,47 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         description: error.message,
         variant: 'destructive',
       });
+    },
+  });
+
+  // Add this mutation near your other mutations
+  const deleteRowsMutation = trpc.rows.deleteRows.useMutation({
+    onMutate: async ({ ids }) => {
+      // Cancel any outgoing refetches
+      await utils.rows.getRows.cancel();
+
+      // Snapshot the previous value
+      const previousRows = utils.rows.getRows.getData();
+
+      // Optimistically update to the new value
+      utils.rows.getRows.setData({ token: token || '', tableId: tableData?.id || '' }, (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          rows: old.rows.filter((row) => !ids.includes(row.id)),
+          total: old.total - ids.length,
+        };
+      });
+
+      return { previousRows };
+    },
+    onError: (err, newRows, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      if (context?.previousRows) {
+        utils.rows.getRows.setData(
+          { token: token || '', tableId: tableData?.id || '' },
+          context.previousRows
+        );
+      }
+      toast({
+        title: 'Error',
+        description: 'Failed to delete rows',
+        variant: 'destructive',
+      });
+    },
+    onSettled: () => {
+      // Always refetch after error or success to make sure our optimistic update is correct
+      utils.rows.getRows.invalidate();
     },
   });
 
@@ -699,6 +741,40 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     });
   };
 
+  // Add selection changed handler
+  const onSelectionChanged = useCallback(() => {
+    if (!gridRef.current?.api) return;
+    const selectedNodes = gridRef.current.api.getSelectedNodes();
+    setSelectedRows(selectedNodes.length);
+  }, []);
+
+  // Add this handler function
+  const handleDeleteRows = async () => {
+    if (!gridRef.current?.api || !token || !tableData?.id) return;
+
+    const selectedNodes = gridRef.current.api.getSelectedNodes();
+    const selectedIds = selectedNodes.map((node) => node.data.id);
+
+    if (selectedIds.length === 0) return;
+
+    try {
+      await deleteRowsMutation.mutateAsync({
+        token,
+        ids: selectedIds,
+      });
+
+      toast({
+        title: 'Success',
+        description: `Deleted ${selectedIds.length} row${selectedIds.length > 1 ? 's' : ''}`,
+      });
+
+      // Clear selection after successful delete
+      gridRef.current.api.deselectAll();
+    } catch (error) {
+      console.error('Failed to delete rows:', error);
+    }
+  };
+
   if (error) {
     return <TableError error={error} />;
   }
@@ -708,6 +784,11 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   }
 
   if (!tableData) return null;
+
+  const rowSelection = {
+    mode: 'multiRow' as const,
+    enableClickSelection: true,
+  };
 
   return (
     <>
@@ -761,6 +842,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           isOwner={tableData.isOwner}
           table={tableData}
           rows={rowData}
+          selectedRows={selectedRows}
+          onDeleteRows={handleDeleteRows}
         />
 
         <div className="min-h-0">
@@ -775,7 +858,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
               defaultColDef={defaultColDef}
               pagination={false}
               animateRows={true}
-              rowSelection="multiple"
               onCellValueChanged={onCellValueChanged}
               stopEditingWhenCellsLoseFocus={true}
               onGridReady={onGridReady}
@@ -787,7 +869,9 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
               context={gridContext}
               cellSelection={cellSelection}
               onRangeSelectionChanged={onRangeSelectionChanged}
+              onSelectionChanged={onSelectionChanged}
               domLayout="autoHeight"
+              rowSelection={rowSelection}
             />
           </div>
         </div>
