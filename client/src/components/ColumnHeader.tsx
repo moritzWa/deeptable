@@ -537,7 +537,7 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
         <ContextMenuSeparator />
         <ContextMenuGroup>
           <ContextMenuItem
-            className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400 flex items-center gap-2"
+            className="text-destructive focus:text-destructive flex items-center gap-2"
             onClick={handleDeleteColumn}
           >
             <Trash2 className="h-4 w-4" />
