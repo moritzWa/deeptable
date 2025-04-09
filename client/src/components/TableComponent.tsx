@@ -291,29 +291,36 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     const columnState = gridRef.current.api.getColumnState() as AgGridColumnState[];
 
     // Map the column state to our data structure
-    const columnStates = columnState.map((state: AgGridColumnState, index: number) => ({
-      columnId: state.colId,
-      columnState: {
-        colId: state.colId,
-        hide: state.hide,
-        pinned: state.pinned,
-        sort: state.sort,
-        sortIndex: index,
-        width: state.width,
-        flex: state.flex,
-        wrapText: state.wrapText,
-        autoHeight: state.autoHeight,
-        wrapHeaderText: state.wrapHeaderText,
-        autoHeaderHeight: state.autoHeaderHeight,
-      },
-    }));
+    const columnStates = columnState.map((state: AgGridColumnState, index: number) => {
+      // Find the existing column to get its current text wrapping properties
+      const existingColumn = table.columns.find((col) => col.columnId === state.colId);
+      const existingState = existingColumn?.columnState;
+
+      return {
+        columnId: state.colId,
+        columnState: {
+          colId: state.colId,
+          hide: state.hide,
+          pinned: state.pinned,
+          sort: state.sort,
+          sortIndex: index,
+          width: state.width,
+          flex: state.flex,
+          // Preserve existing text wrapping properties or use the current state
+          wrapText: state.wrapText ?? existingState?.wrapText ?? false,
+          autoHeight: state.autoHeight ?? existingState?.autoHeight ?? false,
+          wrapHeaderText: state.wrapHeaderText ?? existingState?.wrapHeaderText ?? false,
+          autoHeaderHeight: state.autoHeaderHeight ?? existingState?.autoHeaderHeight ?? false,
+        },
+      };
+    });
 
     updateColumnStateMutation.mutate({
       token,
       tableId: table.id,
       columnStates,
     });
-  }, [table?.id, token, updateColumnStateMutation]);
+  }, [table?.id, table?.columns, token, updateColumnStateMutation]);
 
   // Create a debounced version of the state change processor
   const debouncedProcessColumnStateChange = useMemo(
