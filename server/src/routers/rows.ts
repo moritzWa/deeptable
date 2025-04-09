@@ -330,4 +330,32 @@ export const rowsRouter = router({
         throw new Error('Failed to delete row');
       }
     }),
+
+  // Delete multiple rows
+  deleteRows: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        ids: z.array(z.string()),
+      })
+    )
+    .mutation(async ({ input }): Promise<{ success: boolean; deletedCount: number }> => {
+      try {
+        const decoded = verifyToken(input.token);
+
+        const result = await RowModel.deleteMany({
+          _id: { $in: input.ids },
+          userId: decoded.userId,
+        });
+
+        if (result.deletedCount === 0) {
+          throw new Error('No rows were deleted');
+        }
+
+        return { success: true, deletedCount: result.deletedCount };
+      } catch (error) {
+        console.error('Delete rows error:', error);
+        throw new Error('Failed to delete rows');
+      }
+    }),
 });

@@ -163,7 +163,7 @@ export function AppSidebar() {
                     asChild
                     onClick={() => navigate(`/tables/${table.id}`)}
                     isActive={currentTableId === table.id}
-                    className="relative group/item flex w-full items-center"
+                    className="relative group/item cursor-pointer flex w-full items-center"
                   >
                     <div className="flex-1 min-w-0">
                       <span className="block truncate">{table.name}</span>
