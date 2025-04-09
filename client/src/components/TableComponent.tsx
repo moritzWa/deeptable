@@ -775,6 +775,48 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     }
   };
 
+  // Add this columnTypes definition
+  const columnTypes = useMemo(
+    () => ({
+      text: {
+        // Default text column settings
+        filter: 'agTextColumnFilter',
+        filterParams: {
+          buttons: ['reset', 'apply'],
+        },
+      },
+      number: {
+        // Number column settings
+        filter: 'agNumberColumnFilter',
+        filterParams: {
+          buttons: ['reset', 'apply'],
+        },
+      },
+      link: {
+        // Link column settings
+        filter: 'agTextColumnFilter',
+        filterParams: {
+          buttons: ['reset', 'apply'],
+        },
+      },
+      select: {
+        // Select column settings
+        filter: 'agTextColumnFilter',
+        filterParams: {
+          buttons: ['reset', 'apply'],
+        },
+      },
+      multiSelect: {
+        // MultiSelect column settings
+        filter: 'agTextColumnFilter',
+        filterParams: {
+          buttons: ['reset', 'apply'],
+        },
+      },
+    }),
+    []
+  );
+
   if (error) {
     return <TableError error={error} />;
   }
@@ -856,6 +898,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
               rowData={rowData}
               columnDefs={columnDefs}
               defaultColDef={defaultColDef}
+              columnTypes={columnTypes}
               pagination={false}
               animateRows={true}
               onCellValueChanged={onCellValueChanged}
