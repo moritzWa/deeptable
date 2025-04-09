@@ -144,7 +144,7 @@ export const columnsRouter = router({
           .replace(/,(\s*[}\]])/g, '$1') // Remove trailing commas before } or ]
           .trim();
 
-        console.log('OpenAI Response:', cleanedResponse);
+        // console.log('OpenAI Response:', cleanedResponse);
 
         try {
           // Parse the cleaned JSON response
