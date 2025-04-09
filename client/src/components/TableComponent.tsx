@@ -856,7 +856,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
 
   const rowSelection = {
     mode: 'multiRow' as const,
-    enableClickSelection: true,
+    enableClickSelection: false,
+    checkboxSelection: true,
   };
 
   return (
