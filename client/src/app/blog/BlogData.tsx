@@ -18,7 +18,7 @@ export interface BlogPostMetadata {
 export const blogPosts: BlogPostMetadata[] = [
   {
     slug: 'best-ai-spreadsheet-research-tools',
-    title: 'The Best AI Spreadsheet and Research Tools in 2025',
+    title: 'The Best AI Spreadsheet and Web Research Tools in 2025',
     description:
       'Discover how AI-powered research tools are revolutionizing data gathering and analysis - from spreadsheet automation to comprehensive web research.',
     date: '2025-04-08',
@@ -203,6 +203,32 @@ export const blogPosts: BlogPostMetadata[] = [
         </p>
 
         <EndOfBlogPostCTASection />
+      </>
+    ),
+  },
+  {
+    slug: 'best-ai-web-research-tools',
+    title: 'The Best AI Tools for Automated Web Research in 2025',
+    description:
+      'Compare the top AI-powered web research tools and discover which ones can truly automate your research workflow, from data gathering to analysis.',
+    date: '2025-04-15',
+    author: 'Team',
+    content: (
+      <>
+        <p>Coming soon...</p>
+      </>
+    ),
+  },
+  {
+    slug: 'best-ai-data-entry-automation-tools',
+    title: 'Best AI Tools to Automate Data Entry in 2025',
+    description:
+      'Discover how AI is revolutionizing data entry - from automated form filling to intelligent document processing. Compare the top tools that are making manual data entry obsolete.',
+    date: '2025-04-22',
+    author: 'Team',
+    content: (
+      <>
+        <p></p>
       </>
     ),
   },
