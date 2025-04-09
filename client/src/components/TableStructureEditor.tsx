@@ -61,6 +61,9 @@ export const TableStructureEditor: React.FC<TableStructureEditorProps> = ({
               className="w-full"
             />
           </div>
+          <Button variant="default" className="w-full mt-4" onClick={onCreateTable}>
+            Create Research Table
+          </Button>
           <div className="space-y-2">
             <label className="text-sm font-medium">Columns</label>
             <div className="grid grid-cols-1 gap-2">
@@ -93,9 +96,6 @@ export const TableStructureEditor: React.FC<TableStructureEditorProps> = ({
                 </div>
               ))}
             </div>
-            <Button variant="default" className="w-full mt-4" onClick={onCreateTable}>
-              Create Research Table
-            </Button>
           </div>
         </div>
       </CardContent>
