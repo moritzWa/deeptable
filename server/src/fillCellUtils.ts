@@ -359,10 +359,10 @@ export async function fillCell(
       name: 'OpenAI',
       fn: askOpenAI,
     },
-    {
-      name: 'Perplexity',
-      fn: askPerplexity,
-    },
+    // {
+    //   name: 'Perplexity',
+    //   fn: askPerplexity,
+    // },
     {
       name: 'Google',
       fn: askGoogle,
