@@ -61,6 +61,10 @@ interface AgGridColumnState {
   rowGroupIndex?: number;
   pivot?: boolean;
   pivotIndex?: number;
+  wrapText?: boolean;
+  autoHeight?: boolean;
+  wrapHeaderText?: boolean;
+  autoHeaderHeight?: boolean;
 }
 
 export interface CustomColDef extends ColDef {
@@ -297,6 +301,10 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         sortIndex: index,
         width: state.width,
         flex: state.flex,
+        wrapText: state.wrapText,
+        autoHeight: state.autoHeight,
+        wrapHeaderText: state.wrapHeaderText,
+        autoHeaderHeight: state.autoHeaderHeight,
       },
     }));
 
@@ -525,6 +533,10 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       suppressHeaderMenuButton: true,
       suppressHeaderContextMenu: true,
       suppressSizeToFit: true,
+      wrapText: false,
+      autoHeight: false,
+      wrapHeaderText: false,
+      autoHeaderHeight: false,
     }),
     [tableData?.isOwner]
   );
@@ -629,6 +641,10 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           sortIndex: nullToUndefined(colState.sortIndex),
           width: colState.width !== null ? colState.width : undefined,
           flex: colState.width === null ? colState.flex : undefined,
+          wrapText: colState.wrapText,
+          autoHeight: colState.autoHeight,
+          wrapHeaderText: colState.wrapHeaderText,
+          autoHeaderHeight: colState.autoHeaderHeight,
         };
       });
   };

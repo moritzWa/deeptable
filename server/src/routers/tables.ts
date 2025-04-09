@@ -22,6 +22,10 @@ const columnStateSchema = z.object({
   pivotIndex: z.number().optional(),
   flex: z.union([z.number(), z.null(), z.undefined()]).optional(),
   orderIndex: z.number().optional(),
+  wrapText: z.boolean().optional(),
+  autoHeight: z.boolean().optional(),
+  wrapHeaderText: z.boolean().optional(),
+  autoHeaderHeight: z.boolean().optional(),
 });
 
 // Define a Zod schema for column validation

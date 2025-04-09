@@ -2,6 +2,7 @@ import { trpc } from '@/utils/trpc';
 import { ColumnState, SelectItem } from '@shared/types';
 import { Column, IHeaderParams } from 'ag-grid-community';
 import {
+  AlignJustify,
   ArrowLeftToLine,
   ArrowRightToLine,
   DollarSign,
@@ -320,6 +321,37 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
     }
   };
 
+  const handleTextWrapping = () => {
+    if (!props.context.isOwner) {
+      redirectToLogin();
+      return;
+    }
+
+    const column = props.column;
+    if (!column) return;
+
+    const currentState = column.getColDef() as CustomColDef;
+    const currentColumnState = {
+      colId: column.getColId(),
+      width: column.getActualWidth(),
+      hide: !column.isVisible(),
+      pinned: column.getPinned() as 'left' | 'right' | null,
+      sort: column.getSort() as 'asc' | 'desc' | null,
+      sortIndex: column.getSortIndex(),
+      wrapText: !currentState.wrapText,
+      autoHeight: !currentState.autoHeight,
+      wrapHeaderText: !currentState.wrapHeaderText,
+      autoHeaderHeight: !currentState.autoHeaderHeight,
+    };
+
+    props.context.updateColumnState([
+      {
+        columnId: column.getColId(),
+        columnState: currentColumnState,
+      },
+    ]);
+  };
+
   return (
     <ContextMenu onOpenChange={handleOpenChange}>
       <ContextMenuTrigger asChild>
@@ -510,6 +542,19 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
           >
             <Trash2 className="h-4 w-4" />
             Delete Column
+          </ContextMenuItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+          <Label className="p-2">Text Wrapping</Label>
+          <ContextMenuItem
+            onClick={handleTextWrapping}
+            className={`flex items-center gap-2 ${
+              (props.column.getColDef() as CustomColDef).wrapText ? 'bg-secondary' : ''
+            }`}
+          >
+            <AlignJustify className="h-4 w-4" />
+            Enable Text Wrapping
           </ContextMenuItem>
         </ContextMenuGroup>
       </ContextMenuContent>
