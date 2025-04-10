@@ -68,11 +68,15 @@ interface AgGridColumnState {
 }
 
 export interface CustomColDef extends ColDef {
-  description: string;
-  additionalTypeInformation: {
-    currency?: boolean;
-    decimals?: number;
-    selectItems?: SelectItem[];
+  type?: string;
+  context?: {
+    additionalTypeInformation: {
+      currency?: boolean;
+      decimals?: number;
+      selectItems?: SelectItem[];
+    };
+    description: string;
+    wrapText?: boolean;
   };
 }
 
@@ -344,7 +348,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       });
 
       const agGridColumns: CustomColDef[] = sortedColumns.map((column) => {
-        // Convert our column state to AG Grid properties
         const columnStateProps = convertColumnStateToAgGridProps(column.columnState);
 
         const colDef: CustomColDef = {
@@ -370,12 +373,15 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           ...columnStateProps,
           colId: column.columnId,
           type: column.type,
-          additionalTypeInformation: {
-            currency: column.additionalTypeInformation?.currency || false,
-            decimals: column.additionalTypeInformation?.decimals,
-            selectItems: column.additionalTypeInformation?.selectItems,
+          context: {
+            additionalTypeInformation: {
+              currency: column.additionalTypeInformation?.currency || false,
+              decimals: column.additionalTypeInformation?.decimals,
+              selectItems: column.additionalTypeInformation?.selectItems,
+            },
+            description: column.description || '',
+            wrapText: columnStateProps.wrapText,
           },
-          description: column.description,
           valueParser: (params) => {
             if (column.type === 'number') {
               return Number(params.newValue);
@@ -389,7 +395,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
           cellEditorPopup: column.type === 'select' || column.type === 'multiSelect' ? true : false,
           cellEditorPopupPosition:
             column.type === 'select' || column.type === 'multiSelect' ? 'under' : undefined,
-          // stopEditingWhenCellsLoseFocus: false,
         };
 
         return colDef;
@@ -560,7 +565,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   );
 
   // Handle cell range selection changed
-  const onRangeSelectionChanged = useCallback((event: any) => {
+  const onCellSelectionChanged = useCallback((event: any) => {
     const ranges = gridRef.current?.api.getCellRanges();
     setSelectedRanges(ranges || []);
   }, []);
@@ -929,7 +934,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
               defaultColDef={defaultColDef}
               columnTypes={columnTypes}
               pagination={false}
-              animateRows={true}
               onCellValueChanged={onCellValueChanged}
               stopEditingWhenCellsLoseFocus={true}
               onGridReady={onGridReady}
@@ -940,10 +944,11 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
               onSortChanged={onSortChanged}
               context={gridContext}
               cellSelection={cellSelection}
-              onRangeSelectionChanged={onRangeSelectionChanged}
+              onCellSelectionChanged={onCellSelectionChanged}
               onSelectionChanged={onSelectionChanged}
               domLayout="autoHeight"
               rowSelection={rowSelection}
+              animateRows={false}
             />
           </div>
         </div>

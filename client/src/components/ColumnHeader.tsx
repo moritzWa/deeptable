@@ -47,15 +47,13 @@ interface ColumnHeaderParams extends IHeaderParams {
   };
   enableSorting: boolean;
   column: Column;
-  description?: string;
 }
 
 export const ColumnHeader = (props: ColumnHeaderParams) => {
   const [columnName, setColumnName] = useState(props.displayName);
   const [description, setDescription] = useState(() => {
     const colDef = props.column.getColDef() as CustomColDef;
-    // console.log('colDef.description', colDef.description);
-    return colDef.description || '';
+    return colDef.context?.description || '';
   });
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
@@ -78,7 +76,7 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
   useEffect(() => {
     setColumnName(props.displayName);
     const colDef = props.column.getColDef() as CustomColDef;
-    setDescription(colDef.description || '');
+    setDescription(colDef.context?.description || '');
   }, [props.displayName, props.column]);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,7 +156,9 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
       return;
     }
 
-    if (description === props.description) return;
+    const colDef = props.column.getColDef() as CustomColDef;
+    if (description === colDef.context?.description) return;
+
     if (props.context.updateColumnDescription) {
       props.context.updateColumnDescription(props.column.getColId(), description);
     }
@@ -182,7 +182,7 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
     const colDef = props.column.getColDef() as CustomColDef;
     props.context.setColumnCurrency(
       props.column.getColId(),
-      !colDef.additionalTypeInformation.currency
+      !colDef.context?.additionalTypeInformation.currency
     );
   };
 
@@ -457,7 +457,8 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
           <>
             <SelectTypeItemForm
               selectItems={
-                (props.column.getColDef() as CustomColDef).additionalTypeInformation?.selectItems
+                (props.column.getColDef() as CustomColDef).context?.additionalTypeInformation
+                  ?.selectItems
               }
               onUpdateItems={(items: SelectItem[]) => {
                 if (!props.context.isOwner) {
@@ -550,7 +551,7 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
           <ContextMenuItem
             onClick={handleTextWrapping}
             className={`flex items-center gap-2 ${
-              (props.column.getColDef() as CustomColDef).wrapText ? 'bg-secondary' : ''
+              (props.column.getColDef() as CustomColDef).context?.wrapText ? 'bg-secondary' : ''
             }`}
           >
             <AlignJustify className="h-4 w-4" />

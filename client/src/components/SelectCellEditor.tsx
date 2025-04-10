@@ -3,7 +3,7 @@ import { SelectItem } from '@shared/types';
 import { CustomCellEditorProps } from 'ag-grid-react';
 import { Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { SelectPill } from './CellRendererSelect';
+import { SelectPill } from './CustomCellRenderers';
 import {
   Command,
   CommandEmpty,
@@ -17,8 +17,10 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 interface SelectCellEditorProps extends CustomCellEditorProps {
   colDef: {
     type: 'select' | 'multiSelect';
-    additionalTypeInformation?: {
-      selectItems?: SelectItem[];
+    context?: {
+      additionalTypeInformation?: {
+        selectItems?: SelectItem[];
+      };
     };
     field?: string;
   };
@@ -35,19 +37,25 @@ export const SelectCellEditor = ({
   context,
 }: SelectCellEditorProps) => {
   const isMultiSelect = colDef.type === 'multiSelect';
-  const selectItems = colDef.additionalTypeInformation?.selectItems || [];
+  const selectItems = colDef.context?.additionalTypeInformation?.selectItems || [];
   const [isOpen, setIsOpen] = useState(true);
   const [inputValue, setInputValue] = useState('');
   const containerRef = useRef<HTMLDivElement>(null);
   const commandRef = useRef<HTMLDivElement>(null);
 
+  // Ensure initialValue is a string and handle empty/null/undefined values
+  const stringValue = initialValue ? String(initialValue) : '';
+
   // For multiSelect, split by comma and trim
-  const initialValues = isMultiSelect
-    ? initialValue
-        ?.split(',')
-        .map((v: string) => v.trim())
-        .filter(Boolean)
-    : [initialValue].filter(Boolean);
+  const initialValues =
+    isMultiSelect && stringValue
+      ? stringValue
+          .split(',')
+          .map((v: string) => v.trim())
+          .filter(Boolean)
+      : stringValue
+        ? [stringValue]
+        : [];
 
   const [selectedValues, setSelectedValues] = useState<string[]>(initialValues);
 

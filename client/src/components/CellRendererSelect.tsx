@@ -1,12 +1,21 @@
-import { Column, SelectItem } from '@shared/types';
+import { SelectItem } from '@shared/types';
 import { ICellRendererParams } from 'ag-grid-community';
+import { CustomColDef } from './TableComponent';
 
 export interface SelectCellRendererParams extends ICellRendererParams {
-  colDef: Column;
+  colDef: CustomColDef;
   value: string;
 }
 
-// New component for rendering individual select items as pills
+// Component for showing enriching state
+const EnrichingIndicator = () => (
+  <div className="flex items-center gap-2">
+    <div className="h-2 w-2 rounded-full bg-green-500 animate-[pulse_1.5s_ease-in-out_infinite]" />
+    <span className="text-gray-500">Enriching...</span>
+  </div>
+);
+
+// Component for rendering individual select items as pills
 export const SelectPill = ({ value, color }: { value: string; color: string }) => {
   return (
     <span
@@ -23,19 +32,28 @@ export const SelectPill = ({ value, color }: { value: string; color: string }) =
 };
 
 export const SelectCellRenderer = (props: SelectCellRendererParams) => {
-  const selectItems = props.colDef.additionalTypeInformation?.selectItems || [];
+  const selectItems = props.colDef.context?.additionalTypeInformation?.selectItems || [];
   const value = props.value;
 
+  // Handle special case for enriching
+  if (value === 'Enriching...') {
+    return <EnrichingIndicator />;
+  }
+
+  // Handle empty/null/undefined values
   if (!value) return <span></span>;
+
+  // Ensure value is a string
+  const stringValue = String(value);
 
   // For multiSelect, value might be comma-separated
   const values: string[] =
     props.colDef.type === 'multiSelect'
-      ? value
+      ? stringValue
           .split(',')
           .map((v: string) => v.trim())
           .filter(Boolean)
-      : [value];
+      : [stringValue];
 
   return (
     <div className="flex flex-wrap gap-1">

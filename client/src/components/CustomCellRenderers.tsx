@@ -1,7 +1,8 @@
-import { Column, SelectItem } from '@shared/types';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
+import { SelectCellRenderer } from './CellRendererSelect';
+import { CustomColDef } from './TableComponent';
 
 // Helper functions
 export const isUrl = (str: string | undefined | null): boolean => {
@@ -34,7 +35,7 @@ export const shouldUseUrlRenderer = (value: any): boolean => {
 };
 
 // New component for rendering individual select items as pills
-const SelectPill = ({ value, color }: { value: string; color: string }) => {
+export const SelectPill = ({ value, color }: { value: string; color: string }) => {
   return (
     <span
       className="px-2 py-0.5 rounded-full text-sm inline-flex items-center"
@@ -51,42 +52,9 @@ const SelectPill = ({ value, color }: { value: string; color: string }) => {
 
 // Renderer for select/multiSelect cells
 interface SelectCellRendererParams extends ICellRendererParams {
-  colDef: Column;
+  colDef: CustomColDef;
   value: string;
 }
-
-const SelectCellRenderer = (props: SelectCellRendererParams) => {
-  const selectItems = props.colDef.additionalTypeInformation?.selectItems || [];
-  const value = props.value;
-
-  if (!value) return <span></span>;
-
-  // For multiSelect, value might be comma-separated
-  const values: string[] =
-    props.colDef.type === 'multiSelect'
-      ? value
-          .split(',')
-          .map((v: string) => v.trim())
-          .filter(Boolean)
-      : [value];
-
-  return (
-    <div className="flex flex-wrap gap-1">
-      {values.map((val: string, index: number) => {
-        const selectItem = selectItems.find((item: SelectItem) => item.name === val);
-        if (!selectItem) {
-          // Fallback for values that don't have a matching select item
-          return (
-            <span key={index} className="text-gray-500">
-              {val}
-            </span>
-          );
-        }
-        return <SelectPill key={selectItem.id} value={selectItem.name} color={selectItem.color} />;
-      })}
-    </div>
-  );
-};
 
 // Add this near the top with other helper functions
 const EnrichingIndicator = () => (
@@ -98,7 +66,7 @@ const EnrichingIndicator = () => (
 
 // Update the smartCellRenderer function
 export const smartCellRenderer = (params: ICellRendererParams) => {
-  const colDef = params.colDef as Column;
+  const colDef = params.colDef as CustomColDef;
   const value = params.value;
 
   console.log('value in smartCellRenderer', value);
@@ -133,8 +101,8 @@ export const smartCellRenderer = (params: ICellRendererParams) => {
       return <span className="font-mono w-full text-right"></span>;
     }
 
-    const isCurrency = colDef.additionalTypeInformation?.currency || false;
-    const decimals = colDef.additionalTypeInformation?.decimals ?? 2;
+    const isCurrency = colDef.context?.additionalTypeInformation?.currency || false;
+    const decimals = colDef.context?.additionalTypeInformation?.decimals ?? 2;
 
     return (
       <span className="font-mono w-full text-right">
