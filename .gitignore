@@ -45,3 +45,15 @@ yarn-error.log*
 # random
 server/test.txt
 server/result.txt
+
+# Environment variables
+client/.env
+server/.env
+
+# Other ignores (dependencies, build outputs, logs, etc.)
+node_modules/
+dist/
+build/
+coverage/
+.DS_Store
+*.log
