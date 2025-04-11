@@ -530,12 +530,13 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     ]
   );
 
-  // AG Grid default column definition
+  // Update the defaultColDef to disable default sorting behavior
   const defaultColDef = useMemo(
     () => ({
       minWidth: 100,
       resizable: true,
-      sortable: true,
+      sortable: true, // Keep this true to enable programmatic sorting
+      suppressSorting: true, // Add this to disable click-to-sort behavior
       filter: true,
       editable: () => {
         // Only allow editing if user is the owner
