@@ -7,6 +7,7 @@ import {
   ArrowLeftToLine,
   ArrowRightToLine,
   ArrowUpIcon,
+  ChevronDown,
   DollarSign,
   Eye,
   EyeOff,
@@ -361,18 +362,44 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
     ]);
   };
 
+  const handleHeaderClick = (e: React.MouseEvent) => {
+    // Only handle clicks on the main header area, not the menu trigger
+    if ((e.target as HTMLElement).closest('.menu-trigger')) {
+      return;
+    }
+
+    if (!props.column || !props.api) return;
+
+    // Select the entire column
+    const range = {
+      rowStartIndex: 0,
+      rowEndIndex: props.api.getDisplayedRowCount() - 1,
+      columns: [props.column.getColId()],
+      startRow: 0,
+      endRow: props.api.getDisplayedRowCount() - 1,
+    };
+    props.api.clearRangeSelection();
+    props.api.addCellRange(range);
+  };
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="w-full h-full flex items-center px-2 select-none cursor-pointer">
-          <div className="flex items-center gap-1">
-            {columnName}
-            {isSortable && sortState && (
-              <span className="text-xs">{sortState === 'asc' ? '↑' : '↓'}</span>
-            )}
-          </div>
+    <DropdownMenu onOpenChange={handleOpenChange}>
+      <div
+        className="w-full h-full flex items-center select-none cursor-pointer relative"
+        onClick={handleHeaderClick}
+      >
+        <div className="flex-1 flex items-center gap-2">
+          {isSortable && sortState && (
+            <span className="text-xs">{sortState === 'asc' ? '↑' : '↓'}</span>
+          )}
+          {columnName}
         </div>
-      </DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
+          <div className="menu-trigger p-1 hover:bg-muted rounded cursor-pointer">
+            <ChevronDown className="h-4 w-4" />
+          </div>
+        </DropdownMenuTrigger>
+      </div>
       <DropdownMenuContent className="w-64">
         <div className="p-2 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
