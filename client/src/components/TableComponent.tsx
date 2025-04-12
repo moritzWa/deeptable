@@ -850,6 +850,59 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     return rows.every((row) => Object.values(row.data).every((value) => value === ''));
   };
 
+  // Add this near the other event handlers
+  const handleKeyDown = (event: KeyboardEvent) => {
+    const api = gridRef.current?.api;
+    if (!api || !tableData?.isOwner) return;
+
+    if (event.key === 'Delete' || event.key === 'Backspace') {
+      const selectedRanges = api.getCellRanges();
+      if (!selectedRanges?.length) return;
+
+      // For each selected range, clear the cells
+      selectedRanges.forEach((range) => {
+        const startRow = range.startRow?.rowIndex ?? 0;
+        const endRow = range.endRow?.rowIndex ?? api.getDisplayedRowCount() - 1;
+        const columns = range.columns.map((col) => col.getColId());
+
+        // Get all rows in the range
+        const rowNodes: any[] = [];
+        api.forEachNode((node, index) => {
+          if (index >= startRow && index <= endRow) {
+            rowNodes.push(node);
+          }
+        });
+
+        // Update each row's data
+        rowNodes.forEach((node) => {
+          const newData = { ...node.data };
+          columns.forEach((colId) => {
+            if (newData.data) {
+              newData.data[colId] = '';
+            }
+          });
+
+          // Update the row using the mutation
+          updateRowMutation.mutate({
+            token: token || '',
+            id: node.data.id,
+            data: newData.data,
+          });
+        });
+      });
+    }
+  };
+
+  // Add this to the useEffect that sets up the grid
+  useEffect(() => {
+    // Add keyboard event listener
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [tableData?.isOwner]);
+
   if (error) {
     return <TableError error={error} />;
   }

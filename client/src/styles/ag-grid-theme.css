@@ -78,6 +78,12 @@
 /* Additional custom styles for specific elements */
 .ag-theme-alpine .ag-header-cell {
   font-weight: 600;
+  padding: 10px;
+}
+
+/* Selection column specific override */
+.ag-theme-alpine .ag-header-cell[col-id='ag-Grid-SelectionColumn'] {
+  padding: 16px;
 }
 
 .ag-theme-alpine .ag-row-hover {

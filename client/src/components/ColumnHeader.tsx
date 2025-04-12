@@ -370,16 +370,25 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
 
     if (!props.column || !props.api) return;
 
-    // Select the entire column
+    // Log current state
+    console.log('Column ID:', props.column.getColId());
+    console.log('Total rows:', props.api.getDisplayedRowCount());
+
+    // Select all cells in the column (excluding header)
     const range = {
       rowStartIndex: 0,
       rowEndIndex: props.api.getDisplayedRowCount() - 1,
       columns: [props.column.getColId()],
-      startRow: 0,
-      endRow: props.api.getDisplayedRowCount() - 1,
     };
+
+    console.log('Setting range:', range);
+
     props.api.clearRangeSelection();
     props.api.addCellRange(range);
+
+    // Log the selected range after setting
+    const selectedRanges = props.api.getCellRanges();
+    console.log('Selected ranges after setting:', selectedRanges);
   };
 
   return (
