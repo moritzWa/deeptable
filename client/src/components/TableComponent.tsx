@@ -919,6 +919,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     checkboxSelection: true,
   };
 
+  console.log('isPublicView in tableData.sharingStatus', tableData.sharingStatus);
+
   return (
     <>
       {tableData && (
@@ -934,13 +936,13 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         </Helmet>
       )}
       {isPublicView && tableData.sharingStatus === 'public' && (
-        <div className="m-auto prose max-w-4xl mb-8">
+        <div className="m-auto prose dark:prose-invert dark:text-gray-200 dark:prose-headings:text-gray-200 max-w-4xl mb-8">
           {tableData.beforeTableText ? (
             <EditableMarkdown
               content={tableData.beforeTableText}
               onSave={(content) => handleUpdateText('before', content)}
               isEditable={tableData.isOwner}
-              className="mb-8"
+              className="mb-8 dark:text-gray-200 dark:prose-headings:text-gray-200"
               placeholder="Add description above the table (supports markdown)..."
             />
           ) : (
@@ -1008,13 +1010,13 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         </div>
       </div>
       {isPublicView && tableData.sharingStatus === 'public' && (
-        <div className="m-auto prose max-w-4xl mt-8">
+        <div className="m-auto prose dark:prose-invert dark:text-gray-200 dark:prose-headings:text-gray-200 max-w-4xl mt-8">
           {tableData.afterTableText ? (
             <EditableMarkdown
               content={tableData.afterTableText}
               onSave={(content) => handleUpdateText('after', content)}
               isEditable={tableData.isOwner}
-              className="mt-8"
+              className="mt-8 dark:text-gray-200 dark:prose-headings:text-gray-200"
               placeholder="Add description below the table (supports markdown)..."
             />
           ) : (
