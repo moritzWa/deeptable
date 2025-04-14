@@ -19,8 +19,8 @@ export default function BlogPage() {
               <h2 className="text-2xl font-semibold mb-2 group-hover:text-blue-600">
                 {post.title}
               </h2>
-              <p className="text-gray-600 mb-2">{post.description}</p>
-              <div className="text-sm text-gray-500">
+              <p className="text-gray-600 dark:text-gray-300 mb-2">{post.description}</p>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
                 <time>{post.date}</time> • <span>{post.author}</span>
               </div>
             </Link>
