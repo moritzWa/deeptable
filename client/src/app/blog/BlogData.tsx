@@ -17,10 +17,10 @@ export interface BlogPostMetadata {
 
 export const blogPosts: BlogPostMetadata[] = [
   {
-    slug: 'best-ai-spreadsheet-research-tools',
-    title: 'The Best AI Spreadsheet and Web Research Tools in 2025',
+    slug: 'best-ai-spreadsheet-tools',
+    title: 'The Best AI-Powered Spreadsheet Tools in 2025',
     description:
-      'Discover how AI-powered research tools are revolutionizing data gathering and analysis - from spreadsheet automation to comprehensive web research.',
+      'Discover how AI-powered spreadsheets are revolutionizing data gathering and analysis - from spreadsheet automation to comprehensive web research.',
     date: '2025-04-08',
     author: 'Team',
     content: (
@@ -208,14 +208,95 @@ export const blogPosts: BlogPostMetadata[] = [
   },
   {
     slug: 'best-ai-web-research-tools',
-    title: 'The Best AI Tools for Automated Web Research in 2025',
+    title: 'Top 5 AI Tools for Automated Web Research',
     description:
       'Compare the top AI-powered web research tools and discover which ones can truly automate your research workflow, from data gathering to analysis.',
     date: '2025-04-15',
     author: 'Team',
     content: (
       <>
-        <p>Coming soon...</p>
+        <h2>1. DeepTable</h2>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full rounded-lg"
+          src="/blog/deeptable.mp4"
+        />
+        <p>
+          DeepTable is a tool that allows you to automate your research workflow. It uses AI to
+          gather information from the web and organize it into a spreadsheet. The key difference
+          between DeepTable and other tools is that it allows you to go from a prompt to a filled-in
+          table by searching the web and using LLMs to fill out the data in your table.
+        </p>
+
+        <p>
+          It combines the power of LLMs like OpenAI's GPT-4 with the simple interface of a
+          spreadsheet to give you direct answers to your research questions in a matter of seconds.
+        </p>
+
+        <h2>2. OpenAI Deep Research</h2>
+        <p>
+          OpenAI Deep Research is a tool designed to automate the process of synthesizing multiple
+          web sources into a cohesive answer. It mimics how a researcher might explore a topic,
+          aiming to pull insights from across the web and summarize them in natural language.
+        </p>
+
+        <img src="/blog/deepresearch.png" alt="OpenAI Deep Research" width={1000} height={1000} />
+
+        <p>
+          Its main strength is breadth: it tries to go beyond a single answer and give a more
+          nuanced, multi-source perspective. But this comes at the cost of speed, transparency, and
+          usability. Responses are often slow, and the tool doesn't always make it easy to trace
+          where facts came from. It’s best suited for longform, exploratory research — but often
+          overkill for everyday questions and too vague for highly specific ones.
+        </p>
+
+        <h2>3. Perplexity</h2>
+        <p>
+          Perplexity is a fast, general-purpose web assistant that answers questions using real-time
+          search results, citing its sources inline. It’s built for users who want quick factual
+          answers with links to back them up.
+        </p>
+
+        <p>
+          Its biggest appeal is responsiveness — answers come fast, and the sources are clearly
+          listed. But it tends to prioritize surface-level clarity over depth, and it struggles with
+          topics that require judgment, synthesis, or subtlety. Users often rely on it for quick
+          summaries or fact checks, but it’s rarely the last stop for deeper work.
+        </p>
+
+        <h2>4. Consensus</h2>
+        <p>
+          Consensus is a search engine that only pulls from peer-reviewed academic literature. When
+          you ask a question, it attempts to summarize the scientific consensus — or lack thereof —
+          based on relevant studies.
+        </p>
+
+        <p>
+          It’s useful for health, science, and psychology topics where evidence matters. But its
+          narrow data scope means it completely misses broader context or current developments. The
+          interface simplifies complex studies, which can be helpful or dangerously reductive,
+          depending on the user. Many turn to it for a “science says” headline, but it’s a blunt
+          instrument when precision is needed.
+        </p>
+
+        <h2>5. Scite</h2>
+        <p>
+          Scite analyzes academic papers to show how often claims are supported or contradicted in
+          other research. It focuses on citation context — not just whether a study is cited, but
+          how.
+        </p>
+
+        <p>
+          The idea is solid: give users a sense of how reliable a claim really is. But in practice,
+          it’s easy to misinterpret the citation counts, and the interface can feel dense and
+          academic. It’s most useful for literature reviews or academic due diligence, but casual
+          users may find it hard to navigate or draw clear conclusions.
+        </p>
+
+        <EndOfBlogPostCTASection />
       </>
     ),
   },

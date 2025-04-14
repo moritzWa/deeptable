@@ -21,7 +21,6 @@ A powerful data analysis and visualization SaaS platform with authentication, pa
 - MongoDB
 - Stripe account
 - Google OAuth credentials
-- Doppler CLI
 
 ### MongoDB Setup
 
@@ -45,23 +44,6 @@ A powerful data analysis and visualization SaaS platform with authentication, pa
 
 The project includes scripts to seed your database with sample data:
 
-1. **Reset Everything**: Delete all data and reseed from scratch
-   ```bash
-   doppler run -- bun run --cwd server db:reset
-   ```
-
-Or run individual commands:
-
-1. **Seed Database**: Creates tables and populates them with sample data
-
-   ```bash
-   doppler run -- bun run --cwd server db:seed
-   ```
-
-2. **Delete Data**: Removes all data except user accounts
-   ```bash
-   doppler run -- bun run --cwd server db:delete
-   ```
 
 Note: The seeding script uses the email specified in the script to associate data with a user. Make sure to update the email in the script (`server/src/scripts/seeder.ts`) to match an existing user in your database.
 
@@ -80,27 +62,8 @@ cd deeptable
 bun install
 ```
 
-3. Set up environment variables with Doppler
-
-   - Install Doppler CLI if you haven't already
-   - Configure your Doppler project
-   - No need to manually manage .env files as Doppler will handle this
-
 4. Start the development servers
 
-For the frontend (in the client directory):
-
-```bash
-cd client
-doppler run -- bun dev --elide-lines=5000
-```
-
-For the backend (in the server directory):
-
-```bash
-cd server
-doppler run -- bun dev --elide-lines=5000
-```
 
 ## Customization
 
