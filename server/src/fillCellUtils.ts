@@ -222,7 +222,7 @@ Extract the right information from the search responses and return it in the cor
 Your response should include:
 1. The final result in the specified format
 2. The reasoning steps taken to arrive at this result
-3. The sources used to derive this information
+3. The sources used to derive this information - IMPORTANT: Extract any URLs/links from the responses and include them as sources. If a response contains multiple links, include all of them.
 
 Format your response as a JSON object with these fields.`;
 
@@ -264,7 +264,10 @@ Format your response as a JSON object with these fields.`;
                 },
                 sources: {
                   type: 'array',
-                  items: { type: 'string' },
+                  items: {
+                    type: 'string',
+                    description: 'URLs or links from the search responses',
+                  },
                 },
               },
               required: ['reasoningSteps', 'sources'],
