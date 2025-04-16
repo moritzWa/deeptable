@@ -1,9 +1,11 @@
 // Custom cell renderer for links
+import { EnrichmentMetadata } from '@shared/types';
 import { ICellRendererParams } from 'ag-grid-community';
 import { ExternalLink } from 'lucide-react';
 
 export interface LinkCellRendererProps extends ICellRendererParams {
   value: any;
+  enrichment?: EnrichmentMetadata;
 }
 
 // Helper functions

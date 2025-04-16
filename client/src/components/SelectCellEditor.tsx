@@ -3,7 +3,6 @@ import { SelectItem } from '@shared/types';
 import { CustomCellEditorProps } from 'ag-grid-react';
 import { Plus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { SelectPill } from './CustomCellRenderers';
 import {
   Command,
   CommandEmpty,
@@ -13,6 +12,7 @@ import {
   CommandList,
 } from './ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { SelectPill } from './CellRendererSelect';
 
 interface SelectCellEditorProps extends CustomCellEditorProps {
   colDef: {

@@ -1,3 +1,4 @@
+import { EnrichmentMetadata } from '@shared/types';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { z } from 'zod';
@@ -15,6 +16,8 @@ export interface Row {
   createdAt: string;
   updatedAt: string;
   userId: string;
+  index: number;
+  enrichments?: EnrichmentMetadata[];
 }
 
 export const rowsRouter = router({
@@ -76,6 +79,7 @@ export const rowsRouter = router({
             createdAt: row.createdAt.toISOString(),
             updatedAt: row.updatedAt.toISOString(),
             userId: row.userId,
+            enrichments: row.enrichments,
           })),
           total,
         };
@@ -135,9 +139,11 @@ export const rowsRouter = router({
           id: row._id.toString(),
           tableId: row.tableId.toString(),
           data: row.data,
+          index: row.index,
           createdAt: row.createdAt.toISOString(),
           updatedAt: row.updatedAt.toISOString(),
           userId: row.userId,
+          enrichments: row.enrichments,
         };
       } catch (error) {
         console.error('Create row error:', error);
@@ -311,9 +317,11 @@ export const rowsRouter = router({
           id: row._id.toString(),
           tableId: row.tableId.toString(),
           data: row.data,
+          index: row.index,
           createdAt: row.createdAt.toISOString(),
           updatedAt: row.updatedAt.toISOString(),
           userId: row.userId,
+          enrichments: row.enrichments,
         };
       } catch (error) {
         console.error('Update row error:', error);

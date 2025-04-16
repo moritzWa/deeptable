@@ -1,7 +1,7 @@
 import { smartCellRenderer } from '@/components/CellRenderers';
 import { useSidebar } from '@/components/ui/sidebar';
 import { trpc } from '@/utils/trpc';
-import { ColumnState, ColumnType, SelectItem, Table } from '@shared/types';
+import { ColumnState, ColumnType, EnrichmentMetadata, SelectItem, Table } from '@shared/types';
 import {
   CellRange,
   CellValueChangedEvent,
@@ -85,13 +85,25 @@ function nullToUndefined<T>(value: T | null): T | undefined {
   return value === null ? undefined : value;
 }
 
+// Add Row type definition
+interface Row {
+  id: string;
+  data: Record<string, any>;
+  enrichments?: EnrichmentMetadata[];
+  createdAt: string;
+  updatedAt: string;
+  userId: string;
+  index: number;
+  tableId: string;
+}
+
 export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolean }) => {
   const { id, slug } = useParams<{ id?: string; slug?: string }>();
   const navigate = useNavigate();
   const sidebar = useSidebar();
   const [table, setTable] = useState<Table | null>(null);
   const [error, setError] = useState('');
-  const [rowData, setRowData] = useState<any[]>([]);
+  const [rowData, setRowData] = useState<Row[]>([]);
   const [columnDefs, setColumnDefs] = useState<ColDef[]>([]);
   const [selectedRanges, setSelectedRanges] = useState<CellRange[]>([]);
   const [isGridReady, setIsGridReady] = useState(false);
@@ -283,7 +295,16 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   // Process row data for AG Grid
   useEffect(() => {
     if (rowsData?.rows) {
-      setRowData(rowsData.rows);
+      // Convert enrichment dates from strings to Date objects
+      const processedRows = rowsData.rows.map((row) => ({
+        ...row,
+        enrichments: row.enrichments?.map((enrichment) => ({
+          ...enrichment,
+          createdAt: new Date(enrichment.createdAt),
+        })),
+      }));
+
+      setRowData(processedRows);
     }
   }, [rowsData]);
 

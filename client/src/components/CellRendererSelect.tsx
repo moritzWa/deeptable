@@ -1,10 +1,11 @@
-import { SelectItem } from '@shared/types';
+import { EnrichmentMetadata, SelectItem } from '@shared/types';
 import { ICellRendererParams } from 'ag-grid-community';
 import { CustomColDef } from './TableComponent';
 
 export interface SelectCellRendererParams extends ICellRendererParams {
   colDef: CustomColDef;
   value: string;
+  enrichment?: EnrichmentMetadata;
 }
 
 // Component for showing enriching state
