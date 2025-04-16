@@ -151,8 +151,10 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   const updateColumnStateMutation = trpc.tables.updateColumnState.useMutation({
     onSuccess: () => {
       console.log('Column state updated successfully');
-      // Force refetch to get updated column state
-      refetch();
+      // Only refetch if we're not in the initial setup
+      if (!isApplyingState.current) {
+        refetch();
+      }
     },
     onError: (error) => {
       console.error('Failed to update column state:', error);
@@ -290,7 +292,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
   const hasAppliedInitialState = useRef(false);
 
   const processColumnStateChange = useCallback(() => {
-    if (!gridRef.current?.api || !table?.id || !token) return;
+    // Add initializing check
+    if (!gridRef.current?.api || !table?.id || !token || isApplyingState.current) return;
 
     // Use api to get column state
     const columnState = gridRef.current.api.getColumnState() as AgGridColumnState[];
@@ -342,9 +345,13 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
         return;
       }
 
-      console.log('Setting up columns in main useEffect');
+      // Don't update if we're in the middle of applying state
+      if (isApplyingState.current) {
+        console.log('Skipping column setup because state is being applied');
+        return;
+      }
 
-      // Sort columns by their sortIndex value
+      console.log('Setting up columns in main useEffect');
       const sortedColumns = [...table.columns].sort((a, b) => {
         const orderA = a.columnState?.sortIndex ?? Number.MAX_SAFE_INTEGER;
         const orderB = b.columnState?.sortIndex ?? Number.MAX_SAFE_INTEGER;
@@ -534,16 +541,14 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     ]
   );
 
-  // Update the defaultColDef to disable default sorting behavior
+  // Update the defaultColDef to use the correct property
   const defaultColDef = useMemo(
     () => ({
       minWidth: 100,
       resizable: true,
-      sortable: true, // Keep this true to enable programmatic sorting
-      suppressSorting: true, // Add this to disable click-to-sort behavior
+      sortable: false,
       filter: true,
       editable: () => {
-        // Only allow editing if user is the owner
         return tableData?.isOwner ?? false;
       },
       headerComponent: ColumnHeader,
@@ -552,8 +557,9 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       suppressSizeToFit: true,
       wrapText: false,
       autoHeight: false,
-      wrapHeaderText: false,
-      autoHeaderHeight: false,
+      wrapHeaderText: true,
+      autoHeaderHeight: true,
+      stopEditingWhenCellsLoseFocus: true,
     }),
     [tableData?.isOwner]
   );
@@ -624,38 +630,36 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     }
 
     console.log('Applying saved column state');
+    isApplyingState.current = true; // Set flag at the start
 
-    setTimeout(() => {
-      isApplyingState.current = true;
+    try {
+      console.log('Building saved column states before applying');
+      const savedColumnStates = buildSavedColumnStates();
+      const currentColumns = createInitialColumnDefs(table.columns);
 
-      try {
-        console.log('Building saved column states before applying');
-        const savedColumnStates = buildSavedColumnStates();
+      // Apply both column definitions and states in one go
+      setColumnDefs(currentColumns as ColDef[]);
 
-        console.log('Applying saved column states');
-        gridRef.current?.api?.applyColumnState({
-          state: savedColumnStates,
-          applyOrder: true,
-        });
+      console.log('Applying saved column states');
+      gridRef.current.api.applyColumnState({
+        state: savedColumnStates,
+        applyOrder: true,
+      });
 
-        console.log('Refreshing header after applying saved column states');
-        gridRef.current?.api?.refreshHeader();
-      } catch (error) {
-        console.error('Error applying column state:', error);
-      }
+      console.log('Refreshing header after applying saved column states');
+      gridRef.current.api.refreshHeader();
 
-      // Increase timeout to ensure state is properly applied
+      // Set the initialization flag
+      hasAppliedInitialState.current = true;
+
+      // Reset the applying state flag after a short delay to ensure all updates are complete
       setTimeout(() => {
-        console.log('Setting isApplyingState.current to false');
         isApplyingState.current = false;
-        console.log('Setting hasAppliedInitialState.current to true');
-        hasAppliedInitialState.current = true;
-        console.log('Setting columnDefs to initial columns');
-        // Instead of setting to empty array, refresh the columns
-        const currentColumns = createInitialColumnDefs(table.columns);
-        setColumnDefs(currentColumns as ColDef[]);
-      }, 400); // Increased from 100ms to 300ms
-    }, 200);
+      }, 150);
+    } catch (error) {
+      console.error('Error applying column state:', error);
+      isApplyingState.current = false;
+    }
   };
 
   // Extract the column state building logic
@@ -694,40 +698,56 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
 
   // Extract the column definition creation logic
   const createInitialColumnDefs = (columns: any[]) => {
-    return columns.map((column) => ({
-      headerName: column.name,
-      field: `data.${column.columnId}`,
-      sortable: true,
-      filter: true,
-      resizable: true,
-      editable: true,
-      wrapHeaderText: true,
-      autoHeaderHeight: true,
-      headerClass: 'py-1',
-      cellRenderer: smartCellRenderer,
-      suppressSizeToFit: true,
-      suppressHeaderMenuButton: true,
-      suppressHeaderContextMenu: true,
-      colId: column.columnId,
-      type: column.type || 'text',
-      context: {
-        description: column.description,
-        additionalTypeInformation: column.additionalTypeInformation || {},
-        wrapText: column.wrapText,
-      },
-      valueParser: (params: any) => {
-        if (column.type === 'number') {
-          return Number(params.newValue);
-        }
-        return params.newValue;
-      },
-      cellEditor:
-        column.type === 'select' || column.type === 'multiSelect' ? SelectCellEditor : undefined,
-      cellEditorPopup: column.type === 'select' || column.type === 'multiSelect' ? true : false,
-      cellEditorPopupPosition:
-        column.type === 'select' || column.type === 'multiSelect' ? 'under' : undefined,
-      stopEditingWhenCellsLoseFocus: true,
-    }));
+    return columns.map((column) => {
+      // Get text wrapping and width properties from column state
+      const columnState = column.columnState || {};
+      const wrapText = columnState.wrapText ?? false;
+      const autoHeight = columnState.autoHeight ?? false;
+      const wrapHeaderText = columnState.wrapHeaderText ?? true;
+      const autoHeaderHeight = columnState.autoHeaderHeight ?? true;
+
+      // Handle width and flex properties
+      const width = columnState.width !== null ? columnState.width : undefined;
+      const flex = columnState.width === null ? columnState.flex : undefined;
+
+      return {
+        headerName: column.name,
+        field: `data.${column.columnId}`,
+        sortable: true,
+        filter: true,
+        resizable: true,
+        editable: true,
+        width,
+        flex,
+        wrapText,
+        autoHeight,
+        wrapHeaderText,
+        autoHeaderHeight,
+        headerClass: 'py-1',
+        cellRenderer: smartCellRenderer,
+        suppressSizeToFit: true,
+        suppressHeaderMenuButton: true,
+        suppressHeaderContextMenu: true,
+        colId: column.columnId,
+        type: column.type || 'text',
+        context: {
+          description: column.description,
+          additionalTypeInformation: column.additionalTypeInformation || {},
+          wrapText,
+        },
+        valueParser: (params: any) => {
+          if (column.type === 'number') {
+            return Number(params.newValue);
+          }
+          return params.newValue;
+        },
+        cellEditor:
+          column.type === 'select' || column.type === 'multiSelect' ? SelectCellEditor : undefined,
+        cellEditorPopup: column.type === 'select' || column.type === 'multiSelect' ? true : false,
+        cellEditorPopupPosition:
+          column.type === 'select' || column.type === 'multiSelect' ? 'under' : undefined,
+      };
+    });
   };
 
   // Handler for column resized event
