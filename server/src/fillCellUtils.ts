@@ -35,6 +35,15 @@ interface ProcessSelectValueResult {
   updatedSelectItems?: SelectItem[];
 }
 
+// Add a new interface for the enriched response
+interface EnrichedResponse {
+  result: any;
+  metadata: {
+    reasoningSteps: string[];
+    sources: string[];
+  };
+}
+
 async function askOpenAI(question: string): Promise<string> {
   // Initialize OpenAI client
   const openai = new OpenAI({
@@ -201,8 +210,7 @@ async function getFinalAnswer(
   columnDescription: string,
   outputType: Record<string, unknown>,
   searchResponses: Array<{ response: string; provider: string }>
-) {
-  // Initialize OpenAI client
+): Promise<EnrichedResponse> {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
@@ -211,11 +219,15 @@ async function getFinalAnswer(
 
 Extract the right information from the search responses and return it in the correct format. Consider the quality and credibility of the information sources, the consistency across responses, and the reasoning provided. When sources disagree, make a judgment based on credibility and recency of information.
 
-Respond ONLY with the actual output value/type specified with no other text.`;
+Your response should include:
+1. The final result in the specified format
+2. The reasoning steps taken to arrive at this result
+3. The sources used to derive this information
+
+Format your response as a JSON object with these fields.`;
 
   // Serialize the responses as JSON
   const searchResponsesJson = JSON.stringify(searchResponses, null, 2);
-
   const serializedOutputType = JSON.stringify(outputType, null, 2);
 
   const question = `Table: ${tableName}\nColumn: ${columnName}\nColumn Description: ${columnDescription}\nOutput type: ${serializedOutputType}\n \nSearch Responses:\n${searchResponsesJson}`;
@@ -223,11 +235,9 @@ Respond ONLY with the actual output value/type specified with no other text.`;
   // log col type
   console.log('columnName', columnName);
 
-  // log existing row content
-
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-4o-mini-2024-07-18',
-    messages: [
+  const completion = await openai.responses.create({
+    model: 'gpt-4o-2024-08-06',
+    input: [
       {
         role: 'system',
         content: SYSTEM_PROMPT,
@@ -237,24 +247,49 @@ Respond ONLY with the actual output value/type specified with no other text.`;
         content: question,
       },
     ],
-    response_format: {
-      type: 'json_schema',
-      json_schema: {
+    text: {
+      format: {
+        type: 'json_schema',
         name: 'output',
+        schema: {
+          type: 'object',
+          properties: {
+            result: outputType,
+            metadata: {
+              type: 'object',
+              properties: {
+                reasoningSteps: {
+                  type: 'array',
+                  items: { type: 'string' },
+                },
+                sources: {
+                  type: 'array',
+                  items: { type: 'string' },
+                },
+              },
+              required: ['reasoningSteps', 'sources'],
+              additionalProperties: false,
+            },
+          },
+          required: ['result', 'metadata'],
+          additionalProperties: false,
+        },
         strict: true,
-        schema: outputType,
       },
     },
   });
-  const message = completion.choices[0].message.content;
+
+  const message = completion.output_text;
   if (!message) {
     throw new Error('No message');
   }
 
-  // Parse the message and extract the result field
   try {
     const parsed = JSON.parse(message.trim());
-    return parsed.result;
+    return {
+      result: parsed.result.result,
+      metadata: parsed.metadata,
+    };
   } catch (error) {
     console.error('Error parsing model response:', error, 'message', message);
     throw error;

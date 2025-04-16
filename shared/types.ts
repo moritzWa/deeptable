@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+
 // Column type definition
 export type ColumnType = 'text' | 'number' | 'link' | 'multiSelect' | 'select';
 
@@ -73,4 +75,24 @@ export interface User {
   stripeCustomerId?: string;
   isWaitlisted?: boolean;
   tokenVersion?: number;
+}
+
+// Add these new interfaces
+export interface EnrichmentMetadata {
+  columnId: string;
+  reasoningSteps: string[];
+  sources: string[];
+  createdAt: Date;
+}
+
+// Update IRow interface to make enrichments optional
+export interface IRow extends Document {
+  tableId: mongoose.Types.ObjectId;
+  index: number;
+  data: Record<string, any>;
+  userId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  _id: mongoose.Types.ObjectId;
+  enrichments?: EnrichmentMetadata[];
 }

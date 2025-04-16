@@ -1,3 +1,4 @@
+import { EnrichmentMetadata } from '@shared/types';
 import mongoose, { Document } from 'mongoose';
 
 export interface IRow extends Document {
@@ -8,7 +9,31 @@ export interface IRow extends Document {
   createdAt: Date;
   updatedAt: Date;
   _id: mongoose.Types.ObjectId;
+  enrichments?: EnrichmentMetadata[]; // Make it optional with ?
 }
+
+const enrichmentMetadataSchema = new mongoose.Schema({
+  columnId: {
+    type: String,
+    required: true,
+  },
+  reasoningSteps: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  sources: [
+    {
+      type: String,
+      required: true,
+    },
+  ],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 const rowSchema = new mongoose.Schema(
   {
@@ -31,6 +56,10 @@ const rowSchema = new mongoose.Schema(
       type: String,
       required: true,
       index: true, // Index for faster queries by userId
+    },
+    enrichments: {
+      type: [enrichmentMetadataSchema],
+      required: false, // Make it optional
     },
   },
   {

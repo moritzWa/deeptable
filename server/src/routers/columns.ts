@@ -244,10 +244,9 @@ export const columnsRouter = router({
 
         // Process each row
         for (const row of rows) {
-          // Start with the existing row data
           const updatedData = { ...row.data };
+          const newEnrichments = [];
 
-          // Process each selected column for this row
           for (const columnId of input.columnIds) {
             const column = table.columns.find((col) => col.columnId === columnId);
             if (!column) {
@@ -258,26 +257,33 @@ export const columnsRouter = router({
             const firstColumnValue = Object.values(row.data)[0];
             console.log(`Processing cell: Row "${firstColumnValue}", Column ${column.name}`);
 
-            const llmResults = await fillCell(
+            const enrichedResponse = await fillCell(
               tableName,
               tableDescription,
               column.name,
               column.description,
               column.type,
-              [{ data: row.data }] // Pass only the current row's data
-            );
-            console.log(
-              `llmResults for Row "${firstColumnValue}", Column ${column.name}:`,
-              llmResults
+              [{ data: row.data }]
             );
 
-            // Update the cell value in our data object using columnId
-            updatedData[column.columnId] = llmResults;
+            // Update the cell value
+            updatedData[column.columnId] = enrichedResponse.result;
+
+            // Store the enrichment metadata
+            newEnrichments.push({
+              columnId: column.columnId,
+              reasoningSteps: enrichedResponse.metadata.reasoningSteps,
+              sources: enrichedResponse.metadata.sources,
+              createdAt: new Date(),
+            });
           }
 
-          // Update the entire row data object at once
+          console.log('newEnrichments in fillCellBatched', newEnrichments);
+
+          // Update the row with both new data and enrichments
           await Row.findByIdAndUpdate(row._id, {
             $set: { data: updatedData },
+            $push: { enrichments: { $each: newEnrichments } },
           });
         }
 
@@ -333,7 +339,7 @@ export const columnsRouter = router({
         }
 
         // Fill the single cell
-        const llmResults = await fillCell(
+        const enrichedResponse = await fillCell(
           table.name,
           table.description,
           column.name,
@@ -343,10 +349,12 @@ export const columnsRouter = router({
           column.additionalTypeInformation
         );
 
+        console.log('enrichedResponse in fillSingleCell', enrichedResponse);
+
         // Handle select/multi-select types
-        if ((column.type === 'select' || column.type === 'multiSelect') && llmResults) {
+        if ((column.type === 'select' || column.type === 'multiSelect') && enrichedResponse) {
           const { finalValues, updatedSelectItems } = await processSelectTypeValue(
-            llmResults,
+            enrichedResponse.result,
             column.type,
             column.additionalTypeInformation?.selectItems
           );
@@ -369,6 +377,14 @@ export const columnsRouter = router({
           // Update the cell value
           await Row.findByIdAndUpdate(row._id, {
             $set: { [`data.${column.columnId}`]: finalValues },
+            $push: {
+              enrichments: {
+                columnId: column.columnId,
+                reasoningSteps: enrichedResponse.metadata.reasoningSteps,
+                sources: enrichedResponse.metadata.sources,
+                createdAt: new Date(),
+              },
+            },
           });
 
           return finalValues;
@@ -376,10 +392,18 @@ export const columnsRouter = router({
 
         // For non-select types
         await Row.findByIdAndUpdate(row._id, {
-          $set: { [`data.${column.columnId}`]: llmResults },
+          $set: { [`data.${column.columnId}`]: enrichedResponse.result },
+          $push: {
+            enrichments: {
+              columnId: column.columnId,
+              reasoningSteps: enrichedResponse.metadata.reasoningSteps,
+              sources: enrichedResponse.metadata.sources,
+              createdAt: new Date(),
+            },
+          },
         });
 
-        return llmResults;
+        return enrichedResponse.result;
       } catch (error) {
         console.error('Error in fillSingleCell:', error);
         throw error;
