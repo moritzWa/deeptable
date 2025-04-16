@@ -1,4 +1,4 @@
-import { generateRandomColor } from '@/utils/selectUtils';
+import { createNewSelectItem } from '@/utils/selectUtils';
 import { SelectItem } from '@shared/types';
 import { CustomCellEditorProps } from 'ag-grid-react';
 import { Plus } from 'lucide-react';
@@ -59,6 +59,11 @@ export const SelectCellEditor = ({
 
   const [selectedValues, setSelectedValues] = useState<string[]>(initialValues);
 
+  // Get unique current values that aren't in selectItems
+  const currentValuesNotInOptions = initialValues.filter(
+    (val) => !selectItems.some((item) => item.name === val)
+  );
+
   // Focus the container when mounted
   useEffect(() => {
     containerRef.current?.focus();
@@ -69,11 +74,7 @@ export const SelectCellEditor = ({
 
     if (!inputValue.trim() || !context.updateSelectItems || !colDef.field) return;
 
-    const newItem: SelectItem = {
-      id: crypto.randomUUID(),
-      name: inputValue.trim(),
-      color: generateRandomColor(),
-    };
+    const newItem = createNewSelectItem(inputValue, selectItems);
 
     // Get columnId from the field name (e.g., 'data.columnId' -> 'columnId')
     const columnId = colDef.field.replace('data.', '');
@@ -88,6 +89,25 @@ export const SelectCellEditor = ({
     setSelectedValues(newValues);
     onValueChange(newValues.join(', '));
     setInputValue('');
+
+    if (!isMultiSelect) {
+      setIsOpen(false);
+      stopEditing();
+    }
+  };
+
+  const handleAddExistingValue = (valueToAdd: string) => {
+    if (!context.updateSelectItems || !colDef.field) return;
+
+    const newItem = createNewSelectItem(valueToAdd, selectItems);
+
+    const columnId = colDef.field.replace('data.', '');
+    const newSelectItems = [...selectItems, newItem];
+    context.updateSelectItems(newSelectItems, columnId);
+
+    const newValues = isMultiSelect ? [...selectedValues, newItem.name] : [newItem.name];
+    setSelectedValues(newValues);
+    onValueChange(newValues.join(', '));
 
     if (!isMultiSelect) {
       setIsOpen(false);
@@ -174,6 +194,29 @@ export const SelectCellEditor = ({
             }}
           />
           <CommandList>
+            {/* Show current values that aren't in options */}
+            {currentValuesNotInOptions.length > 0 && (
+              <CommandGroup heading="Current Values">
+                {currentValuesNotInOptions.map((value) => (
+                  <CommandItem
+                    key={`current-${value}`}
+                    value={value}
+                    className="flex items-center gap-2"
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      handleAddExistingValue(value);
+                    }}
+                    onClick={() => handleAddExistingValue(value)}
+                  >
+                    <div className="w-3 h-3 rounded-full bg-gray-400" />
+                    <span className="truncate flex-1">{value}</span>
+                    <span className="ml-2 text-xs text-muted-foreground whitespace-nowrap">
+                      (add new)
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            )}
             <CommandEmpty className="py-2 px-2 cursor-pointer">
               <div
                 onSelect={handleAddNewItem}

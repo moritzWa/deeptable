@@ -1,4 +1,4 @@
-import { generateRandomColor } from '@/utils/selectUtils';
+import { createNewSelectItem } from '@/utils/selectUtils';
 import { SelectItem } from '@shared/types';
 import { Plus, X } from 'lucide-react';
 import { useState } from 'react';
@@ -22,13 +22,7 @@ export const SelectTypeItemForm = ({
 
   const handleAddItem = () => {
     if (!newItemName.trim()) return;
-
-    const newItem: SelectItem = {
-      id: crypto.randomUUID(),
-      name: newItemName.trim(),
-      color: generateRandomColor(), // You'll need to implement this
-    };
-
+    const newItem = createNewSelectItem(newItemName, selectItems);
     onUpdateItems([...selectItems, newItem]);
     setNewItemName('');
   };

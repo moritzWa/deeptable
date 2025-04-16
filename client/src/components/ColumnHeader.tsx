@@ -1,3 +1,4 @@
+import { createNewSelectItem } from '@/utils/selectUtils';
 import { trpc } from '@/utils/trpc';
 import { ColumnState, SelectItem } from '@shared/types';
 import { Column, IHeaderParams } from 'ag-grid-community';
@@ -256,25 +257,6 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
     props.context.deleteColumn(props.column.getColId());
   };
 
-  function getUnusedColor(usedColors: Set<string>): string {
-    const colors = [
-      '#FF8F37', // Orange
-      '#FFB347', // Yellow
-      '#4CAF50', // Green
-      '#2196F3', // Blue
-      '#9C27B0', // Purple
-      '#E91E63', // Pink
-      '#F44336', // Red
-    ];
-
-    // First try to find an unused color
-    const unusedColor = colors.find((color) => !usedColors.has(color));
-    if (unusedColor) return unusedColor;
-
-    // If all colors are used, return a random one
-    return colors[Math.floor(Math.random() * colors.length)];
-  }
-
   const handleTypeChange = (newType: string, e?: React.MouseEvent) => {
     if (!props.context.isOwner) {
       redirectToLogin();
@@ -288,13 +270,11 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
     }
 
     if (props.context.updateColumnType) {
-      // Get all unique values from the column
       if (newType === 'multiSelect') {
         const allValues = new Set<string>();
         props.api?.forEachNode((node) => {
           const value = node.data?.data?.[props.column.getColId()];
           if (typeof value === 'string') {
-            // Split by commas and trim whitespace
             value.split(',').forEach((item) => {
               const trimmed = item.trim();
               if (trimmed) allValues.add(trimmed);
@@ -302,19 +282,10 @@ export const ColumnHeader = (props: ColumnHeaderParams) => {
           }
         });
 
-        // Keep track of used colors
-        const usedColors = new Set<string>();
-
-        // Convert unique values to SelectItems
-        const selectItems: SelectItem[] = Array.from(allValues).map((value) => {
-          const color = getUnusedColor(usedColors);
-          usedColors.add(color);
-          return {
-            id: crypto.randomUUID(),
-            name: value,
-            color,
-          };
-        });
+        // Convert unique values to SelectItems using the improved color generation
+        const selectItems: SelectItem[] = Array.from(allValues).map((value) =>
+          createNewSelectItem(value, selectItems)
+        );
 
         // Update the column type and its select items
         if (selectItems.length > 0) {
