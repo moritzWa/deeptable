@@ -120,6 +120,8 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       onError: (err) => {
         setError(err.message || 'Failed to load table');
       },
+      retry: false,
+      staleTime: 30000,
     }
   );
 
@@ -224,7 +226,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     },
   });
 
-  // Add this mutation near your other mutations
   const deleteRowsMutation = trpc.rows.deleteRows.useMutation({
     onMutate: async ({ ids }) => {
       // Cancel any outgoing refetches
@@ -337,8 +338,11 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     if (table && table.columns) {
       // Don't set up columns until we've applied the initial state
       if (!hasAppliedInitialState.current) {
+        console.log('Not setting up columns in main useEffect because initial state not applied');
         return;
       }
+
+      console.log('Setting up columns in main useEffect');
 
       // Sort columns by their sortIndex value
       const sortedColumns = [...table.columns].sort((a, b) => {
@@ -602,8 +606,10 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       const hasSavedColumnState = table?.columns && table.columns.some((col) => col.columnState);
 
       if (hasSavedColumnState) {
+        console.log('Applying saved column state via onGridReady');
         applySavedColumnState();
       } else {
+        console.log('Applying default column state via onGridReady');
         applyDefaultColumnState();
       }
     },
@@ -612,31 +618,43 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
 
   // Extract the saved column state application logic
   const applySavedColumnState = () => {
-    setTimeout(() => {
-      if (!gridRef.current?.api) return;
+    if (!gridRef.current?.api || !table?.columns) {
+      console.log('Grid API or columns not ready');
+      return;
+    }
 
+    console.log('Applying saved column state');
+
+    setTimeout(() => {
       isApplyingState.current = true;
 
-      // Collect all column states from the table
-      const savedColumnStates = buildSavedColumnStates();
-
       try {
-        // Apply the saved column state directly to AG Grid
-        gridRef.current.api.applyColumnState({
+        console.log('Building saved column states before applying');
+        const savedColumnStates = buildSavedColumnStates();
+
+        console.log('Applying saved column states');
+        gridRef.current?.api?.applyColumnState({
           state: savedColumnStates,
           applyOrder: true,
         });
 
-        gridRef.current.api.refreshHeader();
+        console.log('Refreshing header after applying saved column states');
+        gridRef.current?.api?.refreshHeader();
       } catch (error) {
         console.error('Error applying column state:', error);
       }
 
+      // Increase timeout to ensure state is properly applied
       setTimeout(() => {
+        console.log('Setting isApplyingState.current to false');
         isApplyingState.current = false;
+        console.log('Setting hasAppliedInitialState.current to true');
         hasAppliedInitialState.current = true;
-        setColumnDefs([]); // Force a re-render
-      }, 100);
+        console.log('Setting columnDefs to initial columns');
+        // Instead of setting to empty array, refresh the columns
+        const currentColumns = createInitialColumnDefs(table.columns);
+        setColumnDefs(currentColumns as ColDef[]);
+      }, 400); // Increased from 100ms to 300ms
     }, 200);
   };
 
@@ -692,7 +710,11 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       suppressHeaderContextMenu: true,
       colId: column.columnId,
       type: column.type || 'text',
-      description: column.description,
+      context: {
+        description: column.description,
+        additionalTypeInformation: column.additionalTypeInformation || {},
+        wrapText: column.wrapText,
+      },
       valueParser: (params: any) => {
         if (column.type === 'number') {
           return Number(params.newValue);
@@ -704,7 +726,7 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
       cellEditorPopup: column.type === 'select' || column.type === 'multiSelect' ? true : false,
       cellEditorPopupPosition:
         column.type === 'select' || column.type === 'multiSelect' ? 'under' : undefined,
-      stopEditingWhenCellsLoseFocus: false,
+      stopEditingWhenCellsLoseFocus: true,
     }));
   };
 
@@ -903,6 +925,14 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     };
   }, [tableData?.isOwner]);
 
+  // useEffect(() => {
+  //   console.log('Row data changed:', rowData);
+  // }, [rowData]);
+
+  // useEffect(() => {
+  //   console.log('Column defs changed:', columnDefs);
+  // }, [columnDefs]);
+
   if (error) {
     return <TableError error={error} />;
   }
@@ -918,8 +948,6 @@ export const TableComponent = ({ isPublicView = false }: { isPublicView?: boolea
     enableClickSelection: false,
     checkboxSelection: true,
   };
-
-  console.log('isPublicView in tableData.sharingStatus', tableData.sharingStatus);
 
   return (
     <>
