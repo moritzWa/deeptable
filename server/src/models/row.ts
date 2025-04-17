@@ -23,6 +23,10 @@ const enrichmentMetadataSchema = new mongoose.Schema({
       required: true,
     },
   ],
+  confidenceScore: {
+    type: Number,
+    required: true,
+  },
   sources: [
     {
       type: String,

@@ -36,6 +36,23 @@ function isValidUrl(urlString: string): boolean {
   }
 }
 
+// --- Start: Confidence Level Helper ---
+function getConfidenceLevel(score: number): string {
+  if (score >= 90) return 'very high';
+  if (score >= 75) return 'high';
+  if (score >= 50) return 'medium';
+  return 'low';
+}
+// --- End: Confidence Level Helper ---
+
+// --- Start: Icon Color Helper ---
+function getIconColor(score: number): string {
+  if (score <= 30) return 'text-red-600 dark:text-red-400';
+  if (score <= 50) return 'text-orange-600 dark:text-orange-400';
+  return 'text-blue-600 dark:text-blue-400';
+}
+// --- End: Icon Color Helper ---
+
 export const EnrichmentPopover = ({ enrichment, children }: EnrichmentPopoverProps) => {
   if (!enrichment) return <>{children}</>;
 
@@ -49,7 +66,7 @@ export const EnrichmentPopover = ({ enrichment, children }: EnrichmentPopoverPro
                 <div className="relative group flex items-center w-full h-full">
                   {children}
                   <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Info className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    <Info className={`h-4 w-4 ${getIconColor(enrichment.confidenceScore)}`} />
                   </div>
                 </div>
               </PopoverTrigger>
@@ -64,8 +81,25 @@ export const EnrichmentPopover = ({ enrichment, children }: EnrichmentPopoverPro
                     </ol>
                   </div>
                   <div>
+                    <h4 className="font-medium mb-1">Confidence Score</h4>
+                    <p
+                      className={`text-sm text-muted-foreground ${getIconColor(
+                        enrichment.confidenceScore
+                      )}`}
+                    >
+                      {enrichment.confidenceScore}% (
+                      {getConfidenceLevel(enrichment.confidenceScore)})
+                    </p>
+                    {enrichment.confidenceScore < 40 && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        You might want to re-run this enrichment after filling out more of the rest
+                        of the row.
+                      </p>
+                    )}
+                  </div>
+                  <div>
                     <h4 className="font-medium mb-2">Sources</h4>
-                    <ScrollArea className="h-[60px]">
+                    <ScrollArea className="max-h-[500px]">
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         {enrichment.sources.map((source, index) => {
                           const isUrl = isValidUrl(source);

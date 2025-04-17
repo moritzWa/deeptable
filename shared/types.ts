@@ -81,6 +81,7 @@ export interface User {
 export interface EnrichmentMetadata {
   columnId: string;
   reasoningSteps: string[];
+  confidenceScore: number;
   sources: string[];
   createdAt: Date;
 }

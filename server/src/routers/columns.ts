@@ -274,6 +274,7 @@ export const columnsRouter = router({
               columnId: column.columnId,
               reasoningSteps: enrichedResponse.metadata.reasoningSteps,
               sources: enrichedResponse.metadata.sources,
+              confidenceScore: enrichedResponse.metadata.confidenceScore,
               createdAt: new Date(),
             });
           }
@@ -381,6 +382,7 @@ export const columnsRouter = router({
               enrichments: {
                 columnId: column.columnId,
                 reasoningSteps: enrichedResponse.metadata.reasoningSteps,
+                confidenceScore: enrichedResponse.metadata.confidenceScore,
                 sources: enrichedResponse.metadata.sources,
                 createdAt: new Date(),
               },
@@ -397,6 +399,7 @@ export const columnsRouter = router({
             enrichments: {
               columnId: column.columnId,
               reasoningSteps: enrichedResponse.metadata.reasoningSteps,
+              confidenceScore: enrichedResponse.metadata.confidenceScore,
               sources: enrichedResponse.metadata.sources,
               createdAt: new Date(),
             },
