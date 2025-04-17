@@ -16,12 +16,37 @@ interface GooglePart {
   text: string;
 }
 
+// --- Start: Added types for Google Grounding Metadata ---
+interface WebChunk {
+  uri: string;
+  title: string;
+}
+
+interface GroundingChunk {
+  web?: WebChunk;
+  // Could potentially have other chunk types like retrieved_context
+}
+
+interface GroundingMetadata {
+  webSearchQueries?: string[];
+  groundingChunks?: GroundingChunk[];
+  // Other grounding fields omitted for brevity
+}
+// --- End: Added types for Google Grounding Metadata ---
+
+interface GoogleCandidate {
+  content: {
+    parts: GooglePart[];
+    role: string;
+  };
+  finishReason: string;
+  groundingMetadata?: GroundingMetadata; // Make optional as it might not always be present
+  // Other candidate fields omitted for brevity
+}
+
 interface GoogleResponse {
-  candidates: Array<{
-    content: {
-      parts: GooglePart[];
-    };
-  }>;
+  candidates: GoogleCandidate[];
+  // Other response fields omitted for brevity
 }
 
 interface SelectItem {
@@ -110,6 +135,29 @@ async function askPerplexity(question: string): Promise<string> {
   return completion.choices[0].message.content;
 }
 
+// --- Start: Helper function to resolve redirect URLs ---
+async function resolveRedirectUrl(url: string): Promise<string> {
+  if (url.startsWith('https://vertexaisearch.cloud.google.com/grounding-api-redirect/')) {
+    try {
+      // Use HEAD request to efficiently get the final URL after redirects
+      const response = await fetch(url, { method: 'HEAD', redirect: 'follow' });
+      if (response.ok && response.url) {
+        return response.url; // fetch automatically follows redirects and updates the url property
+      } else {
+        console.warn(`Failed to resolve redirect for ${url}, status: ${response.status}`);
+        return url; // Keep original proxy URL if resolution fails
+      }
+    } catch (error) {
+      console.error(`Error resolving redirect for ${url}:`, error);
+      return url; // Keep original proxy URL on error
+    }
+  } else {
+    // Not a redirect URL, return original
+    return url;
+  }
+}
+// --- End: Helper function to resolve redirect URLs ---
+
 async function askGoogle(question: string): Promise<string> {
   const completion = (await fetch(
     'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' +
@@ -141,13 +189,42 @@ async function askGoogle(question: string): Promise<string> {
     }
   ).then((res) => res.json())) as GoogleResponse;
 
-  if (!completion.candidates?.[0]?.content?.parts) {
+  const candidate = completion.candidates?.[0];
+
+  if (!candidate?.content?.parts) {
     console.error('bad completion', completion);
     throw new Error('Invalid response from Google API');
   }
 
-  // console.log('completion', completion);
-  return completion.candidates[0].content.parts.map((part: GooglePart) => part.text).join('\n');
+  // Extract text parts
+  const textResponse = candidate.content.parts.map((part: GooglePart) => part.text).join('\n');
+
+  // --- Start: Resolve Redirect URLs using helper function ---
+  let sources: string[] = [];
+  if (candidate.groundingMetadata?.groundingChunks) {
+    const resolvePromises = candidate.groundingMetadata.groundingChunks.map(
+      async (chunk: GroundingChunk) => {
+        if (chunk.web?.uri) {
+          const finalUrl = await resolveRedirectUrl(chunk.web.uri);
+          const title = chunk.web.title || finalUrl; // Use resolved or original URI as fallback title
+          return `[${title}](${finalUrl})`;
+        }
+        return null; // Return null for chunks without web uri
+      }
+    );
+
+    // Wait for all resolutions and filter out any nulls
+    const resolvedSources = await Promise.all(resolvePromises);
+    sources = resolvedSources.filter((source): source is string => source !== null);
+  }
+  // --- End: Resolve Redirect URLs using helper function ---
+
+  // Combine text response and sources
+  if (sources.length > 0) {
+    return `${textResponse}\n\nSources:\n${sources.join('\n')}`;
+  } else {
+    return textResponse;
+  }
 }
 
 /**
