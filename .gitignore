@@ -49,6 +49,8 @@ server/result.txt
 # Environment variables
 client/.env
 server/.env
+*.env.temp
+**/.env.temp
 
 # Other ignores (dependencies, build outputs, logs, etc.)
 node_modules/

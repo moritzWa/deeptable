@@ -2,6 +2,8 @@
 
 A powerful data analysis and visualization SaaS platform with authentication, payments, and a modern UI.
 
+![DeepTable Demo](client/public/blog/deeptable.mp4)
+
 ## Features
 
 - 🔐 Authentication with Google OAuth
