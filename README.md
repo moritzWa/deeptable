@@ -2,7 +2,11 @@
 
 A powerful data analysis and visualization SaaS platform with authentication, payments, and a modern UI.
 
-![DeepTable Demo](client/public/blog/deeptable.mp4)
+
+
+https://github.com/user-attachments/assets/d1a1bd0d-a1d7-4363-a4c6-5b6a2841e161
+
+
 
 ## Features
 
