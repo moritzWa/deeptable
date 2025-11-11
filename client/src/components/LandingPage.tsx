@@ -57,6 +57,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ landingPageKeyword }) => {
           </Button>
         </div>
 
+        {/* Video demo */}
+        <div className="flex justify-center mt-12">
+          <video
+            className="w-full max-w-4xl rounded-lg shadow-lg"
+            controls
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src="/blog/deeptable.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
         {/* Input form - dont delete this */}
         {/* <form onSubmit={handleSubmit} className="w-full max-w-3xl mx-auto flex flex-col items-center mt-8">
           <div className="w-full relative flex items-center">
